@@ -8,6 +8,7 @@
 import UIKit
 import SceneKit
 import ARKit
+import AudioToolbox
 
 class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: - IBOutlets
@@ -39,7 +40,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
          device position and orientation tracking, and plane detection.
          */
         let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal//[.horizontal, .vertical]
+        configuration.planeDetection = .vertical
         sceneView.session.run(configuration)
         
         // Set a delegate to track the number of plane anchors for providing UI feedback.
@@ -52,7 +53,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         UIApplication.shared.isIdleTimerDisabled = true
         
         // Show debug UI to view performance metrics (e.g. frames per second).
-        sceneView.showsStatistics = true
+        sceneView.showsStatistics = false //true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -66,6 +67,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     /// - Tag: PlaceARContent
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        
         // Place content only for anchors found by plane detection.
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         
@@ -83,12 +86,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let mySphere = SCNSphere(radius: 5)
         let mySphereNode = SCNNode(geometry: mySphere)
         mySphereNode.position = SCNVector3(x: -15, y: 0, z: 0)
-        sceneView.scene.rootNode.addChildNode(mySphereNode)
+        //sceneView.scene.rootNode.addChildNode(mySphereNode)
         
         let myPyramid = SCNPyramid(width: 0.5, height: 0.5, length: 0.5)
         let myPyramidNode = SCNNode(geometry: myPyramid)
         myPyramidNode.position = SCNVector3(x: -10, y: 0, z: 0)
-        sceneView.scene.rootNode.addChildNode(myPyramidNode)
+        //sceneView.scene.rootNode.addChildNode(myPyramidNode)
         
         /*
          `SCNPlane` is vertically oriented in its local coordinate space, so
@@ -176,7 +179,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             
         case .normal:
             // No feedback needed when tracking is normal and planes are visible.
-            message = ""
+            message = "Vertical surface detected"
             
         case .notAvailable:
             message = "Tracking unavailable."
@@ -200,7 +203,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     private func resetTracking() {
         let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal//[.horizontal, .vertical]
+        configuration.planeDetection = .vertical
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
 }
