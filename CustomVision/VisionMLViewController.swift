@@ -13,7 +13,7 @@ let framesPerSample = 10
 var startDate = NSDate.timeIntervalSinceReferenceDate
 
 
-class ViewController: UIViewController {
+class VisionMLViewController: UIViewController {
   
   @IBOutlet weak var previewView: UIView!
   @IBOutlet weak var stackView: UIStackView!
@@ -130,7 +130,7 @@ class ViewController: UIViewController {
 
 // MARK: Video Data Delegate
 
-extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
+extension VisionMLViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
   
   // called for each frame of video
   func captureOutput(_ captureOutput: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WEk-z7-qdQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1hE-gn-uSX">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,14 +7,15 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--VisionML View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="VisionMLViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -190,6 +191,53 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t4l-Kn-tiF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="117.59999999999999" y="-606.74662668665667"/>
+        </scene>
+        <!--Speech View Controller-->
+        <scene sceneID="FPw-lz-tQa">
+            <objects>
+                <viewController id="1hE-gn-uSX" customClass="SpeechViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9Zo-hn-Ia8"/>
+                        <viewControllerLayoutGuide type="bottom" id="Jo6-UM-bBN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lsg-M3-JgJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
+                                <rect key="frame" x="16" y="20" width="343" height="589"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQ1-aS-4qY">
+                                <rect key="frame" x="16" y="617" width="343" height="30"/>
+                                <state key="normal" title="Start Recording!"/>
+                                <connections>
+                                    <action selector="recordButtonTapped" destination="1hE-gn-uSX" eventType="touchUpInside" id="Ag5-o2-vic"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="hQ1-aS-4qY" firstAttribute="trailing" secondItem="lsg-M3-JgJ" secondAttribute="trailingMargin" id="2rt-Ck-67a"/>
+                            <constraint firstItem="hQ1-aS-4qY" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="8JM-Ib-xMy"/>
+                            <constraint firstItem="fxs-Ff-2dL" firstAttribute="top" secondItem="9Zo-hn-Ia8" secondAttribute="bottom" id="C6R-KN-3BL"/>
+                            <constraint firstItem="fxs-Ff-2dL" firstAttribute="trailing" secondItem="lsg-M3-JgJ" secondAttribute="trailingMargin" id="HBu-Cr-m3x"/>
+                            <constraint firstItem="hQ1-aS-4qY" firstAttribute="top" secondItem="fxs-Ff-2dL" secondAttribute="bottom" constant="8" id="hDd-Ic-l1n"/>
+                            <constraint firstItem="fxs-Ff-2dL" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="lTN-qn-V9g"/>
+                            <constraint firstItem="Jo6-UM-bBN" firstAttribute="top" secondItem="hQ1-aS-4qY" secondAttribute="bottom" constant="20" id="mes-lh-mkG"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="recordButton" destination="hQ1-aS-4qY" id="5qX-pj-gox"/>
+                        <outlet property="textView" destination="fxs-Ff-2dL" id="fad-we-JnW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o8G-o7-l8W" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="118" y="-1327"/>
         </scene>
     </scenes>
 </document>
