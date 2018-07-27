@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ebw-qJ-x4t">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -21,27 +21,27 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JWx-H9-rm4">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6En-cL-0U5">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qj3-Q2-ftL">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="i8s-iK-Leb">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OvH-MG-ov2">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="U6y-Op-q3b">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     </view>
                                                     <vibrancyEffect>
@@ -53,23 +53,23 @@
                                         <blurEffect style="dark"/>
                                     </visualEffectView>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kmx-HW-VDO">
-                                        <rect key="frame" x="0.0" y="146" width="375" height="375"/>
+                                        <rect key="frame" x="0.0" y="80" width="320" height="320"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Kmx-HW-VDO" secondAttribute="height" multiplier="1:1" id="C3g-oq-Fkt"/>
                                         </constraints>
                                     </view>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bpC-Eh-Bvn">
-                                        <rect key="frame" x="0.0" y="521" width="375" height="146"/>
+                                        <rect key="frame" x="0.0" y="400" width="320" height="80"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="BGD-WT-Lla">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J7z-pb-8AQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="ryQ-hh-PzX">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     </view>
                                                     <vibrancyEffect>
@@ -113,11 +113,11 @@
             <objects>
                 <viewController id="clk-y5-0mS" customClass="ARViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" ambiguous="YES" id="qV4-mu-qqO">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" sceneName="CameraSetup.scn" wantsMultisampling="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yge-90-Sqn">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="667"/>
                                 <connections>
                                     <outlet property="delegate" destination="clk-y5-0mS" id="c0p-QQ-sum"/>
                                 </connections>
@@ -136,7 +136,7 @@
                                 </userDefinedRuntimeAttributes>
                             </visualEffectView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Initializing AR session." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTx-Ya-vP2">
-                                <rect key="frame" x="103" y="74" width="169" height="22"/>
+                                <rect key="frame" x="103" y="74" width="114" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="VJD-AU-Rbk"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="eQL-aT-R3Y"/>
@@ -180,7 +180,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WEk-z7-qdQ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DIA-dw-Op3">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -201,18 +201,18 @@
                         <viewControllerLayoutGuide type="bottom" id="Jo6-UM-bBN"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lsg-M3-JgJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
-                                <rect key="frame" x="16" y="20" width="343" height="589"/>
+                                <rect key="frame" x="16" y="20" width="288" height="402"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQ1-aS-4qY">
-                                <rect key="frame" x="16" y="617" width="343" height="30"/>
+                                <rect key="frame" x="16" y="430" width="288" height="30"/>
                                 <state key="normal" title="Start Recording!"/>
                                 <connections>
                                     <action selector="recordButtonTapped" destination="1hE-gn-uSX" eventType="touchUpInside" id="Ag5-o2-vic"/>
@@ -248,30 +248,30 @@
                         <viewControllerLayoutGuide type="bottom" id="SEb-t8-8gg"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="WWs-BB-PiC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Recording" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcO-bm-gUZ">
-                                <rect key="frame" x="120" y="321.5" width="135" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to start recording" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcO-bm-gUZ">
+                                <rect key="frame" x="16" y="228" width="288" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTl-zT-RJM">
-                                <rect key="frame" x="16" y="355.5" width="343" height="311.5"/>
+                                <rect key="frame" x="16" y="261.5" width="288" height="218.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Then tap the screen to start recording. Tap the screen again to stop recording or the recording will stop itself after 1 minute. </string>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="When recording starts, this is the view of the text that you will see, while the other person sees the text in the other view" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5b-Bq-7AZ">
-                                <rect key="frame" x="16" y="30" width="343" height="281.5"/>
+                                <rect key="frame" x="16" y="30" width="288" height="187.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KR0-oS-TCt">
-                                <rect key="frame" x="317" y="323" width="33" height="21"/>
+                                <rect key="frame" x="16" y="229.5" width="33" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -283,11 +283,12 @@
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="centerY" secondItem="WWs-BB-PiC" secondAttribute="centerY" id="69H-zi-aDV"/>
                             <constraint firstItem="s5b-Bq-7AZ" firstAttribute="trailing" secondItem="WWs-BB-PiC" secondAttribute="trailingMargin" id="6nS-hk-3LV"/>
                             <constraint firstItem="s5b-Bq-7AZ" firstAttribute="top" secondItem="Ccj-04-pD2" secondAttribute="bottom" constant="10" id="EIy-Tv-aY8"/>
+                            <constraint firstItem="KR0-oS-TCt" firstAttribute="leading" secondItem="WWs-BB-PiC" secondAttribute="leadingMargin" id="LY2-61-75G"/>
+                            <constraint firstItem="GcO-bm-gUZ" firstAttribute="leading" secondItem="WWs-BB-PiC" secondAttribute="leadingMargin" id="VvW-34-VWy"/>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="centerX" secondItem="WWs-BB-PiC" secondAttribute="centerX" id="WeT-hp-I42"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="KR0-oS-TCt" secondAttribute="trailing" constant="9" id="Wll-qM-W1h"/>
-                            <constraint firstItem="KR0-oS-TCt" firstAttribute="centerY" secondItem="WWs-BB-PiC" secondAttribute="centerY" id="YCp-10-e6k"/>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="top" secondItem="s5b-Bq-7AZ" secondAttribute="bottom" constant="10" id="c3x-gS-Wcw"/>
                             <constraint firstItem="SEb-t8-8gg" firstAttribute="top" secondItem="VTl-zT-RJM" secondAttribute="bottom" id="cm0-hV-P9m"/>
+                            <constraint firstItem="KR0-oS-TCt" firstAttribute="centerY" secondItem="WWs-BB-PiC" secondAttribute="centerY" id="drl-rr-Clq"/>
                             <constraint firstItem="VTl-zT-RJM" firstAttribute="top" secondItem="GcO-bm-gUZ" secondAttribute="bottom" constant="10" id="fmj-H6-q7l"/>
                             <constraint firstItem="VTl-zT-RJM" firstAttribute="trailing" secondItem="WWs-BB-PiC" secondAttribute="trailingMargin" id="hjn-0E-yI1"/>
                             <constraint firstItem="VTl-zT-RJM" firstAttribute="leading" secondItem="WWs-BB-PiC" secondAttribute="leadingMargin" id="n1h-sV-9aE"/>
