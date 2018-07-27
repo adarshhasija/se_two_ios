@@ -112,11 +112,11 @@
         <scene sceneID="AwG-pO-HGx">
             <objects>
                 <viewController id="clk-y5-0mS" customClass="ARViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="qV4-mu-qqO">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="qV4-mu-qqO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="CameraSetup.scn" wantsMultisampling="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yge-90-Sqn">
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" sceneName="CameraSetup.scn" wantsMultisampling="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yge-90-Sqn">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <outlet property="delegate" destination="clk-y5-0mS" id="c0p-QQ-sum"/>
@@ -135,7 +135,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </visualEffectView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Initializing AR session." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTx-Ya-vP2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Initializing AR session." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTx-Ya-vP2">
                                 <rect key="frame" x="103" y="74" width="169" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="VJD-AU-Rbk"/>
@@ -261,32 +261,31 @@
                                 <rect key="frame" x="16" y="355.5" width="343" height="311.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Then tap the screen to start recording. Tap the screen again to stop recording or the recording will stop itself after 1 minute. </string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5b-Bq-7AZ">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="When recording starts, this is the view of the text that you will see, while the other person sees the text in the other view" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5b-Bq-7AZ">
                                 <rect key="frame" x="16" y="30" width="343" height="281.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">When recording starts, this is the view of the text that you will see, while the other person sees the text in the other view(if required)</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="1:00" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="LlU-hg-1zX">
-                                <rect key="frame" x="320" y="317" width="39" height="33"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KR0-oS-TCt">
+                                <rect key="frame" x="317" y="323" width="33" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="LlU-hg-1zX" firstAttribute="centerY" secondItem="WWs-BB-PiC" secondAttribute="centerY" id="0dV-Me-0eY"/>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="centerY" secondItem="WWs-BB-PiC" secondAttribute="centerY" id="69H-zi-aDV"/>
                             <constraint firstItem="s5b-Bq-7AZ" firstAttribute="trailing" secondItem="WWs-BB-PiC" secondAttribute="trailingMargin" id="6nS-hk-3LV"/>
                             <constraint firstItem="s5b-Bq-7AZ" firstAttribute="top" secondItem="Ccj-04-pD2" secondAttribute="bottom" constant="10" id="EIy-Tv-aY8"/>
-                            <constraint firstItem="LlU-hg-1zX" firstAttribute="trailing" secondItem="WWs-BB-PiC" secondAttribute="trailingMargin" id="NCD-IB-tbF"/>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="centerX" secondItem="WWs-BB-PiC" secondAttribute="centerX" id="WeT-hp-I42"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="KR0-oS-TCt" secondAttribute="trailing" constant="9" id="Wll-qM-W1h"/>
+                            <constraint firstItem="KR0-oS-TCt" firstAttribute="centerY" secondItem="WWs-BB-PiC" secondAttribute="centerY" id="YCp-10-e6k"/>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="top" secondItem="s5b-Bq-7AZ" secondAttribute="bottom" constant="10" id="c3x-gS-Wcw"/>
                             <constraint firstItem="SEb-t8-8gg" firstAttribute="top" secondItem="VTl-zT-RJM" secondAttribute="bottom" id="cm0-hV-P9m"/>
                             <constraint firstItem="VTl-zT-RJM" firstAttribute="top" secondItem="GcO-bm-gUZ" secondAttribute="bottom" constant="10" id="fmj-H6-q7l"/>
@@ -302,6 +301,7 @@
                         <outlet property="recordLabel" destination="GcO-bm-gUZ" id="e35-Wk-op6"/>
                         <outlet property="textViewBottom" destination="VTl-zT-RJM" id="fEe-X8-o90"/>
                         <outlet property="textViewTop" destination="s5b-Bq-7AZ" id="UYt-JJ-L4Z"/>
+                        <outlet property="timerLabel" destination="KR0-oS-TCt" id="2iu-Hh-y7X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IRQ-t5-SRQ" sceneMemberID="firstResponder"/>
