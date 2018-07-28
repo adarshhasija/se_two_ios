@@ -20,6 +20,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
     
     private let audioEngine = AVAudioEngine()
     
+    @IBOutlet var mainView : UIView?
+    
     @IBOutlet var textViewTop : UITextView?
     
     @IBOutlet var textViewBottom : UITextView!
@@ -45,6 +47,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         textViewTop?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
         recordLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
         timerLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        mainView?.accessibilityLabel = "Tap screen to start recording"
         
         //self.textViewTop?.layoutManager.allowsNonContiguousLayout = false //Allows scrolling if text is more than screen real-estate
         //self.textViewBottom.layoutManager.allowsNonContiguousLayout = false
