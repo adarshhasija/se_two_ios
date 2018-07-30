@@ -257,11 +257,11 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTl-zT-RJM">
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTl-zT-RJM">
                                 <rect key="frame" x="16" y="261.5" width="288" height="218.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Then tap the screen to start recording. Tap the screen again to stop recording or the recording will stop itself after 1 minute. </string>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Then tap the screen to start recording. Tap the screen again to stop recording. Please note that for now recordings are limited to 1 minute each. Conversations will automatically be stopped after 1 minute. </string>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="When recording starts, this is the view of the text that you will see, while the other person sees the text in the other view" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5b-Bq-7AZ">
