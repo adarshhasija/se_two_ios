@@ -121,7 +121,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
                 }
                 isFinal = result.isFinal
                 UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,
-                    result.bestTranscription.formattedString) //announce for VoiceOver
+                                                result.bestTranscription.formattedString) //announce for VoiceOver
             }
             
             if error != nil || isFinal {
