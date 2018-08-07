@@ -260,7 +260,7 @@
                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTl-zT-RJM">
                                 <rect key="frame" x="16" y="261.5" width="288" height="218.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Alternatively you can give the other person your phone so they can record a message. Tap the screen to start recording. Tap the screen again to stop recording. At the moment, recordings are restricted to 1 minute in length. It will stop automatically after 1 minute. Daykho recognized speech in English.</string>
+                                <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Alternatively you can give the other person your phone so they can record a message. Tap the screen to start recording. Tap the screen again to stop recording. At the moment, recordings are restricted to 1 minute in length. It will stop automatically after 1 minute. Suno recognized speech in English.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
