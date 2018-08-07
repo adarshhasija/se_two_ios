@@ -20,7 +20,7 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "app_icon_60x60.png",
+      "filename" : "app_icon_suno_60x60.png",
       "scale" : "3x"
     },
     {
@@ -67,7 +67,7 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "app_icon_87x87.png",
+      "filename" : "app_icon_suno_87x87.png",
       "scale" : "3x"
     },
     {

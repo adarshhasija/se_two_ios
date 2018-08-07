@@ -180,9 +180,9 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
             recordButton?.setTitle("Stopping", for: .disabled)
             recordLabel?.text = "Stopping"
             resetTimer()
-            textViewTop?.font = textViewTop?.font?.withSize(18)
+            textViewTop?.font = textViewTop?.font?.withSize(16)
             textViewTop?.text = ""
-            textViewBottom.font = textViewBottom.font?.withSize(18)
+            textViewBottom.font = textViewBottom.font?.withSize(16)
             textViewBottom.text = ""
             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
                 "Recording stopped");

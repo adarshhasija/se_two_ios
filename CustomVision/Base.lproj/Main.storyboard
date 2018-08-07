@@ -239,7 +239,7 @@
             </objects>
             <point key="canvasLocation" x="116" y="-2055"/>
         </scene>
-        <!--Daykho-->
+        <!--Suno-->
         <scene sceneID="H6X-fZ-YEq">
             <objects>
                 <viewController id="Ebw-qJ-x4t" customClass="SpeechViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
@@ -251,7 +251,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to start recording" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcO-bm-gUZ">
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to start recording" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcO-bm-gUZ">
                                 <rect key="frame" x="16" y="228" width="288" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
@@ -260,17 +260,17 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTl-zT-RJM">
                                 <rect key="frame" x="16" y="261.5" width="288" height="218.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Then tap the screen to start recording. Tap the screen again to stop recording or the recording will stop itself after 1 minute. </string>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Alternatively you can give the other person your phone so they can record a message. Tap the screen to start recording. Tap the screen again to stop recording. At the moment, recordings are restricted to 1 minute in length. It will stop automatically after 1 minute. Daykho recognized speech in English.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="When recording starts, this is the view of the text that you will see, while the other person sees the text in the other view" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5b-Bq-7AZ">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5b-Bq-7AZ">
                                 <rect key="frame" x="16" y="74" width="288" height="143.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KR0-oS-TCt">
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KR0-oS-TCt">
                                 <rect key="frame" x="16" y="229.5" width="33" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -298,7 +298,7 @@
                             <outletCollection property="gestureRecognizers" destination="0Bh-YL-vRQ" appends="YES" id="XBb-Im-Jzu"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" title="Daykho" id="cp0-i5-ad0"/>
+                    <navigationItem key="navigationItem" title="Suno" id="cp0-i5-ad0"/>
                     <connections>
                         <outlet property="mainView" destination="WWs-BB-PiC" id="vsk-gG-Gpu"/>
                         <outlet property="recordLabel" destination="GcO-bm-gUZ" id="e35-Wk-op6"/>
