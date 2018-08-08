@@ -45,8 +45,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         recordButton?.isEnabled = false
         
         textViewTop?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-        recordLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-        timerLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        //recordLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        //timerLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
         mainView?.accessibilityLabel = "Tap screen to start recording"
         
         //self.textViewTop?.layoutManager.allowsNonContiguousLayout = false //Allows scrolling if text is more than screen real-estate

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pxN-5S-0YI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1hE-gn-uSX">
     <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -204,38 +204,65 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="Give the phone to your partner so they can record their voice or pair your phone with a Mac" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
                                 <rect key="frame" x="16" y="20" width="288" height="402"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQ1-aS-4qY">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQ1-aS-4qY">
                                 <rect key="frame" x="16" y="430" width="288" height="30"/>
                                 <state key="normal" title="Start Recording!"/>
                                 <connections>
                                     <action selector="recordButtonTapped" destination="1hE-gn-uSX" eventType="touchUpInside" id="Ag5-o2-vic"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to start recording" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2R-uD-B4J">
+                                <rect key="frame" x="50" y="449" width="221" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ica-sP-9zA" userLabel="Timer Label">
+                                <rect key="frame" x="144" y="418" width="33" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="Ica-sP-9zA" firstAttribute="centerX" secondItem="lsg-M3-JgJ" secondAttribute="centerX" id="07A-Cc-TPc"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="trailing" secondItem="lsg-M3-JgJ" secondAttribute="trailingMargin" id="2rt-Ck-67a"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="8JM-Ib-xMy"/>
                             <constraint firstItem="fxs-Ff-2dL" firstAttribute="top" secondItem="9Zo-hn-Ia8" secondAttribute="bottom" id="C6R-KN-3BL"/>
                             <constraint firstItem="fxs-Ff-2dL" firstAttribute="trailing" secondItem="lsg-M3-JgJ" secondAttribute="trailingMargin" id="HBu-Cr-m3x"/>
+                            <constraint firstItem="Z2R-uD-B4J" firstAttribute="centerX" secondItem="lsg-M3-JgJ" secondAttribute="centerX" id="afA-8P-DZs"/>
+                            <constraint firstItem="Jo6-UM-bBN" firstAttribute="top" secondItem="Z2R-uD-B4J" secondAttribute="bottom" constant="10" id="cKC-aZ-3bT"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="top" secondItem="fxs-Ff-2dL" secondAttribute="bottom" constant="8" id="hDd-Ic-l1n"/>
                             <constraint firstItem="fxs-Ff-2dL" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="lTN-qn-V9g"/>
                             <constraint firstItem="Jo6-UM-bBN" firstAttribute="top" secondItem="hQ1-aS-4qY" secondAttribute="bottom" constant="20" id="mes-lh-mkG"/>
+                            <constraint firstItem="Z2R-uD-B4J" firstAttribute="top" secondItem="Ica-sP-9zA" secondAttribute="bottom" constant="10" id="pQ4-Ri-KJt"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Els-qX-pLQ" appends="YES" id="8HA-vw-DP5"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="recordButton" destination="hQ1-aS-4qY" id="5qX-pj-gox"/>
+                        <outlet property="recordLabel" destination="Z2R-uD-B4J" id="jPy-vq-rXn"/>
                         <outlet property="textViewBottom" destination="fxs-Ff-2dL" id="fad-we-JnW"/>
+                        <outlet property="timerLabel" destination="Ica-sP-9zA" id="j0v-DE-gUa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o8G-o7-l8W" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Els-qX-pLQ">
+                    <connections>
+                        <action selector="recordButtonTapped" destination="1hE-gn-uSX" id="TQD-hS-0Wy"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="116" y="-2055"/>
         </scene>
@@ -282,16 +309,16 @@
                         <constraints>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="centerY" secondItem="WWs-BB-PiC" secondAttribute="centerY" id="69H-zi-aDV"/>
                             <constraint firstItem="s5b-Bq-7AZ" firstAttribute="trailing" secondItem="WWs-BB-PiC" secondAttribute="trailingMargin" id="6nS-hk-3LV"/>
-                            <constraint firstItem="s5b-Bq-7AZ" firstAttribute="top" secondItem="Ccj-04-pD2" secondAttribute="bottom" constant="10" id="EIy-Tv-aY8"/>
                             <constraint firstItem="KR0-oS-TCt" firstAttribute="leading" secondItem="WWs-BB-PiC" secondAttribute="leadingMargin" id="LY2-61-75G"/>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="leading" secondItem="WWs-BB-PiC" secondAttribute="leadingMargin" id="VvW-34-VWy"/>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="centerX" secondItem="WWs-BB-PiC" secondAttribute="centerX" id="WeT-hp-I42"/>
                             <constraint firstItem="GcO-bm-gUZ" firstAttribute="top" secondItem="s5b-Bq-7AZ" secondAttribute="bottom" constant="10" id="c3x-gS-Wcw"/>
-                            <constraint firstItem="SEb-t8-8gg" firstAttribute="top" secondItem="VTl-zT-RJM" secondAttribute="bottom" id="cm0-hV-P9m"/>
+                            <constraint firstItem="s5b-Bq-7AZ" firstAttribute="top" secondItem="Ccj-04-pD2" secondAttribute="bottom" constant="10" id="dMC-Jd-qKC"/>
                             <constraint firstItem="KR0-oS-TCt" firstAttribute="centerY" secondItem="WWs-BB-PiC" secondAttribute="centerY" id="drl-rr-Clq"/>
                             <constraint firstItem="VTl-zT-RJM" firstAttribute="top" secondItem="GcO-bm-gUZ" secondAttribute="bottom" constant="10" id="fmj-H6-q7l"/>
                             <constraint firstItem="VTl-zT-RJM" firstAttribute="trailing" secondItem="WWs-BB-PiC" secondAttribute="trailingMargin" id="hjn-0E-yI1"/>
                             <constraint firstItem="VTl-zT-RJM" firstAttribute="leading" secondItem="WWs-BB-PiC" secondAttribute="leadingMargin" id="n1h-sV-9aE"/>
+                            <constraint firstItem="SEb-t8-8gg" firstAttribute="top" secondItem="VTl-zT-RJM" secondAttribute="bottom" id="ryP-ob-Vjy"/>
                             <constraint firstItem="s5b-Bq-7AZ" firstAttribute="leading" secondItem="WWs-BB-PiC" secondAttribute="leadingMargin" id="vCk-ed-8yk"/>
                         </constraints>
                         <connections>
