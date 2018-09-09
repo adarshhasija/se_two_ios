@@ -9,7 +9,22 @@
 /* Begin PBXBuildFile section */
 		312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 312A4ED920D274B100767B49 /* Rupees.mlmodel */; };
 		319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319FD50620D1A98E0071F993 /* ARViewController.swift */; };
-		31F4955220FE6CBD00F84E7E /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F4955120FE6CBD00F84E7E /* SpeechViewController.swift */; };
+		31EECFEC211B65320099066C /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EECFEA211B65320099066C /* Interface.storyboard */; };
+		31EECFEE211B65330099066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31EECFED211B65330099066C /* Assets.xcassets */; };
+		31EECFF5211B65330099066C /* Suno-Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 31EECFF4211B65330099066C /* Suno-Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		31EECFFA211B65330099066C /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EECFF9211B65330099066C /* InterfaceController.swift */; };
+		31EECFFC211B65330099066C /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EECFFB211B65330099066C /* ExtensionDelegate.swift */; };
+		31EECFFE211B65330099066C /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EECFFD211B65330099066C /* NotificationController.swift */; };
+		31EED000211B65330099066C /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EECFFF211B65330099066C /* ComplicationController.swift */; };
+		31EED002211B65330099066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31EED001211B65330099066C /* Assets.xcassets */; };
+		31EED007211B65330099066C /* Suno-Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 31EECFE8211B65320099066C /* Suno-Watch.app */; };
+		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
+		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
+		31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */; };
+		31F57B57211A14D300777EA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31F57B56211A14D300777EA3 /* Assets.xcassets */; };
+		31F57B5A211A14D300777EA3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F57B58211A14D300777EA3 /* Main.storyboard */; };
+		31F57B66211A14D300777EA3 /* MacAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B65211A14D300777EA3 /* MacAppTests.swift */; };
+		31F57B71211A14D300777EA3 /* MacAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B70211A14D300777EA3 /* MacAppUITests.swift */; };
 		5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBF65111F0AA47700BCD353 /* AppDelegate.swift */; };
 		5EBF65141F0AA47700BCD353 /* VisionMLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBF65131F0AA47700BCD353 /* VisionMLViewController.swift */; };
 		5EBF65171F0AA47700BCD353 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EBF65151F0AA47700BCD353 /* Main.storyboard */; };
@@ -19,11 +34,93 @@
 		76C510BC1F1587C60049422A /* BubbleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C510BB1F1587C60049422A /* BubbleLayer.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		31EECFF6211B65330099066C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5EBF65061F0AA47700BCD353 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31EECFF3211B65330099066C;
+			remoteInfo = "Suno-Watch Extension";
+		};
+		31EED005211B65330099066C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5EBF65061F0AA47700BCD353 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31EECFE7211B65320099066C;
+			remoteInfo = "Suno-Watch";
+		};
+		31F57B62211A14D300777EA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5EBF65061F0AA47700BCD353 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31F57B4F211A14D100777EA3;
+			remoteInfo = MacApp;
+		};
+		31F57B6D211A14D300777EA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5EBF65061F0AA47700BCD353 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31F57B4F211A14D100777EA3;
+			remoteInfo = MacApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		31EED00D211B65330099066C /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				31EECFF5211B65330099066C /* Suno-Watch Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31EED00F211B65330099066C /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				31EED007211B65330099066C /* Suno-Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		312A4ED920D274B100767B49 /* Rupees.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Rupees.mlmodel; sourceTree = SOURCE_ROOT; };
 		319FD50620D1A98E0071F993 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
-		31F4955120FE6CBD00F84E7E /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpeechViewController.swift; path = ../../SpeakToMeUsingSpeechRecognitionwithAVAudioEngine/SpeakToMe/SpeechViewController.swift; sourceTree = "<group>"; };
-		5EBF650E1F0AA47700BCD353 /* CustomVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		31EECFE8211B65320099066C /* Suno-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31EECFEB211B65320099066C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		31EECFED211B65330099066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		31EECFEF211B65330099066C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31EECFF4211B65330099066C /* Suno-Watch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Suno-Watch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31EECFF9211B65330099066C /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		31EECFFB211B65330099066C /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		31EECFFD211B65330099066C /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		31EECFFF211B65330099066C /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		31EED001211B65330099066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		31EED003211B65330099066C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31EED004211B65330099066C /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
+		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
+		31F57B50211A14D100777EA3 /* Suno.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Suno.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		31F57B52211A14D100777EA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechMacViewController.swift; sourceTree = "<group>"; };
+		31F57B56211A14D300777EA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		31F57B59211A14D300777EA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		31F57B5B211A14D300777EA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31F57B5C211A14D300777EA3 /* MacApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacApp.entitlements; sourceTree = "<group>"; };
+		31F57B61211A14D300777EA3 /* MacAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		31F57B65211A14D300777EA3 /* MacAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAppTests.swift; sourceTree = "<group>"; };
+		31F57B67211A14D300777EA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		31F57B70211A14D300777EA3 /* MacAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAppUITests.swift; sourceTree = "<group>"; };
+		31F57B72211A14D300777EA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5EBF650E1F0AA47700BCD353 /* Suno-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EBF65111F0AA47700BCD353 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EBF65131F0AA47700BCD353 /* VisionMLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionMLViewController.swift; sourceTree = "<group>"; };
 		5EBF65161F0AA47700BCD353 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -35,6 +132,34 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		31EECFF1211B65330099066C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B4D211A14D100777EA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B5E211A14D300777EA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B69211A14D300777EA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5EBF650B1F0AA47700BCD353 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -45,10 +170,71 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		31EECFE9211B65320099066C /* Suno-Watch */ = {
+			isa = PBXGroup;
+			children = (
+				31EECFEA211B65320099066C /* Interface.storyboard */,
+				31EECFED211B65330099066C /* Assets.xcassets */,
+				31EECFEF211B65330099066C /* Info.plist */,
+			);
+			path = "Suno-Watch";
+			sourceTree = "<group>";
+		};
+		31EECFF8211B65330099066C /* Suno-Watch Extension */ = {
+			isa = PBXGroup;
+			children = (
+				31EECFF9211B65330099066C /* InterfaceController.swift */,
+				31EECFFB211B65330099066C /* ExtensionDelegate.swift */,
+				31EECFFD211B65330099066C /* NotificationController.swift */,
+				31EECFFF211B65330099066C /* ComplicationController.swift */,
+				31EED001211B65330099066C /* Assets.xcassets */,
+				31EED003211B65330099066C /* Info.plist */,
+				31EED004211B65330099066C /* PushNotificationPayload.apns */,
+			);
+			path = "Suno-Watch Extension";
+			sourceTree = "<group>";
+		};
+		31F57B51211A14D100777EA3 /* MacApp */ = {
+			isa = PBXGroup;
+			children = (
+				31F57B52211A14D100777EA3 /* AppDelegate.swift */,
+				31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */,
+				31F57B56211A14D300777EA3 /* Assets.xcassets */,
+				31F57B58211A14D300777EA3 /* Main.storyboard */,
+				31F57B5B211A14D300777EA3 /* Info.plist */,
+				31F57B5C211A14D300777EA3 /* MacApp.entitlements */,
+			);
+			path = MacApp;
+			sourceTree = "<group>";
+		};
+		31F57B64211A14D300777EA3 /* MacAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				31F57B65211A14D300777EA3 /* MacAppTests.swift */,
+				31F57B67211A14D300777EA3 /* Info.plist */,
+			);
+			path = MacAppTests;
+			sourceTree = "<group>";
+		};
+		31F57B6F211A14D300777EA3 /* MacAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				31F57B70211A14D300777EA3 /* MacAppUITests.swift */,
+				31F57B72211A14D300777EA3 /* Info.plist */,
+			);
+			path = MacAppUITests;
+			sourceTree = "<group>";
+		};
 		5EBF65051F0AA47700BCD353 = {
 			isa = PBXGroup;
 			children = (
+				31EED010211CBA740099066C /* Suno.entitlements */,
 				5EBF65101F0AA47700BCD353 /* CustomVision */,
+				31F57B51211A14D100777EA3 /* MacApp */,
+				31F57B64211A14D300777EA3 /* MacAppTests */,
+				31F57B6F211A14D300777EA3 /* MacAppUITests */,
+				31EECFE9211B65320099066C /* Suno-Watch */,
+				31EECFF8211B65330099066C /* Suno-Watch Extension */,
 				5EBF650F1F0AA47700BCD353 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,7 +242,12 @@
 		5EBF650F1F0AA47700BCD353 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5EBF650E1F0AA47700BCD353 /* CustomVision.app */,
+				5EBF650E1F0AA47700BCD353 /* Suno-iOS.app */,
+				31F57B50211A14D100777EA3 /* Suno.app */,
+				31F57B61211A14D300777EA3 /* MacAppTests.xctest */,
+				31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */,
+				31EECFE8211B65320099066C /* Suno-Watch.app */,
+				31EECFF4211B65330099066C /* Suno-Watch Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -64,7 +255,7 @@
 		5EBF65101F0AA47700BCD353 /* CustomVision */ = {
 			isa = PBXGroup;
 			children = (
-				31F4955120FE6CBD00F84E7E /* SpeechViewController.swift */,
+				31F57B4A211A137000777EA3 /* SpeechViewController.swift */,
 				312A4ED920D274B100767B49 /* Rupees.mlmodel */,
 				5EBF65111F0AA47700BCD353 /* AppDelegate.swift */,
 				5EBF65131F0AA47700BCD353 /* VisionMLViewController.swift */,
@@ -82,21 +273,110 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5EBF650D1F0AA47700BCD353 /* CustomVision */ = {
+		31EECFE7211B65320099066C /* Suno-Watch */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "CustomVision" */;
+			buildConfigurationList = 31EED00E211B65330099066C /* Build configuration list for PBXNativeTarget "Suno-Watch" */;
 			buildPhases = (
-				5EBF650A1F0AA47700BCD353 /* Sources */,
-				5EBF650B1F0AA47700BCD353 /* Frameworks */,
-				5EBF650C1F0AA47700BCD353 /* Resources */,
+				31EECFE6211B65320099066C /* Resources */,
+				31EED00D211B65330099066C /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31EECFF7211B65330099066C /* PBXTargetDependency */,
+			);
+			name = "Suno-Watch";
+			productName = "Suno-Watch";
+			productReference = 31EECFE8211B65320099066C /* Suno-Watch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		31EECFF3211B65330099066C /* Suno-Watch Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31EED00C211B65330099066C /* Build configuration list for PBXNativeTarget "Suno-Watch Extension" */;
+			buildPhases = (
+				31EECFF0211B65330099066C /* Sources */,
+				31EECFF1211B65330099066C /* Frameworks */,
+				31EECFF2211B65330099066C /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = CustomVision;
+			name = "Suno-Watch Extension";
+			productName = "Suno-Watch Extension";
+			productReference = 31EECFF4211B65330099066C /* Suno-Watch Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		31F57B4F211A14D100777EA3 /* Suno */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno" */;
+			buildPhases = (
+				31F57B4C211A14D100777EA3 /* Sources */,
+				31F57B4D211A14D100777EA3 /* Frameworks */,
+				31F57B4E211A14D100777EA3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Suno;
+			productName = MacApp;
+			productReference = 31F57B50211A14D100777EA3 /* Suno.app */;
+			productType = "com.apple.product-type.application";
+		};
+		31F57B60211A14D300777EA3 /* MacAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31F57B76211A14D300777EA3 /* Build configuration list for PBXNativeTarget "MacAppTests" */;
+			buildPhases = (
+				31F57B5D211A14D300777EA3 /* Sources */,
+				31F57B5E211A14D300777EA3 /* Frameworks */,
+				31F57B5F211A14D300777EA3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31F57B63211A14D300777EA3 /* PBXTargetDependency */,
+			);
+			name = MacAppTests;
+			productName = MacAppTests;
+			productReference = 31F57B61211A14D300777EA3 /* MacAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		31F57B6B211A14D300777EA3 /* MacAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31F57B79211A14D300777EA3 /* Build configuration list for PBXNativeTarget "MacAppUITests" */;
+			buildPhases = (
+				31F57B68211A14D300777EA3 /* Sources */,
+				31F57B69211A14D300777EA3 /* Frameworks */,
+				31F57B6A211A14D300777EA3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31F57B6E211A14D300777EA3 /* PBXTargetDependency */,
+			);
+			name = MacAppUITests;
+			productName = MacAppUITests;
+			productReference = 31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		5EBF650D1F0AA47700BCD353 /* Suno-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "Suno-iOS" */;
+			buildPhases = (
+				5EBF650A1F0AA47700BCD353 /* Sources */,
+				5EBF650B1F0AA47700BCD353 /* Frameworks */,
+				5EBF650C1F0AA47700BCD353 /* Resources */,
+				31EED00F211B65330099066C /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31EED006211B65330099066C /* PBXTargetDependency */,
+			);
+			name = "Suno-iOS";
 			productName = testVision;
-			productReference = 5EBF650E1F0AA47700BCD353 /* CustomVision.app */;
+			productReference = 5EBF650E1F0AA47700BCD353 /* Suno-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -105,10 +385,37 @@
 		5EBF65061F0AA47700BCD353 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Adam Behringer";
 				TargetAttributes = {
+					31EECFE7211B65320099066C = {
+						CreatedOnToolsVersion = 9.4;
+						ProvisioningStyle = Automatic;
+					};
+					31EECFF3211B65330099066C = {
+						CreatedOnToolsVersion = 9.4;
+						ProvisioningStyle = Automatic;
+					};
+					31F57B4F211A14D100777EA3 = {
+						CreatedOnToolsVersion = 9.4;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+					31F57B60211A14D300777EA3 = {
+						CreatedOnToolsVersion = 9.4;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 31F57B4F211A14D100777EA3;
+					};
+					31F57B6B211A14D300777EA3 = {
+						CreatedOnToolsVersion = 9.4;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 31F57B4F211A14D100777EA3;
+					};
 					5EBF650D1F0AA47700BCD353 = {
 						CreatedOnToolsVersion = 9.0;
 					};
@@ -127,12 +434,57 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5EBF650D1F0AA47700BCD353 /* CustomVision */,
+				5EBF650D1F0AA47700BCD353 /* Suno-iOS */,
+				31F57B4F211A14D100777EA3 /* Suno */,
+				31F57B60211A14D300777EA3 /* MacAppTests */,
+				31F57B6B211A14D300777EA3 /* MacAppUITests */,
+				31EECFE7211B65320099066C /* Suno-Watch */,
+				31EECFF3211B65330099066C /* Suno-Watch Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		31EECFE6211B65320099066C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31EECFEE211B65330099066C /* Assets.xcassets in Resources */,
+				31EECFEC211B65320099066C /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31EECFF2211B65330099066C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31EED002211B65330099066C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B4E211A14D100777EA3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31F57B57211A14D300777EA3 /* Assets.xcassets in Resources */,
+				31F57B5A211A14D300777EA3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B5F211A14D300777EA3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B6A211A14D300777EA3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5EBF650C1F0AA47700BCD353 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,15 +498,51 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		31EECFF0211B65330099066C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31EECFFE211B65330099066C /* NotificationController.swift in Sources */,
+				31EED000211B65330099066C /* ComplicationController.swift in Sources */,
+				31EECFFC211B65330099066C /* ExtensionDelegate.swift in Sources */,
+				31EECFFA211B65330099066C /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B4C211A14D100777EA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */,
+				31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B5D211A14D300777EA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31F57B66211A14D300777EA3 /* MacAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31F57B68211A14D300777EA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31F57B71211A14D300777EA3 /* MacAppUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5EBF650A1F0AA47700BCD353 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				5EBF65141F0AA47700BCD353 /* VisionMLViewController.swift in Sources */,
 				76C510BC1F1587C60049422A /* BubbleLayer.swift in Sources */,
+				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */,
 				319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */,
-				31F4955220FE6CBD00F84E7E /* SpeechViewController.swift in Sources */,
 				76B5ACDE1F159C7500EE183D /* BubbleLabelLayer.swift in Sources */,
 				5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */,
 			);
@@ -162,7 +550,46 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		31EECFF7211B65330099066C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31EECFF3211B65330099066C /* Suno-Watch Extension */;
+			targetProxy = 31EECFF6211B65330099066C /* PBXContainerItemProxy */;
+		};
+		31EED006211B65330099066C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31EECFE7211B65320099066C /* Suno-Watch */;
+			targetProxy = 31EED005211B65330099066C /* PBXContainerItemProxy */;
+		};
+		31F57B63211A14D300777EA3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31F57B4F211A14D100777EA3 /* Suno */;
+			targetProxy = 31F57B62211A14D300777EA3 /* PBXContainerItemProxy */;
+		};
+		31F57B6E211A14D300777EA3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31F57B4F211A14D100777EA3 /* Suno */;
+			targetProxy = 31F57B6D211A14D300777EA3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		31EECFEA211B65320099066C /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				31EECFEB211B65320099066C /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		31F57B58211A14D300777EA3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				31F57B59211A14D300777EA3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		5EBF65151F0AA47700BCD353 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -182,6 +609,246 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		31EED008211B65330099066C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				IBSC_MODULE = Suno_Watch_Extension;
+				INFOPLIST_FILE = "Suno-Watch/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+			};
+			name = Debug;
+		};
+		31EED009211B65330099066C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				IBSC_MODULE = Suno_Watch_Extension;
+				INFOPLIST_FILE = "Suno-Watch/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+			};
+			name = Release;
+		};
+		31EED00A211B65330099066C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				INFOPLIST_FILE = "Suno-Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+			};
+			name = Debug;
+		};
+		31EED00B211B65330099066C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				INFOPLIST_FILE = "Suno-Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+			};
+			name = Release;
+		};
+		31F57B74211A14D300777EA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_ENTITLEMENTS = Suno.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				INFOPLIST_FILE = MacApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		31F57B75211A14D300777EA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_ENTITLEMENTS = Suno.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				INFOPLIST_FILE = MacApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		31F57B77211A14D300777EA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				INFOPLIST_FILE = MacAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.MacAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacApp.app/Contents/MacOS/MacApp";
+			};
+			name = Debug;
+		};
+		31F57B78211A14D300777EA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				INFOPLIST_FILE = MacAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.MacAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacApp.app/Contents/MacOS/MacApp";
+			};
+			name = Release;
+		};
+		31F57B7A211A14D300777EA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				INFOPLIST_FILE = MacAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.MacAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+				TEST_TARGET_NAME = MacApp;
+			};
+			name = Debug;
+		};
+		31F57B7B211A14D300777EA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
+				INFOPLIST_FILE = MacAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.MacAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+				TEST_TARGET_NAME = MacApp;
+			};
+			name = Release;
+		};
 		5EBF651E1F0AA47700BCD353 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -290,11 +957,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				DEVELOPMENT_TEAM = 9332Z6XKUE;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.two;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -306,11 +973,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				DEVELOPMENT_TEAM = 9332Z6XKUE;
+				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.two;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -320,6 +987,51 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		31EED00C211B65330099066C /* Build configuration list for PBXNativeTarget "Suno-Watch Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31EED00A211B65330099066C /* Debug */,
+				31EED00B211B65330099066C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31EED00E211B65330099066C /* Build configuration list for PBXNativeTarget "Suno-Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31EED008211B65330099066C /* Debug */,
+				31EED009211B65330099066C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31F57B74211A14D300777EA3 /* Debug */,
+				31F57B75211A14D300777EA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31F57B76211A14D300777EA3 /* Build configuration list for PBXNativeTarget "MacAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31F57B77211A14D300777EA3 /* Debug */,
+				31F57B78211A14D300777EA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31F57B79211A14D300777EA3 /* Build configuration list for PBXNativeTarget "MacAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31F57B7A211A14D300777EA3 /* Debug */,
+				31F57B7B211A14D300777EA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5EBF65091F0AA47700BCD353 /* Build configuration list for PBXProject "CustomVision" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -329,7 +1041,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "CustomVision" */ = {
+		5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "Suno-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5EBF65211F0AA47700BCD353 /* Debug */,

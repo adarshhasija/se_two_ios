@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1hE-gn-uSX">
-    <device id="retina3_5" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,33 +15,33 @@
         <!--VisionML View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="VisionMLViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="VisionMLViewController" customModule="Suno_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JWx-H9-rm4">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6En-cL-0U5">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qj3-Q2-ftL">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="i8s-iK-Leb">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OvH-MG-ov2">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="U6y-Op-q3b">
-                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     </view>
                                                     <vibrancyEffect>
@@ -53,23 +53,23 @@
                                         <blurEffect style="dark"/>
                                     </visualEffectView>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kmx-HW-VDO">
-                                        <rect key="frame" x="0.0" y="80" width="320" height="320"/>
+                                        <rect key="frame" x="0.0" y="124" width="320" height="320"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Kmx-HW-VDO" secondAttribute="height" multiplier="1:1" id="C3g-oq-Fkt"/>
                                         </constraints>
                                     </view>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bpC-Eh-Bvn">
-                                        <rect key="frame" x="0.0" y="400" width="320" height="80"/>
+                                        <rect key="frame" x="0.0" y="444" width="320" height="124"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="BGD-WT-Lla">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J7z-pb-8AQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="ryQ-hh-PzX">
-                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     </view>
                                                     <vibrancyEffect>
@@ -111,13 +111,13 @@
         <!--View Controller-->
         <scene sceneID="AwG-pO-HGx">
             <objects>
-                <viewController id="clk-y5-0mS" customClass="ARViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="clk-y5-0mS" customClass="ARViewController" customModule="Suno_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qV4-mu-qqO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="CameraSetup.scn" wantsMultisampling="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yge-90-Sqn">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <connections>
                                     <outlet property="delegate" destination="clk-y5-0mS" id="c0p-QQ-sum"/>
                                 </connections>
@@ -195,37 +195,44 @@
         <!--Speech View Controller-->
         <scene sceneID="FPw-lz-tQa">
             <objects>
-                <viewController id="1hE-gn-uSX" customClass="SpeechViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="1hE-gn-uSX" customClass="SpeechViewController" customModule="Suno_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9Zo-hn-Ia8"/>
                         <viewControllerLayoutGuide type="bottom" id="Jo6-UM-bBN"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lsg-M3-JgJ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="Give the phone to your partner so they can record their voice or pair your phone with a Mac" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
-                                <rect key="frame" x="16" y="20" width="288" height="402"/>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
+                                <rect key="frame" x="16" y="20" width="288" height="490"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <string key="text">You must have an internet connection to use this app. Give your phone to your friend so they can record a message. You can they then read the message. OR If you would like to connect to a Mac, ensure this device and the Mac are on the same WiFi and start a session on the Mac.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQ1-aS-4qY">
-                                <rect key="frame" x="16" y="430" width="288" height="30"/>
+                                <rect key="frame" x="16" y="518" width="288" height="30"/>
                                 <state key="normal" title="Start Recording!"/>
                                 <connections>
-                                    <action selector="recordButtonTapped" destination="1hE-gn-uSX" eventType="touchUpInside" id="Ag5-o2-vic"/>
+                                    <action selector="tapGesture" destination="1hE-gn-uSX" eventType="touchUpInside" id="Ag5-o2-vic"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to start recording" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2R-uD-B4J">
-                                <rect key="frame" x="50" y="449" width="221" height="21"/>
+                                <rect key="frame" x="50" y="537" width="221" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ica-sP-9zA" userLabel="Timer Label">
-                                <rect key="frame" x="144" y="418" width="33" height="21"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ica-sP-9zA" userLabel="Timer Label">
+                                <rect key="frame" x="144" y="506" width="33" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe up to connect to a Mac" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ex-gU-cqF">
+                                <rect key="frame" x="46.5" y="486.5" width="227" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -239,18 +246,23 @@
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="8JM-Ib-xMy"/>
                             <constraint firstItem="fxs-Ff-2dL" firstAttribute="top" secondItem="9Zo-hn-Ia8" secondAttribute="bottom" id="C6R-KN-3BL"/>
                             <constraint firstItem="fxs-Ff-2dL" firstAttribute="trailing" secondItem="lsg-M3-JgJ" secondAttribute="trailingMargin" id="HBu-Cr-m3x"/>
+                            <constraint firstItem="Z2R-uD-B4J" firstAttribute="top" secondItem="5ex-gU-cqF" secondAttribute="bottom" constant="30" id="QKa-vt-dhe"/>
                             <constraint firstItem="Z2R-uD-B4J" firstAttribute="centerX" secondItem="lsg-M3-JgJ" secondAttribute="centerX" id="afA-8P-DZs"/>
                             <constraint firstItem="Jo6-UM-bBN" firstAttribute="top" secondItem="Z2R-uD-B4J" secondAttribute="bottom" constant="10" id="cKC-aZ-3bT"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="top" secondItem="fxs-Ff-2dL" secondAttribute="bottom" constant="8" id="hDd-Ic-l1n"/>
                             <constraint firstItem="fxs-Ff-2dL" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="lTN-qn-V9g"/>
+                            <constraint firstItem="5ex-gU-cqF" firstAttribute="centerX" secondItem="lsg-M3-JgJ" secondAttribute="centerX" id="lmC-My-Iou"/>
                             <constraint firstItem="Jo6-UM-bBN" firstAttribute="top" secondItem="hQ1-aS-4qY" secondAttribute="bottom" constant="20" id="mes-lh-mkG"/>
                             <constraint firstItem="Z2R-uD-B4J" firstAttribute="top" secondItem="Ica-sP-9zA" secondAttribute="bottom" constant="10" id="pQ4-Ri-KJt"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Els-qX-pLQ" appends="YES" id="8HA-vw-DP5"/>
+                            <outletCollection property="gestureRecognizers" destination="D8E-Gw-DF2" appends="YES" id="D9d-KL-shu"/>
+                            <outletCollection property="gestureRecognizers" destination="Kjp-Qw-LTU" appends="YES" id="MwZ-eR-dTH"/>
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="longPressLabel" destination="5ex-gU-cqF" id="6hr-hR-SN6"/>
                         <outlet property="recordButton" destination="hQ1-aS-4qY" id="5qX-pj-gox"/>
                         <outlet property="recordLabel" destination="Z2R-uD-B4J" id="jPy-vq-rXn"/>
                         <outlet property="textViewBottom" destination="fxs-Ff-2dL" id="fad-we-JnW"/>
@@ -260,45 +272,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o8G-o7-l8W" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="Els-qX-pLQ">
                     <connections>
-                        <action selector="recordButtonTapped" destination="1hE-gn-uSX" id="TQD-hS-0Wy"/>
+                        <action selector="tapGesture" destination="1hE-gn-uSX" id="TQD-hS-0Wy"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="D8E-Gw-DF2">
+                    <connections>
+                        <action selector="longPressGesture:" destination="1hE-gn-uSX" id="OE3-qB-1Qo"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <swipeGestureRecognizer direction="up" id="Kjp-Qw-LTU">
+                    <connections>
+                        <action selector="swipeGesture:" destination="1hE-gn-uSX" id="OcB-tq-LfS"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="116" y="-2055"/>
         </scene>
         <!--Suno-->
         <scene sceneID="H6X-fZ-YEq">
             <objects>
-                <viewController id="Ebw-qJ-x4t" customClass="SpeechViewController" customModule="CustomVision" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ebw-qJ-x4t" customClass="SpeechViewController" customModule="Suno_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ccj-04-pD2"/>
                         <viewControllerLayoutGuide type="bottom" id="SEb-t8-8gg"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="WWs-BB-PiC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to start recording" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcO-bm-gUZ">
-                                <rect key="frame" x="16" y="228" width="288" height="24"/>
+                                <rect key="frame" x="16" y="272" width="288" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTl-zT-RJM">
-                                <rect key="frame" x="16" y="261.5" width="288" height="218.5"/>
+                                <rect key="frame" x="16" y="305.5" width="288" height="262.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">Place the phone on the table between you and the other person such that the microphone is facing the other person. Alternatively you can give the other person your phone so they can record a message. Tap the screen to start recording. Tap the screen again to stop recording. At the moment, recordings are restricted to 1 minute in length. It will stop automatically after 1 minute. Suno recognized speech in English.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5b-Bq-7AZ">
-                                <rect key="frame" x="16" y="74" width="288" height="143.5"/>
+                                <rect key="frame" x="16" y="74" width="288" height="187.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KR0-oS-TCt">
-                                <rect key="frame" x="16" y="229.5" width="33" height="21"/>
+                                <rect key="frame" x="16" y="273.5" width="33" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -337,7 +359,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IRQ-t5-SRQ" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="0Bh-YL-vRQ">
                     <connections>
-                        <action selector="recordButtonTapped" destination="Ebw-qJ-x4t" id="Hus-Ul-aa7"/>
+                        <action selector="tapGesture" destination="Ebw-qJ-x4t" id="Hus-Ul-aa7"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

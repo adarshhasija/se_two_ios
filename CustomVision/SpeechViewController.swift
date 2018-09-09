@@ -8,34 +8,100 @@
 
 import UIKit
 import Speech
+import MultipeerConnectivity
+import SystemConfiguration
 
-public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate {
+public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceBrowserDelegate {
+
     // MARK: Properties
-    
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
-    
-    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
-    
-    private var recognitionTask: SFSpeechRecognitionTask?
-    
-    private let audioEngine = AVAudioEngine()
-    
-    @IBOutlet var mainView : UIView?
-    
-    @IBOutlet var textViewTop : UITextView?
-    
-    @IBOutlet var textViewBottom : UITextView!
-    
-    @IBOutlet var recordButton : UIButton?
-    
-    @IBOutlet weak var recordLabel: UILabel?
-    
-    @IBOutlet weak var timerLabel: UILabel?
-    
+    var isConnected = false
     var seconds = 60
     var timer = Timer()
     var isTimerRunning = false
     
+    // MARK: Multipeer Connectivity Properties
+    var peerID: MCPeerID!
+    var mcSession: MCSession!
+    var mcAdvertiserAssistant: MCAdvertiserAssistant!
+    var mcNearbyServiceBrowser: MCNearbyServiceBrowser!
+    var isReceiving = false
+    
+    // MARK: Speech Recognition Properties
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
+    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
+    private var recognitionTask: SFSpeechRecognitionTask?
+    private let audioEngine = AVAudioEngine()
+    
+    // MARK: UI Properties
+    @IBOutlet var mainView : UIView?
+    @IBOutlet var textViewTop : UITextView?
+    @IBOutlet var textViewBottom : UITextView!
+    @IBOutlet var recordButton : UIButton?
+    @IBOutlet weak var longPressLabel: UILabel?
+    @IBOutlet weak var recordLabel: UILabel?
+    @IBOutlet weak var timerLabel: UILabel?
+    
+    // MARK: Interface Builder actions
+    
+    @IBAction func tapGesture() {
+        if audioEngine.isRunning {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration to indicate end of recording
+            audioEngine.stop()
+            recognitionRequest?.endAudio()
+            recordButton?.isEnabled = false
+            recordButton?.setTitle("Stopping", for: .disabled)
+            recordLabel?.text = "Stopping"
+            resetTimer()
+            //textViewTop?.font = textViewTop?.font?.withSize(16)
+            textViewTop?.text = ""
+            //textViewBottom.font = textViewBottom.font?.withSize(16)
+            textViewBottom.text = ""
+            longPressLabel?.isHidden = false
+            if !isConnected {
+                //Browse for peers only if not connected
+                mcNearbyServiceBrowser.startBrowsingForPeers()
+            }
+            else {
+                sendText(text: "\n")
+            }
+        } else if !isReceiving {
+            if hasInternetConnection() {
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration ONLY if not receiving
+                mcNearbyServiceBrowser.stopBrowsingForPeers() //Should not be browsing for peers when recording
+                try! startRecording()
+                runTimer()
+                recordButton?.setTitle("Stop recording", for: [])
+                recordLabel?.text = "TAP SCREEN TO STOP RECORDING"
+                recordLabel?.isHidden = false
+                longPressLabel?.isHidden = true
+            }
+            else {
+                dialogOK(title: "Alert", message: "No internet connection")
+            }
+            
+        }
+    }
+    
+    
+    @IBAction func longPressGesture(_ sender: Any) {
+        if isConnected {
+            sendText(text: "\n\n")
+            mcSession.disconnect()
+            longPressLabel?.text = "Swipe up to connect to a Mac"
+        }
+    }
+    
+    
+    @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
+        if sender.direction == UISwipeGestureRecognizerDirection.up {
+            if hasInternetConnection() && !isConnected {
+                joinSession()
+            }
+            else if !hasInternetConnection() {
+                dialogOK(title: "Alert", message: "No internet connection")
+            }
+        }
+    }
     // MARK: UIViewController
     
     public override func viewDidLoad() {
@@ -51,9 +117,15 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         
         //self.textViewTop?.layoutManager.allowsNonContiguousLayout = false //Allows scrolling if text is more than screen real-estate
         //self.textViewBottom.layoutManager.allowsNonContiguousLayout = false
+        
+        peerID = MCPeerID(displayName: UIDevice.current.name)
+        mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+        mcSession.delegate = self
+        
     }
     
     override public func viewDidAppear(_ animated: Bool) {
+        startBrowsingForPeers()
         speechRecognizer.delegate = self
         
         SFSpeechRecognizer.requestAuthorization { authStatus in
@@ -84,6 +156,12 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         }
     }
     
+    public override func viewWillDisappear(_ animated: Bool) {
+        mcSession.disconnect()
+        mcNearbyServiceBrowser.stopBrowsingForPeers()
+    }
+    
+    /// MARK:- Speech Recognition Helpers
     private func startRecording() throws {
 
         // Cancel the previous task if it's running.
@@ -113,6 +191,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
             if let result = result {
                 self.textViewTop?.text = result.bestTranscription.formattedString
                 self.textViewBottom.text = result.bestTranscription.formattedString
+                self.sendText(text: result.bestTranscription.formattedString)
                 if self.textViewBottom.text.count > 0 {
                     let location = self.textViewBottom.text.count - 1
                     let bottom = NSMakeRange(location, 1)
@@ -120,8 +199,6 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
                     self.textViewBottom.scrollRangeToVisible(bottom)
                 }
                 isFinal = result.isFinal
-                UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,
-                                                result.bestTranscription.formattedString) //announce for VoiceOver
             }
             
             if error != nil || isFinal {
@@ -134,6 +211,12 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
                 self.recordButton?.isEnabled = true
                 self.recordButton?.setTitle("Start Recording", for: [])
                 self.recordLabel?.text = "Tap screen to start recording"
+                if self.isReceiving {
+                    self.recordLabel?.isHidden = true
+                }
+                else {
+                    self.recordLabel?.isHidden = false
+                }
             }
         }
         
@@ -149,9 +232,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         textViewTop?.font = textViewTop?.font?.withSize(30)
         textViewTop?.text = "(Go ahead, I'm listening)"
         textViewBottom.font = textViewBottom.font?.withSize(30)
-        textViewBottom.text = "(Go ahead, I'm listening)"
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-            "Go ahead, I'm listening");
+        textViewBottom.text = "You can now talk. Tap the screen when finished. Go ahead, I'm listening"
     }
 
     // MARK: SFSpeechRecognizerDelegate
@@ -169,29 +250,185 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         }
     }
     
-    // MARK: Interface Builder actions
-    
-    @IBAction func recordButtonTapped() {
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration
-        if audioEngine.isRunning {
-            audioEngine.stop()
-            recognitionRequest?.endAudio()
-            recordButton?.isEnabled = false
-            recordButton?.setTitle("Stopping", for: .disabled)
-            recordLabel?.text = "Stopping"
-            resetTimer()
-            textViewTop?.font = textViewTop?.font?.withSize(16)
-            textViewTop?.text = ""
-            textViewBottom.font = textViewBottom.font?.withSize(16)
-            textViewBottom.text = ""
-            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-                "Recording stopped");
-        } else {
-            try! startRecording()
-            runTimer()
-            recordButton?.setTitle("Stop recording", for: [])
-            recordLabel?.text = "Tap screen to stop recording"
+    // MARK: MCSessionDelegate
+    public func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        switch state {
+        case MCSessionState.connected:
+            DispatchQueue.main.async { [unowned self] in
+                self.textViewBottom?.text = "Connected, waiting for the other person to start typing"
+                self.longPressLabel?.text = "Connected: \(peerID.displayName)" + "\n" + "Long press to disconnect"
+                print("Connected: \(peerID.displayName)")
+                self.mcNearbyServiceBrowser.stopBrowsingForPeers()
+                self.recordLabel?.isHidden = true
+                self.isConnected = true
+                self.isReceiving = true
+            }
+            
+        case MCSessionState.connecting:
+            DispatchQueue.main.async { [unowned self] in
+                self.longPressLabel?.text = "Connecting: \(peerID.displayName)"
+                self.dismiss(animated: true)
+            }
+            print("Connecting: \(peerID.displayName)")
+            
+        case MCSessionState.notConnected:
+            DispatchQueue.main.async { [unowned self] in
+                self.connectionLost()
+                self.startBrowsingForPeers()
+            }
+            print("Not Connected: \(peerID.displayName)")
         }
+    }
+    
+    public func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        if let text = String(data: data, encoding: .utf8) {
+            DispatchQueue.main.async { [unowned self] in
+                if self.didPeerCloseConnection(text: text) {
+                    self.isReceiving = false
+                    self.textViewBottom?.text = "The other user has ended the session. Thank you."
+                }
+                else if text.last! == "\0" {
+                    self.textViewBottom?.text = "Connected, waiting for the other person to start typing"
+                }
+                else if text.last! == "\n" {
+                    self.isReceiving = false
+                    self.tapGesture()
+                }
+                else {
+                    self.textViewBottom?.text = text
+                }
+            }
+        }
+    }
+    
+    public func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+        
+    }
+    
+    public func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+        
+    }
+    
+    public func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
+        
+    }
+    
+    /// MARK:- MCBrowserViewControllerDelegate
+    public func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
+        dismiss(animated: true)
+    }
+    
+    public func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
+        dismiss(animated: true)
+    }
+    
+    /// MARK:- MCNearbyServiceBrowserDelegate
+    public func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        if !isConnected {
+            //self.textViewBottom?.text = "A device has started a session. Swipe up to see which device and join it."
+            dialogNewConnection(title: "New device found", message: "Found device with name: \(peerID.displayName). Would you like to connect to it?", peerId: peerID)
+        }
+    }
+    
+    public func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        if !isConnected {
+            self.textViewBottom?.text = "Looking for a Mac to connect to."
+        }
+    }
+    
+    
+    
+    // MARK: Private Helpers
+    
+    func hasInternetConnection() -> Bool {
+        guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
+        var flags = SCNetworkReachabilityFlags()
+        SCNetworkReachabilityGetFlags(reachability, &flags)
+        if !isNetworkReachable(with: flags) {
+            // Device doesn't have internet connection
+            return false
+        }
+        return true
+    }
+    
+    func isNetworkReachable(with flags: SCNetworkReachabilityFlags) -> Bool {
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        let canConnectAutomatically = flags.contains(.connectionOnDemand) || flags.contains(.connectionOnTraffic)
+        let canConnectWithoutUserInteraction = canConnectAutomatically && !flags.contains(.interventionRequired)
+        
+        return isReachable && (!needsConnection || canConnectWithoutUserInteraction)
+    }
+    
+    func dialogOK(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+                
+            }}))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func dialogNewConnection(title: String, message: String, peerId : MCPeerID) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                self.mcNearbyServiceBrowser?.invitePeer(peerId, to: self.mcSession, withContext: nil, timeout: 30)
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+                
+            }}))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+                
+            }}))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func startHosting() {
+        mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: "hws-kb", discoveryInfo: nil, session: mcSession)
+        mcAdvertiserAssistant.start()
+    }
+    
+    func stopHosting() {
+        mcAdvertiserAssistant.stop()
+    }
+    
+    func joinSession() {
+        let mcBrowser = MCBrowserViewController(serviceType: "hws-kb", session: mcSession)
+        mcBrowser.delegate = self
+        mcBrowser.maximumNumberOfPeers = 2
+        present(mcBrowser, animated: true)
+    }
+    
+    func startBrowsingForPeers() {
+        mcNearbyServiceBrowser = MCNearbyServiceBrowser(peer: peerID, serviceType: "hws-kb")
+        mcNearbyServiceBrowser.delegate = self
+        mcNearbyServiceBrowser.startBrowsingForPeers()
     }
     
     @objc func updateTimer() {
@@ -199,21 +436,19 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         timerLabel?.text = timeString(time: TimeInterval(seconds)) //This will update the label.
         if seconds < 1 {
             resetTimer()
-            recordButtonTapped() //this should stop the recording
+            tapGesture() //this should stop the recording
         }
         if seconds < 11 {
             timerLabel?.textColor = UIColor.red
         }
     }
     
-    
-    // MARK: Private Helpers
-    
     func runTimer() {
         if !isTimerRunning {
             timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(SpeechViewController.updateTimer)), userInfo: nil, repeats: true)
             isTimerRunning = true
         }
+        timerLabel?.isHidden = false
     }
     
     func resetTimer() {
@@ -222,6 +457,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         seconds = 60
         timerLabel?.textColor = UIColor.black
         timerLabel?.text = "1:00"
+        timerLabel?.isHidden = true
     }
     
     func timeString(time:TimeInterval) -> String {
@@ -231,6 +467,38 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate 
         
         return String(format:"%01i:%02i", minutes, seconds)
         
+    }
+    
+    func sendText(text: String?) {
+        if mcSession.connectedPeers.count > 0 {
+            if let textData = text?.data(using: .utf8) {
+                do {
+                    try mcSession.send(textData, toPeers: mcSession.connectedPeers, with: .reliable)
+                } catch let error as NSError {
+                    textViewBottom?.insertText(error.localizedDescription)
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    func didPeerCloseConnection(text: String) -> Bool {
+        var result = false
+        if text.count >= 2 {
+            if text.hasSuffix("\n\n") {
+                result = true
+            }
+        }
+        return result
+    }
+    
+    func connectionLost() {
+        self.textViewBottom?.text = "Connection Lost"
+        self.longPressLabel?.text = "Swipe up to connec to a Mac"
+        self.dismiss(animated: true)
+        self.recordLabel?.isHidden = false
+        self.isConnected = false
+        self.isReceiving = false
     }
     
     
