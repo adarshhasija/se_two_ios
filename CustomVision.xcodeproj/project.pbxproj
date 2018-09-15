@@ -107,7 +107,7 @@
 		31EED004211B65330099066C /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
-		31F57B50211A14D100777EA3 /* Suno.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Suno.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		31F57B50211A14D100777EA3 /* Suno-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31F57B52211A14D100777EA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechMacViewController.swift; sourceTree = "<group>"; };
 		31F57B56211A14D300777EA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 		31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31F57B70211A14D300777EA3 /* MacAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAppUITests.swift; sourceTree = "<group>"; };
 		31F57B72211A14D300777EA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5EBF650E1F0AA47700BCD353 /* Suno-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EBF650E1F0AA47700BCD353 /* Suno.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Suno.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EBF65111F0AA47700BCD353 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EBF65131F0AA47700BCD353 /* VisionMLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionMLViewController.swift; sourceTree = "<group>"; };
 		5EBF65161F0AA47700BCD353 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -242,8 +242,8 @@
 		5EBF650F1F0AA47700BCD353 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5EBF650E1F0AA47700BCD353 /* Suno-iOS.app */,
-				31F57B50211A14D100777EA3 /* Suno.app */,
+				5EBF650E1F0AA47700BCD353 /* Suno.app */,
+				31F57B50211A14D100777EA3 /* Suno-Mac.app */,
 				31F57B61211A14D300777EA3 /* MacAppTests.xctest */,
 				31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */,
 				31EECFE8211B65320099066C /* Suno-Watch.app */,
@@ -307,9 +307,9 @@
 			productReference = 31EECFF4211B65330099066C /* Suno-Watch Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
-		31F57B4F211A14D100777EA3 /* Suno */ = {
+		31F57B4F211A14D100777EA3 /* Suno-Mac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno" */;
+			buildConfigurationList = 31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno-Mac" */;
 			buildPhases = (
 				31F57B4C211A14D100777EA3 /* Sources */,
 				31F57B4D211A14D100777EA3 /* Frameworks */,
@@ -319,9 +319,9 @@
 			);
 			dependencies = (
 			);
-			name = Suno;
+			name = "Suno-Mac";
 			productName = MacApp;
-			productReference = 31F57B50211A14D100777EA3 /* Suno.app */;
+			productReference = 31F57B50211A14D100777EA3 /* Suno-Mac.app */;
 			productType = "com.apple.product-type.application";
 		};
 		31F57B60211A14D300777EA3 /* MacAppTests */ = {
@@ -360,9 +360,9 @@
 			productReference = 31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		5EBF650D1F0AA47700BCD353 /* Suno-iOS */ = {
+		5EBF650D1F0AA47700BCD353 /* Suno */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "Suno-iOS" */;
+			buildConfigurationList = 5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "Suno" */;
 			buildPhases = (
 				5EBF650A1F0AA47700BCD353 /* Sources */,
 				5EBF650B1F0AA47700BCD353 /* Frameworks */,
@@ -374,9 +374,9 @@
 			dependencies = (
 				31EED006211B65330099066C /* PBXTargetDependency */,
 			);
-			name = "Suno-iOS";
+			name = Suno;
 			productName = testVision;
-			productReference = 5EBF650E1F0AA47700BCD353 /* Suno-iOS.app */;
+			productReference = 5EBF650E1F0AA47700BCD353 /* Suno.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -434,8 +434,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5EBF650D1F0AA47700BCD353 /* Suno-iOS */,
-				31F57B4F211A14D100777EA3 /* Suno */,
+				5EBF650D1F0AA47700BCD353 /* Suno */,
+				31F57B4F211A14D100777EA3 /* Suno-Mac */,
 				31F57B60211A14D300777EA3 /* MacAppTests */,
 				31F57B6B211A14D300777EA3 /* MacAppUITests */,
 				31EECFE7211B65320099066C /* Suno-Watch */,
@@ -563,12 +563,12 @@
 		};
 		31F57B63211A14D300777EA3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 31F57B4F211A14D100777EA3 /* Suno */;
+			target = 31F57B4F211A14D100777EA3 /* Suno-Mac */;
 			targetProxy = 31F57B62211A14D300777EA3 /* PBXContainerItemProxy */;
 		};
 		31F57B6E211A14D300777EA3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 31F57B4F211A14D100777EA3 /* Suno */;
+			target = 31F57B4F211A14D100777EA3 /* Suno-Mac */;
 			targetProxy = 31F57B6D211A14D300777EA3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1005,7 +1005,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno" */ = {
+		31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno-Mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				31F57B74211A14D300777EA3 /* Debug */,
@@ -1041,7 +1041,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "Suno-iOS" */ = {
+		5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "Suno" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5EBF65211F0AA47700BCD353 /* Debug */,

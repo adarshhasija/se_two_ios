@@ -675,7 +675,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Suno" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Suno_Mac" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -705,23 +705,23 @@
         <!--Speech Mac View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="SpeechMacViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="SpeechMacViewController" customModule="Suno_Mac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="900" height="500"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="etB-e3-HEm">
-                                <rect key="frame" x="10" y="0.0" width="460" height="260"/>
+                                <rect key="frame" x="10" y="0.0" width="880" height="490"/>
                                 <clipView key="contentView" id="M09-wJ-Jqi">
-                                    <rect key="frame" x="1" y="1" width="458" height="258"/>
+                                    <rect key="frame" x="1" y="1" width="878" height="488"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="WZd-Em-IfB">
-                                            <rect key="frame" x="0.0" y="0.0" width="458" height="258"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="878" height="488"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="458" height="258"/>
-                                            <size key="maxSize" width="463" height="10000000"/>
+                                            <size key="minSize" width="878" height="488"/>
+                                            <size key="maxSize" width="878" height="10000000"/>
                                             <attributedString key="textStorage">
                                                 <fragment>
                                                     <string key="content">Click and hold near the bottom of the app the start a session. Ensure your iPhone or iPad are on the same WiFi network, then use it to connect to this Mac. Note that the Mac can only be connected to 1 iOS device at a time for a conversation session.</string>
@@ -741,12 +741,12 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Ud8-D4-uRa">
-                                    <rect key="frame" x="443" y="1" width="16" height="258"/>
+                                    <rect key="frame" x="863" y="1" width="16" height="488"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UVX-Sx-swl">
-                                <rect key="frame" x="153" y="10" width="174" height="17"/>
+                                <rect key="frame" x="363" y="10" width="174" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Click here to start recording" id="fNN-Am-9n5">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -754,7 +754,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Yhd-mM-50g">
-                                <rect key="frame" x="124" y="37" width="232" height="17"/>
+                                <rect key="frame" x="334" y="37" width="232" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Click here and hold to start a session" id="pBa-XL-HxX">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -762,7 +762,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LRY-97-AZ6">
-                                <rect key="frame" x="422" y="10" width="30" height="17"/>
+                                <rect key="frame" x="842" y="10" width="30" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="1:00" id="OHL-LN-QsN">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -805,7 +805,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="75" y="913"/>
         </scene>
     </scenes>
 </document>

@@ -12,7 +12,40 @@ import SystemConfiguration
 
 class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserViewControllerDelegate, NSTextViewDelegate {
     
+    // MARK: States
+    enum State :String{
+        case SubscriptionNotPaid
+        case Idle
+        case PromptUserRole         //Ask the user if they are typing or speaking
+        case Hosting
+        case BrowsingForPeers       //This is when the app has quietly initiated browsing for peers. No UI shown
+        case OpenedSessionBrowser   //This is when the user has initiated browsing for peers
+        
+        case ConnectedTyping
+        case ConnectedSpeaking
+        
+        case Typing
+        case TypingStarted
+        case Speaking
+        case Listening              //Listening to other person speaking
+        case Reading                //Reading what the other person is typing
+    }
+    
+    enum Action :String{
+        case Tap
+        case LongPress
+        
+        case ReceivedConnection
+        case TypistStartedTyping
+        case TypistDeletedAllText
+        case TypistFinishedTyping
+        case PartnerCompleted
+        case PartnerEndedSession
+        case LostConnection
+    }
+    
     /// MARK:- Private properties
+    var currentState: [State] = []
     var isHosting = false
     var isConnected = false
     var isListening = false
@@ -35,7 +68,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     }
     
     @IBAction func pressGesture(_ sender: NSPressGestureRecognizer) {
-        if sender.state == NSGestureRecognizer.State.ended {
+        if sender.state == NSGestureRecognizer.State.began {
             toggleMCSession()
         }
     }
@@ -59,6 +92,40 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         }
     }
     
+    /// MARK:- State Machine
+    func changeState(action: Action) {
+        if action == Action.ReceivedConnection {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            currentState.append(State.ConnectedTyping)
+            currentState.append(State.Typing)
+            enterStateTyping()
+        }
+        else if action == Action.TypistStartedTyping {
+            currentState.append(State.TypingStarted)
+        }
+        else if action == Action.TypistDeletedAllText {
+            while currentState.last != State.Typing {
+                currentState.popLast()
+            }
+        }
+        else if action == Action.TypistFinishedTyping {
+            while currentState.last != State.ConnectedTyping {
+                currentState.popLast()
+            }
+            currentState.append(State.Listening)
+        }
+        else if action == Action.PartnerCompleted {
+            while currentState.last != State.ConnectedTyping {
+                currentState.popLast()
+            }
+            currentState.append(State.Typing)
+        }
+    }
+    
+    
+    /// MARK:- NSViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -69,7 +136,9 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         
         mainTextView.delegate = self
         
-        toggleMCSession()
+        //toggleMCSession()
+        currentState.append(State.SubscriptionNotPaid)
+        currentState.append(State.Idle)
     }
     
     override func viewDidDisappear() {
@@ -91,6 +160,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             DispatchQueue.main.async { [unowned self] in
                 if self.isListening {
                     if text == "\n" {
+                        self.changeState(action: Action.PartnerCompleted)
                         self.mainTextView?.string = "Your partner finished talking. Start typing..."
                         self.mainTextView?.isEditable = true
                         self.isListening = false
@@ -118,8 +188,9 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         switch state {
         case MCSessionState.connected:
             DispatchQueue.main.async { [unowned self] in
-                self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
-                self.mainTextView?.isEditable = true
+                self.changeState(action: Action.ReceivedConnection)
+                //self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
+                //self.mainTextView?.isEditable = true
                 self.searchDevicesLabel.stringValue = "Connected to: \(peerID.displayName)" + "\n" + "Click and hold here to disconnect"
                 print("Connected: \(peerID.displayName)")
                 self.isConnected = true
@@ -156,7 +227,11 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     }
     
     
-    
+    /// MARK:- State Machine Helpers
+    func enterStateTyping() {
+        self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
+        self.mainTextView?.isEditable = true
+    }
     
     
     /// MARK:- Private Helpers
@@ -243,6 +318,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             }
             if textView.string.last == "\n" {
                 //If its an ENTER CHARACTER, go into listening mode
+                changeState(action: Action.TypistFinishedTyping)
                 self.mainTextView?.string = "Waiting for other person to talk"
                 self.mainTextView?.isEditable = false
                 isListening = true
@@ -251,15 +327,17 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             }
             if textView.string.isEmpty {
                 //User deleted all the text
+                changeState(action: Action.TypistDeletedAllText)
                 self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
                 sendText(text: "\0")
                 return
             }
             
             
-            if textView.string.contains("typing...") == true {
+            if currentState.last == State.Typing {
                 //If its the first character, clear the field and set
                 self.mainTextView?.string = String(textView.string.last!)
+                changeState(action: Action.TypistStartedTyping)
             }
             if mcSession.connectedPeers.count > 0 {
                 sendText(text: textView.string)

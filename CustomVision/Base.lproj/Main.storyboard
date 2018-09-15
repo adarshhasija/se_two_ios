@@ -15,7 +15,7 @@
         <!--VisionML View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="VisionMLViewController" customModule="Suno_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="VisionMLViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -111,13 +111,13 @@
         <!--View Controller-->
         <scene sceneID="AwG-pO-HGx">
             <objects>
-                <viewController id="clk-y5-0mS" customClass="ARViewController" customModule="Suno_iOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="qV4-mu-qqO">
+                <viewController id="clk-y5-0mS" customClass="ARViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="qV4-mu-qqO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="CameraSetup.scn" wantsMultisampling="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yge-90-Sqn">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" sceneName="CameraSetup.scn" wantsMultisampling="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yge-90-Sqn">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="812"/>
                                 <connections>
                                     <outlet property="delegate" destination="clk-y5-0mS" id="c0p-QQ-sum"/>
                                 </connections>
@@ -135,8 +135,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </visualEffectView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Initializing AR session." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTx-Ya-vP2">
-                                <rect key="frame" x="103" y="74" width="114" height="41"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Initializing AR session." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTx-Ya-vP2">
+                                <rect key="frame" x="103" y="98" width="114" height="133"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="VJD-AU-Rbk"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="eQL-aT-R3Y"/>
@@ -195,7 +195,7 @@
         <!--Speech View Controller-->
         <scene sceneID="FPw-lz-tQa">
             <objects>
-                <viewController id="1hE-gn-uSX" customClass="SpeechViewController" customModule="Suno_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="1hE-gn-uSX" customClass="SpeechViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9Zo-hn-Ia8"/>
                         <viewControllerLayoutGuide type="bottom" id="Jo6-UM-bBN"/>
@@ -204,10 +204,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
                                 <rect key="frame" x="16" y="20" width="288" height="490"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">You must have an internet connection to use this app. Give your phone to your friend so they can record a message. You can they then read the message. OR If you would like to connect to a Mac, ensure this device and the Mac are on the same WiFi and start a session on the Mac.</string>
+                                <string key="text">You must have an internet connection to use this app. You can give your device to another person so they can record their voice or you can long press to setup a connection with another device.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
@@ -220,19 +220,19 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to start recording" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2R-uD-B4J">
-                                <rect key="frame" x="50" y="537" width="221" height="21"/>
+                                <rect key="frame" x="49.5" y="537" width="221" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ica-sP-9zA" userLabel="Timer Label">
-                                <rect key="frame" x="144" y="506" width="33" height="21"/>
+                                <rect key="frame" x="143.5" y="506" width="33" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe up to connect to a Mac" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ex-gU-cqF">
-                                <rect key="frame" x="46.5" y="486.5" width="227" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to connect to another device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ex-gU-cqF">
+                                <rect key="frame" x="5.5" y="486.5" width="309" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -291,7 +291,7 @@
         <!--Suno-->
         <scene sceneID="H6X-fZ-YEq">
             <objects>
-                <viewController id="Ebw-qJ-x4t" customClass="SpeechViewController" customModule="Suno_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ebw-qJ-x4t" customClass="SpeechViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ccj-04-pD2"/>
                         <viewControllerLayoutGuide type="bottom" id="SEb-t8-8gg"/>
