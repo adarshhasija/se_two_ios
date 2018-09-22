@@ -10,8 +10,9 @@ import UIKit
 import Speech
 import MultipeerConnectivity
 import SystemConfiguration
+import CoreBluetooth
 
-public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceBrowserDelegate, UITextViewDelegate {
+public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceBrowserDelegate, UITextViewDelegate, CBCentralManagerDelegate {
     
     // MARK: States
     enum State :String{
@@ -33,8 +34,10 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     }
     
     enum Action :String{
+        case AppOpened
         case Tap
         case SwipeUp
+        case SwipeLeft
         case LongPress
         
         case UserPrmoptCancelled
@@ -63,6 +66,10 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     var mcNearbyServiceBrowser: MCNearbyServiceBrowser!
     
+    // MARK: Bluetooth: Not in use right now. Wifi only as we need WiFi for speech recognition
+    var manager:CBCentralManager!
+    var isBluetoothOn = false
+    
     // MARK: Speech Recognition Properties
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -77,6 +84,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     @IBOutlet weak var longPressLabel: UILabel?
     @IBOutlet weak var recordLabel: UILabel?
     @IBOutlet weak var timerLabel: UILabel?
+    @IBOutlet weak var swipeUpLabel: UILabel!
+    @IBOutlet weak var swipeLeftLabel: UILabel!
     
     // MARK: Interface Builder actions
     
@@ -96,17 +105,27 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         if sender.direction == UISwipeGestureRecognizerDirection.up {
             changeState(action: Action.SwipeUp)
         }
+        else if sender.direction == UISwipeGestureRecognizerDirection.left {
+            changeState(action: Action.SwipeLeft)
+        }
     }
     
     // MARK: State Machine
     private func changeState(action : Action) {
-        if action == Action.Tap && currentState.last == State.Idle {
+        if action == Action.AppOpened {
+            enterStateIdle()
+        }
+        else if action == Action.Tap && currentState.last == State.Idle {
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
             currentState.append(State.Speaking)
             enterStateSpeaking()
         }
+        else if action == Action.Tap && currentState.contains(State.Typing) {
+            changeState(action: Action.TypistFinishedTyping)
+        }
         else if action == Action.Tap && currentState.last == State.Speaking {
             currentState.popLast()
+            exitStateTyping()
             exitStateSpeaking()
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
@@ -117,28 +136,30 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 enterStateReading()
             }
         }
+        else if action == Action.SwipeLeft && currentState.last == State.Idle {
+            performSegue(withIdentifier: "segueHelpTopics", sender: nil)
+        }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
-            //currentState.append(State.OpenedSessionBrowser)
-            //enterStateOpenedSessionBrowser()
+            currentState.append(State.Typing)
+            enterStateTyping()
         }
         else if action == Action.LongPress && currentState.last == State.Idle {
             currentState.append(State.PromptUserRole)
             enterStatePromptUserRole()
         }
-        else if action == Action.LongPress && currentState.last == State.Hosting {
-            currentState.popLast()
-            exitStateHosting()
-        }
-        else if action == Action.LongPress && currentState.last == State.BrowsingForPeers {
-            currentState.popLast()
-            exitStateBrowsingForPeers()
-        }
-        else if action == Action.LongPress {
+        else if action == Action.LongPress && (currentState.contains(State.ConnectedTyping) || currentState.contains(State.ConnectedSpeaking) || currentState.contains(State.Hosting)) {
             //All other states in which user does long press
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
+            sendText(text: "\n\n")
+            exitStateTyping()
+            exitStateSpeaking()
             exitStateConnected()
+            exitStateHosting()
+            exitStateBrowsingForPeers()
+            enterStateIdle()
+            dialogOK(title: "Alert", message: "Connection Closed")
         }
         else if action == Action.BrowserCancelled && currentState.last == State.OpenedSessionBrowser {
             while currentState.last != State.Idle {
@@ -177,46 +198,35 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             enterStateConnectedSpeaking()
             enterStateReading()
         }
-        else if action == Action.LongPress && currentState.last == State.Hosting {
-            currentState.popLast()
-            exitStateHosting()
-        }
-        else if action == Action.LongPress && (currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking)  {
-            while currentState.last != State.Idle {
+        else if action == Action.TypistDeletedAllText && currentState.contains(State.Typing) {
+            while currentState.last != State.Typing {
                 currentState.popLast()
             }
-            userEndedConnection()
-        }
-        else if action == Action.TypistDeletedAllText && currentState.last == State.TypingStarted {
-            currentState.popLast()
             typistDeletedAllText()
         }
-        else if action == Action.TypistDeletedAllText && currentState.last == State.Reading {
+        else if action == Action.TypistDeletedAllText && currentState.contains(State.Reading) {
+            //The partner has deleted all text
             typistDeletedAllText()
         }
         else if action == Action.TypistStartedTyping && currentState.last == State.Typing {
             currentState.append(State.TypingStarted)
         }
-        else if action == Action.TypistFinishedTyping && (currentState.last == State.Typing || currentState.last == State.TypingStarted) {
+        else if action == Action.TypistFinishedTyping && currentState.contains(State.ConnectedTyping) {
+            //Means we are connected to another device
             while currentState.last != State.ConnectedTyping {
                 currentState.popLast()
             }
             currentState.append(State.Listening)
             exitStateTyping()
+            sendText(text: "\n")
             enterStateListening()
         }
-        else if action == Action.TypistFinishedTyping && currentState.last == State.Listening {
-            currentState.popLast() //Pop listening
-            currentState.append(State.Typing)
-            enterStateTyping()
-        }
-        else if action == Action.LostConnection && (currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking) {
-            currentState.popLast()
-            exitStateConnected()
-        }
-        else if action == Action.PartnerEndedSession && (currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking) {
-            currentState.popLast()
-            exitStateConnected()
+        else if action == Action.TypistFinishedTyping {
+            //Not connected to other device
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateTyping()
         }
         else if action == Action.PartnerCompleted && currentState.last == State.Reading {
             currentState.popLast() //pop reading
@@ -228,31 +238,17 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             currentState.append(State.Typing)
             enterStateTyping()
         }
-        else if action == Action.PartnerEndedSession && currentState.last == State.Speaking {
-            currentState.popLast() //pop speaking
-            changeState(action: Action.PartnerEndedSession)
-            exitStateSpeaking()
-        }
-        else if action == Action.PartnerEndedSession && (currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking) {
-            currentState.popLast()
-            exitStateConnected()
-        }
-        else if action == Action.LostConnection && currentState.last == State.Speaking {
-            currentState.popLast() //pop speaking
-            changeState(action: Action.LostConnection)
-            exitStateSpeaking()
-        }
-        else if action == Action.LostConnection && (currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking) {
-            currentState.popLast() //pop connected
-            exitStateConnected()
-        }
-        else if action == Action.LostConnection {
+        else if action == Action.LostConnection || action == Action.PartnerEndedSession {
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
             exitStateTyping()
             exitStateSpeaking()
             exitStateConnected()
+            exitStateHosting()
+            exitStateBrowsingForPeers()
+            enterStateIdle()
+            dialogConnectionLost()
         }
         
     }
@@ -265,6 +261,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         
         currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.Idle) //Push
+        changeState(action: Action.AppOpened)
         
         // Disable the record buttons until authorization has been granted.
         recordButton?.isEnabled = false
@@ -280,6 +277,10 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         peerID = MCPeerID(displayName: UIDevice.current.name)
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession.delegate = self
+        
+        //Setup bluetooth check
+        manager          = CBCentralManager()
+        manager.delegate = self
         
     }
     
@@ -408,6 +409,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         switch state {
         case MCSessionState.connected:
             DispatchQueue.main.async { [unowned self] in
+                self.longPressLabel?.text = "Connected: \(peerID.displayName)" + "\n" + "Long press to disconnect"
                 self.changeState(action: Action.ReceivedConnection)
             }
             
@@ -482,7 +484,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         if currentState.last == State.TypingStarted && str.last == "\n" {
             //If its an ENTER CHARACTER, typing over
             changeState(action: Action.TypistFinishedTyping)
-            sendText(text: "\n")
+            //sendText(text: "\n")
             return
         }
         
@@ -511,15 +513,44 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         
     }
     
+    // MARK: CBCentralManagerDelegate
+    public func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        switch central.state {
+            case .poweredOn:
+                isBluetoothOn = true
+                break
+            case .poweredOff:
+                isBluetoothOn = false
+                break
+            case .resetting:
+                break
+            case .unauthorized:
+                break
+            case .unsupported:
+                break
+            case .unknown:
+                break
+            default:
+                break
+        }
+    }
+    
+    
     // MARK: State Machine Private Helpers
+    private func enterStateIdle() {
+        self.textViewBottom?.text = "If you are hearing-impaired, you can use this app to have a conversation with someone face to face. Tap to talk, swipe up to type, or long press to start a session with another device."
+    }
+    
     private func enterStatePromptUserRole() {
         dialogTypingOrSpeaking()
     }
     
     private func enterStateHosting() {
-        self.textViewBottom?.text = "Started session. Ensure all devices are on the same Wifi network. Waiting for other devices to join..."
+        self.textViewBottom?.text = "Started session. Ensure WiFi and bluetooth are ON for all connecting devices. Waiting for other devices to join..."
         self.longPressLabel?.text = "Long press to stop session"
         self.recordLabel?.isHidden = true
+        self.swipeUpLabel?.isHidden = true
+        self.swipeLeftLabel?.isHidden = true
         startHosting()
     }
     
@@ -527,6 +558,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         self.textViewBottom?.text = "Session ended"
         self.longPressLabel?.text = "Long press to connect to another device"
         self.recordLabel?.isHidden = false
+        self.swipeUpLabel?.isHidden = false
+        self.swipeLeftLabel?.isHidden = false
         stopHosting()
     }
     
@@ -534,6 +567,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         self.textViewBottom?.text = "Looking for other devices. Ensure all devices are on the same WiFi network."
         self.longPressLabel?.text = "Long press to stop session"
         self.recordLabel?.isHidden = true
+        self.swipeUpLabel?.isHidden = true
+        self.swipeLeftLabel?.isHidden = true
         mcNearbyServiceBrowser = MCNearbyServiceBrowser(peer: peerID, serviceType: "hws-kb")
         mcNearbyServiceBrowser.delegate = self
         mcNearbyServiceBrowser.startBrowsingForPeers()
@@ -543,40 +578,47 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         self.textViewBottom?.text = "Session stopped"
         self.longPressLabel?.text = "Long press to to look for other devices"
         self.recordLabel?.isHidden = false
+        self.swipeUpLabel?.isHidden = false
+        self.swipeLeftLabel?.isHidden = false
     }
     
     private func exitStateBrowsingForPeers() {
         self.textViewBottom?.text = "Session stopped"
         self.longPressLabel?.text = "Long press to to look for other devices"
         self.recordLabel?.isHidden = false
-        self.mcNearbyServiceBrowser.stopBrowsingForPeers()
+        self.swipeUpLabel?.isHidden = false
+        self.swipeLeftLabel?.isHidden = false
+        self.mcNearbyServiceBrowser?.stopBrowsingForPeers()
     }
     
     private func enterStateConnectedTyping() {
-        self.longPressLabel?.text = "Connected: \(peerID.displayName)" + "\n" + "Long press to disconnect"
         self.recordLabel?.isHidden = true
-        print("Connected: \(peerID.displayName)")
+        self.swipeUpLabel?.isHidden = true
+        self.swipeLeftLabel?.isHidden = true
     }
     
     private func enterStateListening() {
         self.textViewBottom?.text = "Connected, waiting for the other person to start talking..."
-        self.longPressLabel?.text = "Connected: \(peerID.displayName)" + "\n" + "Long press to disconnect"
         self.recordLabel?.isHidden = true
+        self.swipeUpLabel?.isHidden = true
+        self.swipeLeftLabel?.isHidden = true
     }
     
     private func enterStateConnectedSpeaking() {
-        self.longPressLabel?.text = "Connected: \(peerID.displayName)" + "\n" + "Long press to disconnect"
         self.recordLabel?.isHidden = true
-        print("Connected: \(peerID.displayName)")
+        self.swipeUpLabel?.isHidden = true
+        self.swipeLeftLabel?.isHidden = true
     }
     
     private func enterStateReading() {
         self.textViewBottom?.text = "Connected, waiting for the other person to start typing..."
         self.recordLabel?.isHidden = true
+        self.swipeUpLabel?.isHidden = true
+        self.swipeLeftLabel?.isHidden = true
     }
     
     private func enterStateTyping() {
-        self.textViewBottom?.text = "Connected, you can now start typing. Tap enter when done..."
+        self.textViewBottom?.text = "You can now start typing. Tap enter when done..."
         textViewBottom?.isEditable = true
         textViewBottom?.becomeFirstResponder()
     }
@@ -594,6 +636,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             recordButton?.setTitle("Stop recording", for: [])
             recordLabel?.text = "TAP SCREEN TO STOP RECORDING"
             recordLabel?.isHidden = false
+            swipeUpLabel?.isHidden = true
+            swipeLeftLabel?.isHidden = true
             longPressLabel?.isHidden = true
         }
         else {
@@ -614,6 +658,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             textViewTop?.text = ""
             //textViewBottom.font = textViewBottom.font?.withSize(16)
             textViewBottom.text = ""
+            swipeUpLabel?.isHidden = false
+            swipeLeftLabel?.isHidden = false
             longPressLabel?.isHidden = false
             recordLabel?.text = "Tap screen to start recording"
         }
@@ -628,34 +674,45 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
     }
     
-    private func userEndedConnection() {
-        sendText(text: "\n\n")
-        exitStateConnected()
-    }
-    
     private func exitStateConnected() {
         UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
         mcSession?.disconnect()
-        self.textViewBottom?.text = "Connection Lost"
         self.textViewBottom?.isEditable = false
         self.textViewBottom?.resignFirstResponder()
         self.longPressLabel?.text = "Long press to connect to a device"
         self.recordLabel?.isHidden = false
+        self.swipeUpLabel?.isHidden = false
+        self.swipeLeftLabel?.isHidden = false
         self.dismiss(animated: true)
     }
     
     
     
     func typistDeletedAllText() {
-        self.textViewBottom?.text = "Connected, waiting for the other person to start typing..."
+        if currentState.contains(State.ConnectedSpeaking) {
+            self.textViewBottom?.text = "Connected, waiting for the other person to start typing..."
+        }
+        else {
+            self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
+        }
     }
     
     // MARK: General Private Helpers
     
     func hasInternetConnection() -> Bool {
-        guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
+      //  guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
+        var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        let reachability = withUnsafePointer(to: &zeroAddress) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        }
+        
         var flags = SCNetworkReachabilityFlags()
-        SCNetworkReachabilityGetFlags(reachability, &flags)
+        SCNetworkReachabilityGetFlags(reachability!, &flags)
         if !isNetworkReachable(with: flags) {
             // Device doesn't have internet connection
             return false
@@ -721,8 +778,26 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         self.present(alert, animated: true, completion: nil)
     }
     
+    func dialogConnectionLost() {
+        let alert = UIAlertController(title: "Sorry", message: "Connection Lost", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { action in
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+                
+            }}))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func dialogTypingOrSpeaking() {
-        let alert = UIAlertController(title: "Select Role", message: "If you are hearing impaired, select Typing. Else select Speaking", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Start a conversation session with another iOS device. One device will type and the other device will talk", message: "If you are hearing impaired, select Typing, then ask your partner to select Speaking. If you are not hearing impaired, select Speaking and connect to the device that will be typing. Note that in order to connect, both devices must have WiFi and bluetooth switched ON.", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Typing", style: .default, handler: { action in
             switch action.style{
             case .default:

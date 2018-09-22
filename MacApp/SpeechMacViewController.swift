@@ -32,6 +32,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     }
     
     enum Action :String{
+        case AppOpened
         case Tap
         case LongPress
         
@@ -69,7 +70,8 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     
     @IBAction func pressGesture(_ sender: NSPressGestureRecognizer) {
         if sender.state == NSGestureRecognizer.State.began {
-            toggleMCSession()
+            //toggleMCSession()
+            changeState(action: Action.LongPress)
         }
     }
     
@@ -82,7 +84,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         }
         else {
             if hasInternetConnection() {
-                self.mainTextView?.string = "Session started, please connect to this session from your iPhone app"
+                self.mainTextView?.string = "Session started, please connect to this session from your iPhone or iPad app"
                 startHosting()
             }
             else {
@@ -94,7 +96,25 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     
     /// MARK:- State Machine
     func changeState(action: Action) {
-        if action == Action.ReceivedConnection {
+        if action == Action.AppOpened {
+            enterStateIdle()
+        }
+        else if action == Action.LongPress && currentState.last == State.Idle {
+            currentState.append(State.Hosting)
+            enterStateHosting()
+        }
+        else if action == Action.LongPress && currentState.contains(State.ConnectedTyping) {
+            //connected state
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            sendText(text: "\n\n")
+            exitStateHosting()
+            exitStateConnected()
+            enterStateIdle()
+            dialogOK(question: "ALert", text: "Connection Closed")
+        }
+        else if action == Action.ReceivedConnection {
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
@@ -110,19 +130,32 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
                 currentState.popLast()
             }
         }
-        else if action == Action.TypistFinishedTyping {
+        else if action == Action.TypistFinishedTyping && currentState.contains(State.ConnectedTyping) {
             while currentState.last != State.ConnectedTyping {
                 currentState.popLast()
             }
             currentState.append(State.Listening)
+            sendText(text: "\n")
+            enterStateListening()
         }
-        else if action == Action.PartnerCompleted {
+        else if action == Action.PartnerCompleted && currentState.last == State.Listening {
             while currentState.last != State.ConnectedTyping {
                 currentState.popLast()
             }
             currentState.append(State.Typing)
+            enterStateTyping()
+        }
+        else if action == Action.LostConnection || action == Action.PartnerEndedSession {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateConnected()
+            exitStateHosting()
+            enterStateIdle()
+            dialogConnectionLost()
         }
     }
+   
     
     
     /// MARK:- NSViewController
@@ -139,6 +172,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         //toggleMCSession()
         currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.Idle)
+        changeState(action: Action.AppOpened)
     }
     
     override func viewDidDisappear() {
@@ -158,17 +192,31 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         if let text = String(data: data, encoding: .utf8) {
             DispatchQueue.main.async { [unowned self] in
-                if self.isListening {
+                if self.didPeerCloseConnection(text: text) {
+                    self.changeState(action: Action.PartnerEndedSession)
+                }
+                else if text.last! == "\0" {
+                    self.changeState(action: Action.TypistDeletedAllText)
+                }
+                else if text.last! == "\n" {
+                    self.changeState(action: Action.PartnerCompleted)
+                }
+                else if self.currentState.last == State.Listening || self.currentState.last == State.Reading {
+                    self.mainTextView?.string = text
+                }
+                
+                
+           /*     if self.isListening {
                     if text == "\n" {
                         self.changeState(action: Action.PartnerCompleted)
-                        self.mainTextView?.string = "Your partner finished talking. Start typing..."
-                        self.mainTextView?.isEditable = true
-                        self.isListening = false
+                        //self.mainTextView?.string = "Your partner finished talking. Start typing..."
+                        //self.mainTextView?.isEditable = true
+                        //self.isListening = false
                     }
                     else {
                         self.mainTextView?.string = text
                     }
-                }
+                }   */
             }
         }
     }
@@ -208,8 +256,9 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             
         case MCSessionState.notConnected:
             DispatchQueue.main.async { [unowned self] in
-                self.mainTextView?.string = "Connection Lost"
-                self.searchDevicesLabel?.stringValue = "Click and hold to connect to an iOS device"
+                self.changeState(action: Action.LostConnection)
+                //self.mainTextView?.string = "Connection Lost"
+                //self.searchDevicesLabel?.stringValue = "Click and hold to connect to an iOS device"
                 print("Not Connected: \(peerID.displayName)")
                 self.isConnected = false
             }
@@ -228,9 +277,38 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     
     
     /// MARK:- State Machine Helpers
+    func enterStateIdle() {
+        self.searchDevicesLabel?.stringValue = "Click and hold to connect to an iOS device"
+        self.mainTextView?.string = "If you are hearing-impaired, you can use this Mac app to have a conversation with someone holding an iOS device that has the Suno app for iOS. You can type using the Mac while the other person speaks using their device. Click and hold near the bottom of the app the start a session. Ensure that WiFi and Bluetooth are ON on the iOS device and that it is connected to the internet. Then use it to connect to this Mac. Note that the Mac can only be connected to 1 iOS device at a time for a conversation session."
+        self.mainTextView?.isEditable = false
+    }
+    
+    private func enterStateHosting() {
+        if hasInternetConnection() {
+            self.mainTextView?.string = "Session started, please connect to this session from your iPhone or iPad app"
+            startHosting()
+        }
+        else {
+            let answer = dialogOK(question: "Alert", text: "No internet connection")
+        }
+    }
+    
+    private func exitStateHosting() {
+        stopHosting()
+    }
+    
+    private func exitStateConnected() {
+        mcSession.disconnect()
+    }
+    
     func enterStateTyping() {
         self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
         self.mainTextView?.isEditable = true
+    }
+    
+    func enterStateListening() {
+        self.mainTextView?.string = "Waiting for other person to talk"
+        self.mainTextView?.isEditable = false
     }
     
     
@@ -251,6 +329,14 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         let alert = NSAlert()
         alert.informativeText = text
         alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        return alert.runModal() == .alertFirstButtonReturn
+    }
+    
+    func dialogConnectionLost() -> Bool {
+        let alert = NSAlert()
+        alert.informativeText = "Connection Lost"
+        alert.alertStyle = .informational
         alert.addButton(withTitle: "OK")
         return alert.runModal() == .alertFirstButtonReturn
     }
@@ -310,7 +396,38 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     /// NSTextViewDelegate
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? NSTextView else { return }
-        if !isListening {
+        var str = textView.string
+        if currentState.last == State.TypingStarted && str.last == "\n" {
+            //If its an ENTER CHARACTER, typing over
+            changeState(action: Action.TypistFinishedTyping)
+            //sendText(text: "\n")
+            return
+        }
+        
+        if currentState.last == State.Typing && str.last == "\n" {
+            //User has only pressed enter. We do not want to end typing session. EDGE CASE
+            return
+        }
+        
+        if currentState.last == State.Typing && str.last != "\n" {
+            //It is the first character
+            changeState(action: Action.TypistStartedTyping)
+            str = String(str.last!)
+            self.mainTextView?.string = str
+            sendText(text: str)
+            return
+        }
+        
+        if str.isEmpty {
+            //User deleted all the text
+            changeState(action: Action.TypistDeletedAllText)
+            sendText(text: "\0")
+            return
+        }
+        
+        sendText(text: str)
+        
+     /*   if !isListening {
             if self.didPeerCloseConnection(text: textView.string) {
                 self.isConnected = false
                 self.mainTextView?.string = "The other user has ended the session. Thank you."
@@ -319,8 +436,8 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             if textView.string.last == "\n" {
                 //If its an ENTER CHARACTER, go into listening mode
                 changeState(action: Action.TypistFinishedTyping)
-                self.mainTextView?.string = "Waiting for other person to talk"
-                self.mainTextView?.isEditable = false
+                //self.mainTextView?.string = "Waiting for other person to talk"
+                //self.mainTextView?.isEditable = false
                 isListening = true
                 sendText(text: "\n")
                 return
@@ -342,7 +459,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             if mcSession.connectedPeers.count > 0 {
                 sendText(text: textView.string)
             }
-        }
+        }   */
     }
 
 

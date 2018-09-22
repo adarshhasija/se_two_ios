@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 312A4ED920D274B100767B49 /* Rupees.mlmodel */; };
+		317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */; };
+		3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */; };
+		3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */; };
 		319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319FD50620D1A98E0071F993 /* ARViewController.swift */; };
 		31EECFEC211B65320099066C /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EECFEA211B65320099066C /* Interface.storyboard */; };
 		31EECFEE211B65330099066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31EECFED211B65330099066C /* Assets.xcassets */; };
@@ -92,6 +95,9 @@
 
 /* Begin PBXFileReference section */
 		312A4ED920D274B100767B49 /* Rupees.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Rupees.mlmodel; sourceTree = SOURCE_ROOT; };
+		317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewController.swift; sourceTree = "<group>"; };
+		3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicViewController.swift; sourceTree = "<group>"; };
+		3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewCell.swift; sourceTree = "<group>"; };
 		319FD50620D1A98E0071F993 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		31EECFE8211B65320099066C /* Suno-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31EECFEB211B65320099066C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -266,6 +272,9 @@
 				76C510BB1F1587C60049422A /* BubbleLayer.swift */,
 				76B5ACDD1F159C7500EE183D /* BubbleLabelLayer.swift */,
 				319FD50620D1A98E0071F993 /* ARViewController.swift */,
+				317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */,
+				3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */,
+				3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -543,7 +552,10 @@
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */,
 				319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */,
+				317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */,
+				3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */,
 				76B5ACDE1F159C7500EE183D /* BubbleLabelLayer.swift in Sources */,
+				3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */,
 				5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
