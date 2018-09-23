@@ -366,6 +366,7 @@
     {
       "size" : "83.5x83.5",
       "idiom" : "ipad",
+      "filename" : "app_icon_suno_167x167.png",
       "language-direction" : "left-to-right",
       "scale" : "2x"
     },
@@ -376,8 +377,9 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "ios-marketing",
       "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "app_icon_suno_1024x1024.png",
       "scale" : "1x"
     }
   ],

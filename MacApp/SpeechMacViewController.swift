@@ -47,9 +47,6 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     
     /// MARK:- Private properties
     var currentState: [State] = []
-    var isHosting = false
-    var isConnected = false
-    var isListening = false
     
     /// MARK:- Multipeer Connectivity
     var mPeerID: MCPeerID!
@@ -76,7 +73,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     }
     
     private func toggleMCSession() {
-        if isHosting || isConnected {
+     /*   if isHosting || isConnected {
             sendText(text: "\n\n")
             self.mainTextView?.string = "Session ended"
             mcSession.disconnect()
@@ -91,7 +88,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
                 let answer = dialogOK(question: "Alert", text: "No internet connection")
             }
             
-        }
+        }   */
     }
     
     /// MARK:- State Machine
@@ -103,7 +100,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             currentState.append(State.Hosting)
             enterStateHosting()
         }
-        else if action == Action.LongPress && currentState.contains(State.ConnectedTyping) {
+        else if action == Action.LongPress && (currentState.contains(State.ConnectedTyping) || currentState.contains(State.Hosting))  {
             //connected state
             while currentState.last != State.Idle {
                 currentState.popLast()
@@ -112,7 +109,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             exitStateHosting()
             exitStateConnected()
             enterStateIdle()
-            dialogOK(question: "ALert", text: "Connection Closed")
+            dialogOK(question: "Alert", text: "Connection Closed")
         }
         else if action == Action.ReceivedConnection {
             while currentState.last != State.Idle {
@@ -204,19 +201,6 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
                 else if self.currentState.last == State.Listening || self.currentState.last == State.Reading {
                     self.mainTextView?.string = text
                 }
-                
-                
-           /*     if self.isListening {
-                    if text == "\n" {
-                        self.changeState(action: Action.PartnerCompleted)
-                        //self.mainTextView?.string = "Your partner finished talking. Start typing..."
-                        //self.mainTextView?.isEditable = true
-                        //self.isListening = false
-                    }
-                    else {
-                        self.mainTextView?.string = text
-                    }
-                }   */
             }
         }
     }
@@ -241,8 +225,6 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
                 //self.mainTextView?.isEditable = true
                 self.searchDevicesLabel.stringValue = "Connected to: \(peerID.displayName)" + "\n" + "Click and hold here to disconnect"
                 print("Connected: \(peerID.displayName)")
-                self.isConnected = true
-                self.mcAdvertiserAssistant.stop()
             }
             
             
@@ -260,7 +242,6 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
                 //self.mainTextView?.string = "Connection Lost"
                 //self.searchDevicesLabel?.stringValue = "Click and hold to connect to an iOS device"
                 print("Not Connected: \(peerID.displayName)")
-                self.isConnected = false
             }
             
         }
@@ -315,13 +296,13 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     /// MARK:- Private Helpers
     
     func hasInternetConnection() -> Bool {
-        guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
+      /*  guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
         var flags = SCNetworkReachabilityFlags()
         SCNetworkReachabilityGetFlags(reachability, &flags)
         if !isNetworkReachable(with: flags) {
             // Device doesn't have internet connection
             return false
-        }
+        }   */
         return true
     }
     
@@ -368,13 +349,11 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: "hws-kb", discoveryInfo: nil, session: mcSession)
         mcAdvertiserAssistant.start()
         searchDevicesLabel.stringValue = "Click and hold to end connection"
-        isHosting = true
     }
     
     func stopHosting() {
         mcAdvertiserAssistant?.stop()
         searchDevicesLabel?.stringValue = "Click and hold to connect to an iOS device"
-        isHosting = false
     }
     
     func joinSession() {
@@ -426,40 +405,6 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         }
         
         sendText(text: str)
-        
-     /*   if !isListening {
-            if self.didPeerCloseConnection(text: textView.string) {
-                self.isConnected = false
-                self.mainTextView?.string = "The other user has ended the session. Thank you."
-                return
-            }
-            if textView.string.last == "\n" {
-                //If its an ENTER CHARACTER, go into listening mode
-                changeState(action: Action.TypistFinishedTyping)
-                //self.mainTextView?.string = "Waiting for other person to talk"
-                //self.mainTextView?.isEditable = false
-                isListening = true
-                sendText(text: "\n")
-                return
-            }
-            if textView.string.isEmpty {
-                //User deleted all the text
-                changeState(action: Action.TypistDeletedAllText)
-                self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
-                sendText(text: "\0")
-                return
-            }
-            
-            
-            if currentState.last == State.Typing {
-                //If its the first character, clear the field and set
-                self.mainTextView?.string = String(textView.string.last!)
-                changeState(action: Action.TypistStartedTyping)
-            }
-            if mcSession.connectedPeers.count > 0 {
-                sendText(text: textView.string)
-            }
-        }   */
     }
 
 

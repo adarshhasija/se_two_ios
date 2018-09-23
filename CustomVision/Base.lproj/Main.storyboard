@@ -190,7 +190,7 @@
             </objects>
             <point key="canvasLocation" x="11" y="-606"/>
         </scene>
-        <!--Speech View Controller-->
+        <!--Suno-->
         <scene sceneID="FPw-lz-tQa">
             <objects>
                 <viewController id="1hE-gn-uSX" customClass="SpeechViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
@@ -272,7 +272,7 @@
                             <outletCollection property="gestureRecognizers" destination="f0r-CZ-SB0" appends="YES" id="HEa-Pa-dn5"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="JIo-Tu-o0D"/>
+                    <navigationItem key="navigationItem" title="Suno" id="JIo-Tu-o0D"/>
                     <connections>
                         <outlet property="longPressLabel" destination="5ex-gU-cqF" id="6hr-hR-SN6"/>
                         <outlet property="recordButton" destination="hQ1-aS-4qY" id="5qX-pj-gox"/>
@@ -364,23 +364,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="30" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dr1-2s-pc4">
-                                <rect key="frame" x="26" y="274" width="268" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NV2-t4-9Pq">
+                                <rect key="frame" x="24" y="72" width="272" height="488"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="dr1-2s-pc4" secondAttribute="trailing" constant="10" id="25U-Ej-JWU"/>
-                            <constraint firstItem="dr1-2s-pc4" firstAttribute="leading" secondItem="YY0-FR-dkF" secondAttribute="leadingMargin" constant="10" id="UTr-sE-lAR"/>
-                            <constraint firstItem="dr1-2s-pc4" firstAttribute="centerX" secondItem="YY0-FR-dkF" secondAttribute="centerX" id="qw0-JQ-KnM"/>
-                            <constraint firstItem="dr1-2s-pc4" firstAttribute="centerY" secondItem="YY0-FR-dkF" secondAttribute="centerY" id="vOk-R2-RJp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NV2-t4-9Pq" secondAttribute="trailing" constant="8" id="41s-nF-mmC"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="NV2-t4-9Pq" secondAttribute="bottom" constant="8" id="5jS-kL-ild"/>
+                            <constraint firstItem="NV2-t4-9Pq" firstAttribute="leading" secondItem="YY0-FR-dkF" secondAttribute="leadingMargin" constant="8" id="P1n-po-VGH"/>
+                            <constraint firstItem="NV2-t4-9Pq" firstAttribute="top" secondItem="Jpt-Ep-IV1" secondAttribute="bottom" constant="8" id="bUZ-zM-hty"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="answerLabel" destination="dr1-2s-pc4" id="oJP-F8-eFY"/>
+                        <outlet property="mainTextView" destination="NV2-t4-9Pq" id="ow5-TT-iHG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vdw-LC-mul" userLabel="First Responder" sceneMemberID="firstResponder"/>

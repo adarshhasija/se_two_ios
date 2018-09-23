@@ -13,11 +13,11 @@ public class HelpTopicViewController: UIViewController {
     
     var answer: String = ""
     
-    @IBOutlet weak var answerLabel: UILabel!
+    @IBOutlet weak var mainTextView: UITextView!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        answerLabel?.text = answer
+        mainTextView?.text = answer
     }
 }

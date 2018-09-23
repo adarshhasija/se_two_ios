@@ -798,7 +798,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     
     func dialogTypingOrSpeaking() {
         let alert = UIAlertController(title: "Start a conversation session with another iOS device. One device will type and the other device will talk", message: "If you are hearing impaired, select Typing, then ask your partner to select Speaking. If you are not hearing impaired, select Speaking and connect to the device that will be typing. Note that in order to connect, both devices must have WiFi and bluetooth switched ON.", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Typing", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: "I am hearing-impaired, I will type", style: .default, handler: { action in
             switch action.style{
             case .default:
                 self.changeState(action: Action.UserSelectedTyping)
@@ -811,7 +811,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 
                 
             }}))
-        alert.addAction(UIAlertAction(title: "Speaking", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: "I am not hearing-impaired, I will speak", style: .default, handler: { action in
             switch action.style{
             case .default:
                 self.changeState(action: Action.UserSelectedSpeaking)

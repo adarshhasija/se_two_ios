@@ -27,7 +27,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone used to get speech</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>We will convert speech from around you into text that you can read</string>
+	<string>If a person speaks, we will convert the speech into text that a hearing-impaired person can read</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
