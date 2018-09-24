@@ -19,9 +19,11 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We will check if your Bluetooth is ON when you try to connect to a nearby device</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera used to classify scenes</string>
 	<key>NSMicrophoneUsageDescription</key>

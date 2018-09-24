@@ -12,15 +12,6 @@
 		3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */; };
 		3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */; };
 		319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319FD50620D1A98E0071F993 /* ARViewController.swift */; };
-		31EECFEC211B65320099066C /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EECFEA211B65320099066C /* Interface.storyboard */; };
-		31EECFEE211B65330099066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31EECFED211B65330099066C /* Assets.xcassets */; };
-		31EECFF5211B65330099066C /* Suno-Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 31EECFF4211B65330099066C /* Suno-Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		31EECFFA211B65330099066C /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EECFF9211B65330099066C /* InterfaceController.swift */; };
-		31EECFFC211B65330099066C /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EECFFB211B65330099066C /* ExtensionDelegate.swift */; };
-		31EECFFE211B65330099066C /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EECFFD211B65330099066C /* NotificationController.swift */; };
-		31EED000211B65330099066C /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EECFFF211B65330099066C /* ComplicationController.swift */; };
-		31EED002211B65330099066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31EED001211B65330099066C /* Assets.xcassets */; };
-		31EED007211B65330099066C /* Suno-Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 31EECFE8211B65320099066C /* Suno-Watch.app */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
 		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
 		31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */; };
@@ -38,20 +29,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		31E6756B2157B72000405238 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5EBF65061F0AA47700BCD353 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 31EECFE7211B65320099066C;
-			remoteInfo = "Suno-Watch";
-		};
-		31E6756D2157B72600405238 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5EBF65061F0AA47700BCD353 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 31EECFF3211B65330099066C;
-			remoteInfo = "Suno-Watch Extension";
-		};
 		31F57B62211A14D300777EA3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5EBF65061F0AA47700BCD353 /* Project object */;
@@ -69,24 +46,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		31EED00D211B65330099066C /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				31EECFF5211B65330099066C /* Suno-Watch Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		31EED00F211B65330099066C /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				31EED007211B65330099066C /* Suno-Watch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,18 +64,6 @@
 		3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicViewController.swift; sourceTree = "<group>"; };
 		3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewCell.swift; sourceTree = "<group>"; };
 		319FD50620D1A98E0071F993 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
-		31EECFE8211B65320099066C /* Suno-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		31EECFEB211B65320099066C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
-		31EECFED211B65330099066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		31EECFEF211B65330099066C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		31EECFF4211B65330099066C /* Suno-Watch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Suno-Watch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		31EECFF9211B65330099066C /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
-		31EECFFB211B65330099066C /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		31EECFFD211B65330099066C /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		31EECFFF211B65330099066C /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
-		31EED001211B65330099066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		31EED003211B65330099066C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		31EED004211B65330099066C /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
 		31F57B50211A14D100777EA3 /* Suno-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,13 +91,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		31EECFF1211B65330099066C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		31F57B4D211A14D100777EA3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -181,30 +127,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		31EECFE9211B65320099066C /* Suno-Watch */ = {
-			isa = PBXGroup;
-			children = (
-				31EECFEA211B65320099066C /* Interface.storyboard */,
-				31EECFED211B65330099066C /* Assets.xcassets */,
-				31EECFEF211B65330099066C /* Info.plist */,
-			);
-			path = "Suno-Watch";
-			sourceTree = "<group>";
-		};
-		31EECFF8211B65330099066C /* Suno-Watch Extension */ = {
-			isa = PBXGroup;
-			children = (
-				31EECFF9211B65330099066C /* InterfaceController.swift */,
-				31EECFFB211B65330099066C /* ExtensionDelegate.swift */,
-				31EECFFD211B65330099066C /* NotificationController.swift */,
-				31EECFFF211B65330099066C /* ComplicationController.swift */,
-				31EED001211B65330099066C /* Assets.xcassets */,
-				31EED003211B65330099066C /* Info.plist */,
-				31EED004211B65330099066C /* PushNotificationPayload.apns */,
-			);
-			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
 		};
 		31F57B51211A14D100777EA3 /* MacApp */ = {
@@ -246,8 +168,6 @@
 				31F57B51211A14D100777EA3 /* MacApp */,
 				31F57B64211A14D300777EA3 /* MacAppTests */,
 				31F57B6F211A14D300777EA3 /* MacAppUITests */,
-				31EECFE9211B65320099066C /* Suno-Watch */,
-				31EECFF8211B65330099066C /* Suno-Watch Extension */,
 				5EBF650F1F0AA47700BCD353 /* Products */,
 				3179722E21578148006495E3 /* Frameworks */,
 			);
@@ -260,8 +180,6 @@
 				31F57B50211A14D100777EA3 /* Suno-Mac.app */,
 				31F57B61211A14D300777EA3 /* MacAppTests.xctest */,
 				31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */,
-				31EECFE8211B65320099066C /* Suno-Watch.app */,
-				31EECFF4211B65330099066C /* Suno-Watch Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -290,40 +208,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		31EECFE7211B65320099066C /* Suno-Watch */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 31EED00E211B65330099066C /* Build configuration list for PBXNativeTarget "Suno-Watch" */;
-			buildPhases = (
-				31EECFE6211B65320099066C /* Resources */,
-				31EED00D211B65330099066C /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				31E6756E2157B72600405238 /* PBXTargetDependency */,
-			);
-			name = "Suno-Watch";
-			productName = "Suno-Watch";
-			productReference = 31EECFE8211B65320099066C /* Suno-Watch.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
-		31EECFF3211B65330099066C /* Suno-Watch Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 31EED00C211B65330099066C /* Build configuration list for PBXNativeTarget "Suno-Watch Extension" */;
-			buildPhases = (
-				31EECFF0211B65330099066C /* Sources */,
-				31EECFF1211B65330099066C /* Frameworks */,
-				31EECFF2211B65330099066C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Suno-Watch Extension";
-			productName = "Suno-Watch Extension";
-			productReference = 31EECFF4211B65330099066C /* Suno-Watch Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
 		31F57B4F211A14D100777EA3 /* Suno-Mac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno-Mac" */;
@@ -389,7 +273,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				31E6756C2157B72000405238 /* PBXTargetDependency */,
 			);
 			name = Suno;
 			productName = testVision;
@@ -406,14 +289,6 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Adam Behringer";
 				TargetAttributes = {
-					31EECFE7211B65320099066C = {
-						CreatedOnToolsVersion = 9.4;
-						ProvisioningStyle = Automatic;
-					};
-					31EECFF3211B65330099066C = {
-						CreatedOnToolsVersion = 9.4;
-						ProvisioningStyle = Automatic;
-					};
 					31F57B4F211A14D100777EA3 = {
 						CreatedOnToolsVersion = 9.4;
 						ProvisioningStyle = Automatic;
@@ -460,30 +335,11 @@
 				31F57B4F211A14D100777EA3 /* Suno-Mac */,
 				31F57B60211A14D300777EA3 /* MacAppTests */,
 				31F57B6B211A14D300777EA3 /* MacAppUITests */,
-				31EECFE7211B65320099066C /* Suno-Watch */,
-				31EECFF3211B65330099066C /* Suno-Watch Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		31EECFE6211B65320099066C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				31EECFEE211B65330099066C /* Assets.xcassets in Resources */,
-				31EECFEC211B65320099066C /* Interface.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		31EECFF2211B65330099066C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				31EED002211B65330099066C /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		31F57B4E211A14D100777EA3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -520,17 +376,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		31EECFF0211B65330099066C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				31EECFFE211B65330099066C /* NotificationController.swift in Sources */,
-				31EED000211B65330099066C /* ComplicationController.swift in Sources */,
-				31EECFFC211B65330099066C /* ExtensionDelegate.swift in Sources */,
-				31EECFFA211B65330099066C /* InterfaceController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		31F57B4C211A14D100777EA3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -576,16 +421,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		31E6756C2157B72000405238 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 31EECFE7211B65320099066C /* Suno-Watch */;
-			targetProxy = 31E6756B2157B72000405238 /* PBXContainerItemProxy */;
-		};
-		31E6756E2157B72600405238 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 31EECFF3211B65330099066C /* Suno-Watch Extension */;
-			targetProxy = 31E6756D2157B72600405238 /* PBXContainerItemProxy */;
-		};
 		31F57B63211A14D300777EA3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 31F57B4F211A14D100777EA3 /* Suno-Mac */;
@@ -599,14 +434,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		31EECFEA211B65320099066C /* Interface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				31EECFEB211B65320099066C /* Base */,
-			);
-			name = Interface.storyboard;
-			sourceTree = "<group>";
-		};
 		31F57B58211A14D300777EA3 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -634,100 +461,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		31EED008211B65330099066C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B66JCRW7R4;
-				IBSC_MODULE = Suno_Watch_Extension;
-				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
-			};
-			name = Debug;
-		};
-		31EED009211B65330099066C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B66JCRW7R4;
-				IBSC_MODULE = Suno_Watch_Extension;
-				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
-			};
-			name = Release;
-		};
-		31EED00A211B65330099066C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B66JCRW7R4;
-				INFOPLIST_FILE = "Suno-Watch Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
-			};
-			name = Debug;
-		};
-		31EED00B211B65330099066C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B66JCRW7R4;
-				INFOPLIST_FILE = "Suno-Watch Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
-			};
-			name = Release;
-		};
 		31F57B74211A14D300777EA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1012,24 +745,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		31EED00C211B65330099066C /* Build configuration list for PBXNativeTarget "Suno-Watch Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				31EED00A211B65330099066C /* Debug */,
-				31EED00B211B65330099066C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		31EED00E211B65330099066C /* Build configuration list for PBXNativeTarget "Suno-Watch" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				31EED008211B65330099066C /* Debug */,
-				31EED009211B65330099066C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno-Mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -66,9 +66,9 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     var mcNearbyServiceBrowser: MCNearbyServiceBrowser!
     
-    // MARK: Bluetooth: Not in use right now. Wifi only as we need WiFi for speech recognition
-    var manager:CBCentralManager!
-    var isBluetoothOn = false
+    // MARK: Bluetooth check
+    var cbCentralManager:CBCentralManager!
+    var isBluetoothOn = true //Default=true by design. If we are not sure what the value is, we should still allow user to connect
     
     // MARK: Speech Recognition Properties
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
@@ -169,13 +169,25 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
         else if action == Action.UserSelectedTyping && currentState.last == State.PromptUserRole {
             currentState.popLast() //Prompt User Role
-            currentState.append(State.Hosting)
-            enterStateHosting()
+            //Only checking bluetooth right now, not Wifi
+            if isBluetoothOn {
+                currentState.append(State.Hosting)
+                enterStateHosting()
+            }
+            else {
+                dialogOK(title: "Bluetooth is off", message: "Bluetooth should be ON before starting a conversation session")
+            }
         }
         else if action == Action.UserSelectedSpeaking && currentState.last == State.PromptUserRole {
             currentState.popLast() //Prompt User Role
-            currentState.append(State.OpenedSessionBrowser)
-            enterStateOpenedSessionBrowser()
+            //Only checking bluetooth right now, not Wifi
+            if isBluetoothOn {
+                currentState.append(State.OpenedSessionBrowser)
+                enterStateOpenedSessionBrowser()
+            }
+            else {
+                dialogOK(title: "Bluetooth is off", message: "Bluetooth should be ON before starting a conversation session")
+            }
         }
         else if action == Action.UserPrmoptCancelled && currentState.last == State.PromptUserRole {
             while currentState.last != State.Idle {
@@ -259,7 +271,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        currentState.append(State.SubscriptionNotPaid)
+        //currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.Idle) //Push
         changeState(action: Action.AppOpened)
         
@@ -279,8 +291,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         mcSession.delegate = self
         
         //Setup bluetooth check
-        manager          = CBCentralManager()
-        manager.delegate = self
+        cbCentralManager          = CBCentralManager()
+        cbCentralManager.delegate = self
         
     }
     
@@ -349,9 +361,14 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             var isFinal = false
             
             if let result = result {
-                self.textViewTop?.text = result.bestTranscription.formattedString
-                self.textViewBottom.text = result.bestTranscription.formattedString
-                self.sendText(text: result.bestTranscription.formattedString)
+                if self.currentState.last != State.Reading {
+                    self.textViewTop?.text = result.bestTranscription.formattedString
+                    self.textViewBottom.text = result.bestTranscription.formattedString
+                }
+                if self.currentState.contains(State.ConnectedSpeaking) && self.currentState.last == State.Speaking {
+                    self.sendText(text: result.bestTranscription.formattedString)
+                }
+                
                 if self.textViewBottom.text.count > 0 {
                     let location = self.textViewBottom.text.count - 1
                     let bottom = NSMakeRange(location, 1)
