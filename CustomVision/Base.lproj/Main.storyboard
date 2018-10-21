@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -272,8 +271,16 @@
                             <outletCollection property="gestureRecognizers" destination="f0r-CZ-SB0" appends="YES" id="HEa-Pa-dn5"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" title="Suno" id="JIo-Tu-o0D"/>
+                    <navigationItem key="navigationItem" title="Suno" id="JIo-Tu-o0D">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" style="plain" systemItem="bookmarks" id="hPh-Z7-wtd">
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="helpBarButtonItemTapped:" destination="1hE-gn-uSX" id="zcM-Ee-kaq"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="helpBarButtonItem" destination="hPh-Z7-wtd" id="535-1E-qMr"/>
                         <outlet property="longPressLabel" destination="5ex-gU-cqF" id="6hr-hR-SN6"/>
                         <outlet property="recordButton" destination="hQ1-aS-4qY" id="5qX-pj-gox"/>
                         <outlet property="recordLabel" destination="Z2R-uD-B4J" id="jPy-vq-rXn"/>

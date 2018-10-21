@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseAnalytics
 
 public class HelpTopicsTableViewController: UITableViewController {
     
@@ -27,6 +28,8 @@ public class HelpTopicsTableViewController: UITableViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.title = "Help Topics"
         
         helpTopics.append(HelpTopic(
             question: "I can hear and speak and I would like to record a message for my hearing-impaired friend",
@@ -105,8 +108,26 @@ public class HelpTopicsTableViewController: UITableViewController {
     
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.destination is HelpTopicViewController {
+            Analytics.logEvent("se3_help_question_selected", parameters: [
+                "os_version": UIDevice.current.systemVersion,
+                "device_type": getDeviceType(),
+                "question": helpTopics[selectedIndex].question.prefix(100)
+                ])
             let vc = segue.destination as? HelpTopicViewController
             vc?.answer = helpTopics[selectedIndex].answer
+        }
+    }
+    
+    func getDeviceType() -> String {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .phone:
+            return "iPhone"
+        case .pad:
+            return "iPad"
+        case .unspecified:
+            return "unspecified"
+        default:
+            return "unknown"
         }
     }
 }

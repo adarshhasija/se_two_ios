@@ -1,0 +1,6 @@
+framework module Pods_Suno {
+  umbrella header "Pods-Suno-umbrella.h"
+
+  export *
+  module * { export * }
+}

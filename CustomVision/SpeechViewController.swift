@@ -11,6 +11,7 @@ import Speech
 import MultipeerConnectivity
 import SystemConfiguration
 import CoreBluetooth
+import FirebaseAnalytics
 
 public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceBrowserDelegate, UITextViewDelegate, CBCentralManagerDelegate {
     
@@ -38,6 +39,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         case Tap
         case SwipeUp
         case SwipeLeft
+        case BarButtonHelpTapped
         case LongPress
         
         case UserPrmoptCancelled
@@ -55,6 +57,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     }
 
     // MARK: Properties
+    let networkManager = NetworkManager.sharedInstance
     var currentState: [State] = []
     var seconds = 60
     var timer = Timer()
@@ -77,6 +80,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     private let audioEngine = AVAudioEngine()
     
     // MARK: UI Properties
+    @IBOutlet weak var helpBarButtonItem: UIBarButtonItem! //To make this visible again, in storyboard, set Enabled to true + set Tint to Default
     @IBOutlet var mainView : UIView?
     @IBOutlet var textViewTop : UITextView?
     @IBOutlet var textViewBottom : UITextView!
@@ -88,6 +92,11 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     @IBOutlet weak var swipeLeftLabel: UILabel!
     
     // MARK: Interface Builder actions
+    
+    
+    @IBAction func helpBarButtonItemTapped(_ sender: Any) {
+        changeState(action: Action.BarButtonHelpTapped)
+    }
     
     @IBAction func tapGesture() {
         changeState(action: Action.Tap)
@@ -112,10 +121,18 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     
     // MARK: State Machine
     private func changeState(action : Action) {
+        //All events logged without parameters are temporary. Will be removed once we analyze events better
+        Analytics.logEvent("se3_change_state", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "device_type": getDeviceType(),
+            "action": action.rawValue,
+            "current_state": currentState.last?.rawValue
+            ])
         if action == Action.AppOpened {
             enterStateIdle()
         }
         else if action == Action.Tap && currentState.last == State.Idle {
+            Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
             currentState.append(State.Speaking)
             enterStateSpeaking()
@@ -136,14 +153,17 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 enterStateReading()
             }
         }
-        else if action == Action.SwipeLeft && currentState.last == State.Idle {
+        else if (action == Action.SwipeLeft || action == Action.BarButtonHelpTapped) && currentState.last == State.Idle {
+            Analytics.logEvent("se3_help_topics", parameters: [:])
             performSegue(withIdentifier: "segueHelpTopics", sender: nil)
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
+            Analytics.logEvent("se3_typing_not_connected", parameters: [:])
             currentState.append(State.Typing)
             enterStateTyping()
         }
         else if action == Action.LongPress && currentState.last == State.Idle {
+            Analytics.logEvent("se3_long_press_not_connected", parameters: [:])
             currentState.append(State.PromptUserRole)
             enterStatePromptUserRole()
         }
@@ -175,6 +195,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 enterStateHosting()
             }
             else {
+                Analytics.logEvent("se3_connecting_bluetooth_off", parameters: [:])
                 dialogOK(title: "Bluetooth is off", message: "Bluetooth should be ON before starting a conversation session")
             }
         }
@@ -186,6 +207,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 enterStateOpenedSessionBrowser()
             }
             else {
+                Analytics.logEvent("se3_connecting_bluetooth_off", parameters: [:])
                 dialogOK(title: "Bluetooth is off", message: "Bluetooth should be ON before starting a conversation session")
             }
         }
@@ -195,6 +217,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             }
         }
         else if action == Action.ReceivedConnection && currentState.last == State.Hosting {
+            Analytics.logEvent("se3_connected_hosting", parameters: [:])
             currentState.popLast()
             currentState.append(State.ConnectedTyping)
             currentState.append(State.Typing)
@@ -203,6 +226,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             enterStateTyping()
         }
         else if action == Action.ReceivedConnection && (currentState.last == State.BrowsingForPeers || currentState.last == State.OpenedSessionBrowser) {
+            Analytics.logEvent("se3_connected_not_hosting", parameters: [:])
             currentState.popLast()
             currentState.append(State.ConnectedSpeaking)
             currentState.append(State.Reading)
@@ -717,8 +741,9 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     // MARK: General Private Helpers
     
     func hasInternetConnection() -> Bool {
+        return networkManager.reachability.connection == .wifi || networkManager.reachability.connection == .cellular
       //  guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
-        var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
+     /*   var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
         
@@ -734,7 +759,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             // Device doesn't have internet connection
             return false
         }
-        return true
+        return true */
     }
     
     func isNetworkReachable(with flags: SCNetworkReachabilityFlags) -> Bool {
@@ -744,6 +769,19 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         let canConnectWithoutUserInteraction = canConnectAutomatically && !flags.contains(.interventionRequired)
         
         return isReachable && (!needsConnection || canConnectWithoutUserInteraction)
+    }
+    
+    func getDeviceType() -> String {
+        switch UIDevice.current.userInterfaceIdiom {
+            case .phone:
+                return "iPhone"
+            case .pad:
+                return "iPad"
+            case .unspecified:
+                return "unspecified"
+            default:
+                return "unknown"
+        }
     }
     
     func dialogOK(title: String, message: String) {
@@ -879,6 +917,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         seconds -= 1     //This will decrement(count down)the seconds.
         timerLabel?.text = timeString(time: TimeInterval(seconds)) //This will update the label.
         if seconds < 1 {
+            Analytics.logEvent("se3_timer_finished", parameters: [:])
             resetTimer()
             tapGesture() //this should stop the recording
         }

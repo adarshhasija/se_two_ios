@@ -7,10 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22D2C163A464B8AA5B31A8D1 /* Pods_Suno.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */; };
 		312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 312A4ED920D274B100767B49 /* Rupees.mlmodel */; };
 		317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */; };
 		3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */; };
 		3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */; };
+		31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31798DFC217B9E66008CF9C7 /* NetworkManager.swift */; };
+		31798DFE217C2843008CF9C7 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31798DFC217B9E66008CF9C7 /* NetworkManager.swift */; };
+		31798E00217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
+		31798E01217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
+		31798E02217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
+		31798E03217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
 		319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319FD50620D1A98E0071F993 /* ARViewController.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
 		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
@@ -26,6 +33,7 @@
 		5EBF651C1F0AA47700BCD353 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EBF651A1F0AA47700BCD353 /* LaunchScreen.storyboard */; };
 		76B5ACDE1F159C7500EE183D /* BubbleLabelLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5ACDD1F159C7500EE183D /* BubbleLabelLayer.swift */; };
 		76C510BC1F1587C60049422A /* BubbleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C510BB1F1587C60049422A /* BubbleLayer.swift */; };
+		84054D1218A151615B85E1A0 /* Pods_Suno_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD2D6E2825DA333FE102C056 /* Pods_Suno_Mac.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,10 +67,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00A518D03A10503E18B775E7 /* Pods-Suno.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno/Pods-Suno.release.xcconfig"; sourceTree = "<group>"; };
 		312A4ED920D274B100767B49 /* Rupees.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Rupees.mlmodel; sourceTree = SOURCE_ROOT; };
 		317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewController.swift; sourceTree = "<group>"; };
 		3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicViewController.swift; sourceTree = "<group>"; };
 		3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewCell.swift; sourceTree = "<group>"; };
+		31798DFC217B9E66008CF9C7 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		319FD50620D1A98E0071F993 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +90,7 @@
 		31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31F57B70211A14D300777EA3 /* MacAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAppUITests.swift; sourceTree = "<group>"; };
 		31F57B72211A14D300777EA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3C8A668BA37BAC8691CCD5D4 /* Pods-Suno-Mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno-Mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno-Mac/Pods-Suno-Mac.release.xcconfig"; sourceTree = "<group>"; };
 		5EBF650E1F0AA47700BCD353 /* Suno.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Suno.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EBF65111F0AA47700BCD353 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EBF65131F0AA47700BCD353 /* VisionMLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionMLViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +100,10 @@
 		5EBF651D1F0AA47700BCD353 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76B5ACDD1F159C7500EE183D /* BubbleLabelLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleLabelLayer.swift; sourceTree = "<group>"; };
 		76C510BB1F1587C60049422A /* BubbleLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleLayer.swift; sourceTree = "<group>"; };
+		7FADC355228EAF265EC43166 /* Pods-Suno.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Suno/Pods-Suno.debug.xcconfig"; sourceTree = "<group>"; };
+		CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Suno.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD2D6E2825DA333FE102C056 /* Pods_Suno_Mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Suno_Mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F77037D3310DFFE5F32959EE /* Pods-Suno-Mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno-Mac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Suno-Mac/Pods-Suno-Mac.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84054D1218A151615B85E1A0 /* Pods_Suno_Mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22D2C163A464B8AA5B31A8D1 /* Pods_Suno.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +143,8 @@
 		3179722E21578148006495E3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */,
+				DD2D6E2825DA333FE102C056 /* Pods_Suno_Mac.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -170,6 +190,7 @@
 				31F57B6F211A14D300777EA3 /* MacAppUITests */,
 				5EBF650F1F0AA47700BCD353 /* Products */,
 				3179722E21578148006495E3 /* Frameworks */,
+				CF534DF30A73E4E3CACE66AA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -187,6 +208,7 @@
 		5EBF65101F0AA47700BCD353 /* CustomVision */ = {
 			isa = PBXGroup;
 			children = (
+				31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */,
 				31F57B4A211A137000777EA3 /* SpeechViewController.swift */,
 				312A4ED920D274B100767B49 /* Rupees.mlmodel */,
 				5EBF65111F0AA47700BCD353 /* AppDelegate.swift */,
@@ -201,8 +223,20 @@
 				317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */,
 				3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */,
 				3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */,
+				31798DFC217B9E66008CF9C7 /* NetworkManager.swift */,
 			);
 			path = CustomVision;
+			sourceTree = "<group>";
+		};
+		CF534DF30A73E4E3CACE66AA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7FADC355228EAF265EC43166 /* Pods-Suno.debug.xcconfig */,
+				00A518D03A10503E18B775E7 /* Pods-Suno.release.xcconfig */,
+				F77037D3310DFFE5F32959EE /* Pods-Suno-Mac.debug.xcconfig */,
+				3C8A668BA37BAC8691CCD5D4 /* Pods-Suno-Mac.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +246,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 31F57B73211A14D300777EA3 /* Build configuration list for PBXNativeTarget "Suno-Mac" */;
 			buildPhases = (
+				FE5AF0784526E3ECE893CFA2 /* [CP] Check Pods Manifest.lock */,
 				31F57B4C211A14D100777EA3 /* Sources */,
 				31F57B4D211A14D100777EA3 /* Frameworks */,
 				31F57B4E211A14D100777EA3 /* Resources */,
@@ -265,10 +300,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5EBF65201F0AA47700BCD353 /* Build configuration list for PBXNativeTarget "Suno" */;
 			buildPhases = (
+				BF4E008EBC2853555C8DFDB6 /* [CP] Check Pods Manifest.lock */,
 				5EBF650A1F0AA47700BCD353 /* Sources */,
 				5EBF650B1F0AA47700BCD353 /* Frameworks */,
 				5EBF650C1F0AA47700BCD353 /* Resources */,
 				31EED00F211B65330099066C /* Embed Watch Content */,
+				920B3885A0A784B409D916B3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -346,6 +383,7 @@
 			files = (
 				31F57B57211A14D300777EA3 /* Assets.xcassets in Resources */,
 				31F57B5A211A14D300777EA3 /* Main.storyboard in Resources */,
+				31798E01217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +391,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31798E02217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +399,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31798E03217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +408,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EBF651C1F0AA47700BCD353 /* LaunchScreen.storyboard in Resources */,
+				31798E00217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */,
 				5EBF65191F0AA47700BCD353 /* Assets.xcassets in Resources */,
 				5EBF65171F0AA47700BCD353 /* Main.storyboard in Resources */,
 			);
@@ -375,11 +416,85 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		920B3885A0A784B409D916B3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Suno/Pods-Suno-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Suno/Pods-Suno-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BF4E008EBC2853555C8DFDB6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Suno-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FE5AF0784526E3ECE893CFA2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Suno-Mac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		31F57B4C211A14D100777EA3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31798DFE217C2843008CF9C7 /* NetworkManager.swift in Sources */,
 				31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */,
 				31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */,
 			);
@@ -409,6 +524,7 @@
 				76C510BC1F1587C60049422A /* BubbleLayer.swift in Sources */,
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */,
+				31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */,
 				319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */,
 				317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */,
 				3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */,
@@ -463,6 +579,7 @@
 /* Begin XCBuildConfiguration section */
 		31F57B74211A14D300777EA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F77037D3310DFFE5F32959EE /* Pods-Suno-Mac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -487,6 +604,7 @@
 		};
 		31F57B75211A14D300777EA3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C8A668BA37BAC8691CCD5D4 /* Pods-Suno-Mac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -712,6 +830,7 @@
 		};
 		5EBF65211F0AA47700BCD353 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7FADC355228EAF265EC43166 /* Pods-Suno.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
@@ -728,6 +847,7 @@
 		};
 		5EBF65221F0AA47700BCD353 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 00A518D03A10503E18B775E7 /* Pods-Suno.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
