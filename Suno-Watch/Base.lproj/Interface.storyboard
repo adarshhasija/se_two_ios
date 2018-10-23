@@ -19,15 +19,9 @@
                             </connections>
                         </button>
                         <label width="1" alignment="left" text="Label" numberOfLines="0" id="zSe-Ft-laT"/>
-                        <button width="1" alignment="left" title="Start Session" id="046-iB-sy7">
-                            <connections>
-                                <action selector="startSessionButtonTapped" destination="AgC-eL-Hgc" id="qhq-6m-zrU"/>
-                            </connections>
-                        </button>
                     </items>
                     <connections>
                         <outlet property="mainText" destination="zSe-Ft-laT" id="hcS-o5-LkF"/>
-                        <outlet property="startSessionButton" destination="046-iB-sy7" id="SbO-wq-w7W"/>
                         <outlet property="typeButton" destination="XLI-c3-8H7" id="rJn-LV-vts"/>
                     </connections>
                 </controller>

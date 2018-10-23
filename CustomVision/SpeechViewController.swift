@@ -12,6 +12,7 @@ import MultipeerConnectivity
 import SystemConfiguration
 import CoreBluetooth
 import FirebaseAnalytics
+import WatchConnectivity
 
 public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceBrowserDelegate, UITextViewDelegate, CBCentralManagerDelegate {
     
@@ -317,6 +318,13 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         //Setup bluetooth check
         cbCentralManager          = CBCentralManager()
         cbCentralManager.delegate = self
+        
+        //Setup watch connectivity
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
         
     }
     
@@ -976,5 +984,40 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     }
     
     
+}
+
+
+extension SpeechViewController : WCSessionDelegate {
+    public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        
+    }
+    
+    public func sessionDidBecomeInactive(_ session: WCSession) {
+        
+    }
+    
+    public func sessionDidDeactivate(_ session: WCSession) {
+        
+    }
+    
+    
+    public func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        guard let request = message["request"] as? String else {
+            replyHandler([:])
+            return
+        }
+        
+        if currentState.last == State.Idle {
+            self.textViewBottom?.text = request
+        }
+        
+        //replyHandler(["test":"hello world"])
+        
+       /* let state = UIApplication.shared.applicationState
+        if state == .active {
+            // foreground
+            
+        }   */
+    }
 }
 
