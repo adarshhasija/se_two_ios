@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14313.18" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14238.10"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Suno_Watch" customModuleProvider="target">
+                    <items>
+                        <button width="1" alignment="left" title="Type Something" id="XLI-c3-8H7">
+                            <connections>
+                                <action selector="typeButtonTapped" destination="AgC-eL-Hgc" id="mD4-qm-bDK"/>
+                            </connections>
+                        </button>
+                        <label width="1" alignment="left" text="Label" numberOfLines="0" id="zSe-Ft-laT"/>
+                        <button width="1" alignment="left" title="Start Session" id="046-iB-sy7">
+                            <connections>
+                                <action selector="startSessionButtonTapped" destination="AgC-eL-Hgc" id="qhq-6m-zrU"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="mainText" destination="zSe-Ft-laT" id="hcS-o5-LkF"/>
+                        <outlet property="startSessionButton" destination="046-iB-sy7" id="SbO-wq-w7W"/>
+                        <outlet property="typeButton" destination="XLI-c3-8H7" id="rJn-LV-vts"/>
+                    </connections>
+                </controller>
+            </objects>
+        </scene>
+    </scenes>
+</document>
