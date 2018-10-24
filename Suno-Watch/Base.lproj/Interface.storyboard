@@ -18,10 +18,12 @@
                                 <action selector="typeButtonTapped" destination="AgC-eL-Hgc" id="mD4-qm-bDK"/>
                             </connections>
                         </button>
-                        <label width="1" alignment="left" text="Label" numberOfLines="0" id="zSe-Ft-laT"/>
+                        <label width="1" alignment="left" text="Main Text" numberOfLines="0" id="zSe-Ft-laT"/>
+                        <label width="1" alignment="left" text="Send Status" textAlignment="center" numberOfLines="0" id="mSE-FO-9iK"/>
                     </items>
                     <connections>
                         <outlet property="mainText" destination="zSe-Ft-laT" id="hcS-o5-LkF"/>
+                        <outlet property="statusText" destination="mSE-FO-9iK" id="fu9-xJ-ICV"/>
                         <outlet property="typeButton" destination="XLI-c3-8H7" id="rJn-LV-vts"/>
                     </connections>
                 </controller>

@@ -1007,17 +1007,30 @@ extension SpeechViewController : WCSessionDelegate {
             return
         }
         
-        if currentState.last == State.Idle {
-            self.textViewBottom?.text = request
-        }
-        
-        //replyHandler(["test":"hello world"])
-        
-       /* let state = UIApplication.shared.applicationState
+       let state = UIApplication.shared.applicationState
         if state == .active {
-            // foreground
-            
-        }   */
+            if currentState.last == State.Idle {
+                // foreground
+                //Use this to update the UI instantaneously (otherwise, takes a little while)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.textViewBottom?.text = request
+                })
+                replyHandler(["response":"Success: Message displayed on iPhone"])
+            }
+            else if currentState.contains(State.ConnectedSpeaking) || currentState.contains(State.ConnectedSpeaking) {
+                replyHandler(["response":"Fail: iPhone is in conversation session. Message not displayed"])
+            }
+            else if currentState.last == State.Speaking {
+                replyHandler(["response":"Fail: User is speaking into iPhone. Message not displayed"])
+            }
+            else if currentState.last == State.Typing {
+                replyHandler(["response":"Fail: User is typing on iPhone. Message not displayed"])
+            }
+        }
+        else {
+            //App is not in foreground
+            replyHandler(["response":"Fail: App is not open on iPhone. Message not displayed"])
+        }
     }
 }
 

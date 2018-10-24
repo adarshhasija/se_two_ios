@@ -27,6 +27,7 @@ class InterfaceController: WKInterfaceController {
     
     /// UI Properties
     @IBOutlet weak var mainText: WKInterfaceLabel!
+    @IBOutlet weak var statusText: WKInterfaceLabel!
     @IBOutlet weak var typeButton: WKInterfaceButton!
     
     
@@ -78,9 +79,12 @@ class InterfaceController: WKInterfaceController {
     func goToStateIdle() {
         mainText?.setHidden(false)
         mainText?.setText("Tap the button above to type a message. You can either show the watch to someone so they can read the message, or open the Suno app on your iPhone and show the message there. The other person can reply on your iPhone and the message will appear on your watch. Note that the message will not appear on the iPhone if the phone is connected to another device in a conversation session.")
+        statusText?.setHidden(true)
     }
     
     func goToStateTyping() {
+        self.statusText?.setHidden(true)
+        
         presentTextInputController(withSuggestions: ["I am hearing-impaired. I have a doubt. Can I ask you?", "Sorry I did not understand that"], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if let input = (result as [Any]?)?[0] as? String {
@@ -89,13 +93,30 @@ class InterfaceController: WKInterfaceController {
                 self.changeState(action: Action.TypistFinishedTyping)
                 if WCSession.isSupported() {
                     let session = WCSession.default
-                    session.sendMessage(["request":input], replyHandler: { response in
-                        //self.mainText?.setText("Success")
-                        //self.mainText?.setHidden(false)
+                    session.sendMessage(["request":input], replyHandler: { message in
+                        guard let phoneResponse = message["response"] as? String else {
+                            return
+                        }
+                        
+                        if phoneResponse.contains("Success") {
+                            self.statusText?.setTextColor(UIColor.green)
+                        }
+                        else {
+                            self.statusText?.setTextColor(UIColor.red)
+                        }
+                        
+                        self.statusText?.setText(
+                            phoneResponse
+                                .replacingOccurrences(of: "Success: ", with: "")
+                                .replacingOccurrences(of: "Fail: ", with: "")
+                        )
+                        self.statusText?.setHidden(false)
+                        
+                        
                     }, errorHandler: { error in
-                        self.mainText?.setText("Failure")
-                        self.mainText?.setHidden(false)
-                    })
+                        self.statusText?.setText("Sorry, failed to send to iPhone")
+                        self.statusText?.setHidden(false)
+                    })  
                 }
             }
         })
