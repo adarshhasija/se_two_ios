@@ -160,6 +160,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
+            sendTextToWatch(text: "Response: User is typing on iPhone. Please wait...")
             currentState.append(State.Typing)
             enterStateTyping()
         }
@@ -259,7 +260,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             enterStateListening()
         }
         else if action == Action.TypistFinishedTyping {
-            //Not connected to other device
+            sendTextToWatch(text: self.textViewBottom?.text)
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
@@ -960,6 +961,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         
     }
     
+    //Send to iOS/macOS device via MultipeerConnectivity
     func sendText(text: String?) {
         if mcSession.connectedPeers.count > 0 {
             if let textData = text?.data(using: .utf8) {
@@ -970,6 +972,13 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                     print("Error: \(error.localizedDescription)")
                 }
             }
+        }
+    }
+    
+    func sendTextToWatch(text: String!) {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.sendMessage(["request":text], replyHandler: nil, errorHandler: nil)
         }
     }
     

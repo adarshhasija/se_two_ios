@@ -46,6 +46,13 @@ class InterfaceController: WKInterfaceController {
         }
         else if action == Action.TapTypingButton && currentState.last == State.Idle {
             currentState.append(State.Typing)
+            self.statusText?.setHidden(true)
+            if WCSession.isSupported() {
+                let session = WCSession.default
+                session.sendMessage(["request":"User is typing on watch. Please wait..."],
+                                    replyHandler: { message in }, errorHandler: { error in })
+            }
+            
             goToStateTyping()
         }
         else if action == Action.TypistFinishedTyping {
@@ -60,6 +67,11 @@ class InterfaceController: WKInterfaceController {
         super.awake(withContext: context)
         
         // Configure interface objects here.
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
     }
     
     override func willActivate() {
@@ -83,8 +95,6 @@ class InterfaceController: WKInterfaceController {
     }
     
     func goToStateTyping() {
-        self.statusText?.setHidden(true)
-        
         presentTextInputController(withSuggestions: ["I am hearing-impaired. I have a doubt. Can I ask you?", "Sorry I did not understand that"], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if let input = (result as [Any]?)?[0] as? String {
@@ -114,12 +124,43 @@ class InterfaceController: WKInterfaceController {
                         
                         
                     }, errorHandler: { error in
-                        self.statusText?.setText("Sorry, failed to send to iPhone")
-                        self.statusText?.setHidden(false)
+                        //self.statusText?.setText("Sorry, failed to send to iPhone")
+                        self.statusText?.setHidden(true)
                     })  
                 }
             }
         })
     }
 
+}
+
+extension InterfaceController : WCSessionDelegate {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        
+    }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        guard let request = message["request"] as? String else {
+            return
+        }
+        
+        let state = WKExtension.shared().applicationState
+        if state == .active {
+            if request.contains("Response: ") {
+                self.typeButton?.setHidden(true)
+                self.statusText?.setHidden(true)
+            }
+            else {
+                self.typeButton?.setHidden(false)
+            }
+            
+            self.mainText?.setText(
+                request.replacingOccurrences(of: "Response: ", with: "")
+            )
+            self.mainText?.setHidden(false)
+        }
+        
+    }
+    
+    
 }
