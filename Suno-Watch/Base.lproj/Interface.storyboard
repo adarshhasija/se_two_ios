@@ -13,7 +13,7 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Suno_Watch" customModuleProvider="target">
                     <items>
-                        <button width="1" alignment="left" title="Type Something" id="XLI-c3-8H7">
+                        <button width="1" alignment="left" title="New Message" id="XLI-c3-8H7">
                             <connections>
                                 <action selector="typeButtonTapped" destination="AgC-eL-Hgc" id="mD4-qm-bDK"/>
                             </connections>

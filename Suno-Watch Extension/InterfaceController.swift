@@ -90,7 +90,7 @@ class InterfaceController: WKInterfaceController {
     /// Private Helpers - State Machine
     func goToStateIdle() {
         mainText?.setHidden(false)
-        mainText?.setText("Tap the button above to type a message. You can either show the watch to someone so they can read the message, or open the Suno app on your iPhone and show the message there. The other person can reply on your iPhone and the message will appear on your watch. Note that the message will not appear on the iPhone if the phone is connected to another device in a conversation session.")
+        mainText?.setText("Tap the button above to type a message. You can either show the watch to someone so they can read the message, or open the Suno app on your iPhone and show the message there. The other person can reply on your iPhone and the message will appear on your watch.")
         statusText?.setHidden(true)
     }
     
@@ -150,13 +150,21 @@ extension InterfaceController : WCSessionDelegate {
                 self.typeButton?.setHidden(true)
                 self.statusText?.setHidden(true)
             }
+            else if request.contains("USER_SPEAKING_COMPLETE") {
+                self.typeButton?.setHidden(false)
+                self.statusText?.setHidden(false)
+            }
             else {
                 self.typeButton?.setHidden(false)
+                self.statusText?.setHidden(true)
             }
             
-            self.mainText?.setText(
-                request.replacingOccurrences(of: "Response: ", with: "")
-            )
+            if !request.contains("USER_SPEAKING_COMPLETE") {
+                self.mainText?.setText(
+                    request.replacingOccurrences(of: "Response: ", with: "")
+                )
+            }
+            
             self.mainText?.setHidden(false)
         }
         
