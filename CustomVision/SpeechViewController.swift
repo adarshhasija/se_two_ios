@@ -135,7 +135,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         else if action == Action.Tap && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
-            sendTextToWatch(text: "Status: User is speaking on iPhone. Please wait...")
+            sendTextToWatch(text: "Status: User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
             currentState.append(State.Speaking)
             enterStateSpeaking()
         }
@@ -148,7 +148,6 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             exitStateSpeaking()
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
-                sendTextToWatch(text: "USER_SPEAKING_COMPLETE")
             }
             else if currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking {
                 sendText(text: "\n") //Send to other other to confirm that speaking is done
@@ -162,7 +161,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
-            sendTextToWatch(text: "Status: User is typing on iPhone. Please wait...")
+            sendTextToWatch(text: "Status: User is typing on iPhone. Please wait. Tell them to tap screen when done.")
             currentState.append(State.Typing)
             enterStateTyping()
         }
@@ -403,10 +402,12 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 if self.currentState.last != State.Reading {
                     self.textViewTop?.text = result.bestTranscription.formattedString
                     self.textViewBottom?.text = result.bestTranscription.formattedString
-                    self.sendTextToWatch(text: "USER_SPEAKING: " + result.bestTranscription.formattedString)
                 }
                 if self.currentState.contains(State.ConnectedSpeaking) && self.currentState.last == State.Speaking {
                     self.sendText(text: result.bestTranscription.formattedString)
+                }
+                else if self.currentState.last == State.Idle {
+                    self.sendTextToWatch(text: result.bestTranscription.formattedString)
                 }
                 
                 if self.textViewBottom.text.count > 0 {

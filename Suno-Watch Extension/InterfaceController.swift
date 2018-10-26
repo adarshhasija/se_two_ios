@@ -18,7 +18,6 @@ class InterfaceController: WKInterfaceController {
         case Idle
         case Typing
         case Receiving
-        case ReadingContent
     }
     
     enum Action :String{
@@ -26,7 +25,6 @@ class InterfaceController: WKInterfaceController {
         case TapTypingButton
         case TypistFinishedTyping
         case ReceivedUserStatus
-        case ReceivedUserSpeakingContent
         case PhoneCompletedSending
     }
     
@@ -69,10 +67,6 @@ class InterfaceController: WKInterfaceController {
             currentState.append(State.Receiving)
             goToStateReceiving()
         }
-        else if action == Action.ReceivedUserSpeakingContent && currentState.last == State.Receiving {
-            currentState.append(State.ReadingContent)
-            goToStateReadingContent()
-        }
         else if action == Action.PhoneCompletedSending && currentState.contains(State.Receiving) {
             while currentState.last != State.Idle {
                 currentState.popLast()
@@ -109,6 +103,7 @@ class InterfaceController: WKInterfaceController {
     func goToStateIdle() {
         mainText?.setHidden(false)
         mainText?.setText("Tap the button above to type a message. You can either show the watch to someone so they can read the message, or open the Suno app on your iPhone and show the message there. The other person can reply on your iPhone and the message will appear on your watch.")
+        statusText?.setText("")
         statusText?.setHidden(true)
     }
     
@@ -158,12 +153,6 @@ class InterfaceController: WKInterfaceController {
         self.statusText?.setTextColor(UIColor.green)
     }
     
-    func goToStateReadingContent() {
-        //self.typeButton?.setHidden(true)
-        //self.mainText?.setHidden(false)
-        self.statusText?.setHidden(true)
-    }
-    
     func exitStateReceiving() {
         self.typeButton?.setHidden(false)
         self.mainText?.setHidden(false)
@@ -178,13 +167,8 @@ class InterfaceController: WKInterfaceController {
                 request.replacingOccurrences(of: "Status: ", with: "")
             )
         }
-        else if request.contains("USER_SPEAKING_COMPLETE") {
-            self.statusText?.setText("User finished speaking")
-        }
         else {
-            self.mainText?.setText(
-                request.replacingOccurrences(of: "USER_SPEAKING: ", with: "")
-            )
+            self.mainText?.setText(request)
         }
     }
 
@@ -204,12 +188,6 @@ extension InterfaceController : WCSessionDelegate {
         if state == .active {
             if request.contains("Status: ") {
                 changeState(action: Action.ReceivedUserStatus)
-            }
-            else if request.contains("USER_SPEAKING_COMPLETE") {
-                changeState(action: Action.PhoneCompletedSending)
-            }
-            else if request.contains("USER_SPEAKING") {
-                changeState(action: Action.ReceivedUserSpeakingContent)
             }
             else {
                 changeState(action: Action.PhoneCompletedSending)
