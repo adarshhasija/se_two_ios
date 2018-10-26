@@ -20,10 +20,16 @@
                         </button>
                         <label width="1" alignment="left" text="Main Text" numberOfLines="0" id="zSe-Ft-laT"/>
                         <label width="1" alignment="left" text="Send Status" textAlignment="center" numberOfLines="0" id="mSE-FO-9iK"/>
+                        <button width="1" alignment="left" title="Stop" id="5WL-mg-H83">
+                            <connections>
+                                <action selector="stopButtonTapped" destination="AgC-eL-Hgc" id="mNK-iN-srC"/>
+                            </connections>
+                        </button>
                     </items>
                     <connections>
                         <outlet property="mainText" destination="zSe-Ft-laT" id="hcS-o5-LkF"/>
                         <outlet property="statusText" destination="mSE-FO-9iK" id="fu9-xJ-ICV"/>
+                        <outlet property="stopButton" destination="5WL-mg-H83" id="ily-rZ-pOL"/>
                         <outlet property="typeButton" destination="XLI-c3-8H7" id="rJn-LV-vts"/>
                     </connections>
                 </controller>

@@ -32,10 +32,12 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var mainText: WKInterfaceLabel!
     @IBOutlet weak var statusText: WKInterfaceLabel!
     @IBOutlet weak var typeButton: WKInterfaceButton!
-    
+    @IBOutlet weak var stopButton: WKInterfaceButton! //If the user is waiting for a response from iPhone and wants to stop waiting
     
     @IBAction func typeButtonTapped() {
         changeState(action: Action.TapTypingButton)
+    }
+    @IBAction func stopButtonTapped() {
     }
     
     /// Private Properties
@@ -45,17 +47,17 @@ class InterfaceController: WKInterfaceController {
     func changeState(action: Action) {
         if action == Action.AppOpened {
             currentState.append(State.Idle)
-            goToStateIdle()
+            enterStateIdle()
         }
         else if action == Action.TapTypingButton && currentState.last == State.Idle {
             self.statusText?.setHidden(true)
             if WCSession.isSupported() {
                 let session = WCSession.default
-                session.sendMessage(["request":"User is typing on watch. Please wait..."],
+                session.sendMessage(["request":"STATUS: User is entering message on watch. Please wait..."],
                                     replyHandler: { message in }, errorHandler: { error in })
             }
             currentState.append(State.Typing)
-            goToStateTyping()
+            enterStateTyping()
         }
         else if action == Action.TypistFinishedTyping {
             //go back to idle state
@@ -65,7 +67,10 @@ class InterfaceController: WKInterfaceController {
         }
         else if action == Action.ReceivedUserStatus && currentState.last == State.Idle {
             currentState.append(State.Receiving)
-            goToStateReceiving()
+            enterStateReceiving()
+        }
+        else if action == Action.ReceivedUserStatus && currentState.last == State.Receiving {
+            
         }
         else if action == Action.PhoneCompletedSending && currentState.contains(State.Receiving) {
             while currentState.last != State.Idle {
@@ -100,14 +105,16 @@ class InterfaceController: WKInterfaceController {
     
     
     /// Private Helpers - State Machine
-    func goToStateIdle() {
+    func enterStateIdle() {
+        typeButton?.setHidden(false)
         mainText?.setHidden(false)
         mainText?.setText("Tap the button above to type a message. You can either show the watch to someone so they can read the message, or open the Suno app on your iPhone and show the message there. The other person can reply on your iPhone and the message will appear on your watch.")
         statusText?.setText("")
         statusText?.setHidden(true)
+        stopButton?.setHidden(true)
     }
     
-    func goToStateTyping() {
+    func enterStateTyping() {
         presentTextInputController(withSuggestions: ["I am hearing-impaired. I have a doubt. Can I ask you?", "Sorry I did not understand that"], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if let input = (result as [Any]?)?[0] as? String {
@@ -121,18 +128,11 @@ class InterfaceController: WKInterfaceController {
                             return
                         }
                         
-                        if phoneResponse.contains("Success") {
-                            self.statusText?.setTextColor(UIColor.green)
-                        }
-                        else {
-                            self.statusText?.setTextColor(UIColor.red)
+                        if let status = message["status"] as? Bool {
+                            self.statusText?.setTextColor(status ? UIColor.green : UIColor.red)
                         }
                         
-                        self.statusText?.setText(
-                            phoneResponse
-                                .replacingOccurrences(of: "Success: ", with: "")
-                                .replacingOccurrences(of: "Fail: ", with: "")
-                        )
+                        self.statusText?.setText(phoneResponse)
                         self.statusText?.setHidden(false)
                         
                         
@@ -145,7 +145,7 @@ class InterfaceController: WKInterfaceController {
         })
     }
     
-    func goToStateReceiving() {
+    func enterStateReceiving() {
         self.typeButton?.setHidden(true)
         self.mainText?.setHidden(false)
         self.mainText?.setText("")
@@ -158,19 +158,6 @@ class InterfaceController: WKInterfaceController {
         self.mainText?.setHidden(false)
         self.statusText?.setHidden(true)
     }
-    
-    
-    /// MARK:- Private Helpers
-    func setUIText(request: String) {
-        if request.contains("Status: ") {
-            self.statusText?.setText(
-                request.replacingOccurrences(of: "Status: ", with: "")
-            )
-        }
-        else {
-            self.mainText?.setText(request)
-        }
-    }
 
 }
 
@@ -180,42 +167,18 @@ extension InterfaceController : WCSessionDelegate {
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        guard let request = message["request"] as? String else {
+        if WKExtension.shared().applicationState != .active {
             return
         }
         
-        let state = WKExtension.shared().applicationState
-        if state == .active {
-            if request.contains("Status: ") {
-                changeState(action: Action.ReceivedUserStatus)
-            }
-            else {
-                changeState(action: Action.PhoneCompletedSending)
-            }
-         /*   else {
-                self.typeButton?.setHidden(false)
-                self.mainText?.setHidden(false)
-                self.statusText?.setHidden(true)
-            }   */
-            
-            setUIText(request: request)
-            
-        /*    if request.contains("Status: ") {
-                self.statusText?.setText(
-                    request.replacingOccurrences(of: "Status: ", with: "")
-                )
-            }
-            else if request.contains("USER_SPEAKING_COMPLETE") {
-                self.statusText?.setText("User finished speaking")
-            }
-            else {
-                self.mainText?.setText(
-                    request.replacingOccurrences(of: "USER_SPEAKING: ", with: "")
-                )
-            }   */
-            
+        if let success = message["success"] as? Bool, let status = message["status"] as? String {
+            changeState(action: Action.ReceivedUserStatus)
+            self.statusText?.setTextColor(success ? UIColor.green : UIColor.red)
+            self.statusText?.setText(status)
+        } else if let response = message["response"] as? String {
+            changeState(action: Action.PhoneCompletedSending)
+            self.mainText?.setText(response)
         }
-        
     }
     
     

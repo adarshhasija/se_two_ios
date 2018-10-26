@@ -33,6 +33,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         case Speaking
         case Listening              //Listening to other person speaking
         case Reading                //Reading what the other person is typing
+        
+        case ReceivingFromWatch
     }
     
     enum Action :String{
@@ -42,6 +44,9 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         case SwipeLeft
         case BarButtonHelpTapped
         case LongPress
+        
+        case ReceivedStatusFromWatch
+        case ReceivedContentFromWatch
         
         case UserPrmoptCancelled
         case UserSelectedTyping
@@ -135,7 +140,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         else if action == Action.Tap && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
-            sendTextToWatch(text: "Status: User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
+            sendStatusToWatch(success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
             currentState.append(State.Speaking)
             enterStateSpeaking()
         }
@@ -148,6 +153,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             exitStateSpeaking()
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
+                sendStatusToWatch(success: false, text: "User did not enter response")
             }
             else if currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking {
                 sendText(text: "\n") //Send to other other to confirm that speaking is done
@@ -161,7 +167,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
-            sendTextToWatch(text: "Status: User is typing on iPhone. Please wait. Tell them to tap screen when done.")
+            sendStatusToWatch(success: true, text: "User is typing on iPhone. Please wait. Tell them to tap screen when done.")
             currentState.append(State.Typing)
             enterStateTyping()
         }
@@ -169,6 +175,16 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             Analytics.logEvent("se3_long_press_not_connected", parameters: [:])
             currentState.append(State.PromptUserRole)
             enterStatePromptUserRole()
+        }
+        else if action == Action.ReceivedStatusFromWatch && currentState.last == State.Idle {
+            currentState.append(State.ReceivingFromWatch)
+            enterStateReceivingFromWatch()
+        }
+        else if action == Action.ReceivedContentFromWatch && currentState.last == State.ReceivingFromWatch {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceivingFromWatch()
         }
         else if action == Action.LongPress && (currentState.contains(State.ConnectedTyping) || currentState.contains(State.ConnectedSpeaking) || currentState.contains(State.Hosting)) {
             //All other states in which user does long press
@@ -686,6 +702,29 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         textViewBottom?.resignFirstResponder()
     }
     
+    private func enterStateReceivingFromWatch() {
+        //When coming from the watch
+        //Use this to update the UI instantaneously (otherwise, takes a little while)
+        DispatchQueue.main.async(execute: { () -> Void in
+            self.swipeLeftLabel?.isHidden = true
+            self.swipeUpLabel?.isHidden = true
+            self.longPressLabel?.isHidden = true
+            self.recordLabel?.isHidden = true
+        })
+        
+    }
+    
+    private func exitStateReceivingFromWatch() {
+        //When coming from the watch
+        //Use this to update the UI instantaneously (otherwise, takes a little while)
+        DispatchQueue.main.async(execute: { () -> Void in
+            self.swipeLeftLabel?.isHidden = false
+            self.swipeUpLabel?.isHidden = false
+            self.longPressLabel?.isHidden = false
+            self.recordLabel?.isHidden = false
+        })
+    }
+    
     private func enterStateSpeaking() {
         if hasInternetConnection() {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration ONLY if not receiving
@@ -983,10 +1022,17 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
     }
     
+    func sendStatusToWatch(success: Bool, text: String) {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.sendMessage(["success": success, "status": text], replyHandler: nil, errorHandler: nil)
+        }
+    }
+    
     func sendTextToWatch(text: String!) {
         if WCSession.isSupported() {
             let session = WCSession.default
-            session.sendMessage(["request":text], replyHandler: nil, errorHandler: nil)
+            session.sendMessage(["response": text], replyHandler: nil, errorHandler: nil)
         }
     }
     
@@ -1024,6 +1070,7 @@ extension SpeechViewController : WCSessionDelegate {
             return
         }
         
+        var status = false
         var response = ""
         let state = UIApplication.shared.applicationState
         if state == .active {
@@ -1031,23 +1078,39 @@ extension SpeechViewController : WCSessionDelegate {
                 // foreground
                 //Use this to update the UI instantaneously (otherwise, takes a little while)
                 DispatchQueue.main.async(execute: { () -> Void in
+                    self.textViewBottom?.text = request.replacingOccurrences(of: "STATUS: ", with: "")
+                })
+                status = true
+                response = "Message displayed on iPhone"
+                changeState(action: Action.ReceivedStatusFromWatch)
+            }
+            else if currentState.last == State.ReceivingFromWatch {
+                //Use this to update the UI instantaneously (otherwise, takes a little while)
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.textViewBottom?.text = request
                 })
-                response = "Success: Message displayed on iPhone"
+                status = true
+                response = "Message displayed on iPhone"
+                changeState(action: Action.ReceivedContentFromWatch)
             }
             else if currentState.contains(State.ConnectedSpeaking) || currentState.contains(State.ConnectedSpeaking) {
-                response = "Fail: iPhone is in conversation session. Message not displayed"
+                status = false
+                response = "iPhone is in conversation session. Message not displayed"
             }
             else if currentState.last == State.Speaking {
-                response = "Fail: User is speaking into iPhone. Message not displayed"
+                status = false
+                response = "User is speaking into iPhone. Message not displayed"
             }
             else if currentState.last == State.Typing {
-                response = "Fail: User is typing on iPhone. Message not displayed"
+                status = false
+                response = "User is typing on iPhone. Message not displayed"
             }
+            
         }
         else {
             //App is not in foreground
-            response = "Fail: App is not open on iPhone. Message not displayed"
+            status = false
+            response = "App is not open on iPhone. Message not displayed"
         }
         
         Analytics.logEvent("se3_received_from_watch", parameters: [
@@ -1057,7 +1120,7 @@ extension SpeechViewController : WCSessionDelegate {
             "response": response
             ])
         
-        replyHandler(["response":response])
+        replyHandler(["status": status, "response":response])
     }
 }
 
