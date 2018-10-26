@@ -23,6 +23,7 @@ class InterfaceController: WKInterfaceController {
     enum Action :String{
         case AppOpened
         case TapTypingButton
+        case TapStopButton
         case TypistFinishedTyping
         case ReceivedUserStatus
         case PhoneCompletedSending
@@ -38,6 +39,7 @@ class InterfaceController: WKInterfaceController {
         changeState(action: Action.TapTypingButton)
     }
     @IBAction func stopButtonTapped() {
+        changeState(action: Action.TapStopButton)
     }
     
     /// Private Properties
@@ -53,7 +55,7 @@ class InterfaceController: WKInterfaceController {
             self.statusText?.setHidden(true)
             if WCSession.isSupported() {
                 let session = WCSession.default
-                session.sendMessage(["request":"STATUS: User is entering message on watch. Please wait..."],
+                session.sendMessage(["status":"User is entering message on watch. Please wait..."],
                                     replyHandler: { message in }, errorHandler: { error in })
             }
             currentState.append(State.Typing)
@@ -70,13 +72,23 @@ class InterfaceController: WKInterfaceController {
             enterStateReceiving()
         }
         else if action == Action.ReceivedUserStatus && currentState.last == State.Receiving {
-            
-        }
-        else if action == Action.PhoneCompletedSending && currentState.contains(State.Receiving) {
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
             exitStateReceiving()
+        }
+        else if action == Action.PhoneCompletedSending && currentState.last == State.Receiving {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceiving()
+        }
+        else if action == Action.TapStopButton && currentState.contains(State.Receiving) {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceiving()
+            enterStateIdle()
         }
     }
 
@@ -108,14 +120,19 @@ class InterfaceController: WKInterfaceController {
     func enterStateIdle() {
         typeButton?.setHidden(false)
         mainText?.setHidden(false)
-        mainText?.setText("Tap the button above to type a message. You can either show the watch to someone so they can read the message, or open the Suno app on your iPhone and show the message there. The other person can reply on your iPhone and the message will appear on your watch.")
+        mainText?.setText("Tap the button above to enter a message. You can either show the watch to someone so they can read the message, or open the Suno app on your iPhone and show the message there. The other person can reply on your iPhone and the message will appear on your watch.")
         statusText?.setText("")
         statusText?.setHidden(true)
         stopButton?.setHidden(true)
     }
     
     func enterStateTyping() {
-        presentTextInputController(withSuggestions: ["I am hearing-impaired. I have a doubt. Can I ask you?", "Sorry I did not understand that"], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
+        presentTextInputController(withSuggestions: [
+            "I am hearing-impaired. I have a doubt. Can I ask you?",
+            "Please tap the iPhone screen to speak",
+            "Please swipe up on the iPhone screen to type",
+            "Sorry I did not understand that"
+            ], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if let input = (result as [Any]?)?[0] as? String {
                 self.mainText?.setText(input)
@@ -151,12 +168,22 @@ class InterfaceController: WKInterfaceController {
         self.mainText?.setText("")
         self.statusText?.setHidden(false)
         self.statusText?.setTextColor(UIColor.green)
+        self.stopButton?.setHidden(false)
     }
     
     func exitStateReceiving() {
         self.typeButton?.setHidden(false)
         self.mainText?.setHidden(false)
-        self.statusText?.setHidden(true)
+        self.statusText?.setHidden(false)
+        self.stopButton?.setHidden(true)
+    }
+    
+    /// MARK:- Private Helpers
+    func setMessageToPhoneNoReply(key: String, message: String) {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.sendMessage([key: message], replyHandler: { message in }, errorHandler: { error in })
+        }
     }
 
 }
@@ -172,12 +199,13 @@ extension InterfaceController : WCSessionDelegate {
         }
         
         if let success = message["success"] as? Bool, let status = message["status"] as? String {
-            changeState(action: Action.ReceivedUserStatus)
             self.statusText?.setTextColor(success ? UIColor.green : UIColor.red)
             self.statusText?.setText(status)
+            changeState(action: Action.ReceivedUserStatus)
         } else if let response = message["response"] as? String {
-            changeState(action: Action.PhoneCompletedSending)
             self.mainText?.setText(response)
+            self.statusText?.setText("")
+            changeState(action: Action.PhoneCompletedSending)
         }
     }
     

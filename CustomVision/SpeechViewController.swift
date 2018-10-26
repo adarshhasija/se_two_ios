@@ -47,6 +47,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         
         case ReceivedStatusFromWatch
         case ReceivedContentFromWatch
+        case WatchUserStopped
         
         case UserPrmoptCancelled
         case UserSelectedTyping
@@ -177,6 +178,9 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             enterStatePromptUserRole()
         }
         else if action == Action.ReceivedStatusFromWatch && currentState.last == State.Idle {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
             currentState.append(State.ReceivingFromWatch)
             enterStateReceivingFromWatch()
         }
@@ -185,6 +189,20 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 currentState.popLast()
             }
             exitStateReceivingFromWatch()
+        }
+        else if action == Action.WatchUserStopped && currentState.last != State.Idle {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceivingFromWatch()
+            enterStateIdle()
+        }
+        else if action == Action.LongPress && currentState.contains(State.ReceivingFromWatch) {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceivingFromWatch()
+            enterStateIdle()
         }
         else if action == Action.LongPress && (currentState.contains(State.ConnectedTyping) || currentState.contains(State.ConnectedSpeaking) || currentState.contains(State.Hosting)) {
             //All other states in which user does long press
@@ -280,7 +298,13 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             if currentState.last == State.TypingStarted {
                 //User is not in conversation session
                 //User had started typing
-                sendTextToWatch(text: self.textViewBottom?.text)
+                sendResponseToWatch(text: self.textViewBottom?.text)
+            }
+            else if currentState.last == State.Typing {
+                //User is not in a conversation session
+                //User did not start typing.
+                //User just finished typing
+                sendStatusToWatch(success: false, text: "User did not enter response")
             }
             while currentState.last != State.Idle {
                 currentState.popLast()
@@ -423,14 +447,14 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                     self.sendText(text: result.bestTranscription.formattedString)
                 }
                 else if self.currentState.last == State.Idle {
-                    self.sendTextToWatch(text: result.bestTranscription.formattedString)
+                    self.sendResponseToWatch(text: result.bestTranscription.formattedString)
                 }
                 
                 if self.textViewBottom.text.count > 0 {
                     let location = self.textViewBottom.text.count - 1
                     let bottom = NSMakeRange(location, 1)
                     self.textViewTop?.scrollRangeToVisible(bottom)
-                    self.textViewBottom.scrollRangeToVisible(bottom)
+                    self.textViewBottom?.scrollRangeToVisible(bottom)
                 }
                 isFinal = result.isFinal
             }
@@ -708,8 +732,9 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         DispatchQueue.main.async(execute: { () -> Void in
             self.swipeLeftLabel?.isHidden = true
             self.swipeUpLabel?.isHidden = true
-            self.longPressLabel?.isHidden = true
             self.recordLabel?.isHidden = true
+            self.longPressLabel?.isHidden = true
+            self.longPressLabel?.text = "Long press to stop"
         })
         
     }
@@ -721,6 +746,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             self.swipeLeftLabel?.isHidden = false
             self.swipeUpLabel?.isHidden = false
             self.longPressLabel?.isHidden = false
+            self.longPressLabel?.text = "Long press to connect to another device"
             self.recordLabel?.isHidden = false
         })
     }
@@ -1029,7 +1055,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
     }
     
-    func sendTextToWatch(text: String!) {
+    func sendResponseToWatch(text: String!) {
         if WCSession.isSupported() {
             let session = WCSession.default
             session.sendMessage(["response": text], replyHandler: nil, errorHandler: nil)
@@ -1065,32 +1091,20 @@ extension SpeechViewController : WCSessionDelegate {
     
     
     public func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-        guard let request = message["request"] as? String else {
-            replyHandler([:])
-            return
-        }
         
+        var displayText = ""
         var status = false
         var response = ""
-        let state = UIApplication.shared.applicationState
-        if state == .active {
-            if currentState.last == State.Idle {
-                // foreground
-                //Use this to update the UI instantaneously (otherwise, takes a little while)
-                DispatchQueue.main.async(execute: { () -> Void in
-                    self.textViewBottom?.text = request.replacingOccurrences(of: "STATUS: ", with: "")
-                })
-                status = true
-                response = "Message displayed on iPhone"
-                changeState(action: Action.ReceivedStatusFromWatch)
-            }
-            else if currentState.last == State.ReceivingFromWatch {
-                //Use this to update the UI instantaneously (otherwise, takes a little while)
-                DispatchQueue.main.async(execute: { () -> Void in
-                    self.textViewBottom?.text = request
-                })
-                status = true
-                response = "Message displayed on iPhone"
+        
+        if let watchStatus = message["status"] as? String {
+            displayText = watchStatus
+            status = true
+            response = "Message displayed on iPhone"
+            changeState(action: Action.ReceivedStatusFromWatch)
+        }
+        else if let request = message["request"] as? String {
+            if currentState.last == State.ReceivingFromWatch {
+                displayText = request
                 changeState(action: Action.ReceivedContentFromWatch)
             }
             else if currentState.contains(State.ConnectedSpeaking) || currentState.contains(State.ConnectedSpeaking) {
@@ -1105,22 +1119,23 @@ extension SpeechViewController : WCSessionDelegate {
                 status = false
                 response = "User is typing on iPhone. Message not displayed"
             }
-            
-        }
-        else {
-            //App is not in foreground
-            status = false
-            response = "App is not open on iPhone. Message not displayed"
         }
         
         Analytics.logEvent("se3_received_from_watch", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
-            "iOS_state": state.rawValue,
             "response": response
             ])
         
         replyHandler(["status": status, "response":response])
+        
+        // foreground
+        //Use this to update the UI instantaneously (otherwise, takes a little while)
+        DispatchQueue.main.async(execute: { () -> Void in
+            if UIApplication.shared.applicationState == .active {
+                self.textViewBottom?.text = displayText
+            }
+        })
     }
 }
 
