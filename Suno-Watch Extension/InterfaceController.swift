@@ -17,12 +17,17 @@ class InterfaceController: WKInterfaceController {
         case SubscriptionNotPaid
         case Idle
         case Typing
+        case Receiving
+        case ReadingContent
     }
     
     enum Action :String{
         case AppOpened
         case TapTypingButton
         case TypistFinishedTyping
+        case ReceivedUserStatus
+        case ReceivedUserSpeakingContent
+        case PhoneCompletedSending
     }
     
     /// UI Properties
@@ -45,14 +50,13 @@ class InterfaceController: WKInterfaceController {
             goToStateIdle()
         }
         else if action == Action.TapTypingButton && currentState.last == State.Idle {
-            currentState.append(State.Typing)
             self.statusText?.setHidden(true)
             if WCSession.isSupported() {
                 let session = WCSession.default
                 session.sendMessage(["request":"User is typing on watch. Please wait..."],
                                     replyHandler: { message in }, errorHandler: { error in })
             }
-            
+            currentState.append(State.Typing)
             goToStateTyping()
         }
         else if action == Action.TypistFinishedTyping {
@@ -60,6 +64,20 @@ class InterfaceController: WKInterfaceController {
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
+        }
+        else if action == Action.ReceivedUserStatus && currentState.last == State.Idle {
+            currentState.append(State.Receiving)
+            goToStateReceiving()
+        }
+        else if action == Action.ReceivedUserSpeakingContent && currentState.last == State.Receiving {
+            currentState.append(State.ReadingContent)
+            goToStateReadingContent()
+        }
+        else if action == Action.PhoneCompletedSending && currentState.contains(State.Receiving) {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceiving()
         }
     }
 
@@ -131,6 +149,44 @@ class InterfaceController: WKInterfaceController {
             }
         })
     }
+    
+    func goToStateReceiving() {
+        self.typeButton?.setHidden(true)
+        self.mainText?.setHidden(false)
+        self.mainText?.setText("")
+        self.statusText?.setHidden(false)
+        self.statusText?.setTextColor(UIColor.green)
+    }
+    
+    func goToStateReadingContent() {
+        //self.typeButton?.setHidden(true)
+        //self.mainText?.setHidden(false)
+        self.statusText?.setHidden(true)
+    }
+    
+    func exitStateReceiving() {
+        self.typeButton?.setHidden(false)
+        self.mainText?.setHidden(false)
+        self.statusText?.setHidden(true)
+    }
+    
+    
+    /// MARK:- Private Helpers
+    func setUIText(request: String) {
+        if request.contains("Status: ") {
+            self.statusText?.setText(
+                request.replacingOccurrences(of: "Status: ", with: "")
+            )
+        }
+        else if request.contains("USER_SPEAKING_COMPLETE") {
+            self.statusText?.setText("User finished speaking")
+        }
+        else {
+            self.mainText?.setText(
+                request.replacingOccurrences(of: "USER_SPEAKING: ", with: "")
+            )
+        }
+    }
 
 }
 
@@ -146,26 +202,40 @@ extension InterfaceController : WCSessionDelegate {
         
         let state = WKExtension.shared().applicationState
         if state == .active {
-            if request.contains("Response: ") {
-                self.typeButton?.setHidden(true)
-                self.statusText?.setHidden(true)
+            if request.contains("Status: ") {
+                changeState(action: Action.ReceivedUserStatus)
             }
             else if request.contains("USER_SPEAKING_COMPLETE") {
-                self.typeButton?.setHidden(false)
-                self.statusText?.setHidden(false)
+                changeState(action: Action.PhoneCompletedSending)
+            }
+            else if request.contains("USER_SPEAKING") {
+                changeState(action: Action.ReceivedUserSpeakingContent)
             }
             else {
-                self.typeButton?.setHidden(false)
-                self.statusText?.setHidden(true)
+                changeState(action: Action.PhoneCompletedSending)
             }
+         /*   else {
+                self.typeButton?.setHidden(false)
+                self.mainText?.setHidden(false)
+                self.statusText?.setHidden(true)
+            }   */
             
-            if !request.contains("USER_SPEAKING_COMPLETE") {
-                self.mainText?.setText(
-                    request.replacingOccurrences(of: "Response: ", with: "")
+            setUIText(request: request)
+            
+        /*    if request.contains("Status: ") {
+                self.statusText?.setText(
+                    request.replacingOccurrences(of: "Status: ", with: "")
                 )
             }
+            else if request.contains("USER_SPEAKING_COMPLETE") {
+                self.statusText?.setText("User finished speaking")
+            }
+            else {
+                self.mainText?.setText(
+                    request.replacingOccurrences(of: "USER_SPEAKING: ", with: "")
+                )
+            }   */
             
-            self.mainText?.setHidden(false)
         }
         
     }

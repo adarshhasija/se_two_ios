@@ -135,7 +135,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         else if action == Action.Tap && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
-            sendTextToWatch(text: "Response: User is speaking on iPhone. Please wait...")
+            sendTextToWatch(text: "Status: User is speaking on iPhone. Please wait...")
             currentState.append(State.Speaking)
             enterStateSpeaking()
         }
@@ -162,7 +162,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
-            sendTextToWatch(text: "Response: User is typing on iPhone. Please wait...")
+            sendTextToWatch(text: "Status: User is typing on iPhone. Please wait...")
             currentState.append(State.Typing)
             enterStateTyping()
         }
@@ -403,7 +403,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 if self.currentState.last != State.Reading {
                     self.textViewTop?.text = result.bestTranscription.formattedString
                     self.textViewBottom?.text = result.bestTranscription.formattedString
-                    self.sendTextToWatch(text: "Response: " + result.bestTranscription.formattedString)
+                    self.sendTextToWatch(text: "USER_SPEAKING: " + result.bestTranscription.formattedString)
                 }
                 if self.currentState.contains(State.ConnectedSpeaking) && self.currentState.last == State.Speaking {
                     self.sendText(text: result.bestTranscription.formattedString)
@@ -675,7 +675,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     }
     
     private func enterStateTyping() {
-        self.textViewBottom?.text = "You can now start typing. Tap enter when done..."
+        self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
         textViewBottom?.isEditable = true
         textViewBottom?.becomeFirstResponder()
     }
@@ -1052,6 +1052,7 @@ extension SpeechViewController : WCSessionDelegate {
         Analytics.logEvent("se3_received_from_watch", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
+            "iOS_state": state.rawValue,
             "response": response
             ])
         
