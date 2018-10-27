@@ -218,13 +218,24 @@ extension InterfaceController : WCSessionDelegate {
             return
         }
         
-        if let success = message["success"] as? Bool, let status = message["status"] as? String {
-            self.statusText?.setTextColor(success ? UIColor.green : UIColor.red)
-            self.statusText?.setText(status)
+        if let beginningOfAction = message["beginningOfAction"] as? Bool, let success = message["success"] as? Bool, let status = message["status"] as? String {
+            if beginningOfAction {
+                //Always display if its the beginning of an action on iPhone
+                self.statusText?.setTextColor(success ? UIColor.green : UIColor.red)
+                self.statusText?.setText(status)
+            }
+            else if !beginningOfAction && currentState.last == State.Receiving {
+                //If its end of action, only display if we are in receiving mode.
+                //If the user has pressed stop, we should not display
+                self.statusText?.setTextColor(success ? UIColor.green : UIColor.red)
+                self.statusText?.setText(status)
+            }
             changeState(action: Action.ReceivedUserStatus)
         } else if let response = message["response"] as? String {
-            self.mainText?.setText(response)
-            self.statusText?.setText("")
+            if currentState.contains(State.Receiving) {
+                self.mainText?.setText(response)
+                self.statusText?.setText("")
+            }
             changeState(action: Action.PhoneCompletedSending)
         }
     }

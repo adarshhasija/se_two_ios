@@ -142,7 +142,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         else if action == Action.Tap && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
-            sendStatusToWatch(success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
+            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
             currentState.append(State.Speaking)
             enterStateSpeaking()
         }
@@ -155,7 +155,6 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             exitStateSpeaking()
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
-                sendStatusToWatch(success: false, text: "User did not enter response")
             }
             else if currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking {
                 sendText(text: "\n") //Send to other other to confirm that speaking is done
@@ -169,7 +168,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
-            sendStatusToWatch(success: true, text: "User is typing on iPhone. Please wait. Tell them to tap screen when done.")
+            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is typing on iPhone. Please wait. Tell them to tap screen when done.")
             currentState.append(State.Typing)
             enterStateTyping()
         }
@@ -313,7 +312,8 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 //User is not in a conversation session
                 //User did not start typing.
                 //User just finished typing
-                sendStatusToWatch(success: false, text: "User did not enter response")
+                sendStatusToWatch(beginningOfAction: false, success: false, text: "User did not enter response")
+                enterStateIdle()
             }
             while currentState.last != State.Idle {
                 currentState.popLast()
@@ -463,9 +463,6 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 if self.currentState.contains(State.ConnectedSpeaking) && self.currentState.last == State.Speaking {
                     self.sendText(text: result.bestTranscription.formattedString)
                 }
-                else if self.currentState.last == State.Idle {
-                    self.sendResponseToWatch(text: result.bestTranscription.formattedString)
-                }
                 
                 if self.textViewBottom.text.count > 0 {
                     let location = self.textViewBottom.text.count - 1
@@ -485,6 +482,18 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
                 
                 self.recordButton?.isEnabled = true
                 self.recordButton?.setTitle("Start Recording", for: [])
+                
+                if self.currentState.last == State.Idle {
+                    if let resultText = self.textViewBottom?.text {
+                        if resultText.count > 0 {
+                            self.sendResponseToWatch(text: resultText)
+                        }
+                        else {
+                            self.sendStatusToWatch(beginningOfAction: false, success: false, text: "User did not enter response")
+                        }
+                    }
+                    
+                }
                 
             }
         }
@@ -1065,11 +1074,11 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
     }
     
-    func sendStatusToWatch(success: Bool, text: String) {
+    func sendStatusToWatch(beginningOfAction: Bool, success: Bool, text: String) {
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isReachable && session.isWatchAppInstalled {
-                session.sendMessage(["success": success, "status": text], replyHandler: nil, errorHandler: nil)
+                session.sendMessage(["beginningOfAction": beginningOfAction, "success": success, "status": text], replyHandler: nil, errorHandler: nil)
             }
         }
     }
@@ -1153,7 +1162,7 @@ extension SpeechViewController : WCSessionDelegate {
         // foreground
         //Use this to update the UI instantaneously (otherwise, takes a little while)
         DispatchQueue.main.async(execute: { () -> Void in
-            if UIApplication.shared.applicationState == .active {
+            if UIApplication.shared.applicationState == .active && self.currentState.last == State.ReceivingFromWatch {
                 self.textViewBottom?.text = displayText
             }
         })
