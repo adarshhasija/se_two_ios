@@ -1130,6 +1130,18 @@ extension SpeechViewController : WCSessionDelegate {
             displayText = watchStatus
             status = true
             response = "Message displayed on iPhone"
+            
+            // foreground
+            //Use this to update the UI instantaneously (otherwise, takes a little while)
+            if let state = currentState.last {
+                if state == State.Idle {
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        if UIApplication.shared.applicationState == .active {
+                            self.textViewBottom?.text = displayText
+                        }
+                    })
+                }
+            }
             changeState(action: Action.ReceivedStatusFromWatch)
         }
         else if let request = message["request"] as? String {
@@ -1137,7 +1149,7 @@ extension SpeechViewController : WCSessionDelegate {
                 displayText = request
                 changeState(action: Action.ReceivedContentFromWatch)
             }
-            else if currentState.contains(State.ConnectedSpeaking) || currentState.contains(State.ConnectedSpeaking) {
+            else if currentState.contains(State.ConnectedTyping) || currentState.contains(State.ConnectedSpeaking) {
                 status = false
                 response = "iPhone is in conversation session. Message not displayed"
             }
@@ -1149,6 +1161,18 @@ extension SpeechViewController : WCSessionDelegate {
                 status = false
                 response = "User is typing on iPhone. Message not displayed"
             }
+            
+            // foreground
+            //Use this to update the UI instantaneously (otherwise, takes a little while)
+            if let state = currentState.last {
+                if state == State.Idle {
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        if UIApplication.shared.applicationState == .active {
+                            self.textViewBottom?.text = displayText
+                        }
+                    })
+                }
+            }
         }
         
         Analytics.logEvent("se3_received_from_watch", parameters: [
@@ -1158,14 +1182,6 @@ extension SpeechViewController : WCSessionDelegate {
             ])
         
         replyHandler(["status": status, "response":response])
-        
-        // foreground
-        //Use this to update the UI instantaneously (otherwise, takes a little while)
-        DispatchQueue.main.async(execute: { () -> Void in
-            if UIApplication.shared.applicationState == .active && self.currentState.last == State.ReceivingFromWatch {
-                self.textViewBottom?.text = displayText
-            }
-        })
     }
 }
 
