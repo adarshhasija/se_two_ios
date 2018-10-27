@@ -48,6 +48,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         case ReceivedStatusFromWatch
         case ReceivedContentFromWatch
         case WatchUserStopped
+        case WatchNotReachable
         
         case UserPrmoptCancelled
         case UserSelectedTyping
@@ -190,12 +191,20 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             }
             exitStateReceivingFromWatch()
         }
-        else if action == Action.WatchUserStopped && currentState.last != State.Idle {
+        else if action == Action.WatchUserStopped && currentState.contains(State.ReceivingFromWatch) {
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
             exitStateReceivingFromWatch()
             enterStateIdle()
+        }
+        else if action == Action.WatchNotReachable && currentState.contains(State.ReceivingFromWatch) {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceivingFromWatch()
+            enterStateIdle()
+            dialogOK(title: "Alert", message: "Watch not reachable")
         }
         else if action == Action.LongPress && currentState.contains(State.ReceivingFromWatch) {
             while currentState.last != State.Idle {
@@ -372,6 +381,14 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             session.activate()
         }
         
+    }
+    
+    public func sessionReachabilityDidChange(_ session: WCSession) {
+        if session.isReachable {
+        }
+        else if !session.isReachable {
+            changeState(action: Action.WatchNotReachable)
+        }
     }
     
     override public func viewDidAppear(_ animated: Bool) {
@@ -733,7 +750,7 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             self.swipeLeftLabel?.isHidden = true
             self.swipeUpLabel?.isHidden = true
             self.recordLabel?.isHidden = true
-            self.longPressLabel?.isHidden = true
+            self.longPressLabel?.isHidden = false
             self.longPressLabel?.text = "Long press to stop"
         })
         
@@ -1051,14 +1068,18 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
     func sendStatusToWatch(success: Bool, text: String) {
         if WCSession.isSupported() {
             let session = WCSession.default
-            session.sendMessage(["success": success, "status": text], replyHandler: nil, errorHandler: nil)
+            if session.isReachable && session.isWatchAppInstalled {
+                session.sendMessage(["success": success, "status": text], replyHandler: nil, errorHandler: nil)
+            }
         }
     }
     
     func sendResponseToWatch(text: String!) {
         if WCSession.isSupported() {
             let session = WCSession.default
-            session.sendMessage(["response": text], replyHandler: nil, errorHandler: nil)
+            if session.isReachable && session.isWatchAppInstalled {
+                session.sendMessage(["response": text], replyHandler: nil, errorHandler: nil)
+            }
         }
     }
     

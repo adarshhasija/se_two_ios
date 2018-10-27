@@ -27,6 +27,7 @@ class InterfaceController: WKInterfaceController {
         case TypistFinishedTyping
         case ReceivedUserStatus
         case PhoneCompletedSending
+        case PhoneNotReachable
     }
     
     /// UI Properties
@@ -53,11 +54,7 @@ class InterfaceController: WKInterfaceController {
         }
         else if action == Action.TapTypingButton && currentState.last == State.Idle {
             self.statusText?.setHidden(true)
-            if WCSession.isSupported() {
-                let session = WCSession.default
-                session.sendMessage(["status":"User is entering message on watch. Please wait..."],
-                                    replyHandler: { message in }, errorHandler: { error in })
-            }
+            sendMessageToPhoneNoReply(key: "status", message: "User is entering message on watch. Please wait...")
             currentState.append(State.Typing)
             enterStateTyping()
         }
@@ -90,6 +87,16 @@ class InterfaceController: WKInterfaceController {
             exitStateReceiving()
             enterStateIdle()
         }
+        else if action == Action.PhoneNotReachable && currentState.contains(State.Receiving) {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceiving()
+            enterStateIdle()
+            presentAlert(withTitle: "Alert", message: "Phone not reachable", preferredStyle: .alert, actions: [
+                WKAlertAction(title: "OK", style: .default) {}
+                ])
+        }
     }
 
     override func awake(withContext context: Any?) {
@@ -113,6 +120,15 @@ class InterfaceController: WKInterfaceController {
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
+    }
+    
+    func sessionReachabilityDidChange(_ session: WCSession) {
+        if session.isReachable {
+            
+        }
+        else if !session.isReachable {
+            
+        }
     }
     
     
@@ -140,23 +156,25 @@ class InterfaceController: WKInterfaceController {
                 self.changeState(action: Action.TypistFinishedTyping)
                 if WCSession.isSupported() {
                     let session = WCSession.default
-                    session.sendMessage(["request":input], replyHandler: { message in
-                        guard let phoneResponse = message["response"] as? String else {
-                            return
-                        }
-                        
-                        if let status = message["status"] as? Bool {
-                            self.statusText?.setTextColor(status ? UIColor.green : UIColor.red)
-                        }
-                        
-                        self.statusText?.setText(phoneResponse)
-                        self.statusText?.setHidden(false)
-                        
-                        
-                    }, errorHandler: { error in
-                        //self.statusText?.setText("Sorry, failed to send to iPhone")
-                        self.statusText?.setHidden(true)
-                    })  
+                    if session.isReachable {
+                        session.sendMessage(["request":input], replyHandler: { message in
+                            guard let phoneResponse = message["response"] as? String else {
+                                return
+                            }
+                            
+                            if let status = message["status"] as? Bool {
+                                self.statusText?.setTextColor(status ? UIColor.green : UIColor.red)
+                            }
+                            
+                            self.statusText?.setText(phoneResponse)
+                            self.statusText?.setHidden(false)
+                            
+                            
+                        }, errorHandler: { error in
+                            //self.statusText?.setText("Sorry, failed to send to iPhone")
+                            self.statusText?.setHidden(true)
+                        })
+                    }
                 }
             }
         })
@@ -179,10 +197,12 @@ class InterfaceController: WKInterfaceController {
     }
     
     /// MARK:- Private Helpers
-    func setMessageToPhoneNoReply(key: String, message: String) {
+    func sendMessageToPhoneNoReply(key: String, message: String) {
         if WCSession.isSupported() {
             let session = WCSession.default
-            session.sendMessage([key: message], replyHandler: { message in }, errorHandler: { error in })
+            if session.isReachable {
+                session.sendMessage([key: message], replyHandler: { message in }, errorHandler: { error in })
+            }
         }
     }
 
