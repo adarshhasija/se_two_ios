@@ -1145,20 +1145,14 @@ extension SpeechViewController : WCSessionDelegate {
             changeState(action: Action.ReceivedStatusFromWatch)
         }
         else if let request = message["request"] as? String {
-            // foreground
-            //Use this to update the UI instantaneously (otherwise, takes a little while)
-            if let state = currentState.last {
-                if state == State.ReceivingFromWatch {
-                    DispatchQueue.main.async(execute: { () -> Void in
-                        if UIApplication.shared.applicationState == .active {
-                            self.textViewBottom?.text = displayText
-                        }
-                    })
-                }
-            }
-            
             if currentState.last == State.ReceivingFromWatch {
-                displayText = request
+                // foreground
+                //Use this to update the UI instantaneously (otherwise, takes a little while)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    if UIApplication.shared.applicationState == .active {
+                        self.textViewBottom?.text = request
+                    }
+                })
                 changeState(action: Action.ReceivedContentFromWatch)
             }
             else if currentState.contains(State.ConnectedTyping) || currentState.contains(State.ConnectedSpeaking) {
