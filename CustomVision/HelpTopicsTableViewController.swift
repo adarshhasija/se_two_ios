@@ -82,8 +82,28 @@ public class HelpTopicsTableViewController: UITableViewController {
         )
         
         helpTopics.append(HelpTopic(
+            question: "Apple Watch:\nI have an Apple Watch and an iPhone. How do I use the app with these devices?",
+            answer: "Open Suno on your Apple Watch. Open Suno on your iPhone and give your iPhone to your partner, who should be next to you. Tap on New Message on the watch and enter a message. Once you tap done, the message will appear on the iPhone for your partner to read. Your partner can then respond by speaking or typing. Once they have completed, the message will appear on the watch for you to read.\n\nNote that messages from the watch will not be displayed on the iPhone if the phone is involved in a conversation session with another iOS device.")
+        )
+        
+        helpTopics.append(HelpTopic(
+            question: "Apple Watch:\nMy partner is speaking on the iPhone and the words are appearing on the phone but not on the watch.",
+            answer: "Your partner must tap the screen on the iPhone after they have finished speaking. Only then will the spoken words appear on the watch screen.")
+        )
+        
+        helpTopics.append(HelpTopic(
+            question: "Apple Watch:\nMy partner is typing on the iPhone and the words are appearing on the phone but not on the watch.",
+            answer: "Your partner must tap the screen(not the keyboard part) on the iPhone after they have finished typing. Only then will the spoken words appear on the watch screen.")
+        )
+        
+        helpTopics.append(HelpTopic(
+            question: "Apple Watch:\nI am wearing the watch but the phone is not nearby. Can I use Suno?",
+            answer: "Yes. You can open Suno on the watch, enter a message and show your watch screen to someone else so they can read the message. If you wish, you can ask them to enter a reply on the watch itself.")
+        )
+        
+        helpTopics.append(HelpTopic(
             question: "Which devices does this app work on?",
-            answer: "This app works on all iPhones and iPads running iOS 12 and above")
+            answer: "This app works on all iPhones and iPads running iOS 12 and above and on an Apple Watch running watchOS 5 and above, if one is connected to the iPhone.")
         )
     }
     
