@@ -1145,6 +1145,18 @@ extension SpeechViewController : WCSessionDelegate {
             changeState(action: Action.ReceivedStatusFromWatch)
         }
         else if let request = message["request"] as? String {
+            // foreground
+            //Use this to update the UI instantaneously (otherwise, takes a little while)
+            if let state = currentState.last {
+                if state == State.ReceivingFromWatch {
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        if UIApplication.shared.applicationState == .active {
+                            self.textViewBottom?.text = displayText
+                        }
+                    })
+                }
+            }
+            
             if currentState.last == State.ReceivingFromWatch {
                 displayText = request
                 changeState(action: Action.ReceivedContentFromWatch)
@@ -1162,17 +1174,7 @@ extension SpeechViewController : WCSessionDelegate {
                 response = "User is typing on iPhone. Message not displayed"
             }
             
-            // foreground
-            //Use this to update the UI instantaneously (otherwise, takes a little while)
-            if let state = currentState.last {
-                if state == State.Idle {
-                    DispatchQueue.main.async(execute: { () -> Void in
-                        if UIApplication.shared.applicationState == .active {
-                            self.textViewBottom?.text = displayText
-                        }
-                    })
-                }
-            }
+            
         }
         
         Analytics.logEvent("se3_received_from_watch", parameters: [

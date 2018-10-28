@@ -25,7 +25,8 @@ class InterfaceController: WKInterfaceController {
         case TapTypingButton
         case TapStopButton
         case TypistFinishedTyping
-        case ReceivedUserStatus
+        case ReceivedUserStatusActionStart
+        case ReceivedUserStatusActionEnd
         case PhoneCompletedSending
         case PhoneNotReachable
     }
@@ -64,11 +65,11 @@ class InterfaceController: WKInterfaceController {
                 currentState.popLast()
             }
         }
-        else if action == Action.ReceivedUserStatus && currentState.last == State.Idle {
+        else if action == Action.ReceivedUserStatusActionStart && currentState.last == State.Idle {
             currentState.append(State.Receiving)
             enterStateReceiving()
         }
-        else if action == Action.ReceivedUserStatus && currentState.last == State.Receiving {
+        else if action == Action.ReceivedUserStatusActionEnd && currentState.last == State.Receiving {
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
@@ -219,18 +220,19 @@ extension InterfaceController : WCSessionDelegate {
         }
         
         if let beginningOfAction = message["beginningOfAction"] as? Bool, let success = message["success"] as? Bool, let status = message["status"] as? String {
-            if beginningOfAction {
+            if beginningOfAction && currentState.last == State.Idle {
                 //Always display if its the beginning of an action on iPhone
                 self.statusText?.setTextColor(success ? UIColor.green : UIColor.red)
                 self.statusText?.setText(status)
+                changeState(action: Action.ReceivedUserStatusActionStart)
             }
             else if !beginningOfAction && currentState.last == State.Receiving {
                 //If its end of action, only display if we are in receiving mode.
                 //If the user has pressed stop, we should not display
                 self.statusText?.setTextColor(success ? UIColor.green : UIColor.red)
                 self.statusText?.setText(status)
+                changeState(action: Action.ReceivedUserStatusActionEnd)
             }
-            changeState(action: Action.ReceivedUserStatus)
         } else if let response = message["response"] as? String {
             if currentState.contains(State.Receiving) {
                 self.mainText?.setText(response)
