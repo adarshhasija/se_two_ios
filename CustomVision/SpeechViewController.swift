@@ -178,11 +178,23 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             enterStatePromptUserRole()
         }
         else if action == Action.ReceivedStatusFromWatch && currentState.last == State.Idle {
+            //Entering listening state
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
             currentState.append(State.ReceivingFromWatch)
             enterStateReceivingFromWatch()
+        }
+        else if action == Action.ReceivedStatusFromWatch && currentState.contains(State.ReceivingFromWatch) {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            exitStateReceivingFromWatch()
+            // foreground
+            //Use this to update the UI instantaneously (otherwise, takes a little while)
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.enterStateIdle()
+            })
         }
         else if action == Action.ReceivedContentFromWatch && currentState.last == State.ReceivingFromWatch {
             while currentState.last != State.Idle {
@@ -1122,12 +1134,10 @@ extension SpeechViewController : WCSessionDelegate {
     
     public func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         
-        var displayText = ""
         var status = false
         var response = ""
         
         if let watchStatus = message["status"] as? String {
-            displayText = watchStatus
             status = true
             response = "Message displayed on iPhone"
             
@@ -1137,11 +1147,15 @@ extension SpeechViewController : WCSessionDelegate {
                 if state == State.Idle {
                     DispatchQueue.main.async(execute: { () -> Void in
                         if UIApplication.shared.applicationState == .active {
-                            self.textViewBottom?.text = displayText
+                            self.textViewBottom?.text = watchStatus
                         }
                     })
                 }
             }
+            changeState(action: Action.ReceivedStatusFromWatch)
+        }
+        else if let cancalledTyping = message["user_cancelled_typing"] as? String {
+            response = cancalledTyping //Used only for analytics
             changeState(action: Action.ReceivedStatusFromWatch)
         }
         else if let request = message["request"] as? String {

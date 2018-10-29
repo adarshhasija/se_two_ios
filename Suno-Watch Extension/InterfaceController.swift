@@ -23,6 +23,7 @@ class InterfaceController: WKInterfaceController {
     enum Action :String{
         case AppOpened
         case TapTypingButton
+        case TypingCancelledByUser
         case TapStopButton
         case TypistFinishedTyping
         case ReceivedUserStatusActionStart
@@ -58,6 +59,13 @@ class InterfaceController: WKInterfaceController {
             sendMessageToPhoneNoReply(key: "status", message: "User is entering message on watch. Please wait...")
             currentState.append(State.Typing)
             enterStateTyping()
+        }
+        else if action == Action.TypingCancelledByUser && currentState.last == State.Typing {
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+            sendMessageToPhoneNoReply(key: "user_cancelled_typing", message: "User cancelled typing on watch.")
+            enterStateIdle()
         }
         else if action == Action.TypistFinishedTyping {
             //go back to idle state
@@ -109,13 +117,12 @@ class InterfaceController: WKInterfaceController {
             session.delegate = self
             session.activate()
         }
+        changeState(action: Action.AppOpened)
     }
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        
-        changeState(action: Action.AppOpened)
     }
     
     override func didDeactivate() {
@@ -154,7 +161,6 @@ class InterfaceController: WKInterfaceController {
             if let input = (result as [Any]?)?[0] as? String {
                 self.mainText?.setText(input)
                 self.mainText?.setHidden(false)
-                self.changeState(action: Action.TypistFinishedTyping)
                 if WCSession.isSupported() {
                     let session = WCSession.default
                     if session.isReachable {
@@ -163,6 +169,7 @@ class InterfaceController: WKInterfaceController {
                                 return
                             }
                             
+                            self.changeState(action: Action.TypistFinishedTyping)
                             if let status = message["status"] as? Bool {
                                 self.statusText?.setTextColor(status ? UIColor.green : UIColor.red)
                             }
@@ -177,6 +184,10 @@ class InterfaceController: WKInterfaceController {
                         })
                     }
                 }
+            }
+            else {
+                //User cancelled typing
+                self.changeState(action: Action.TypingCancelledByUser)
             }
         })
     }
