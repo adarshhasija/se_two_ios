@@ -25,6 +25,8 @@
 		317D4C15217EC76C0081B38B /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */; };
 		317D4C17217EC76D0081B38B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 317D4C16217EC76D0081B38B /* Assets.xcassets */; };
 		317D4C1B217EC76D0081B38B /* Suno-Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 317D4C01217EC76A0081B38B /* Suno-Watch.app */; };
+		317D4C242188CCC50081B38B /* States.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C232188CCC50081B38B /* States.swift */; };
+		317D4C262188CCF00081B38B /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319FD50620D1A98E0071F993 /* ARViewController.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
 		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
@@ -116,6 +118,8 @@
 		317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		317D4C16217EC76D0081B38B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		317D4C18217EC76D0081B38B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		317D4C232188CCC50081B38B /* States.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = States.swift; sourceTree = "<group>"; };
+		317D4C252188CCF00081B38B /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		319FD50620D1A98E0071F993 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
@@ -305,6 +309,8 @@
 				3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */,
 				3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */,
 				31798DFC217B9E66008CF9C7 /* NetworkManager.swift */,
+				317D4C232188CCC50081B38B /* States.swift */,
+				317D4C252188CCF00081B38B /* Actions.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -674,8 +680,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EBF65141F0AA47700BCD353 /* VisionMLViewController.swift in Sources */,
+				317D4C262188CCF00081B38B /* Actions.swift in Sources */,
 				76C510BC1F1587C60049422A /* BubbleLayer.swift in Sources */,
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
+				317D4C242188CCC50081B38B /* States.swift in Sources */,
 				312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */,
 				31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */,
 				319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */,

@@ -14,55 +14,7 @@ import CoreBluetooth
 import FirebaseAnalytics
 import WatchConnectivity
 
-public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceBrowserDelegate, UITextViewDelegate, CBCentralManagerDelegate {
-    
-    // MARK: States
-    enum State :String{
-        case SubscriptionNotPaid
-        case Idle
-        case PromptUserRole         //Ask the user if they are typing or speaking
-        case Hosting
-        case BrowsingForPeers       //This is when the app has quietly initiated browsing for peers. No UI shown
-        case OpenedSessionBrowser   //This is when the user has initiated browsing for peers
-        
-        case ConnectedTyping
-        case ConnectedSpeaking
-        
-        case Typing
-        case TypingStarted
-        case Speaking
-        case Listening              //Listening to other person speaking
-        case Reading                //Reading what the other person is typing
-        
-        case ReceivingFromWatch
-    }
-    
-    enum Action :String{
-        case AppOpened
-        case Tap
-        case SwipeUp
-        case SwipeLeft
-        case BarButtonHelpTapped
-        case LongPress
-        
-        case ReceivedStatusFromWatch
-        case ReceivedContentFromWatch
-        case WatchUserStopped
-        case WatchNotReachable
-        
-        case UserPrmoptCancelled
-        case UserSelectedTyping
-        case UserSelectedSpeaking
-        
-        case BrowserCancelled
-        case ReceivedConnection
-        case TypistStartedTyping
-        case TypistDeletedAllText
-        case TypistFinishedTyping
-        case PartnerCompleted
-        case PartnerEndedSession
-        case LostConnection
-    }
+public class SpeechViewController: UIViewController {
 
     // MARK: Properties
     let networkManager = NetworkManager.sharedInstance
@@ -143,8 +95,10 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
-            currentState.append(State.Speaking)
-            enterStateSpeaking()
+            if hasInternetConnection() {
+                currentState.append(State.Speaking)
+                enterStateSpeaking()
+            }
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
             changeState(action: Action.TypistFinishedTyping)
@@ -258,14 +212,19 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
         else if action == Action.UserSelectedSpeaking && currentState.last == State.PromptUserRole {
             currentState.popLast() //Prompt User Role
-            //Only checking bluetooth right now, not Wifi
-            if isBluetoothOn {
-                currentState.append(State.OpenedSessionBrowser)
-                enterStateOpenedSessionBrowser()
+            if SFSpeechRecognizer.authorizationStatus() != .authorized {
+                dialogOK(title: "Permission Error", message: "You must enable speech recognition on order to use the speaking option. Go to Settings->Suno and turn Speech Recognition to ON")
             }
-            else {
+            else if AVAudioSession.sharedInstance().recordPermission() != AVAudioSession.RecordPermission.granted {
+                dialogOK(title: "Permission Error", message: "You must allow microphone on order to use the speaking option. Go to Settings->Suno and turn Microphone to ON")
+            }
+            else if !isBluetoothOn {
                 Analytics.logEvent("se3_connecting_bluetooth_off", parameters: [:])
                 dialogOK(title: "Bluetooth is off", message: "Bluetooth should be ON before starting a conversation session")
+            }
+            else {
+                currentState.append(State.OpenedSessionBrowser)
+                enterStateOpenedSessionBrowser()
             }
         }
         else if action == Action.UserPrmoptCancelled && currentState.last == State.PromptUserRole {
@@ -524,153 +483,6 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         textViewBottom.font = textViewBottom.font?.withSize(30)
         textViewBottom.text = "You can now talk. Tap the screen when finished. Go ahead, I'm listening"
     }
-
-    // MARK: SFSpeechRecognizerDelegate
-    
-    public func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-        if available {
-            recordButton?.isEnabled = true
-            recordButton?.setTitle("Start Recording", for: [])
-            recordLabel?.text = "Tap screen to start recording"
-            
-        } else {
-            recordButton?.isEnabled = false
-            recordButton?.setTitle("Recognition not available", for: .disabled)
-            recordLabel?.text = "Recognition not available"
-        }
-    }
-    
-    // MARK: MCSessionDelegate
-    public func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        switch state {
-        case MCSessionState.connected:
-            DispatchQueue.main.async { [unowned self] in
-                self.longPressLabel?.text = "Connected: \(peerID.displayName)" + "\n" + "Long press to disconnect"
-                self.changeState(action: Action.ReceivedConnection)
-            }
-            
-        case MCSessionState.connecting:
-            DispatchQueue.main.async { [unowned self] in
-                self.longPressLabel?.text = "Connecting: \(peerID.displayName)"
-                self.dismiss(animated: true)
-            }
-            print("Connecting: \(peerID.displayName)")
-            
-        case MCSessionState.notConnected:
-            DispatchQueue.main.async { [unowned self] in
-                self.changeState(action: Action.LostConnection)
-            }
-            print("Not Connected: \(peerID.displayName)")
-        }
-    }
-    
-    public func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        if let text = String(data: data, encoding: .utf8) {
-            DispatchQueue.main.async { [unowned self] in
-                if self.didPeerCloseConnection(text: text) {
-                    self.changeState(action: Action.PartnerEndedSession)
-                }
-                else if text.last! == "\0" {
-                    self.changeState(action: Action.TypistDeletedAllText)
-                }
-                else if text.last! == "\n" {
-                    self.changeState(action: Action.PartnerCompleted)
-                }
-                else if self.currentState.last == State.Listening || self.currentState.last == State.Reading {
-                    self.textViewBottom?.text = text
-                }
-            }
-        }
-    }
-    
-    public func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        
-    }
-    
-    public func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-        
-    }
-    
-    public func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
-        
-    }
-    
-    /// MARK:- MCBrowserViewControllerDelegate
-    public func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
-        dismiss(animated: true)
-    }
-    
-    public func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
-        dismiss(animated: true)
-        changeState(action: Action.BrowserCancelled)
-    }
-    
-    /// MARK:- MCNearbyServiceBrowserDelegate
-    public func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        dialogNewConnection(title: "New device found", message: "Found device with name: \(peerID.displayName). Would you like to connect to it?", peerId: peerID)
-    }
-    
-    public func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        self.textViewBottom?.text = "Looking for a device to connect to."
-    }
-    
-    /// MARK:- UITextViewDelegate
-    public func textViewDidChange(_ textView: UITextView) {
-        var str = textView.attributedText.string
-        if currentState.last == State.TypingStarted && str.last == "\n" {
-            //If its an ENTER CHARACTER, typing over
-            changeState(action: Action.TypistFinishedTyping)
-            //sendText(text: "\n")
-            return
-        }
-        
-        if currentState.last == State.Typing && str.last == "\n" {
-            //User has only pressed enter. We do not want to end typing session. EDGE CASE
-            return
-        }
-        
-        if currentState.last == State.Typing && str.last != "\n" {
-            //It is the first character
-            changeState(action: Action.TypistStartedTyping)
-            str = String(str.last!)
-            self.textViewBottom?.text = str
-            sendText(text: str)
-            return
-        }
-        
-        if str.isEmpty {
-            //User deleted all the text
-            changeState(action: Action.TypistDeletedAllText)
-            sendText(text: "\0")
-            return
-        }
-        
-        sendText(text: str)
-        
-    }
-    
-    // MARK: CBCentralManagerDelegate
-    public func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        switch central.state {
-            case .poweredOn:
-                isBluetoothOn = true
-                break
-            case .poweredOff:
-                isBluetoothOn = false
-                break
-            case .resetting:
-                break
-            case .unauthorized:
-                break
-            case .unsupported:
-                break
-            case .unknown:
-                break
-            default:
-                break
-        }
-    }
-    
     
     // MARK: State Machine Private Helpers
     private func enterStateIdle() {
@@ -1113,8 +925,158 @@ public class SpeechViewController: UIViewController, SFSpeechRecognizerDelegate,
         }
         return result
     }
+}
+
+extension SpeechViewController : SFSpeechRecognizerDelegate {
+    public func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
+        if available {
+            recordButton?.isEnabled = true
+            recordButton?.setTitle("Start Recording", for: [])
+            recordLabel?.text = "Tap screen to start recording"
+            
+        } else {
+            recordButton?.isEnabled = false
+            recordButton?.setTitle("Recognition not available", for: .disabled)
+            recordLabel?.text = "Recognition not available"
+        }
+    }
+}
+
+extension SpeechViewController : MCSessionDelegate {
+    public func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        switch state {
+        case MCSessionState.connected:
+            DispatchQueue.main.async { [unowned self] in
+                self.longPressLabel?.text = "Connected: \(peerID.displayName)" + "\n" + "Long press to disconnect"
+                self.changeState(action: Action.ReceivedConnection)
+            }
+            
+        case MCSessionState.connecting:
+            DispatchQueue.main.async { [unowned self] in
+                self.longPressLabel?.text = "Connecting: \(peerID.displayName)"
+                self.dismiss(animated: true)
+            }
+            print("Connecting: \(peerID.displayName)")
+            
+        case MCSessionState.notConnected:
+            DispatchQueue.main.async { [unowned self] in
+                self.changeState(action: Action.LostConnection)
+            }
+            print("Not Connected: \(peerID.displayName)")
+        }
+    }
     
+    public func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        if let text = String(data: data, encoding: .utf8) {
+            DispatchQueue.main.async { [unowned self] in
+                if self.didPeerCloseConnection(text: text) {
+                    self.changeState(action: Action.PartnerEndedSession)
+                }
+                else if text.last! == "\0" {
+                    self.changeState(action: Action.TypistDeletedAllText)
+                }
+                else if text.last! == "\n" {
+                    self.changeState(action: Action.PartnerCompleted)
+                }
+                else if self.currentState.last == State.Listening || self.currentState.last == State.Reading {
+                    self.textViewBottom?.text = text
+                }
+            }
+        }
+    }
     
+    public func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+        
+    }
+    
+    public func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+        
+    }
+    
+    public func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
+        
+    }
+}
+
+extension SpeechViewController : MCBrowserViewControllerDelegate {
+    public func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
+        dismiss(animated: true)
+    }
+    
+    public func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
+        dismiss(animated: true)
+        changeState(action: Action.BrowserCancelled)
+    }
+}
+
+extension SpeechViewController : MCNearbyServiceBrowserDelegate {
+    public func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        dialogNewConnection(title: "New device found", message: "Found device with name: \(peerID.displayName). Would you like to connect to it?", peerId: peerID)
+    }
+    
+    public func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        self.textViewBottom?.text = "Looking for a device to connect to."
+    }
+}
+
+extension SpeechViewController : UITextViewDelegate {
+    public func textViewDidChange(_ textView: UITextView) {
+        var str = textView.attributedText.string
+        if currentState.last == State.TypingStarted && str.last == "\n" {
+            //If its an ENTER CHARACTER, typing over
+            changeState(action: Action.TypistFinishedTyping)
+            //sendText(text: "\n")
+            return
+        }
+        
+        if currentState.last == State.Typing && str.last == "\n" {
+            //User has only pressed enter. We do not want to end typing session. EDGE CASE
+            return
+        }
+        
+        if currentState.last == State.Typing && str.last != "\n" {
+            //It is the first character
+            changeState(action: Action.TypistStartedTyping)
+            str = String(str.last!)
+            self.textViewBottom?.text = str
+            sendText(text: str)
+            return
+        }
+        
+        if str.isEmpty {
+            //User deleted all the text
+            changeState(action: Action.TypistDeletedAllText)
+            sendText(text: "\0")
+            return
+        }
+        
+        sendText(text: str)
+        
+    }
+}
+
+
+extension SpeechViewController : CBCentralManagerDelegate {
+    public func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        switch central.state {
+        case .poweredOn:
+            isBluetoothOn = true
+            break
+        case .poweredOff:
+            isBluetoothOn = false
+            break
+        case .resetting:
+            break
+        case .unauthorized:
+            break
+        case .unsupported:
+            break
+        case .unknown:
+            break
+        default:
+            break
+        }
+    }
 }
 
 
@@ -1133,6 +1095,12 @@ extension SpeechViewController : WCSessionDelegate {
     
     
     public func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        
+        Analytics.logEvent("se3_received_from_watch", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "device_type": getDeviceType(),
+            "current_state": currentState.last?.rawValue
+            ])
         
         var status = false
         var response = ""
@@ -1169,7 +1137,11 @@ extension SpeechViewController : WCSessionDelegate {
                 })
                 changeState(action: Action.ReceivedContentFromWatch)
             }
-            else if currentState.contains(State.ConnectedTyping) || currentState.contains(State.ConnectedSpeaking) {
+            else if currentState.contains(State.ConnectedTyping) || currentState.contains(State.ConnectedSpeaking) ||
+                currentState.contains(State.Hosting) ||
+                currentState.contains(State.OpenedSessionBrowser) ||
+                currentState.contains(State.BrowsingForPeers) ||
+                currentState.contains(State.PromptUserRole) {
                 status = false
                 response = "iPhone is in conversation session. Message not displayed"
             }
@@ -1184,12 +1156,6 @@ extension SpeechViewController : WCSessionDelegate {
             
             
         }
-        
-        Analytics.logEvent("se3_received_from_watch", parameters: [
-            "os_version": UIDevice.current.systemVersion,
-            "device_type": getDeviceType(),
-            "response": response
-            ])
         
         replyHandler(["status": status, "response":response])
     }
