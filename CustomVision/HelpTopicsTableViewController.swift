@@ -102,6 +102,11 @@ public class HelpTopicsTableViewController: UITableViewController {
         )
         
         helpTopics.append(HelpTopic(
+            question: "Apple Watch:\nCan I connect to somebody else's iPhone or iPad from my Apple Watch?",
+            answer: "No. Suno for Apple Watch will only connect to Suno on the iPhone that the watch is paired with.")
+        )
+        
+        helpTopics.append(HelpTopic(
             question: "Which devices does this app work on?",
             answer: "This app works on all iPhones and iPads running iOS 12 and above and on an Apple Watch running watchOS 5 and above, if one is connected to the iPhone.")
         )
