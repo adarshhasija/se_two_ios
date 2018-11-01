@@ -736,31 +736,44 @@
                                         </textView>
                                     </subviews>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="5ff-Md-G67">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="5ff-Md-G67">
                                     <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Ud8-D4-uRa">
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Ud8-D4-uRa">
                                     <rect key="frame" x="863" y="1" width="16" height="488"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UVX-Sx-swl">
-                                <rect key="frame" x="363" y="10" width="174" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Click here to start recording" id="fNN-Am-9n5">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Yhd-mM-50g">
-                                <rect key="frame" x="334" y="37" width="232" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Click here and hold to start a session" id="pBa-XL-HxX">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                            <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SCW-An-cQ8">
+                                <rect key="frame" x="0.0" y="20" width="900" height="34"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UVX-Sx-swl">
+                                        <rect key="frame" x="371" y="17" width="158" height="17"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Click here to start typing" id="fNN-Am-9n5">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Yhd-mM-50g">
+                                        <rect key="frame" x="334" y="0.0" width="232" height="17"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Click here and hold to start a session" id="pBa-XL-HxX">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LRY-97-AZ6">
                                 <rect key="frame" x="842" y="10" width="30" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="1:00" id="OHL-LN-QsN">
@@ -771,16 +784,14 @@
                             </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="Yhd-mM-50g" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="43E-PE-Lsm"/>
+                            <constraint firstItem="SCW-An-cQ8" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="11m-Og-ydp"/>
                             <constraint firstAttribute="trailing" secondItem="etB-e3-HEm" secondAttribute="trailing" constant="10" id="AI8-Rq-vn8"/>
                             <constraint firstAttribute="bottom" secondItem="etB-e3-HEm" secondAttribute="bottom" id="EAD-Ye-hgt"/>
-                            <constraint firstAttribute="bottom" secondItem="UVX-Sx-swl" secondAttribute="bottom" constant="10" id="Hx7-hA-fi9"/>
                             <constraint firstAttribute="bottom" secondItem="LRY-97-AZ6" secondAttribute="bottom" constant="10" id="Ml6-dI-ruf"/>
+                            <constraint firstAttribute="trailing" secondItem="SCW-An-cQ8" secondAttribute="trailing" id="XVv-Nz-w3b"/>
                             <constraint firstAttribute="trailing" secondItem="LRY-97-AZ6" secondAttribute="trailing" constant="30" id="goG-TW-tyK"/>
                             <constraint firstItem="etB-e3-HEm" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="10" id="jz9-W1-vYV"/>
                             <constraint firstItem="etB-e3-HEm" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="10" id="nje-TK-lA8"/>
-                            <constraint firstItem="UVX-Sx-swl" firstAttribute="top" secondItem="Yhd-mM-50g" secondAttribute="bottom" constant="10" id="qrH-bb-Yg8"/>
-                            <constraint firstItem="UVX-Sx-swl" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="t49-oW-T5t"/>
                         </constraints>
                         <gestureRecognizers>
                             <clickGestureRecognizer delaysPrimaryMouseButtonEvents="YES" numberOfClicksRequired="1" id="IWV-9y-Shb">

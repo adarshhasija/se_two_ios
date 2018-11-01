@@ -10,7 +10,7 @@ import Cocoa
 import MultipeerConnectivity
 import SystemConfiguration
 
-class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserViewControllerDelegate, NSTextViewDelegate {
+class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
     // MARK: States
     enum State :String{
@@ -34,6 +34,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     enum Action :String{
         case AppOpened
         case Tap
+        case PressedEscape
         case LongPress
         
         case ReceivedConnection
@@ -62,7 +63,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     
     /// MARK:- Interface Builder actions
     @IBAction func clickGesture(_ sender: Any) {
-        
+        changeState(action: Action.Tap)
     }
     
     @IBAction func pressGesture(_ sender: NSPressGestureRecognizer) {
@@ -96,6 +97,20 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         if action == Action.AppOpened {
             enterStateIdle()
         }
+        else if action == Action.Tap && currentState.last == State.Idle {
+            currentState.append(State.Typing)
+            enterStateTyping()
+        }
+        else if (action == Action.Tap  || action == Action.PressedEscape) && currentState.contains(State.Typing) && !currentState.contains(State.ConnectedTyping) {
+            //Typing but not connected
+            exitStateTyping()
+            if currentState.last != State.TypingStarted {
+                enterStateIdle()
+            }
+            while currentState.last != State.Idle {
+                currentState.popLast()
+            }
+        }
         else if action == Action.LongPress && currentState.last == State.Idle {
             currentState.append(State.Hosting)
             enterStateHosting()
@@ -117,12 +132,14 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             }
             currentState.append(State.ConnectedTyping)
             currentState.append(State.Typing)
+            enterStateConnected()
             enterStateTyping()
         }
         else if action == Action.TypistStartedTyping {
             currentState.append(State.TypingStarted)
         }
         else if action == Action.TypistDeletedAllText {
+            typistDeletedAllText()
             while currentState.last != State.Typing {
                 currentState.popLast()
             }
@@ -148,6 +165,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
             }
             exitStateConnected()
             exitStateHosting()
+            exitStateTyping()
             enterStateIdle()
             dialogConnectionLost()
         }
@@ -182,6 +200,10 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         didSet {
         // Update the view, if already loaded.
         }
+    }
+    
+    override func cancelOperation(_ sender: Any?) {
+        changeState(action: Action.PressedEscape)
     }
     
     
@@ -266,7 +288,7 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     
     private func enterStateHosting() {
         if hasInternetConnection() {
-            self.mainTextView?.string = "Session started, please connect to this session from your iPhone or iPad app"
+            self.mainTextView?.string = "Session started, please connect to this session from your iPhone or iPad app. Ensure that Wifi on this Mac is ON"
             startHosting()
         }
         else {
@@ -278,13 +300,35 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         stopHosting()
     }
     
+    private func enterStateConnected() {
+        self.recordLabel?.isHidden = true
+        self.searchDevicesLabel?.isHidden = false
+    }
+    
     private func exitStateConnected() {
         mcSession.disconnect()
+        self.recordLabel?.isHidden = false
+        self.searchDevicesLabel?.isHidden = false
     }
     
     func enterStateTyping() {
-        self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
+        if currentState.contains(State.ConnectedTyping) {
+            self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
+        }
+        else {
+            self.mainTextView?.string = "Type your message. Click on screen or press Esc when done. Then show the message to the other person. Start typing..."
+        }
         self.mainTextView?.isEditable = true
+        self.recordLabel?.stringValue = "Click here for press Esc to end typing"
+        if !currentState.contains(State.ConnectedTyping) {
+            self.searchDevicesLabel?.isHidden = true
+        }
+    }
+    
+    func exitStateTyping() {
+        self.mainTextView?.isEditable = false
+        self.recordLabel?.stringValue = "Click here to start typing"
+        self.searchDevicesLabel?.isHidden = false
     }
     
     func enterStateListening() {
@@ -296,13 +340,13 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
     /// MARK:- Private Helpers
     
     func hasInternetConnection() -> Bool {
-      /*  guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
+        guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
         var flags = SCNetworkReachabilityFlags()
         SCNetworkReachabilityGetFlags(reachability, &flags)
         if !isNetworkReachable(with: flags) {
             // Device doesn't have internet connection
             return false
-        }   */
+        }
         return true
     }
     
@@ -372,7 +416,18 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         return result
     }
     
-    /// NSTextViewDelegate
+    func typistDeletedAllText() {
+        if currentState.contains(State.ConnectedTyping) {
+            self.mainTextView?.string = "Connected. Type your message. Press enter when you have finished in order to start listening. Start typing..."
+        }
+        else {
+            self.mainTextView?.string = "Type your message. Click on screen or press Esc when done. Then show the message to the other person. Start typing..."
+        }
+    }
+
+}
+
+extension SpeechMacViewController : NSTextViewDelegate {
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? NSTextView else { return }
         var str = textView.string
@@ -406,7 +461,5 @@ class SpeechMacViewController: NSViewController, MCSessionDelegate, MCBrowserVie
         
         sendText(text: str)
     }
-
-
 }
 

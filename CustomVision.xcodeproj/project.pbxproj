@@ -13,7 +13,6 @@
 		3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */; };
 		3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */; };
 		31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31798DFC217B9E66008CF9C7 /* NetworkManager.swift */; };
-		31798DFE217C2843008CF9C7 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31798DFC217B9E66008CF9C7 /* NetworkManager.swift */; };
 		31798E00217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
 		31798E01217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
 		31798E02217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
@@ -653,7 +652,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31798DFE217C2843008CF9C7 /* NetworkManager.swift in Sources */,
 				31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */,
 				31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */,
 			);
