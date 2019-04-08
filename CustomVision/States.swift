@@ -19,6 +19,8 @@ enum State :String{
     case ConnectedTyping
     case ConnectedSpeaking
     
+    case EditingMode //Opened a new view controller for typing/speaking
+    
     case Typing
     case TypingStarted
     case Speaking

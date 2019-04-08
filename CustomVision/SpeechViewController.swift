@@ -17,6 +17,8 @@ import WatchConnectivity
 public class SpeechViewController: UIViewController {
 
     // MARK: Properties
+    var inputAction : Action? = nil //Action that is passed in from previous controller
+    var speechViewControllerProtocol : SpeechViewControllerProtocol?
     let networkManager = NetworkManager.sharedInstance
     var currentState: [State] = []
     var seconds = 60
@@ -49,8 +51,11 @@ public class SpeechViewController: UIViewController {
     @IBOutlet weak var recordLabel: UILabel?
     @IBOutlet weak var timerLabel: UILabel?
     @IBOutlet weak var swipeUpLabel: UILabel!
+    @IBOutlet weak var typingButton: UIButton!
+    @IBOutlet weak var speakingButton: UIButton!
     @IBOutlet weak var swipeLeftLabel: UILabel!
-    
+    @IBOutlet weak var connectDeviceButton: UIButton!
+    @IBOutlet weak var helpTopicsButton: UIButton!
     // MARK: Interface Builder actions
     
     
@@ -59,24 +64,46 @@ public class SpeechViewController: UIViewController {
     }
     
     @IBAction func tapGesture() {
-        changeState(action: Action.Tap)
+        if currentState.last != State.Idle {
+            changeState(action: Action.Tap)
+        }
     }
     
     
     @IBAction func longPressGesture(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.began {
+      /*  if sender.state == UIGestureRecognizerState.began {
            changeState(action: Action.LongPress)
-        }
+        }   */
     }
     
     
     @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
-        if sender.direction == UISwipeGestureRecognizerDirection.up {
+      /*  if sender.direction == UISwipeGestureRecognizerDirection.up {
             changeState(action: Action.SwipeUp)
         }
         else if sender.direction == UISwipeGestureRecognizerDirection.left {
             changeState(action: Action.SwipeLeft)
-        }
+        }   */
+    }
+    
+    
+    @IBAction func typeButtonTapped(_ sender: Any) {
+        changeState(action: Action.SwipeUp)
+    }
+    
+    
+    @IBAction func talkButtonTapped(_ sender: Any) {
+        changeState(action: Action.Tap)
+    }
+    
+    
+    @IBAction func connectDeviceTapped(_ sender: Any) {
+        changeState(action: Action.LongPress)
+    }
+    
+    
+    @IBAction func helpTopicsButtonTapped(_ sender: Any) {
+        changeState(action: Action.SwipeLeft)
     }
     
     // MARK: State Machine
@@ -96,8 +123,11 @@ public class SpeechViewController: UIViewController {
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
             if hasInternetConnection() {
-                currentState.append(State.Speaking)
-                enterStateSpeaking()
+                currentState.append(State.EditingMode)
+                enterStateEditingMode(editingType: EditingType.Speaking)
+            }
+            else {
+                dialogOK(title: "No internet connection", message: "You need an internet connection to use speech-to-text")
             }
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
@@ -123,8 +153,20 @@ public class SpeechViewController: UIViewController {
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is typing on iPhone. Please wait. Tell them to tap screen when done.")
+            currentState.append(State.EditingMode)
+            enterStateEditingMode(editingType: EditingType.Typing)
+        }
+        else if action == Action.OpenedEditingModeForTyping && currentState.last == State.Idle {
             currentState.append(State.Typing)
             enterStateTyping()
+        }
+        else if action == Action.OpenedEditingModeForSpeaking && currentState.last == State.Idle {
+            currentState.append(State.Speaking)
+            enterStateSpeaking()
+        }
+        else if action == Action.ClosedEditingMode && currentState.last == State.EditingMode {
+            currentState.popLast() //pop editing mode
+            exitStateEditingMode()
         }
         else if action == Action.LongPress && currentState.last == State.Idle {
             Analytics.logEvent("se3_long_press_not_connected", parameters: [:])
@@ -326,6 +368,10 @@ public class SpeechViewController: UIViewController {
         currentState.append(State.Idle) //Push
         changeState(action: Action.AppOpened)
         
+        if inputAction != nil {
+            changeState(action: inputAction!)
+        }
+        
         // Disable the record buttons until authorization has been granted.
         recordButton?.isEnabled = false
         
@@ -396,7 +442,10 @@ public class SpeechViewController: UIViewController {
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
-        
+        if self.isMovingFromParentViewController && inputAction != nil {
+            //We are in editing mode and back button was tapped
+            self.speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil)
+        }
     }
     
     /// MARK:- Speech Recognition Helpers
@@ -498,6 +547,7 @@ public class SpeechViewController: UIViewController {
         self.longPressLabel?.text = "Long press to stop session"
         self.recordLabel?.isHidden = true
         self.swipeUpLabel?.isHidden = true
+        self.helpTopicsButton?.isHidden = true
         self.swipeLeftLabel?.isHidden = true
         startHosting()
     }
@@ -507,6 +557,7 @@ public class SpeechViewController: UIViewController {
         self.longPressLabel?.text = "Long press to connect to another device"
         self.recordLabel?.isHidden = false
         self.swipeUpLabel?.isHidden = false
+        self.helpTopicsButton?.isHidden = false
         self.swipeLeftLabel?.isHidden = false
         stopHosting()
     }
@@ -516,6 +567,7 @@ public class SpeechViewController: UIViewController {
         self.longPressLabel?.text = "Long press to stop session"
         self.recordLabel?.isHidden = true
         self.swipeUpLabel?.isHidden = true
+        self.helpTopicsButton?.isHidden = true
         self.swipeLeftLabel?.isHidden = true
         mcNearbyServiceBrowser = MCNearbyServiceBrowser(peer: peerID, serviceType: "hws-kb")
         mcNearbyServiceBrowser.delegate = self
@@ -527,6 +579,7 @@ public class SpeechViewController: UIViewController {
         self.longPressLabel?.text = "Long press to to look for other devices"
         self.recordLabel?.isHidden = false
         self.swipeUpLabel?.isHidden = false
+        self.helpTopicsButton?.isHidden = false
         self.swipeLeftLabel?.isHidden = false
     }
     
@@ -535,6 +588,7 @@ public class SpeechViewController: UIViewController {
         self.longPressLabel?.text = "Long press to to look for other devices"
         self.recordLabel?.isHidden = false
         self.swipeUpLabel?.isHidden = false
+        self.helpTopicsButton?.isHidden = false
         self.swipeLeftLabel?.isHidden = false
         self.mcNearbyServiceBrowser?.stopBrowsingForPeers()
     }
@@ -542,6 +596,7 @@ public class SpeechViewController: UIViewController {
     private func enterStateConnectedTyping() {
         self.recordLabel?.isHidden = true
         self.swipeUpLabel?.isHidden = true
+        self.helpTopicsButton?.isHidden = true
         self.swipeLeftLabel?.isHidden = true
     }
     
@@ -549,12 +604,14 @@ public class SpeechViewController: UIViewController {
         self.textViewBottom?.text = "Connected, waiting for the other person to start talking..."
         self.recordLabel?.isHidden = true
         self.swipeUpLabel?.isHidden = true
+        self.helpTopicsButton?.isHidden = true
         self.swipeLeftLabel?.isHidden = true
     }
     
     private func enterStateConnectedSpeaking() {
         self.recordLabel?.isHidden = true
         self.swipeUpLabel?.isHidden = true
+        self.helpTopicsButton?.isHidden = true
         self.swipeLeftLabel?.isHidden = true
     }
     
@@ -562,27 +619,64 @@ public class SpeechViewController: UIViewController {
         self.textViewBottom?.text = "Connected, waiting for the other person to start typing..."
         self.recordLabel?.isHidden = true
         self.swipeUpLabel?.isHidden = true
+        self.helpTopicsButton?.isHidden = true
         self.swipeLeftLabel?.isHidden = true
     }
     
+    private func enterStateEditingMode(editingType : EditingType) {
+        //If inputAction is nil, we are at part 1: pushing the view controller
+        guard let storyBoard : UIStoryboard = self.storyboard else {
+            return
+        }
+        let speechViewController = storyBoard.instantiateViewController(withIdentifier: "SpeechViewController") as! SpeechViewController
+        if editingType == EditingType.Typing {
+            speechViewController.inputAction = Action.OpenedEditingModeForTyping
+        }
+        else if editingType == EditingType.Speaking {
+            speechViewController.inputAction = Action.OpenedEditingModeForSpeaking
+        }
+        speechViewController.speechViewControllerProtocol = self as? SpeechViewControllerProtocol
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(speechViewController, animated: true)
+        }
+    }
+    
+    private func exitStateEditingMode() {
+        
+    }
+    
     private func enterStateTyping() {
-        self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
-        textViewBottom?.isEditable = true
-        textViewBottom?.becomeFirstResponder()
+        //Checking for input action
+        //Typing mode is always in a separate view controller
+        if inputAction == Action.OpenedEditingModeForTyping {
+            self.recordLabel?.isHidden = true
+            self.swipeUpLabel?.isHidden = true
+            self.helpTopicsButton?.isHidden = true
+            self.swipeLeftLabel?.isHidden = true
+            
+            //inputAction already has a value means new view controller already pushed
+            self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
+            textViewBottom?.isEditable = true
+            textViewBottom?.becomeFirstResponder()
+        }
     }
     
     private func exitStateTyping() {
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
+        speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: textViewBottom.text)
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func enterStateReceivingFromWatch() {
         //When coming from the watch
         //Use this to update the UI instantaneously (otherwise, takes a little while)
         DispatchQueue.main.async(execute: { () -> Void in
+            self.helpTopicsButton?.isHidden = true
             self.swipeLeftLabel?.isHidden = true
             self.swipeUpLabel?.isHidden = true
             self.recordLabel?.isHidden = true
+            self.connectDeviceButton?.isHidden = false
             self.longPressLabel?.isHidden = false
             self.longPressLabel?.text = "Long press to stop"
         })
@@ -593,8 +687,10 @@ public class SpeechViewController: UIViewController {
         //When coming from the watch
         //Use this to update the UI instantaneously (otherwise, takes a little while)
         DispatchQueue.main.async(execute: { () -> Void in
+            self.helpTopicsButton?.isHidden = false
             self.swipeLeftLabel?.isHidden = false
             self.swipeUpLabel?.isHidden = false
+            self.connectDeviceButton?.isHidden = false
             self.longPressLabel?.isHidden = false
             self.longPressLabel?.text = "Long press to connect to another device"
             self.recordLabel?.isHidden = false
@@ -610,7 +706,11 @@ public class SpeechViewController: UIViewController {
             recordLabel?.text = "TAP SCREEN TO STOP RECORDING"
             recordLabel?.isHidden = false
             swipeUpLabel?.isHidden = true
+            typingButton?.isHidden = true
+            speakingButton?.isHidden = true
+            helpTopicsButton?.isHidden = true
             swipeLeftLabel?.isHidden = true
+            connectDeviceButton?.isHidden = true
             longPressLabel?.isHidden = true
         }
         else {
@@ -632,7 +732,9 @@ public class SpeechViewController: UIViewController {
             //textViewBottom.font = textViewBottom.font?.withSize(16)
             textViewBottom.text = ""
             swipeUpLabel?.isHidden = false
+            helpTopicsButton?.isHidden = false
             swipeLeftLabel?.isHidden = false
+            connectDeviceButton?.isHidden = false
             longPressLabel?.isHidden = false
             recordLabel?.text = "Tap screen to start recording"
         }
@@ -655,6 +757,7 @@ public class SpeechViewController: UIViewController {
         self.longPressLabel?.text = "Long press to connect to a device"
         self.recordLabel?.isHidden = false
         self.swipeUpLabel?.isHidden = false
+        self.helpTopicsButton?.isHidden = false
         self.swipeLeftLabel?.isHidden = false
         self.dismiss(animated: true)
     }
@@ -1158,6 +1261,21 @@ extension SpeechViewController : WCSessionDelegate {
         }
         
         replyHandler(["status": status, "response":response])
+    }
+}
+
+///Protocol
+protocol SpeechViewControllerProtocol {
+    func setResultOfTypingOrSpeaking(valueSent: String?)
+}
+
+extension SpeechViewController : SpeechViewControllerProtocol {
+    func setResultOfTypingOrSpeaking(valueSent: String?) {
+        changeState(action: Action.ClosedEditingMode)
+        guard let newText = valueSent else {
+            return
+        }
+        self.textViewBottom?.text = newText
     }
 }
 

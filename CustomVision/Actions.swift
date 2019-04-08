@@ -33,4 +33,11 @@ enum Action :String{
     case PartnerCompleted
     case PartnerEndedSession
     case LostConnection
+    
+    //Opening of new view controller
+    case OpenedEditingModeForTyping
+    case OpenedEditingModeForSpeaking
+    
+    //Closing of new view controller
+    case ClosedEditingMode
 }
