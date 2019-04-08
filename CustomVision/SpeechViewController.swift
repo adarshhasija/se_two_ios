@@ -56,6 +56,10 @@ public class SpeechViewController: UIViewController {
     @IBOutlet weak var swipeLeftLabel: UILabel!
     @IBOutlet weak var connectDeviceButton: UIButton!
     @IBOutlet weak var helpTopicsButton: UIButton!
+    
+    
+    @IBOutlet weak var stackViewCannotSpeak: UIStackView!
+    @IBOutlet weak var stackViewCanSpeak: UIStackView!
     // MARK: Interface Builder actions
     
     

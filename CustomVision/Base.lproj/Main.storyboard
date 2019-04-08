@@ -201,13 +201,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Placeholder text here..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
-                                <rect key="frame" x="16" y="64" width="288" height="446"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
-                            </textView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQ1-aS-4qY">
                                 <rect key="frame" x="16" y="518" width="288" height="30"/>
                                 <state key="normal" title="Start Recording!"/>
@@ -215,8 +208,11 @@
                                     <action selector="tapGesture" destination="1hE-gn-uSX" eventType="touchUpInside" id="Ag5-o2-vic"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="vwK-RC-oqj">
+                                <rect key="frame" x="115.5" y="247" width="89" height="74"/>
+                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="pXC-11-TJX">
-                                <rect key="frame" x="5.5" y="433" width="309" height="125"/>
+                                <rect key="frame" x="5.5" y="484" width="309" height="74"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;- Swipe left for help topics --" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZf-OZ-KGX">
                                         <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
@@ -248,42 +244,12 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="vwK-RC-oqj">
-                                        <rect key="frame" x="0.0" y="0.0" width="309" height="36"/>
-                                        <subviews>
-                                            <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rgT-WS-v4D" userLabel="Type Button">
-                                                <rect key="frame" x="0.0" y="0.0" width="153.5" height="36"/>
-                                                <color key="backgroundColor" red="0.1421308412" green="0.1170574764" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" title="Type"/>
-                                                <connections>
-                                                    <action selector="typeButtonTapped:" destination="1hE-gn-uSX" eventType="touchUpInside" id="lfX-8U-GrR"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acx-cW-An0" userLabel="Talk Button">
-                                                <rect key="frame" x="155.5" y="0.0" width="153.5" height="36"/>
-                                                <color key="backgroundColor" red="0.1421308412" green="0.1170574764" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" title="Speak"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.botderColor">
-                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="talkButtonTapped:" destination="1hE-gn-uSX" eventType="touchUpInside" id="x5W-DK-znf"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="1pI-gx-HlR">
-                                        <rect key="frame" x="0.0" y="51" width="309" height="74"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="309" height="74"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-j8-cQm" userLabel="Connect device button">
                                                 <rect key="frame" x="0.0" y="0.0" width="309" height="36"/>
-                                                <color key="backgroundColor" red="0.1421308412" green="0.1170574764" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <color key="backgroundColor" red="0.1044840211387905" green="0.4045296308290155" blue="0.18125209036326215" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <state key="normal" title="Connect to another device">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -307,19 +273,85 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZzH-q1-4Um">
+                                <rect key="frame" x="16" y="64" width="288" height="518"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QiP-o5-lR0">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="72"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Yja-w3-gkg">
+                                                <rect key="frame" x="0.0" y="0.0" width="141.5" height="72"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cannot speak?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SP1-Vx-ygK">
+                                                        <rect key="frame" x="0.0" y="0.0" width="141.5" height="36"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rgT-WS-v4D" userLabel="Type Button">
+                                                        <rect key="frame" x="0.0" y="36" width="141.5" height="36"/>
+                                                        <color key="backgroundColor" red="0.1421308412" green="0.1170574764" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <state key="normal" title="Type"/>
+                                                        <connections>
+                                                            <action selector="typeButtonTapped:" destination="1hE-gn-uSX" eventType="touchUpInside" id="lfX-8U-GrR"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="cwj-Kz-8xw">
+                                                <rect key="frame" x="146.5" y="0.0" width="141.5" height="72"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Can speak?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOE-T1-xqU">
+                                                        <rect key="frame" x="0.0" y="0.0" width="141.5" height="36"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acx-cW-An0" userLabel="Talk Button">
+                                                        <rect key="frame" x="0.0" y="36" width="141.5" height="36"/>
+                                                        <color key="backgroundColor" red="0.1421308412" green="0.1170574764" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <state key="normal" title="Speak"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.botderColor">
+                                                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="talkButtonTapped:" destination="1hE-gn-uSX" eventType="touchUpInside" id="x5W-DK-znf"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" text="Placeholder text here..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
+                                        <rect key="frame" x="0.0" y="72" width="288" height="446"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
+                                    </textView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="ZzH-q1-4Um" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="2bm-8s-XnY"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="trailing" secondItem="lsg-M3-JgJ" secondAttribute="trailingMargin" id="2rt-Ck-67a"/>
                             <constraint firstItem="pXC-11-TJX" firstAttribute="centerX" secondItem="lsg-M3-JgJ" secondAttribute="centerX" id="7qg-LH-wwR"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="8JM-Ib-xMy"/>
-                            <constraint firstItem="fxs-Ff-2dL" firstAttribute="top" secondItem="9Zo-hn-Ia8" secondAttribute="bottom" id="C6R-KN-3BL"/>
-                            <constraint firstItem="fxs-Ff-2dL" firstAttribute="trailing" secondItem="lsg-M3-JgJ" secondAttribute="trailingMargin" id="HBu-Cr-m3x"/>
                             <constraint firstItem="Jo6-UM-bBN" firstAttribute="top" secondItem="pXC-11-TJX" secondAttribute="bottom" constant="10" id="SfD-O5-2ks"/>
-                            <constraint firstItem="hQ1-aS-4qY" firstAttribute="top" secondItem="fxs-Ff-2dL" secondAttribute="bottom" constant="8" id="hDd-Ic-l1n"/>
-                            <constraint firstItem="fxs-Ff-2dL" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="lTN-qn-V9g"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ZzH-q1-4Um" secondAttribute="trailing" id="VVe-mo-GxX"/>
+                            <constraint firstItem="vwK-RC-oqj" firstAttribute="centerX" secondItem="lsg-M3-JgJ" secondAttribute="centerX" id="YV1-gH-pqG"/>
+                            <constraint firstItem="vwK-RC-oqj" firstAttribute="centerY" secondItem="lsg-M3-JgJ" secondAttribute="centerY" id="iic-wd-jFs"/>
+                            <constraint firstItem="ZzH-q1-4Um" firstAttribute="top" secondItem="9Zo-hn-Ia8" secondAttribute="bottom" id="kU1-mk-Gvi"/>
                             <constraint firstItem="Jo6-UM-bBN" firstAttribute="top" secondItem="hQ1-aS-4qY" secondAttribute="bottom" constant="20" id="mes-lh-mkG"/>
+                            <constraint firstItem="ZzH-q1-4Um" firstAttribute="top" secondItem="9Zo-hn-Ia8" secondAttribute="bottom" id="whF-Kq-ysy"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Els-qX-pLQ" appends="YES" id="8HA-vw-DP5"/>
@@ -344,6 +376,8 @@
                         <outlet property="recordButton" destination="hQ1-aS-4qY" id="5qX-pj-gox"/>
                         <outlet property="recordLabel" destination="Z2R-uD-B4J" id="jPy-vq-rXn"/>
                         <outlet property="speakingButton" destination="acx-cW-An0" id="QeB-GE-AVr"/>
+                        <outlet property="stackViewCanSpeak" destination="cwj-Kz-8xw" id="hup-ZS-T0G"/>
+                        <outlet property="stackViewCannotSpeak" destination="Yja-w3-gkg" id="HDJ-Or-5Uh"/>
                         <outlet property="swipeLeftLabel" destination="eZf-OZ-KGX" id="EfH-j0-eej"/>
                         <outlet property="swipeUpLabel" destination="hy7-zd-rwS" id="CJ5-Zb-CgG"/>
                         <outlet property="textViewBottom" destination="fxs-Ff-2dL" id="fad-we-JnW"/>
