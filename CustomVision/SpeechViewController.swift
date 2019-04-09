@@ -58,6 +58,8 @@ public class SpeechViewController: UIViewController {
     @IBOutlet weak var helpTopicsButton: UIButton!
     
     
+    @IBOutlet weak var conversationTableView: UITableView!
+    private var dataChats: [String] = []
     @IBOutlet weak var stackViewCannotSpeak: UIStackView!
     @IBOutlet weak var stackViewCanSpeak: UIStackView!
     // MARK: Interface Builder actions
@@ -368,6 +370,10 @@ public class SpeechViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.conversationTableView.dataSource = self
+        self.conversationTableView.rowHeight = UITableViewAutomaticDimension
+        self.conversationTableView.estimatedRowHeight = 44
+        
         //currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.Idle) //Push
         changeState(action: Action.AppOpened)
@@ -448,6 +454,9 @@ public class SpeechViewController: UIViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         if self.isMovingFromParentViewController && inputAction != nil {
             //We are in editing mode and back button was tapped
+            if currentState.last == State.Speaking {
+                exitStateSpeaking()
+            }
             self.speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil)
         }
     }
@@ -539,7 +548,8 @@ public class SpeechViewController: UIViewController {
     
     // MARK: State Machine Private Helpers
     private func enterStateIdle() {
-        self.textViewBottom?.text = "If you are hearing-impaired, you can use this app to have a conversation with someone face to face. Tap to talk, swipe up to type, or long press to start a session with another device."
+        self.textViewBottom?.isHidden = true
+        //self.textViewBottom?.text = "If you are hearing-impaired, you can use this app to have a conversation with someone face to face. Tap to talk, swipe up to type, or long press to start a session with another device."
     }
     
     private func enterStatePromptUserRole() {
@@ -658,6 +668,11 @@ public class SpeechViewController: UIViewController {
             self.helpTopicsButton?.isHidden = true
             self.swipeLeftLabel?.isHidden = true
             
+            self.stackViewCanSpeak.isHidden = true
+            self.stackViewCannotSpeak.isHidden = true
+            self.conversationTableView.isHidden = true
+            self.textViewBottom?.isHidden = false
+            
             //inputAction already has a value means new view controller already pushed
             self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
             textViewBottom?.isEditable = true
@@ -716,6 +731,11 @@ public class SpeechViewController: UIViewController {
             swipeLeftLabel?.isHidden = true
             connectDeviceButton?.isHidden = true
             longPressLabel?.isHidden = true
+            
+            stackViewCanSpeak?.isHidden = true
+            stackViewCannotSpeak?.isHidden = true
+            conversationTableView?.isHidden = true
+            textViewBottom?.isHidden = false
         }
         else {
             dialogOK(title: "Alert", message: "No internet connection")
@@ -1268,6 +1288,54 @@ extension SpeechViewController : WCSessionDelegate {
     }
 }
 
+extension SpeechViewController : UITableViewDataSource {
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        var numOfSections: Int = 1
+        if dataChats.count > 0 {
+            tableView.separatorStyle = .singleLine
+            numOfSections            = 1
+            tableView.backgroundView = nil
+        }
+        else {
+            let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text          = "Use the options above to begin communicating or use the option below to connect to another device"
+            noDataLabel.textColor     = UIColor.black
+            noDataLabel.textAlignment = .center
+            noDataLabel.numberOfLines = 3
+            noDataLabel.lineBreakMode = .byWordWrapping
+            tableView.backgroundView  = noDataLabel
+            tableView.separatorStyle  = .none
+        }
+        return numOfSections
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataChats.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell : ConversationTableViewCell = tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell //1.
+        
+        let text = dataChats[indexPath.row] //2.
+        
+        //cell.textViewMessage?.text = text //3.
+        cell.textViewLabel?.text = text
+        
+        return cell //4.
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+}
+
+extension SpeechViewController : UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let chat = dataChats[indexPath.row]
+        
+    }
+}
+
 ///Protocol
 protocol SpeechViewControllerProtocol {
     func setResultOfTypingOrSpeaking(valueSent: String?)
@@ -1276,10 +1344,12 @@ protocol SpeechViewControllerProtocol {
 extension SpeechViewController : SpeechViewControllerProtocol {
     func setResultOfTypingOrSpeaking(valueSent: String?) {
         changeState(action: Action.ClosedEditingMode)
-        guard let newText = valueSent else {
+        guard let newText : String = valueSent else {
             return
         }
-        self.textViewBottom?.text = newText
+        //self.textViewBottom?.text = newText
+        self.dataChats.append(newText)
+        self.conversationTableView.reloadData()
     }
 }
 

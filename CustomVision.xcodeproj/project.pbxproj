@@ -28,6 +28,7 @@
 		317D4C242188CCC50081B38B /* States.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C232188CCC50081B38B /* States.swift */; };
 		317D4C262188CCF00081B38B /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319FD50620D1A98E0071F993 /* ARViewController.swift */; };
+		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
 		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
 		31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */; };
@@ -122,6 +123,7 @@
 		317D4C232188CCC50081B38B /* States.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = States.swift; sourceTree = "<group>"; };
 		317D4C252188CCF00081B38B /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		319FD50620D1A98E0071F993 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
+		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
 		31F57B50211A14D100777EA3 /* Suno-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -313,6 +315,7 @@
 				317D4C232188CCC50081B38B /* States.swift */,
 				317D4C252188CCF00081B38B /* Actions.swift */,
 				313DDB49225B659A00BF65D4 /* EditingType.swift */,
+				31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -694,6 +697,7 @@
 				76B5ACDE1F159C7500EE183D /* BubbleLabelLayer.swift in Sources */,
 				3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */,
 				5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */,
+				31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
