@@ -45,6 +45,8 @@ public class SpeechViewController: UIViewController {
     
     // MARK: UI Properties
     @IBOutlet weak var helpBarButtonItem: UIBarButtonItem! //To make this visible again, in storyboard, set Enabled to true + set Tint to Default
+    
+    @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet var mainView : UIView?
     @IBOutlet var textViewTop : UITextView?
     @IBOutlet var textViewBottom : UITextView!
@@ -61,7 +63,8 @@ public class SpeechViewController: UIViewController {
     
     
     @IBOutlet weak var conversationTableView: UITableView!
-    private var dataChats: [ChatListItem] = []
+    private var dataChats: [ChatListItem] = []  
+    @IBOutlet weak var stackViewBottomActions: UIStackView!
     @IBOutlet weak var stackViewCannotSpeak: UIStackView!
     @IBOutlet weak var stackViewCanSpeak: UIStackView!
     // MARK: Interface Builder actions
@@ -739,8 +742,10 @@ public class SpeechViewController: UIViewController {
             connectDeviceButton?.isHidden = true
             longPressLabel?.isHidden = true
             
-            stackViewCanSpeak?.isHidden = true
-            stackViewCannotSpeak?.isHidden = true
+            tapGestureRecognizer?.isEnabled = true
+            stackViewBottomActions?.isHidden = true
+            //stackViewCanSpeak?.isHidden = true
+            //stackViewCannotSpeak?.isHidden = true
             conversationTableView?.isHidden = true
             textViewBottom?.isHidden = false
         }
@@ -1365,10 +1370,14 @@ protocol SpeechViewControllerProtocol {
 extension SpeechViewController : SpeechViewControllerProtocol {
     func setResultOfTypingOrSpeaking(valueSent: String?) {
         changeState(action: Action.ClosedEditingMode)
-        guard let newText : String = valueSent else {
+        guard var newText : String = valueSent else {
             return
         }
-
+        if newText.last == "\n" {
+            //Typing mode can put a newline on the end
+            newText.removeLast()
+        }
+        
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
