@@ -1293,7 +1293,7 @@ extension SpeechViewController : UITableViewDataSource {
     public func numberOfSections(in tableView: UITableView) -> Int {
         var numOfSections: Int = 1
         if dataChats.count > 0 {
-            tableView.separatorStyle = .singleLine
+            tableView.separatorStyle = .none //.singleLine
             numOfSections            = 1
             tableView.backgroundView = nil
         }
@@ -1320,6 +1320,7 @@ extension SpeechViewController : UITableViewDataSource {
         let text = dataChats[indexPath.row] //2.
     
         cell.textViewLabel?.text = text //3.
+        cell.messageOriginLabel?.text = peerID.displayName
         
         return cell //4.
     }

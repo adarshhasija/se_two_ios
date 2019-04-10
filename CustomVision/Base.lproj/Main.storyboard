@@ -216,10 +216,10 @@
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="ZzH-q1-4Um">
-                                <rect key="frame" x="16" y="69" width="288" height="95"/>
+                                <rect key="frame" x="16" y="64" width="288" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOV-0C-Qvs" userLabel="Help Topics Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="95"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="100"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Help Topics">
@@ -242,21 +242,48 @@
                                             <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aje-DE-oqk" userLabel="Text View Label">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xrj-WP-QK0">
                                                     <rect key="frame" x="15" y="11" width="258" height="22"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aje-DE-oqk" userLabel="Text View Label">
+                                                            <rect key="frame" x="8" y="8" width="242" height="6"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message origin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSO-Dv-wqW">
+                                                            <rect key="frame" x="162" y="2.5" width="86" height="14.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="WSO-Dv-wqW" secondAttribute="trailing" constant="10" id="15W-QA-r9N"/>
+                                                        <constraint firstAttribute="bottomMargin" secondItem="Aje-DE-oqk" secondAttribute="bottom" id="Dbn-9Y-BWi"/>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="Aje-DE-oqk" secondAttribute="trailing" id="Mdx-wQ-1Xf"/>
+                                                        <constraint firstItem="Aje-DE-oqk" firstAttribute="centerY" secondItem="Xrj-WP-QK0" secondAttribute="centerY" id="S6C-6R-GBL"/>
+                                                        <constraint firstItem="Aje-DE-oqk" firstAttribute="leading" secondItem="Xrj-WP-QK0" secondAttribute="leadingMargin" id="Wzi-9u-mtd"/>
+                                                        <constraint firstAttribute="bottom" secondItem="WSO-Dv-wqW" secondAttribute="bottom" constant="5" id="d39-yz-WQE"/>
+                                                        <constraint firstItem="Aje-DE-oqk" firstAttribute="top" secondItem="Xrj-WP-QK0" secondAttribute="topMargin" id="rqK-xP-lRS"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <integer key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Aje-DE-oqk" secondAttribute="trailing" id="4fV-G1-fbV"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Aje-DE-oqk" secondAttribute="bottom" id="f3k-Of-ueK"/>
-                                                <constraint firstItem="Aje-DE-oqk" firstAttribute="leading" secondItem="4HI-7c-MTL" secondAttribute="leadingMargin" id="j0i-fX-b7g"/>
-                                                <constraint firstItem="Aje-DE-oqk" firstAttribute="top" secondItem="4HI-7c-MTL" secondAttribute="topMargin" id="l8R-y2-1sE"/>
+                                                <constraint firstItem="Xrj-WP-QK0" firstAttribute="leading" secondItem="4HI-7c-MTL" secondAttribute="leadingMargin" id="6O9-x7-F28"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Xrj-WP-QK0" secondAttribute="trailing" id="sHE-Is-j6k"/>
+                                                <constraint firstItem="Xrj-WP-QK0" firstAttribute="top" secondItem="4HI-7c-MTL" secondAttribute="topMargin" id="sPU-Aa-S0W"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Xrj-WP-QK0" secondAttribute="bottom" id="xiQ-dI-QZA"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="messageOriginLabel" destination="WSO-Dv-wqW" id="1HZ-Uj-CWD"/>
                                             <outlet property="textViewLabel" destination="Aje-DE-oqk" id="XMn-eh-51R"/>
                                         </connections>
                                     </tableViewCell>

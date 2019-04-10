@@ -11,6 +11,6 @@ import UIKit
 
 class ConversationTableViewCell : UITableViewCell {
     
-    @IBOutlet weak var textViewMessage: UITextView!
-    @IBOutlet weak var textViewLabel: UILabel!
+    @IBOutlet weak var textViewLabel: UILabel! 
+    @IBOutlet weak var messageOriginLabel: UILabel! //Which device sent the message
 }
