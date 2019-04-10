@@ -235,7 +235,7 @@
                                 <rect key="frame" x="16" y="220" width="288" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="conversationTableViewCell" id="vgu-tB-U6o" customClass="ConversationTableViewCell" customModule="Suno" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="conversationTableViewCell" id="vgu-tB-U6o" customClass="ConversationTableViewCell" customModule="Suno" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="288" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vgu-tB-U6o" id="4HI-7c-MTL">
@@ -245,13 +245,25 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xrj-WP-QK0">
                                                     <rect key="frame" x="15" y="11" width="258" height="22"/>
                                                     <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="LA6-8y-dbc" userLabel="Left Stack View">
+                                                            <rect key="frame" x="10" y="-3" width="20" height="20"/>
+                                                            <subviews>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SpeakerIcon" translatesAutoresizingMaskIntoConstraints="NO" id="n9p-0P-aKw">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="20" id="Awd-lg-Ye8"/>
+                                                                        <constraint firstAttribute="width" constant="20" id="rDc-9g-rfv"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                            </subviews>
+                                                        </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aje-DE-oqk" userLabel="Text View Label">
                                                             <rect key="frame" x="8" y="8" width="242" height="6"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="94w-gV-ljj">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="94w-gV-ljj" userLabel="Right Stack View">
                                                             <rect key="frame" x="162" y="-12" width="86" height="29"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ub8-dn-D3E" userLabel="Time Label">
@@ -272,10 +284,12 @@
                                                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottomMargin" secondItem="Aje-DE-oqk" secondAttribute="bottom" id="Dbn-9Y-BWi"/>
+                                                        <constraint firstAttribute="bottom" secondItem="LA6-8y-dbc" secondAttribute="bottom" constant="5" id="INg-Y3-WaJ"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Aje-DE-oqk" secondAttribute="trailing" id="Mdx-wQ-1Xf"/>
                                                         <constraint firstItem="Aje-DE-oqk" firstAttribute="centerY" secondItem="Xrj-WP-QK0" secondAttribute="centerY" id="S6C-6R-GBL"/>
                                                         <constraint firstItem="Aje-DE-oqk" firstAttribute="leading" secondItem="Xrj-WP-QK0" secondAttribute="leadingMargin" id="Wzi-9u-mtd"/>
                                                         <constraint firstAttribute="trailing" secondItem="94w-gV-ljj" secondAttribute="trailing" constant="10" id="YkE-xh-GX6"/>
+                                                        <constraint firstItem="LA6-8y-dbc" firstAttribute="leading" secondItem="Xrj-WP-QK0" secondAttribute="leading" constant="10" id="ju1-P7-7Jp"/>
                                                         <constraint firstAttribute="bottom" secondItem="94w-gV-ljj" secondAttribute="bottom" constant="5" id="rVD-Us-aRb"/>
                                                         <constraint firstItem="Aje-DE-oqk" firstAttribute="top" secondItem="Xrj-WP-QK0" secondAttribute="topMargin" id="rqK-xP-lRS"/>
                                                     </constraints>
@@ -502,7 +516,7 @@
                         <action selector="swipeGesture:" destination="1hE-gn-uSX" id="ktt-vz-DbQ"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <tapGestureRecognizer id="Els-qX-pLQ">
+                <tapGestureRecognizer enabled="NO" id="Els-qX-pLQ">
                     <connections>
                         <action selector="tapGesture" destination="1hE-gn-uSX" id="TQD-hS-0Wy"/>
                     </connections>
@@ -714,4 +728,7 @@
             <point key="canvasLocation" x="114.375" y="-2055.6338028169016"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="SpeakerIcon" width="170.66667175292969" height="170.66667175292969"/>
+    </resources>
 </document>

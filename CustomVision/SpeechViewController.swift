@@ -13,10 +13,12 @@ import SystemConfiguration
 import CoreBluetooth
 import FirebaseAnalytics
 import WatchConnectivity
+import AVFoundation
 
 public class SpeechViewController: UIViewController {
 
     // MARK: Properties
+    let synth = AVSpeechSynthesizer()
     var inputAction : Action? = nil //Action that is passed in from previous controller
     var speechViewControllerProtocol : SpeechViewControllerProtocol?
     let networkManager = NetworkManager.sharedInstance
@@ -59,7 +61,7 @@ public class SpeechViewController: UIViewController {
     
     
     @IBOutlet weak var conversationTableView: UITableView!
-    private var dataChats: [String] = []
+    private var dataChats: [ChatListItem] = []
     @IBOutlet weak var stackViewCannotSpeak: UIStackView!
     @IBOutlet weak var stackViewCanSpeak: UIStackView!
     // MARK: Interface Builder actions
@@ -121,6 +123,10 @@ public class SpeechViewController: UIViewController {
             "action": action.rawValue,
             "current_state": currentState.last?.rawValue
             ])
+        if synth.isSpeaking {
+            synth.stopSpeaking(at: .immediate)
+        }
+        
         if action == Action.AppOpened {
             enterStateIdle()
         }
@@ -1317,16 +1323,11 @@ extension SpeechViewController : UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : ConversationTableViewCell = tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell //1.
         
-        let text = dataChats[indexPath.row] //2.
+        let chatListItem : ChatListItem = dataChats[indexPath.row] //2.
     
-        cell.textViewLabel?.text = text //3.
-        cell.messageOriginLabel?.text = peerID.displayName
-        
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm a"
-        let date12Hour = dateFormatter.string(from: date)
-        cell.timeLabel?.text = date12Hour
+        cell.textViewLabel?.text = chatListItem.text //3.
+        cell.timeLabel?.text = chatListItem.time
+        cell.messageOriginLabel?.text = chatListItem.origin
         
         return cell //4.
     }
@@ -1342,8 +1343,17 @@ extension SpeechViewController : UITableViewDataSource {
 
 extension SpeechViewController : UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let chat = dataChats[indexPath.row]
-        
+        let chatListItem : ChatListItem = dataChats[indexPath.row]
+        self.sayThis(string: chatListItem.text)
+    }
+    
+    private func sayThis(string: String) {
+        let utterance = AVSpeechUtterance(string: string)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        if synth.isPaused {
+            synth.continueSpeaking()
+        }
+        synth.speak(utterance)
     }
 }
 
@@ -1358,8 +1368,14 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         guard let newText : String = valueSent else {
             return
         }
-        //self.textViewBottom?.text = newText
-        self.dataChats.append(newText)
+
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
+        let date12Hour = dateFormatter.string(from: date)
+        
+        self.sayThis(string: newText) //say the text once after the user has completed entering it
+        self.dataChats.append(ChatListItem(text: newText, time: date12Hour, origin: peerID.displayName))
         self.conversationTableView.reloadData()
         
         //scroll to bottom

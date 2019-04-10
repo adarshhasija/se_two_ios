@@ -27,6 +27,7 @@
 		317D4C1B217EC76D0081B38B /* Suno-Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 317D4C01217EC76A0081B38B /* Suno-Watch.app */; };
 		317D4C242188CCC50081B38B /* States.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C232188CCC50081B38B /* States.swift */; };
 		317D4C262188CCF00081B38B /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
+		31862B7D225E11650058883D /* ChatListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7C225E11650058883D /* ChatListItem.swift */; };
 		319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319FD50620D1A98E0071F993 /* ARViewController.swift */; };
 		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
@@ -122,6 +123,7 @@
 		317D4C18217EC76D0081B38B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		317D4C232188CCC50081B38B /* States.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = States.swift; sourceTree = "<group>"; };
 		317D4C252188CCF00081B38B /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
+		31862B7C225E11650058883D /* ChatListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListItem.swift; sourceTree = "<group>"; };
 		319FD50620D1A98E0071F993 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 				317D4C252188CCF00081B38B /* Actions.swift */,
 				313DDB49225B659A00BF65D4 /* EditingType.swift */,
 				31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */,
+				31862B7C225E11650058883D /* ChatListItem.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -691,6 +694,7 @@
 				317D4C242188CCC50081B38B /* States.swift in Sources */,
 				312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */,
 				31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */,
+				31862B7D225E11650058883D /* ChatListItem.swift in Sources */,
 				319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */,
 				317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */,
 				3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */,
