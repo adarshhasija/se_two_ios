@@ -1299,10 +1299,10 @@ extension SpeechViewController : UITableViewDataSource {
         }
         else {
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noDataLabel.text          = "No conversation in progress. Use the options below to begin"
+            noDataLabel.text          = "No conversation in progress. Use the options below to begin. Please note: Conversation history is deleted when conversation is completed."
             noDataLabel.textColor     = UIColor.black
             noDataLabel.textAlignment = .center
-            noDataLabel.numberOfLines = 3
+            noDataLabel.numberOfLines = 5
             noDataLabel.lineBreakMode = .byWordWrapping
             tableView.backgroundView  = noDataLabel
             tableView.separatorStyle  = .none
@@ -1321,6 +1321,12 @@ extension SpeechViewController : UITableViewDataSource {
     
         cell.textViewLabel?.text = text //3.
         cell.messageOriginLabel?.text = peerID.displayName
+        
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
+        let date12Hour = dateFormatter.string(from: date)
+        cell.timeLabel?.text = date12Hour
         
         return cell //4.
     }
@@ -1355,6 +1361,10 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         //self.textViewBottom?.text = newText
         self.dataChats.append(newText)
         self.conversationTableView.reloadData()
+        
+        //scroll to bottom
+        let indexPath = NSIndexPath(row: dataChats.count-1, section: 0)
+        conversationTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
     }
 }
 
