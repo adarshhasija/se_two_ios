@@ -371,6 +371,7 @@ public class SpeechViewController: UIViewController {
         super.viewDidLoad()
         
         self.conversationTableView.dataSource = self
+        self.conversationTableView.delegate = self
         self.conversationTableView.rowHeight = UITableViewAutomaticDimension
         self.conversationTableView.estimatedRowHeight = 44
         
@@ -1298,7 +1299,7 @@ extension SpeechViewController : UITableViewDataSource {
         }
         else {
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noDataLabel.text          = "Use the options above to begin communicating or use the option below to connect to another device"
+            noDataLabel.text          = "No conversation in progress. Use the options below to begin"
             noDataLabel.textColor     = UIColor.black
             noDataLabel.textAlignment = .center
             noDataLabel.numberOfLines = 3
@@ -1317,14 +1318,17 @@ extension SpeechViewController : UITableViewDataSource {
         let cell : ConversationTableViewCell = tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell //1.
         
         let text = dataChats[indexPath.row] //2.
-        
-        //cell.textViewMessage?.text = text //3.
-        cell.textViewLabel?.text = text
+    
+        cell.textViewLabel?.text = text //3.
         
         return cell //4.
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 }
