@@ -334,7 +334,11 @@ public class SpeechViewController: UIViewController {
             if currentState.last == State.TypingStarted {
                 //User is not in conversation session
                 //User had started typing
-                sendResponseToWatch(text: self.textViewBottom?.text)
+                guard let enteredText = self.textViewBottom?.text else {
+                    return
+                }
+                self.sayThis(string: enteredText)
+                sendResponseToWatch(text: enteredText)
             }
             else if currentState.last == State.Typing {
                 //User is not in a conversation session
@@ -529,6 +533,7 @@ public class SpeechViewController: UIViewController {
                 if self.currentState.last == State.Idle {
                     if let resultText = self.textViewBottom?.text {
                         if resultText.count > 0 {
+                            self.sayThis(string: resultText)
                             self.sendResponseToWatch(text: resultText)
                         }
                         else {
@@ -1383,7 +1388,6 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         dateFormatter.dateFormat = "hh:mm a"
         let date12Hour = dateFormatter.string(from: date)
         
-        self.sayThis(string: newText) //say the text once after the user has completed entering it
         self.dataChats.append(ChatListItem(text: newText, time: date12Hour, origin: peerID.displayName))
         self.conversationTableView.reloadData()
         
