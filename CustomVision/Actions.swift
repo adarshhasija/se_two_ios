@@ -12,7 +12,7 @@ enum Action :String{
     case AppOpened
     case Tap
     case SwipeUp
-    case SwipeLeft
+    case SwipeLeft //Open help topics
     case BarButtonHelpTapped
     case LongPress
     

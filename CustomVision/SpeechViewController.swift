@@ -44,7 +44,7 @@ public class SpeechViewController: UIViewController {
     private let audioEngine = AVAudioEngine()
     
     // MARK: UI Properties
-    @IBOutlet weak var helpBarButtonItem: UIBarButtonItem! //To make this visible again, in storyboard, set Enabled to true + set Tint to Default
+    @IBOutlet weak var helpBarButtonItem: UIBarButtonItem! //To make this visible again, in storyboard, set Enabled to true + set Tint to Default. To make invisible: Enabled = false, Tint = Clear color
     
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet var mainView : UIView?
@@ -61,17 +61,16 @@ public class SpeechViewController: UIViewController {
     @IBOutlet weak var connectDeviceButton: UIButton!
     @IBOutlet weak var helpTopicsButton: UIButton!
     
-    
+    @IBOutlet weak var viewDeafProfile: UIView!  //Top of the screen view to give context that the user is deaf
     @IBOutlet weak var conversationTableView: UITableView!
     private var dataChats: [ChatListItem] = []  
     @IBOutlet weak var stackViewBottomActions: UIStackView!
-    @IBOutlet weak var stackViewCannotSpeak: UIStackView!
-    @IBOutlet weak var stackViewCanSpeak: UIStackView!
     // MARK: Interface Builder actions
     
     
     @IBAction func helpBarButtonItemTapped(_ sender: Any) {
-        changeState(action: Action.BarButtonHelpTapped)
+        //changeState(action: Action.BarButtonHelpTapped)
+        changeState(action: Action.SwipeLeft)
     }
     
     @IBAction func tapGesture() {
@@ -393,6 +392,8 @@ public class SpeechViewController: UIViewController {
         changeState(action: Action.AppOpened)
         
         if inputAction != nil {
+            self.helpBarButtonItem?.isEnabled = false //If we have an input action, help bar button should not be visible
+            self.helpBarButtonItem?.tintColor = .clear
             changeState(action: inputAction!)
         }
         
@@ -683,10 +684,9 @@ public class SpeechViewController: UIViewController {
             self.helpTopicsButton?.isHidden = true
             self.swipeLeftLabel?.isHidden = true
             
-            self.stackViewCanSpeak.isHidden = true
-            self.stackViewCannotSpeak.isHidden = true
-            self.conversationTableView.isHidden = true
             self.textViewBottom?.isHidden = false
+            self.conversationTableView?.isHidden = true
+            self.stackViewBottomActions?.isHidden = true
             
             //inputAction already has a value means new view controller already pushed
             self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
@@ -749,8 +749,6 @@ public class SpeechViewController: UIViewController {
             
             tapGestureRecognizer?.isEnabled = true
             stackViewBottomActions?.isHidden = true
-            //stackViewCanSpeak?.isHidden = true
-            //stackViewCannotSpeak?.isHidden = true
             conversationTableView?.isHidden = true
             textViewBottom?.isHidden = false
         }
@@ -1387,13 +1385,14 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
         let date12Hour = dateFormatter.string(from: date)
-        
         self.dataChats.append(ChatListItem(text: newText, time: date12Hour, origin: peerID.displayName))
         self.conversationTableView.reloadData()
         
         //scroll to bottom
         let indexPath = NSIndexPath(row: dataChats.count-1, section: 0)
         conversationTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
+        
+        self.viewDeafProfile.isHidden = false
     }
 }
 
