@@ -19,4 +19,15 @@ class ChatListItem {
         self.time = time
         self.origin = origin
     }
+    
+    init(text: String, origin: String) {
+        self.text = text
+        self.origin = origin
+        
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
+        let date12Hour = dateFormatter.string(from: date)
+        self.time = date12Hour
+    }
 }
