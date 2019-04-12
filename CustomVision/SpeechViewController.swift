@@ -1416,15 +1416,18 @@ extension SpeechViewController : UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell : ConversationTableViewCell = tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell //1.
+        let chatListItem : ChatListItem = dataChats[indexPath.row]
         
-        let chatListItem : ChatListItem = dataChats[indexPath.row] //2.
+        let cell : ConversationTableViewCell =
+            (chatListItem.origin == peerID.displayName) ?
+                tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell :
+                tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCellGuest") as! ConversationTableViewCell
     
-        cell.textViewLabel?.text = chatListItem.text //3.
+        cell.textViewLabel?.text = chatListItem.text
         cell.timeLabel?.text = chatListItem.time
         cell.messageOriginLabel?.text = chatListItem.origin
         
-        return cell //4.
+        return cell 
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
