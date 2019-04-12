@@ -17,7 +17,7 @@ class ChatListItem {
     init(text: String, time: String, origin: String) {
         self.text = text
         self.time = time
-        self.origin = origin
+        self.origin = origin //Device or status
     }
     
     init(text: String, origin: String) {
