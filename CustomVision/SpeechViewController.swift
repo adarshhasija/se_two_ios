@@ -75,8 +75,12 @@ public class SpeechViewController: UIViewController {
     
     
     @IBAction func helpBarButtonItemTapped(_ sender: Any) {
-        //changeState(action: Action.BarButtonHelpTapped)
-        changeState(action: Action.SwipeLeft)
+        if currentState.contains(State.Typing) {
+            changeState(action: Action.Tap)
+        }
+        else {
+            changeState(action: Action.SwipeLeft)
+        }
     }
     
     @IBAction func tapGesture() {
@@ -401,8 +405,14 @@ public class SpeechViewController: UIViewController {
         changeState(action: Action.AppOpened)
         
         if inputAction != nil {
-            self.helpBarButtonItem?.isEnabled = false //If we have an input action, help bar button should not be visible
-            self.helpBarButtonItem?.tintColor = .clear
+            if inputAction == Action.OpenedEditingModeForTyping {
+                self.helpBarButtonItem?.style = .done
+                self.helpBarButtonItem?.title = "Done"
+            }
+            else {
+                self.helpBarButtonItem?.isEnabled = false //If we have an input action, help bar button should not be visible
+                self.helpBarButtonItem?.tintColor = .clear
+            }
             changeState(action: inputAction!)
         }
         
@@ -678,6 +688,9 @@ public class SpeechViewController: UIViewController {
         //self.helpTopicsButton?.isHidden = true
         //self.swipeLeftLabel?.isHidden = true
         
+        emptyTableText = "Your partner will start the conversation. When they have finished, their message will appear here. Please wait."
+        self.conversationTableView.reloadData()
+        self.conversationTableView.isHidden = false
         self.labelTopStatus?.isHidden = false
         self.textViewRealTimeTextInput?.isHidden = true
         self.labelMainAction?.isHidden = true
@@ -1464,7 +1477,8 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         let indexPath = NSIndexPath(row: dataChats.count-1, section: 0)
         conversationTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
         
-        self.viewDeafProfile.isHidden = false
+        self.viewDeafProfile?.isHidden = false
+        self.textViewRealTimeTextInput?.text = ""
     }
     
     func newRealTimeInput(value: String) {

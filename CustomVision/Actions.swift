@@ -11,10 +11,10 @@ import Foundation
 enum Action :String{
     case AppOpened
     case Tap
-    case SwipeUp
+    case SwipeUp //Open keyboard
     case SwipeLeft //Open help topics
     case BarButtonHelpTapped
-    case LongPress
+    case LongPress //Start Multipeer session
     
     case ReceivedStatusFromWatch
     case ReceivedContentFromWatch
