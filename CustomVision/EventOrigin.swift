@@ -10,4 +10,5 @@ import Foundation
 
 enum EventOrigin :String{
     case STATUS
+    case WATCH
 }

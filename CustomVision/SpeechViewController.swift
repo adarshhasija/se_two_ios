@@ -64,6 +64,7 @@ public class SpeechViewController: UIViewController {
     
     @IBOutlet weak var viewDeafProfile: UIView!  //Top of the screen view to give context that the user is deaf
     @IBOutlet weak var labelTopStatus: UILabel!
+    @IBOutlet weak var labelConvSessionInstruction: UILabel!
     @IBOutlet weak var textViewRealTimeTextInput: UITextView!
     @IBOutlet weak var conversationTableView: UITableView!
     private var dataChats: [ChatListItem] = []  
@@ -161,10 +162,7 @@ public class SpeechViewController: UIViewController {
             currentState.popLast()
             exitStateTyping()
             exitStateSpeaking()
-            if currentState.last == State.Idle {
-                UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
-            }
-            else if currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking {
+            if currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking {
                 sendText(text: "\n") //Send to other other to confirm that speaking is done
                 currentState.append(State.Reading)
                 enterStateReading()
@@ -196,16 +194,26 @@ public class SpeechViewController: UIViewController {
             currentState.append(State.Speaking)
             enterStateSpeaking()
         }
-        else if action == Action.ClosedEditingMode && currentState.last == State.EditingMode {
+        else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
+            currentState.popLast() //pop editing mode
+            if currentState.last == State.Idle {
+                UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
+            }
+            else if currentState.last == State.ConnectedTyping {
+                currentState.append(State.Listening)
+                enterStateListening()
+            }
+            else if currentState.last == State.ConnectedSpeaking {
+                //sendText(text: "\n") //Send to other other to confirm that speaking is done
+                currentState.append(State.Reading)
+                enterStateReading()
+            }
+        }
+        else if action == Action.CancelledEditing && currentState.last == State.EditingMode {
             currentState.popLast() //pop editing mode
             exitStateEditingMode()
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
-            }
-            else if currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking {
-                sendText(text: "\n") //Send to other other to confirm that speaking is done
-                currentState.append(State.Reading)
-                enterStateReading()
             }
         }
         else if action == Action.LongPress && currentState.last == State.Idle {
@@ -341,10 +349,14 @@ public class SpeechViewController: UIViewController {
             //The partner has deleted all text
             typistDeletedAllText()
         }
+        else if action == Action.SpeakerCancelledSpeaking && currentState.contains(State.Listening) {
+            //The partner pressed the back button when speaking
+            speakerCancelledSpeaking()
+        }
         else if action == Action.TypistStartedTyping && currentState.last == State.Typing {
             currentState.append(State.TypingStarted)
         }
-        else if action == Action.ClosedEditingMode && currentState.contains(State.ConnectedTyping) {
+        else if action == Action.CompletedEditing && currentState.contains(State.ConnectedTyping) {
             //Means we are connected to another device
             while currentState.last != State.ConnectedTyping {
                 currentState.popLast()
@@ -380,6 +392,9 @@ public class SpeechViewController: UIViewController {
             currentState.popLast() //pop reading
             self.typingButton?.isHidden = true
             self.speakingButton?.isHidden = false
+            self.labelTopStatus?.isHidden = false
+            self.labelConvSessionInstruction?.text = "Partner has completed typing. Tap the Talk button below to speak a reply."
+            self.labelConvSessionInstruction?.isHidden = false
             //currentState.append(State.Speaking)
             //enterStateSpeaking()
         }
@@ -388,6 +403,9 @@ public class SpeechViewController: UIViewController {
             self.stackViewMainAction?.isHidden = false
             self.typingButton?.isHidden = false
             self.speakingButton?.isHidden = true
+            self.labelTopStatus?.isHidden = false
+            self.labelConvSessionInstruction?.text = "Partner has completed speaking. Tap the Type button below to type a reply"
+            self.labelConvSessionInstruction?.isHidden = false
             //currentState.append(State.Typing)
             //enterStateTyping()
         }
@@ -401,7 +419,7 @@ public class SpeechViewController: UIViewController {
             exitStateHosting()
             exitStateBrowsingForPeers()
             enterStateIdle()
-            appendStatusConnectionLost()
+            appendStatusConnectionLost(action: action)
             dialogConnectionLost()
         }
         
@@ -679,6 +697,10 @@ public class SpeechViewController: UIViewController {
         self.helpTopicsButton?.isHidden = true
         self.swipeLeftLabel?.isHidden = true
         
+        self.labelTopStatus?.isHidden = false
+        self.labelConvSessionInstruction?.text = "Tap the Type button and send the first message"
+        self.labelConvSessionInstruction?.isHidden = false
+        self.dataChats.removeAll()
         self.dataChats.append(ChatListItem(text: "Converstion Session started. Tap the Type button below to begin the first message. You can end the conversation at any time my tapping End Session below", origin: EventOrigin.STATUS.rawValue))
         self.conversationTableView?.reloadData()
         self.conversationTableView?.isHidden = false
@@ -690,10 +712,9 @@ public class SpeechViewController: UIViewController {
     
     private func enterStateListening() {
         self.viewDeafProfile?.isHidden = false
-        if self.labelTopStatus?.text?.contains("\n") == false {
-            self.labelTopStatus?.text?.append("\n" + "Waiting for the other person to start talking...")
-        }
         self.labelTopStatus?.isHidden = false
+        self.labelConvSessionInstruction?.text = "Waiting for the other person to start talking..."
+        self.labelConvSessionInstruction?.isHidden = false
         self.textViewRealTimeTextInput?.isHidden = true
         self.recordLabel?.isHidden = true
         self.swipeUpLabel?.isHidden = true
@@ -709,10 +730,13 @@ public class SpeechViewController: UIViewController {
         //self.helpTopicsButton?.isHidden = true
         //self.swipeLeftLabel?.isHidden = true
         
+        self.dataChats.removeAll()
         self.dataChats.append(ChatListItem(text: "Converstion Session started. Your partner will start the conversation. When they have finished, their message will appear here. Please wait.", origin: EventOrigin.STATUS.rawValue))
         self.conversationTableView.reloadData()
         self.conversationTableView.isHidden = false
         self.labelTopStatus?.isHidden = false
+        self.labelConvSessionInstruction?.text = "Waiting for the other person to start typing..."
+        self.labelConvSessionInstruction?.isHidden = false
         self.textViewRealTimeTextInput?.isHidden = true
         self.labelMainAction?.isHidden = true
         self.typingButton?.isHidden = true
@@ -726,10 +750,9 @@ public class SpeechViewController: UIViewController {
     
     private func enterStateReading() {
         self.viewDeafProfile?.isHidden = false
-        if self.labelTopStatus?.text?.contains("\n") == false {
-            self.labelTopStatus?.text?.append("\n" + "Waiting for the other person to start typing...")
-        }
         self.labelTopStatus?.isHidden = false
+        self.labelConvSessionInstruction?.text = "Waiting for the other person to start typing..."
+        self.labelConvSessionInstruction?.isHidden = false
         self.textViewRealTimeTextInput?.isHidden = true
         
         self.speakingButton?.isHidden = true
@@ -758,7 +781,7 @@ public class SpeechViewController: UIViewController {
     }
     
     private func exitStateEditingMode() {
-        
+        self.textViewRealTimeTextInput?.isHidden = true
     }
     
     private func enterStateTyping() {
@@ -896,12 +919,23 @@ public class SpeechViewController: UIViewController {
     func typistDeletedAllText() {
         if currentState.contains(State.ConnectedSpeaking) {
             self.labelTopStatus?.isHidden = false
+            self.labelConvSessionInstruction?.isHidden = false
             self.textViewRealTimeTextInput?.text = ""
             self.textViewRealTimeTextInput?.isHidden = true
         }
         else {
-            self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
+            self.labelTopStatus?.isHidden = false
+            self.labelConvSessionInstruction?.isHidden = true
+            self.textViewRealTimeTextInput?.isHidden = true
         }
+    }
+    
+    func speakerCancelledSpeaking() {
+        //Only applicable in multipeer session
+        self.labelTopStatus?.isHidden = false
+        self.labelConvSessionInstruction?.isHidden = false
+        self.textViewRealTimeTextInput?.text = ""
+        self.textViewRealTimeTextInput?.isHidden = true
     }
     
     // MARK: General Private Helpers
@@ -999,9 +1033,16 @@ public class SpeechViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func appendStatusConnectionLost() {
-        self.dataChats.append(ChatListItem(text: "Connection Lost. Conversation Session Complete.", origin: EventOrigin.STATUS.rawValue))
+    func appendStatusConnectionLost(action : Action) {
+        if action == Action.PartnerEndedSession {
+            self.dataChats.append(ChatListItem(text: "Your partner ended the session.", origin: EventOrigin.STATUS.rawValue))
+        }
+        else {
+            self.dataChats.append(ChatListItem(text: "Connection Lost. Conversation Session Complete.", origin: EventOrigin.STATUS.rawValue))
+        }
+        
         self.conversationTableView?.reloadData()
+        scrollToBottomOfConversationTable()
     }
     
     func dialogConnectionLost() {
@@ -1216,16 +1257,23 @@ extension SpeechViewController : MCSessionDelegate {
                     self.changeState(action: Action.PartnerEndedSession)
                 }
                 else if text.last! == "\0" {
-                    self.changeState(action: Action.TypistDeletedAllText)
+                    if self.currentState.last == State.Reading {
+                        self.changeState(action: Action.TypistDeletedAllText)
+                    }
+                    else if self.currentState.last == State.Listening {
+                        self.changeState(action: Action.SpeakerCancelledSpeaking)
+                    }
                 }
                 else if text.count > 1 && text.last! == "\n" {
                     self.dataChats.append(ChatListItem(text: text, origin: peerID.displayName))
                     self.conversationTableView.reloadData()
+                    self.scrollToBottomOfConversationTable()
                     self.textViewRealTimeTextInput?.text = ""
                     self.changeState(action: Action.PartnerCompleted)
                 }
                 else if self.currentState.last == State.Listening || self.currentState.last == State.Reading {
                     self.labelTopStatus?.isHidden = true
+                    self.labelConvSessionInstruction?.isHidden = true
                     self.textViewRealTimeTextInput?.isHidden = false
                     self.textViewRealTimeTextInput?.text = text
                     
@@ -1480,6 +1528,17 @@ extension SpeechViewController : UITableViewDataSource {
 extension SpeechViewController : UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let chatListItem : ChatListItem = dataChats[indexPath.row]
+        Analytics.logEvent("se3_row_selected", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "device_type": getDeviceType(),
+            "origin": chatListItem.origin == EventOrigin.STATUS.rawValue ?
+                        chatListItem.origin :
+                        chatListItem.origin == peerID.displayName ?
+                        "host" :
+                        chatListItem.origin == EventOrigin.WATCH.rawValue ?
+                        chatListItem.origin :
+                        "other"
+            ])
         self.sayThis(string: chatListItem.text)
     }
     
@@ -1501,7 +1560,13 @@ protocol SpeechViewControllerProtocol {
 
 extension SpeechViewController : SpeechViewControllerProtocol {
     func setResultOfTypingOrSpeaking(valueSent: String?) {
-        changeState(action: Action.ClosedEditingMode)
+        if valueSent != nil {
+            changeState(action: Action.CompletedEditing)
+        }
+        else {
+            self.sendText(text: "\0")
+            changeState(action: Action.CancelledEditing)
+        }
         guard var newText : String = valueSent else {
             return
         }
@@ -1514,10 +1579,7 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName))
         self.conversationTableView.reloadData()
         
-        //scroll to bottom
-        let indexPath = NSIndexPath(row: dataChats.count-1, section: 0)
-        conversationTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
-        
+        scrollToBottomOfConversationTable()
         self.viewDeafProfile?.isHidden = false
         self.textViewRealTimeTextInput?.text = ""
     }
@@ -1525,6 +1587,12 @@ extension SpeechViewController : SpeechViewControllerProtocol {
     func newRealTimeInput(value: String) {
         sendText(text: value)
         self.textViewRealTimeTextInput?.text = value
+    }
+    
+    func scrollToBottomOfConversationTable() {
+        //scroll to bottom
+        let indexPath = NSIndexPath(row: dataChats.count-1, section: 0)
+        conversationTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
     }
 }
 

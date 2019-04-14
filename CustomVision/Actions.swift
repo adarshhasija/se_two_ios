@@ -39,5 +39,7 @@ enum Action :String{
     case OpenedEditingModeForSpeaking
     
     //Closing of new view controller
-    case ClosedEditingMode
+    case CompletedEditing
+    case CancelledEditing
+    case SpeakerCancelledSpeaking
 }
