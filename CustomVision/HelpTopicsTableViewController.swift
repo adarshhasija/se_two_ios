@@ -31,25 +31,25 @@ public class HelpTopicsTableViewController: UITableViewController {
         
         self.title = "Help Topics"
         
-        helpTopics.append(HelpTopic(
-            question: "I can hear and speak and I would like to record a message for my hearing-impaired friend",
-            answer: "Ensure you have an internet connection, either data or Wifi. In this app, tap the screen to start a recording. Speak normally and you will see your words appearing on the screen. Tap the screen again when finished to end the recording. Show the message to your friend.")
-        )
+    /*    helpTopics.append(HelpTopic(
+            question: "I can hear and speak and I would like to convey a message to my hearing-impaired friend",
+            answer: "Voice recording is only available when connected to another device. In this app, tap the screen to start a recording. Speak normally and you will see your words appearing on the screen. Tap the screen again when finished to end the recording. Show the message to your friend.")
+        )   */
         
         helpTopics.append(HelpTopic(
             question: "I am hearing-imapired and speech-impaired and I would like to give my friend a message",
-            answer: "Swipe up to open the keyboard. Type out a message. Tap the screen to close the keyboard. Show your friend the message.")
+            answer: "Tap the Type button towards the bottom of the screen. Type out a message and tap Return on the keyboard or Done on the top right. Show your friend the message. They can also type a reply to you on the same device.")
         )
         
         helpTopics.append(HelpTopic(
             question: "I am hearing-impaired and I want to use this device to have a conversation with someone who can hear and speak",
-            answer: "Swipe up on the main screen to open the keyboard and type a message. Tap the screen again to close the keyboard. Show your partner the message. Your partner can then tap on the screen to record their voice. Once they have finished recording, they can tap the screen to end their recording. They will then return the device to you so you can read the message.")
+            answer: "Tap the Type button towards the bottom of the screen. Type out a message and tap Return on the keyboard or Done on the top right. Show your friend the message. They can also type a reply to you on the same device. The chat log will appear on the screen so you can keep track of who said what.")
         )
         
-        helpTopics.append(HelpTopic(
+    /*    helpTopics.append(HelpTopic(
             question: "I can speak and hear and I want to use this device to have a conversation with my hearing impaired friend.",
             answer: "Tap the screen to record a message. Tap the screen again to stop the recording. Show your partner the message. Your partner can then swipe up to open the keyboard and type a reply. Once they have finished recording, they can tap the screen to close the keyboard. They will then return the device to you so you can read the message.")
-        )
+        )   */
         
         helpTopics.append(HelpTopic(
             question: "What is a conversation session?",
@@ -63,17 +63,17 @@ public class HelpTopicsTableViewController: UITableViewController {
         
         helpTopics.append(HelpTopic(
             question: "I am hearing-imapired and I would like to connect to my friend's device. My friend can hear and speak and is sitting right next to me with his/her device",
-            answer: "Go to your settings menu and ensure Wifi is turned ON and bluetooth is turned ON. Then return to this app and and long press to start a new session. In the pop up window that appears select Typing. Your friend must also check their settings to make sure Wifi and bluetooth are ON. They must also have their internet data on or be connected to a wifi network for voice recording to work. Then they must return to the app, long press to start a new session, select Speaking, and in the menu that appears, select your device to connect to.")
+            answer: "Go to your settings menu and ensure Wifi is turned ON and bluetooth is turned ON. Then return to this app and and tap the green button at the bottom to start a new session. In the pop up window that appears select Typing. Your friend must also check their settings to make sure Wifi and bluetooth are ON. They must also have their internet data on or be connected to a wifi network for voice recording to work. Then they must return to the app, tap the same green button at the bottom to start a new session, select Speaking, and in the menu that appears, select your device to connect to.")
         )
         
         helpTopics.append(HelpTopic(
             question: "I can hear and speak and I would like to connect to my friend's device. My friend is hearing-imapired and is sitting right next to me with his/her device",
-            answer: "Go to your settings menu and ensure Wifi is turned ON and bluetooth is turned ON. You must also ensure you have an internet connection(either data or wifi) for voice recording to work. Then return to this app and and long press to start a new session. In the pop up window that appears select Speaking. The menu that appears will be empty. Your friend must also check their settings to make sure Wifi and bluetooth are ON. Then they must return to the app, long press to start a new session, select Typing. Now go back to the menu on your screen. It should have your friend's device name on it. Select it to connect to it. Once connection is successful, the session has begun.")
+            answer: "Go to your settings menu and ensure Wifi is turned ON and bluetooth is turned ON. You must also ensure you have an internet connection(either data or wifi) for voice recording to work. Then return to this app and and tap the green button at the bottom to start a new session. In the pop up window that appears select Speaking. The menu that appears will be empty. Your friend must also check their settings to make sure Wifi and bluetooth are ON. Then they must return to the app, tap the same green button to start a new session, select Typing. Now go back to the menu on your screen. It should have your friend's device name on it. Select it to connect to it. Once connection is successful, the session has begun.")
         )
         
         helpTopics.append(HelpTopic(
             question: "How do I stop a session?",
-            answer: "You can long press the screen at any time to stop a session.")
+            answer: "You can tap the red button at the bottom that says End Session. This will stop the session.")
         )
         
         helpTopics.append(HelpTopic(
@@ -108,7 +108,7 @@ public class HelpTopicsTableViewController: UITableViewController {
         
         helpTopics.append(HelpTopic(
             question: "Which devices does this app work on?",
-            answer: "This app works on all iPhones and iPads running iOS 12 and above and on an Apple Watch running watchOS 5 and above, if one is connected to the iPhone.")
+            answer: "This app works on all iPhones and iPads running iOS 12 and above and on an Apple Watch running watchOS 5 and above, if the watch is connected to the iPhone.")
         )
     }
     
