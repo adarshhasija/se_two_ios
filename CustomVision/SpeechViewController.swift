@@ -174,7 +174,7 @@ public class SpeechViewController: UIViewController {
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
-            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is typing on iPhone. Please wait. Tell them to tap screen when done.")
+            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is typing on iPhone. Please wait. Tell them to tap Return or Done when complete.")
             currentState.append(State.EditingMode)
             enterStateEditingMode(editingType: EditingType.Typing)
         }
@@ -212,6 +212,7 @@ public class SpeechViewController: UIViewController {
         else if action == Action.CancelledEditing && currentState.last == State.EditingMode {
             currentState.popLast() //pop editing mode
             exitStateEditingMode()
+            sendStatusToWatch(beginningOfAction: false, success: false, text: "User did not enter response")
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
             }
@@ -636,6 +637,7 @@ public class SpeechViewController: UIViewController {
         self.connectDeviceButton?.setTitle("End Session", for: .normal)
         self.connectDeviceButton?.backgroundColor = .red
         self.labelTopStatus?.text = "Started session. Ensure WiFi and bluetooth are ON for all connecting devices. Waiting for other devices to join..."
+        self.labelConvSessionInstruction?.isHidden = true
         self.viewDeafProfile?.isHidden = false
         self.conversationTableView?.isHidden = true
         self.stackViewMainAction?.isHidden = true
@@ -819,13 +821,21 @@ public class SpeechViewController: UIViewController {
         //When coming from the watch
         //Use this to update the UI instantaneously (otherwise, takes a little while)
         DispatchQueue.main.async(execute: { () -> Void in
-            self.helpTopicsButton?.isHidden = true
+          /*  self.helpTopicsButton?.isHidden = true
             self.swipeLeftLabel?.isHidden = true
             self.swipeUpLabel?.isHidden = true
             self.recordLabel?.isHidden = true
             self.connectDeviceButton?.isHidden = false
             self.longPressLabel?.isHidden = false
-            self.longPressLabel?.text = "Long press to stop"
+            self.longPressLabel?.text = "Long press to stop"    */
+            self.viewDeafProfile?.isHidden = false
+            self.labelTopStatus?.text = "User is typing on Apple Watch..."
+            self.labelTopStatus?.isHidden = false
+            self.stackViewMainAction?.isHidden = true
+            self.labelConnectDevice?.isHidden = true
+            self.connectDeviceButton?.setTitle("Stop receiving from watch", for: .normal)
+            self.connectDeviceButton?.backgroundColor = .red
+            self.connectDeviceButton?.isHidden = false
         })
         
     }
@@ -834,13 +844,22 @@ public class SpeechViewController: UIViewController {
         //When coming from the watch
         //Use this to update the UI instantaneously (otherwise, takes a little while)
         DispatchQueue.main.async(execute: { () -> Void in
-            self.helpTopicsButton?.isHidden = false
+         /*   self.helpTopicsButton?.isHidden = false
             self.swipeLeftLabel?.isHidden = false
             self.swipeUpLabel?.isHidden = false
             self.connectDeviceButton?.isHidden = false
             self.longPressLabel?.isHidden = false
             self.longPressLabel?.text = "Long press to connect to another device"
-            self.recordLabel?.isHidden = false
+            self.recordLabel?.isHidden = false  */
+            
+            self.viewDeafProfile?.isHidden = true
+            self.labelTopStatus?.text = ""
+            self.labelTopStatus?.isHidden = true
+            self.stackViewMainAction?.isHidden = false
+            self.labelConnectDevice?.isHidden = false
+            self.connectDeviceButton?.setTitle("Connect to other device", for: .normal)
+            self.connectDeviceButton?.backgroundColor = UIColor.init(red: 0.1, green: 0.4, blue: 0.2, alpha: 1.0) //dark green
+            self.connectDeviceButton?.isHidden = false
         })
     }
     
