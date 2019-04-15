@@ -353,6 +353,10 @@ public class SpeechViewController: UIViewController {
             //The partner pressed the back button when speaking
             speakerCancelledSpeaking()
         }
+        else if action == Action.SpeakerCancelledSpeaking && currentState.last == State.Speaking {
+            currentState.popLast() //pop speaking. ViewController will be closed.
+            exitStateSpeaking()
+        }
         else if action == Action.TypistStartedTyping && currentState.last == State.Typing {
             currentState.append(State.TypingStarted)
         }
@@ -525,7 +529,7 @@ public class SpeechViewController: UIViewController {
         if self.isMovingFromParentViewController && inputAction != nil {
             //We are in editing mode and back button was tapped
             if currentState.last == State.Speaking {
-                exitStateSpeaking()
+                changeState(action: Action.SpeakerCancelledSpeaking)
             }
             self.speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil)
         }
@@ -541,7 +545,7 @@ public class SpeechViewController: UIViewController {
         }
         
         let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(AVAudioSessionCategoryRecord)
+        try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
         try audioSession.setMode(AVAudioSessionModeMeasurement)
         try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
         
@@ -932,6 +936,7 @@ public class SpeechViewController: UIViewController {
     
     func speakerCancelledSpeaking() {
         //Only applicable in multipeer session
+        print("*********SPEAKER CANCELLED SPEAKING***********")
         self.labelTopStatus?.isHidden = false
         self.labelConvSessionInstruction?.isHidden = false
         self.textViewRealTimeTextInput?.text = ""
@@ -1272,6 +1277,8 @@ extension SpeechViewController : MCSessionDelegate {
                     self.changeState(action: Action.PartnerCompleted)
                 }
                 else if self.currentState.last == State.Listening || self.currentState.last == State.Reading {
+                    print("***********DID RECEIVE********LAST ELSE IF**********")
+                    print(text)
                     self.labelTopStatus?.isHidden = true
                     self.labelConvSessionInstruction?.isHidden = true
                     self.textViewRealTimeTextInput?.isHidden = false
