@@ -67,9 +67,14 @@ public class SpeechViewController: UIViewController {
     @IBOutlet weak var labelConvSessionInstruction: UILabel!
     @IBOutlet weak var textViewRealTimeTextInput: UITextView!
     @IBOutlet weak var conversationTableView: UITableView!
-    private var dataChats: [ChatListItem] = []  
+    private var dataChats: [ChatListItem] = []
+    
+    
     @IBOutlet weak var stackViewBottomActions: UIStackView!
-    @IBOutlet weak var stackViewMainAction: UIStackView!  
+    @IBOutlet weak var buttonYesSave: UIButton!
+    @IBOutlet weak var buttonNoSave: UIButton!
+    @IBOutlet weak var stackViewSaveChat: UIStackView!
+    @IBOutlet weak var stackViewMainAction: UIStackView!
     @IBOutlet weak var labelMainAction: UILabel!
     @IBOutlet weak var labelConnectDevice: UILabel!
     // MARK: Interface Builder actions
@@ -115,6 +120,20 @@ public class SpeechViewController: UIViewController {
     
     @IBAction func talkButtonTapped(_ sender: Any) {
         changeState(action: Action.Tap)
+    }
+    
+    
+    @IBAction func yesSaveTapped(_ sender: Any) {
+        Analytics.logEvent("se3_save_chat_tapped", parameters: [:])
+        saveChatLog()
+        self.stackViewSaveChat?.isHidden = true
+        self.stackViewMainAction?.isHidden = false
+    }
+    
+    
+    @IBAction func noSaveTapped(_ sender: Any) {
+        self.stackViewSaveChat?.isHidden = true
+        self.stackViewMainAction?.isHidden = false
     }
     
     
@@ -425,7 +444,7 @@ public class SpeechViewController: UIViewController {
             exitStateBrowsingForPeers()
             enterStateIdle()
             appendStatusConnectionLost(action: action)
-            dialogConnectionLost()
+            dialogSaveConversationLog()
         }
         
     }
@@ -710,6 +729,7 @@ public class SpeechViewController: UIViewController {
         self.dataChats.append(ChatListItem(text: "Converstion Session started. Tap the Type button below to begin the first message. You can end the conversation at any time my tapping End Session below", origin: EventOrigin.STATUS.rawValue))
         self.conversationTableView?.reloadData()
         self.conversationTableView?.isHidden = false
+        self.stackViewSaveChat?.isHidden = true
         self.stackViewMainAction?.isHidden = false
         self.labelMainAction?.isHidden = true
         self.typingButton?.isHidden = false
@@ -1085,6 +1105,57 @@ public class SpeechViewController: UIViewController {
                 
             }}))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func dialogSaveConversationLog() {
+        self.stackViewSaveChat?.isHidden = false
+        self.stackViewMainAction?.isHidden = true
+      /*  let alert = UIAlertController(title: "Conversation Ended", message: "The conversation session is over. Would you like to keep a record of this conversation by saving it to a location of your choice? Note that if you do not save it, you may lose the record of this conversation.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { action in
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+            }}))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                self.saveChatLog()
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+            }}))
+        self.present(alert, animated: true, completion: nil)    */
+    }
+    
+    func saveChatLog() {
+        var stringToSave = "Suno Session\n\n"
+        for chatListItem in dataChats {
+            stringToSave.append(chatListItem.time)
+            stringToSave.append(" ")
+            stringToSave.append(chatListItem.origin)
+            stringToSave.append("\n")
+            stringToSave.append(chatListItem.text)
+            stringToSave.append("\n\n")
+        }
+        
+        let vc = UIActivityViewController(activityItems: [stringToSave], applicationActivities: [])
+        present(vc, animated: true, completion: nil)
+        vc.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
+            if !completed {
+                Analytics.logEvent("se3_save_chat_cancelled", parameters: [:])
+            }
+        }
     }
     
     func dialogTypingOrSpeaking() {

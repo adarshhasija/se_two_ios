@@ -531,6 +531,43 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="1pI-gx-HlR" userLabel="Bottom Actions Stack View">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="130.5"/>
                                         <subviews>
+                                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pIo-xN-0vX" userLabel="Stack View Save Chat">
+                                                <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGY-Ek-cyS">
+                                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                                        <string key="text">Would you like to keep a record of this conversation by saving it to a location of your choice? Note that if you do not save it, you may lose the record of this conversation.</string>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="eSJ-YD-bo0">
+                                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wvj-Ep-Sqm">
+                                                                <rect key="frame" x="0.0" y="0.0" width="149" height="0.0"/>
+                                                                <color key="backgroundColor" red="0.1421308412" green="0.1170574764" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                <state key="normal" title="YES">
+                                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
+                                                                <connections>
+                                                                    <action selector="yesSaveTapped:" destination="1hE-gn-uSX" eventType="touchUpInside" id="iWl-gs-Gev"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dRx-53-d3v">
+                                                                <rect key="frame" x="151" y="0.0" width="149" height="0.0"/>
+                                                                <color key="backgroundColor" red="1" green="0.18845683590000001" blue="0.16247738" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                <state key="normal" title="NO">
+                                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
+                                                                <connections>
+                                                                    <action selector="noSaveTapped:" destination="1hE-gn-uSX" eventType="touchUpInside" id="Urf-7t-wCa"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                            </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ug4-dv-Q4J">
                                                 <rect key="frame" x="0.0" y="0.0" width="300" height="65"/>
                                                 <subviews>
@@ -651,6 +688,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonNoSave" destination="dRx-53-d3v" id="nnB-zB-fo3"/>
+                        <outlet property="buttonYesSave" destination="Wvj-Ep-Sqm" id="1BU-yV-dWt"/>
                         <outlet property="connectDeviceButton" destination="LOG-j8-cQm" id="q33-Kg-lOH"/>
                         <outlet property="conversationTableView" destination="gJX-l0-cct" id="p4k-mP-gYs"/>
                         <outlet property="helpBarButtonItem" destination="hPh-Z7-wtd" id="535-1E-qMr"/>
@@ -665,6 +704,7 @@
                         <outlet property="speakingButton" destination="acx-cW-An0" id="QeB-GE-AVr"/>
                         <outlet property="stackViewBottomActions" destination="1pI-gx-HlR" id="RfR-Jb-zqH"/>
                         <outlet property="stackViewMainAction" destination="Ug4-dv-Q4J" id="iAU-l3-vcU"/>
+                        <outlet property="stackViewSaveChat" destination="pIo-xN-0vX" id="RsY-1U-OoC"/>
                         <outlet property="swipeLeftLabel" destination="eZf-OZ-KGX" id="EfH-j0-eej"/>
                         <outlet property="swipeUpLabel" destination="hy7-zd-rwS" id="CJ5-Zb-CgG"/>
                         <outlet property="tapGestureRecognizer" destination="Els-qX-pLQ" id="KiR-JD-M6F"/>
