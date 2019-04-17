@@ -168,7 +168,7 @@ public class SpeechViewController: UIViewController {
         else if action == Action.Tap && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
-            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
+            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap Done or Return when done.")
             if hasInternetConnection() {
                 currentState.append(State.EditingMode)
                 enterStateEditingMode(editingType: EditingType.Speaking)
@@ -401,7 +401,7 @@ public class SpeechViewController: UIViewController {
                     return
                 }
                 self.sayThis(string: enteredText)
-                sendResponseToWatch(text: enteredText)
+                //sendResponseToWatch(text: enteredText)
             }
             else if currentState.last == State.Typing {
                 //User is not in a conversation session
@@ -498,11 +498,13 @@ public class SpeechViewController: UIViewController {
         cbCentralManager          = CBCentralManager()
         cbCentralManager.delegate = self
         
-        //Setup watch connectivity
-        if WCSession.isSupported() {
-            let session = WCSession.default
-            session.delegate = self
-            session.activate()
+        //Setup watch connectivity only if it is the main screen
+        if inputAction == nil {
+            if WCSession.isSupported() {
+                let session = WCSession.default
+                session.delegate = self
+                session.activate()
+            }
         }
         
     }
@@ -616,13 +618,13 @@ public class SpeechViewController: UIViewController {
                 
                 if self.currentState.last == State.Idle {
                     if let resultText = self.textViewBottom?.text {
-                        if resultText.count > 0 {
+                      /*  if resultText.count > 0 {
                             self.sayThis(string: resultText)
                             self.sendResponseToWatch(text: resultText)
                         }
                         else {
                             self.sendStatusToWatch(beginningOfAction: false, success: false, text: "User did not enter response")
-                        }
+                        }   */
                     }
                     
                 }
@@ -731,6 +733,7 @@ public class SpeechViewController: UIViewController {
         self.dataChats.removeAll()
         self.dataChats.append(ChatListItem(text: "Converstion Session started. Tap the Type button below to begin the first message. You can end the conversation at any time my tapping End Session below", origin: EventOrigin.STATUS.rawValue))
         self.conversationTableView?.reloadData()
+        self.scrollToBottomOfConversationTable()
         self.conversationTableView?.isHidden = false
         self.stackViewSaveChat?.isHidden = true
         self.stackViewMainAction?.isHidden = false
@@ -762,6 +765,7 @@ public class SpeechViewController: UIViewController {
         self.dataChats.removeAll()
         self.dataChats.append(ChatListItem(text: "Converstion Session started. Your partner will start the conversation. When they have finished, their message will appear here. Please wait.", origin: EventOrigin.STATUS.rawValue))
         self.conversationTableView.reloadData()
+        self.scrollToBottomOfConversationTable()
         self.conversationTableView.isHidden = false
         self.labelTopStatus?.isHidden = false
         self.labelConvSessionInstruction?.text = "Waiting for the other person to start typing..."
@@ -854,11 +858,14 @@ public class SpeechViewController: UIViewController {
             self.viewDeafProfile?.isHidden = false
             self.labelTopStatus?.text = "User is typing on Apple Watch..."
             self.labelTopStatus?.isHidden = false
+            self.labelConvSessionInstruction?.isHidden = true
             self.stackViewMainAction?.isHidden = true
+            self.stackViewSaveChat?.isHidden = true
             self.labelConnectDevice?.isHidden = true
             self.connectDeviceButton?.setTitle("Stop receiving from watch", for: .normal)
             self.connectDeviceButton?.backgroundColor = .red
             self.connectDeviceButton?.isHidden = false
+            self.stackViewConnectDevice?.isHidden = false
         })
         
     }
@@ -1089,7 +1096,7 @@ public class SpeechViewController: UIViewController {
         }
         
         self.conversationTableView?.reloadData()
-        scrollToBottomOfConversationTable()
+        self.scrollToBottomOfConversationTable()
     }
     
     func dialogConnectionLost() {
@@ -1516,7 +1523,7 @@ extension SpeechViewController : WCSessionDelegate {
                     if UIApplication.shared.applicationState == .active {
                         self.dataChats.append(ChatListItem(text: request, origin: "Apple Watch"))
                         self.conversationTableView?.reloadData()
-                        //self.textViewBottom?.text = request
+                        self.scrollToBottomOfConversationTable()
                     }
                 })
                 changeState(action: Action.ReceivedContentFromWatch)
@@ -1533,7 +1540,8 @@ extension SpeechViewController : WCSessionDelegate {
                 status = false
                 response = "User is speaking into iPhone. Message not displayed"
             }
-            else if currentState.last == State.Typing {
+            else if currentState.last == State.Typing ||
+                    currentState.last == State.EditingMode {
                 status = false
                 response = "User is typing on iPhone. Message not displayed"
             }
@@ -1638,14 +1646,10 @@ protocol SpeechViewControllerProtocol {
 
 extension SpeechViewController : SpeechViewControllerProtocol {
     func setResultOfTypingOrSpeaking(valueSent: String?) {
-        if valueSent != nil {
-            changeState(action: Action.CompletedEditing)
-        }
-        else {
+        guard var newText : String = valueSent else {
             self.sendText(text: "\0")
             changeState(action: Action.CancelledEditing)
-        }
-        guard var newText : String = valueSent else {
+            self.sendStatusToWatch(beginningOfAction: false, success: false, text: "User did not enter response")
             return
         }
         if newText.last == "\n" {
@@ -1656,10 +1660,11 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         self.sendText(text: newText + "\n")
         self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName))
         self.conversationTableView.reloadData()
-        
-        scrollToBottomOfConversationTable()
+        self.scrollToBottomOfConversationTable()
         self.viewDeafProfile?.isHidden = false
         self.textViewRealTimeTextInput?.text = ""
+        self.sendResponseToWatch(text: valueSent!)
+        changeState(action: Action.CompletedEditing)
     }
     
     func newRealTimeInput(value: String) {
