@@ -703,6 +703,7 @@
                         <outlet property="recordLabel" destination="Z2R-uD-B4J" id="jPy-vq-rXn"/>
                         <outlet property="speakingButton" destination="acx-cW-An0" id="QeB-GE-AVr"/>
                         <outlet property="stackViewBottomActions" destination="1pI-gx-HlR" id="RfR-Jb-zqH"/>
+                        <outlet property="stackViewConnectDevice" destination="t1H-aN-zyF" id="auI-08-c4b"/>
                         <outlet property="stackViewMainAction" destination="Ug4-dv-Q4J" id="iAU-l3-vcU"/>
                         <outlet property="stackViewSaveChat" destination="pIo-xN-0vX" id="RsY-1U-OoC"/>
                         <outlet property="swipeLeftLabel" destination="eZf-OZ-KGX" id="EfH-j0-eej"/>

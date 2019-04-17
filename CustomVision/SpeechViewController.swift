@@ -76,6 +76,7 @@ public class SpeechViewController: UIViewController {
     @IBOutlet weak var stackViewSaveChat: UIStackView!
     @IBOutlet weak var stackViewMainAction: UIStackView!
     @IBOutlet weak var labelMainAction: UILabel!
+    @IBOutlet weak var stackViewConnectDevice: UIStackView!
     @IBOutlet weak var labelConnectDevice: UILabel!
     // MARK: Interface Builder actions
     
@@ -128,12 +129,14 @@ public class SpeechViewController: UIViewController {
         saveChatLog()
         self.stackViewSaveChat?.isHidden = true
         self.stackViewMainAction?.isHidden = false
+        self.stackViewConnectDevice?.isHidden = false
     }
     
     
     @IBAction func noSaveTapped(_ sender: Any) {
         self.stackViewSaveChat?.isHidden = true
         self.stackViewMainAction?.isHidden = false
+        self.stackViewConnectDevice?.isHidden = false
     }
     
     
@@ -1110,39 +1113,19 @@ public class SpeechViewController: UIViewController {
     func dialogSaveConversationLog() {
         self.stackViewSaveChat?.isHidden = false
         self.stackViewMainAction?.isHidden = true
-      /*  let alert = UIAlertController(title: "Conversation Ended", message: "The conversation session is over. Would you like to keep a record of this conversation by saving it to a location of your choice? Note that if you do not save it, you may lose the record of this conversation.", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { action in
-            switch action.style{
-            case .default:
-                print("default")
-                
-            case .cancel:
-                print("cancel")
-                
-            case .destructive:
-                print("destructive")
-                
-            }}))
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
-            switch action.style{
-            case .default:
-                self.saveChatLog()
-                
-            case .cancel:
-                print("cancel")
-                
-            case .destructive:
-                print("destructive")
-                
-            }}))
-        self.present(alert, animated: true, completion: nil)    */
+        self.stackViewConnectDevice?.isHidden = true
     }
     
     func saveChatLog() {
-        var stringToSave = "Suno Session\n\n"
+        let appName = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
+        let dateFormatter : DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MMMM-dd HH:mm a"
+        let date = Date()
+        let dateString = dateFormatter.string(from: date)
+        var stringToSave = appName + " " + "Session" + " " + dateString + "\n\n"
         for chatListItem in dataChats {
             stringToSave.append(chatListItem.time)
-            stringToSave.append(" ")
+            stringToSave.append("   ")
             stringToSave.append(chatListItem.origin)
             stringToSave.append("\n")
             stringToSave.append(chatListItem.text)
