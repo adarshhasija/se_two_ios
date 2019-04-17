@@ -1350,8 +1350,6 @@ extension SpeechViewController : MCSessionDelegate {
                     self.changeState(action: Action.PartnerCompleted)
                 }
                 else if self.currentState.last == State.Listening || self.currentState.last == State.Reading {
-                    print("***********DID RECEIVE********LAST ELSE IF**********")
-                    print(text)
                     self.labelTopStatus?.isHidden = true
                     self.labelConvSessionInstruction?.isHidden = true
                     self.textViewRealTimeTextInput?.isHidden = false
