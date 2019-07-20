@@ -887,22 +887,15 @@ public class SpeechViewController: UIViewController {
         //When coming from the watch
         //Use this to update the UI instantaneously (otherwise, takes a little while)
         DispatchQueue.main.async(execute: { () -> Void in
-         /*   self.helpTopicsButton?.isHidden = false
-            self.swipeLeftLabel?.isHidden = false
-            self.swipeUpLabel?.isHidden = false
-            self.connectDeviceButton?.isHidden = false
-            self.longPressLabel?.isHidden = false
-            self.longPressLabel?.text = "Long press to connect to another device"
-            self.recordLabel?.isHidden = false  */
-            
-            self.viewDeafProfile?.isHidden = true
-            self.labelTopStatus?.text = ""
-            self.labelTopStatus?.isHidden = true
+            self.viewDeafProfile?.isHidden = false
+            self.labelTopStatus?.text = "This person is deaf/hearing-impaired. Please answer their doubts by using the Type or Talk options at the bottom of the screen"
+            self.labelTopStatus?.isHidden = false
             self.stackViewMainAction?.isHidden = false
-            self.labelConnectDevice?.isHidden = false
-            self.connectDeviceButton?.setTitle("Connect to other device", for: .normal)
-            self.connectDeviceButton?.backgroundColor = UIColor.init(red: 0.1, green: 0.4, blue: 0.2, alpha: 1.0) //dark green
-            self.connectDeviceButton?.isHidden = false
+            self.stackViewConnectDevice?.isHidden = true
+            //self.labelConnectDevice?.isHidden = false
+            //self.connectDeviceButton?.setTitle("Connect to other device", for: .normal)
+            //self.connectDeviceButton?.backgroundColor = UIColor.init(red: 0.1, green: 0.4, blue: 0.2, alpha: 1.0) //dark green
+            //self.connectDeviceButton?.isHidden = false
         })
     }
     
@@ -1536,6 +1529,7 @@ extension SpeechViewController : WCSessionDelegate {
                         self.dataChats.append(ChatListItem(text: request, origin: "Apple Watch"))
                         self.conversationTableView?.reloadData()
                         self.scrollToBottomOfConversationTable()
+                        self.sayThis(string: request)
                     }
                 })
                 changeState(action: Action.ReceivedContentFromWatch)
