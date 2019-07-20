@@ -130,7 +130,7 @@
                                                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstItem="LA6-8y-dbc" firstAttribute="leading" secondItem="Xrj-WP-QK0" secondAttribute="leading" constant="8" id="5qx-V0-ykl"/>
-                                                        <constraint firstAttribute="bottom" secondItem="Aje-DE-oqk" secondAttribute="bottom" constant="25" id="8gw-OO-MM1"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Aje-DE-oqk" secondAttribute="bottom" constant="40" id="8gw-OO-MM1"/>
                                                         <constraint firstAttribute="bottom" secondItem="LA6-8y-dbc" secondAttribute="bottom" constant="5" id="O4t-aG-oWK"/>
                                                         <constraint firstAttribute="trailing" secondItem="Aje-DE-oqk" secondAttribute="trailing" constant="8" id="UkH-No-HRP"/>
                                                         <constraint firstAttribute="trailing" secondItem="94w-gV-ljj" secondAttribute="trailing" constant="10" id="YkE-xh-GX6"/>
