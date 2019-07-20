@@ -9,6 +9,7 @@
 import WatchKit
 import Foundation
 import WatchConnectivity
+import AVFoundation
 
 class InterfaceController: WKInterfaceController {
     
@@ -25,6 +26,7 @@ class InterfaceController: WKInterfaceController {
         case TapTypingButton
         case TypingCancelledByUser
         case TapStopButton
+        case TapPlayAudioButton
         case TypistFinishedTyping
         case ReceivedUserStatusActionStart
         case ReceivedUserStatusActionEnd
@@ -37,16 +39,22 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var statusText: WKInterfaceLabel!
     @IBOutlet weak var typeButton: WKInterfaceButton!
     @IBOutlet weak var stopButton: WKInterfaceButton! //If the user is waiting for a response from iPhone and wants to stop waiting
+    @IBOutlet weak var playAudioButton: WKInterfaceButton!
     
     @IBAction func typeButtonTapped() {
         changeState(action: Action.TapTypingButton)
     }
     @IBAction func stopButtonTapped() {
         changeState(action: Action.TapStopButton)
+    }    
+    @IBAction func playAudioButtonTapped() {
+        changeState(action: Action.TapPlayAudioButton)
     }
     
     /// Private Properties
     var currentState : [State] = []
+    let synth = AVSpeechSynthesizer()
+    var currentText : String? = nil
     
     /// State Machine
     func changeState(action: Action) {
@@ -96,6 +104,11 @@ class InterfaceController: WKInterfaceController {
             exitStateReceiving()
             enterStateIdle()
         }
+        else if action == Action.TapPlayAudioButton && currentState.last == State.Idle {
+            if currentText != nil {
+                self.sayThis(string: currentText!)
+            }
+        }
         else if action == Action.PhoneNotReachable && currentState.contains(State.Receiving) {
             while currentState.last != State.Idle {
                 currentState.popLast()
@@ -144,10 +157,21 @@ class InterfaceController: WKInterfaceController {
     func enterStateIdle() {
         typeButton?.setHidden(false)
         mainText?.setHidden(false)
-        mainText?.setText("Tap the button above to enter a message. You can either show the watch to someone so they can read the message, or open the Suno app on your iPhone and show the message there. The other person can reply on your iPhone and the message will appear on your watch.")
+        if currentText == nil {
+            mainText?.setText("Tap the button above to enter a message and show it to your friend.")
+        }
+        else {
+            mainText?.setText(currentText)
+        }
         statusText?.setText("")
         statusText?.setHidden(true)
         stopButton?.setHidden(true)
+        if currentText == nil {
+            playAudioButton?.setHidden(true)
+        }
+        else {
+            playAudioButton?.setHidden(false)
+        }
     }
     
     func enterStateTyping() {
@@ -160,7 +184,10 @@ class InterfaceController: WKInterfaceController {
             
             if let input = (result as [Any]?)?[0] as? String {
                 self.mainText?.setText(input)
+                self.currentText = input
+                self.sayThis(string: input)
                 self.mainText?.setHidden(false)
+                self.playAudioButton?.setHidden(false)
                 if WCSession.isSupported() {
                     let session = WCSession.default
                     if session.isReachable {
@@ -199,6 +226,7 @@ class InterfaceController: WKInterfaceController {
         self.statusText?.setHidden(false)
         self.statusText?.setTextColor(UIColor.green)
         self.stopButton?.setHidden(false)
+        self.playAudioButton?.setHidden(true)
     }
     
     func exitStateReceiving() {
@@ -206,6 +234,12 @@ class InterfaceController: WKInterfaceController {
         self.mainText?.setHidden(false)
         self.statusText?.setHidden(false)
         self.stopButton?.setHidden(true)
+        if currentText != nil {
+            playAudioButton?.setHidden(false)
+        }
+        else {
+            playAudioButton?.setHidden(true)
+        }
     }
     
     /// MARK:- Private Helpers
@@ -254,4 +288,17 @@ extension InterfaceController : WCSessionDelegate {
     }
     
     
+}
+
+extension InterfaceController {
+    func sayThis(string: String) {
+        let utterance = AVSpeechUtterance(string: string)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        if synth.isPaused {
+            synth.continueSpeaking()
+        }
+        else {
+            synth.speak(utterance)
+        }
+    }
 }

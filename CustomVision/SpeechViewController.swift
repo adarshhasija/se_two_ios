@@ -887,11 +887,10 @@ public class SpeechViewController: UIViewController {
         //When coming from the watch
         //Use this to update the UI instantaneously (otherwise, takes a little while)
         DispatchQueue.main.async(execute: { () -> Void in
-            self.viewDeafProfile?.isHidden = false
-            self.labelTopStatus?.text = "This person is deaf/hearing-impaired. Please answer their doubts by using the Type or Talk options at the bottom of the screen"
-            self.labelTopStatus?.isHidden = false
+            //labelTopStatus is set in WatchDelegate
             self.stackViewMainAction?.isHidden = false
             self.stackViewConnectDevice?.isHidden = true
+            
             //self.labelConnectDevice?.isHidden = false
             //self.connectDeviceButton?.setTitle("Connect to other device", for: .normal)
             //self.connectDeviceButton?.backgroundColor = UIColor.init(red: 0.1, green: 0.4, blue: 0.2, alpha: 1.0) //dark green
@@ -1519,6 +1518,10 @@ extension SpeechViewController : WCSessionDelegate {
         else if let cancalledTyping = message["user_cancelled_typing"] as? String {
             response = cancalledTyping //Used only for analytics
             changeState(action: Action.ReceivedStatusFromWatch)
+            
+            self.viewDeafProfile?.isHidden = false
+            self.labelTopStatus?.text = ""
+            self.labelTopStatus?.isHidden = false
         }
         else if let request = message["request"] as? String {
             if currentState.last == State.ReceivingFromWatch {
@@ -1530,6 +1533,10 @@ extension SpeechViewController : WCSessionDelegate {
                         self.conversationTableView?.reloadData()
                         self.scrollToBottomOfConversationTable()
                         self.sayThis(string: request)
+                        
+                        self.viewDeafProfile?.isHidden = false
+                        self.labelTopStatus?.text = "This person is deaf/hearing-impaired. Please answer their doubts by using the Type or Talk options at the bottom of the screen"
+                        self.labelTopStatus?.isHidden = false
                     }
                 })
                 changeState(action: Action.ReceivedContentFromWatch)
