@@ -37,19 +37,19 @@ public class HelpTopicsTableViewController: UITableViewController {
         )   */
         
         helpTopics.append(HelpTopic(
-            question: "I am hearing-imapired and speech-impaired and I would like to give my friend a message",
-            answer: "Tap the Type button towards the bottom of the screen. Type out a message and tap Return on the keyboard or Done on the top right. Show your friend the message. They can also type a reply to you on the same device.")
+            question: "I am hearing-imapired and speech-impaired and I would like to get help from a person in front of me",
+            answer: "Tap the Type button towards the bottom of the screen. Type out a message and show the device to the other person so they can read it. They can tap Type a reply or Talk a reply. If they talk a reply, their words will appear on the screen as text.")
         )
         
         helpTopics.append(HelpTopic(
-            question: "I am hearing-impaired and I want to use this device to have a conversation with someone who can hear and speak",
-            answer: "Tap the Type button towards the bottom of the screen. Type out a message and tap Return on the keyboard or Done on the top right. Show your friend the message. They can also type a reply to you on the same device. The chat log will appear on the screen so you can keep track of who said what.")
+            question: "Can I share chat history?",
+            answer: "You can use the Share Chat Log button to share a copy of the chat log with anyone else on any other messenger app(eg: iMessage or WhatsApp) for future reference. Note that we do not save chat logs within the app")
         )
         
     /*    helpTopics.append(HelpTopic(
             question: "I can speak and hear and I want to use this device to have a conversation with my hearing impaired friend.",
             answer: "Tap the screen to record a message. Tap the screen again to stop the recording. Show your partner the message. Your partner can then swipe up to open the keyboard and type a reply. Once they have finished recording, they can tap the screen to close the keyboard. They will then return the device to you so you can read the message.")
-        )   */
+        )
         
         helpTopics.append(HelpTopic(
             question: "What is a conversation session?",
@@ -74,7 +74,7 @@ public class HelpTopicsTableViewController: UITableViewController {
         helpTopics.append(HelpTopic(
             question: "How do I stop a session?",
             answer: "You can tap the red button at the bottom that says End Session. This will stop the session.")
-        )
+        )   */
         
         helpTopics.append(HelpTopic(
             question: "How long can a voice recording be?",
@@ -82,8 +82,10 @@ public class HelpTopicsTableViewController: UITableViewController {
         )
         
         helpTopics.append(HelpTopic(
-            question: "Apple Watch:\nI have an Apple Watch and an iPhone. How do I use the app with these devices?",
-            answer: "Open Suno on your Apple Watch. Open Suno on your iPhone and give your iPhone to your partner, who should be next to you. Tap on New Message on the watch and enter a message. Once you tap done, the message will appear on the iPhone for your partner to read. Your partner can then respond by speaking or typing. Once they have completed, the message will appear on the watch for you to read.\n\nNote that messages from the watch will not be displayed on the iPhone if the phone is involved in a conversation session with another iOS device.")
+            question: "Apple Watch:\nHow do I use the Apple Watch app?",
+            answer: "The watch app comes with 3 pre-loaded messages. You can use those or type out one of your own. Show the watch to the other person so they can read the message.\n\nAlternatively, you can open Suno on your iPhone and give your iPhone to the other person. Enter a message on your watch and they can read it on the iPhone. They can then type out or talk a message on the iPhone and it will apeaar on the watch. You can have a back and forth conversation this way.")
+            
+            //\n\nNote that messages from the watch will not be displayed on the iPhone if the phone is involved in a conversation session with another iOS device.
         )
         
         helpTopics.append(HelpTopic(
@@ -93,18 +95,18 @@ public class HelpTopicsTableViewController: UITableViewController {
         
         helpTopics.append(HelpTopic(
             question: "Apple Watch:\nMy partner is typing on the iPhone and the words are appearing on the phone but not on the watch.",
-            answer: "Your partner must tap the screen(not the keyboard part) on the iPhone after they have finished typing. Only then will the spoken words appear on the watch screen.")
+            answer: "Your partner must tap the Done button on the iPhone after they have finished typing. Only then will the spoken words appear on the watch screen.")
         )
         
         helpTopics.append(HelpTopic(
             question: "Apple Watch:\nI am wearing the watch but the phone is not nearby. Can I use Suno?",
-            answer: "Yes. You can open Suno on the watch, enter a message and show your watch screen to someone else so they can read the message. If you wish, you can ask them to enter a reply on the watch itself.")
+            answer: "Yes. You can open Suno on the watch, enter a message and show your watch screen to someone else so they can read the message. We also have three pre-built messages for your convinience.")
         )
         
-        helpTopics.append(HelpTopic(
+     /*   helpTopics.append(HelpTopic(
             question: "Apple Watch:\nCan I connect to somebody else's iPhone or iPad from my Apple Watch?",
             answer: "No. Suno for Apple Watch will only connect to Suno on the iPhone that the watch is paired with.")
-        )
+        )   */
         
         helpTopics.append(HelpTopic(
             question: "Which devices does this app work on?",
