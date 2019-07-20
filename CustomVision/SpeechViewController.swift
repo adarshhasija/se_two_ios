@@ -71,9 +71,10 @@ public class SpeechViewController: UIViewController {
     
     
     @IBOutlet weak var stackViewBottomActions: UIStackView!
+    @IBOutlet weak var stackViewSaveChatButton: UIStackView!
     @IBOutlet weak var buttonYesSave: UIButton!
     @IBOutlet weak var buttonNoSave: UIButton!
-    @IBOutlet weak var stackViewSaveChat: UIStackView!
+    @IBOutlet weak var stackViewSaveChatDialog: UIStackView!
     @IBOutlet weak var stackViewMainAction: UIStackView!
     @IBOutlet weak var labelMainAction: UILabel!
     @IBOutlet weak var stackViewConnectDevice: UIStackView!
@@ -124,17 +125,24 @@ public class SpeechViewController: UIViewController {
     }
     
     
-    @IBAction func yesSaveTapped(_ sender: Any) {
+    //Same as the yes button. This saves the chat log.
+    @IBAction func shareChatTapped(_ sender: Any) {
         Analytics.logEvent("se3_save_chat_tapped", parameters: [:])
         saveChatLog()
-        self.stackViewSaveChat?.isHidden = true
+    }
+    
+    @IBAction func yesSaveTapped(_ sender: Any) {
+        Analytics.logEvent("se3_save_chat_yes_tapped", parameters: [:])
+        saveChatLog()
+        self.stackViewSaveChatDialog?.isHidden = true
         self.stackViewMainAction?.isHidden = false
         self.stackViewConnectDevice?.isHidden = false
     }
     
     
     @IBAction func noSaveTapped(_ sender: Any) {
-        self.stackViewSaveChat?.isHidden = true
+        Analytics.logEvent("se3_save_chat_no_tapped", parameters: [:])
+        self.stackViewSaveChatDialog?.isHidden = true
         self.stackViewMainAction?.isHidden = false
         self.stackViewConnectDevice?.isHidden = false
     }
@@ -218,6 +226,7 @@ public class SpeechViewController: UIViewController {
         }
         else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
             currentState.popLast() //pop editing mode
+            exitStateEditingMode(isSuccessful: true)
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
             }
@@ -233,7 +242,7 @@ public class SpeechViewController: UIViewController {
         }
         else if action == Action.CancelledEditing && currentState.last == State.EditingMode {
             currentState.popLast() //pop editing mode
-            exitStateEditingMode()
+            exitStateEditingMode(isSuccessful: false)
             sendStatusToWatch(beginningOfAction: false, success: false, text: "User did not enter response")
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
@@ -558,6 +567,7 @@ public class SpeechViewController: UIViewController {
             }
             self.speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil)
         }
+        
     }
     
     /// MARK:- Speech Recognition Helpers
@@ -618,11 +628,10 @@ public class SpeechViewController: UIViewController {
                 
                 if self.currentState.last == State.Idle {
                     if let resultText = self.textViewBottom?.text {
-                      /*  if resultText.count > 0 {
+                        if resultText.count > 0 {
                             self.sayThis(string: resultText)
-                            self.sendResponseToWatch(text: resultText)
                         }
-                        else {
+                      /*  else {
                             self.sendStatusToWatch(beginningOfAction: false, success: false, text: "User did not enter response")
                         }   */
                     }
@@ -735,7 +744,7 @@ public class SpeechViewController: UIViewController {
         self.conversationTableView?.reloadData()
         self.scrollToBottomOfConversationTable()
         self.conversationTableView?.isHidden = false
-        self.stackViewSaveChat?.isHidden = true
+        self.stackViewSaveChatDialog?.isHidden = true
         self.stackViewMainAction?.isHidden = false
         self.labelMainAction?.isHidden = true
         self.typingButton?.isHidden = false
@@ -813,8 +822,12 @@ public class SpeechViewController: UIViewController {
         }
     }
     
-    private func exitStateEditingMode() {
+    private func exitStateEditingMode(isSuccessful: Bool) {
         self.textViewRealTimeTextInput?.isHidden = true
+        
+        if isSuccessful {
+            self.stackViewSaveChatButton.isHidden = false
+        }
     }
     
     private func enterStateTyping() {
@@ -860,7 +873,7 @@ public class SpeechViewController: UIViewController {
             self.labelTopStatus?.isHidden = false
             self.labelConvSessionInstruction?.isHidden = true
             self.stackViewMainAction?.isHidden = true
-            self.stackViewSaveChat?.isHidden = true
+            self.stackViewSaveChatDialog?.isHidden = true
             self.labelConnectDevice?.isHidden = true
             self.connectDeviceButton?.setTitle("Stop receiving from watch", for: .normal)
             self.connectDeviceButton?.backgroundColor = .red
@@ -985,7 +998,6 @@ public class SpeechViewController: UIViewController {
     
     func speakerCancelledSpeaking() {
         //Only applicable in multipeer session
-        print("*********SPEAKER CANCELLED SPEAKING***********")
         self.labelTopStatus?.isHidden = false
         self.labelConvSessionInstruction?.isHidden = false
         self.textViewRealTimeTextInput?.text = ""
@@ -1118,7 +1130,7 @@ public class SpeechViewController: UIViewController {
     }
     
     func dialogSaveConversationLog() {
-        self.stackViewSaveChat?.isHidden = false
+        self.stackViewSaveChatDialog?.isHidden = false
         self.stackViewMainAction?.isHidden = true
         self.stackViewConnectDevice?.isHidden = true
     }
@@ -1563,7 +1575,7 @@ extension SpeechViewController : UITableViewDataSource {
         }
         else {
             if emptyTableText == nil {
-                emptyTableText = "No conversation in progress. Use the options below to begin. Please note: Conversation history is deleted when conversation is completed."
+                emptyTableText = "No conversation in progress.\nUse the options below to begin."
             }
             
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
@@ -1629,12 +1641,39 @@ extension SpeechViewController : UITableViewDelegate {
     }
     
     private func sayThis(string: String) {
+        let audioSession = AVAudioSession.sharedInstance()
+        do { try audioSession.setCategory(AVAudioSessionCategoryPlayback) }
+        catch { showToast(message: "Sorry, audio failed to play") }
+        do { try audioSession.setMode(AVAudioSessionModeDefault) }
+        catch { showToast(message: "Sorry, audio failed to play") }
+        
         let utterance = AVSpeechUtterance(string: string)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         if synth.isPaused {
             synth.continueSpeaking()
         }
-        synth.speak(utterance)
+        else {
+            synth.speak(utterance)
+        }
+    }
+    
+    func showToast(message : String) {
+        
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 75, y: self.view.frame.size.height-100, width: 150, height: 60))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(1.0) //0.6
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center;
+        toastLabel.numberOfLines = 2
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
     }
 }
 

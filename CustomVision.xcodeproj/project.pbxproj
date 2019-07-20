@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		22D2C163A464B8AA5B31A8D1 /* Pods_Suno.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */; };
-		312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 312A4ED920D274B100767B49 /* Rupees.mlmodel */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
 		317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */; };
 		3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */; };
@@ -29,7 +28,6 @@
 		317D4C262188CCF00081B38B /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		31862B7D225E11650058883D /* ChatListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7C225E11650058883D /* ChatListItem.swift */; };
 		31862B7F226077950058883D /* EventOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7E226077950058883D /* EventOrigin.swift */; };
-		319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319FD50620D1A98E0071F993 /* ARViewController.swift */; };
 		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
 		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
@@ -39,12 +37,9 @@
 		31F57B66211A14D300777EA3 /* MacAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B65211A14D300777EA3 /* MacAppTests.swift */; };
 		31F57B71211A14D300777EA3 /* MacAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B70211A14D300777EA3 /* MacAppUITests.swift */; };
 		5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBF65111F0AA47700BCD353 /* AppDelegate.swift */; };
-		5EBF65141F0AA47700BCD353 /* VisionMLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBF65131F0AA47700BCD353 /* VisionMLViewController.swift */; };
 		5EBF65171F0AA47700BCD353 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EBF65151F0AA47700BCD353 /* Main.storyboard */; };
 		5EBF65191F0AA47700BCD353 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5EBF65181F0AA47700BCD353 /* Assets.xcassets */; };
 		5EBF651C1F0AA47700BCD353 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EBF651A1F0AA47700BCD353 /* LaunchScreen.storyboard */; };
-		76B5ACDE1F159C7500EE183D /* BubbleLabelLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5ACDD1F159C7500EE183D /* BubbleLabelLayer.swift */; };
-		76C510BC1F1587C60049422A /* BubbleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C510BB1F1587C60049422A /* BubbleLayer.swift */; };
 		84054D1218A151615B85E1A0 /* Pods_Suno_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD2D6E2825DA333FE102C056 /* Pods_Suno_Mac.framework */; };
 /* End PBXBuildFile section */
 
@@ -106,7 +101,6 @@
 
 /* Begin PBXFileReference section */
 		00A518D03A10503E18B775E7 /* Pods-Suno.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno/Pods-Suno.release.xcconfig"; sourceTree = "<group>"; };
-		312A4ED920D274B100767B49 /* Rupees.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Rupees.mlmodel; sourceTree = SOURCE_ROOT; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
 		317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewController.swift; sourceTree = "<group>"; };
 		3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicViewController.swift; sourceTree = "<group>"; };
@@ -126,7 +120,6 @@
 		317D4C252188CCF00081B38B /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		31862B7C225E11650058883D /* ChatListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListItem.swift; sourceTree = "<group>"; };
 		31862B7E226077950058883D /* EventOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrigin.swift; sourceTree = "<group>"; };
-		319FD50620D1A98E0071F993 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
@@ -146,13 +139,10 @@
 		3C8A668BA37BAC8691CCD5D4 /* Pods-Suno-Mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno-Mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno-Mac/Pods-Suno-Mac.release.xcconfig"; sourceTree = "<group>"; };
 		5EBF650E1F0AA47700BCD353 /* Suno.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Suno.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EBF65111F0AA47700BCD353 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5EBF65131F0AA47700BCD353 /* VisionMLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionMLViewController.swift; sourceTree = "<group>"; };
 		5EBF65161F0AA47700BCD353 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5EBF65181F0AA47700BCD353 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5EBF651B1F0AA47700BCD353 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5EBF651D1F0AA47700BCD353 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		76B5ACDD1F159C7500EE183D /* BubbleLabelLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleLabelLayer.swift; sourceTree = "<group>"; };
-		76C510BB1F1587C60049422A /* BubbleLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleLayer.swift; sourceTree = "<group>"; };
 		7FADC355228EAF265EC43166 /* Pods-Suno.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Suno/Pods-Suno.debug.xcconfig"; sourceTree = "<group>"; };
 		CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Suno.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD2D6E2825DA333FE102C056 /* Pods_Suno_Mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Suno_Mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -302,16 +292,11 @@
 			children = (
 				31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */,
 				31F57B4A211A137000777EA3 /* SpeechViewController.swift */,
-				312A4ED920D274B100767B49 /* Rupees.mlmodel */,
 				5EBF65111F0AA47700BCD353 /* AppDelegate.swift */,
-				5EBF65131F0AA47700BCD353 /* VisionMLViewController.swift */,
 				5EBF65151F0AA47700BCD353 /* Main.storyboard */,
 				5EBF65181F0AA47700BCD353 /* Assets.xcassets */,
 				5EBF651A1F0AA47700BCD353 /* LaunchScreen.storyboard */,
 				5EBF651D1F0AA47700BCD353 /* Info.plist */,
-				76C510BB1F1587C60049422A /* BubbleLayer.swift */,
-				76B5ACDD1F159C7500EE183D /* BubbleLabelLayer.swift */,
-				319FD50620D1A98E0071F993 /* ARViewController.swift */,
 				317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */,
 				3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */,
 				3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */,
@@ -689,20 +674,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EBF65141F0AA47700BCD353 /* VisionMLViewController.swift in Sources */,
 				317D4C262188CCF00081B38B /* Actions.swift in Sources */,
-				76C510BC1F1587C60049422A /* BubbleLayer.swift in Sources */,
 				313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */,
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				317D4C242188CCC50081B38B /* States.swift in Sources */,
-				312A4EDA20D274B100767B49 /* Rupees.mlmodel in Sources */,
 				31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */,
 				31862B7D225E11650058883D /* ChatListItem.swift in Sources */,
 				31862B7F226077950058883D /* EventOrigin.swift in Sources */,
-				319FD50720D1A98E0071F993 /* ARViewController.swift in Sources */,
 				317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */,
 				3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */,
-				76B5ACDE1F159C7500EE183D /* BubbleLabelLayer.swift in Sources */,
 				3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */,
 				5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */,
 				31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */,
