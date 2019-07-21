@@ -1354,7 +1354,8 @@ extension SpeechViewController : MCSessionDelegate {
                     }
                 }
                 else if text.count > 1 && text.last! == "\n" {
-                    self.dataChats.append(ChatListItem(text: text, origin: peerID.displayName))
+                    let textWithoutNewLine = String(text.prefix(text.count - 1)) //This will remove the \n. The \n was only meant to signify end of message. Now that we have the message on the other side we can display it without \n.
+                    self.dataChats.append(ChatListItem(text: textWithoutNewLine, origin: peerID.displayName))
                     self.conversationTableView.reloadData()
                     self.scrollToBottomOfConversationTable()
                     self.textViewRealTimeTextInput?.text = ""
