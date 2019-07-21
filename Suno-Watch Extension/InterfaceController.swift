@@ -158,7 +158,7 @@ class InterfaceController: WKInterfaceController {
         typeButton?.setHidden(false)
         mainText?.setHidden(false)
         if currentText == nil {
-            mainText?.setText("Tap the button above to enter a message and show it to your friend.")
+            mainText?.setText("Show a message on the watch to someone or give them your iPhone and send messages from the watch to the phone")
         }
         else {
             mainText?.setText(currentText)
@@ -177,9 +177,9 @@ class InterfaceController: WKInterfaceController {
     func enterStateTyping() {
         presentTextInputController(withSuggestions: [
             "I am hearing-impaired. I have a doubt. Can I ask you?",
-            "Please tap the iPhone screen to speak",
-            "Please swipe up on the iPhone screen to type",
-            "Sorry I did not understand that"
+            "I am not feeling well? Can you take me to a hospital?",
+            "Where can I get some food?",
+            "Where is the nearest restroom?"
             ], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if let input = (result as [Any]?)?[0] as? String {

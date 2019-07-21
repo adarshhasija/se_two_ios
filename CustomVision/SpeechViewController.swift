@@ -132,6 +132,8 @@ public class SpeechViewController: UIViewController {
         saveChatLog()
     }
     @IBAction func buttonClearChatLogTapped(_ sender: Any) {
+        Analytics.logEvent("se3_clear_chat_tapped", parameters: [:])
+        
         let alert = UIAlertController(title: "Are you sure?", message: "This action cannot be reversed. The chat log will be deleted", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
             switch action.style{
@@ -148,6 +150,7 @@ public class SpeechViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
             switch action.style{
             case .default:
+                Analytics.logEvent("se3_clear_chat_yes", parameters: [:])
                 self.dataChats.removeAll()
                 self.conversationTableView?.reloadData()
                 self.labelTopStatus?.isHidden = true
@@ -1537,7 +1540,8 @@ extension SpeechViewController : WCSessionDelegate {
         Analytics.logEvent("se3_received_from_watch", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
-            "current_state": currentState.last?.rawValue
+            "current_state": currentState.last?.rawValue,
+            "message": (message["request"] as? String)?.prefix(100) as Any
             ])
         
         var status = false
