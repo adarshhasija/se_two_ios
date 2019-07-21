@@ -1638,6 +1638,13 @@ extension SpeechViewController : UITableViewDelegate {
                         chatListItem.origin :
                         "other"
             ])
+        
+        //Volume check is not done in 'sayThis' because it should not be done when the user has just enetered new text. Loading the dialog on the UI thread breaks the flow of returning to the main screen, which we do not want. Hence this is done only when the user selects a chat bubble
+        let audioSession = AVAudioSession.sharedInstance()
+        let volume = audioSession.outputVolume
+        if volume < 0.5 {
+            self.dialogOK(title: "Warning", message: "Your volume is low. You may not be able to hear audio. Please increase the volume")
+        }
         self.sayThis(string: chatListItem.text)
     }
     
