@@ -72,6 +72,7 @@ public class SpeechViewController: UIViewController {
     
     @IBOutlet weak var stackViewBottomActions: UIStackView!
     @IBOutlet weak var stackViewSaveChatButton: UIStackView!
+    @IBOutlet weak var buttonClearChatLog: UIButton!
     @IBOutlet weak var buttonYesSave: UIButton!
     @IBOutlet weak var buttonNoSave: UIButton!
     @IBOutlet weak var stackViewSaveChatDialog: UIStackView!
@@ -129,6 +130,38 @@ public class SpeechViewController: UIViewController {
     @IBAction func shareChatTapped(_ sender: Any) {
         Analytics.logEvent("se3_save_chat_tapped", parameters: [:])
         saveChatLog()
+    }
+    @IBAction func buttonClearChatLogTapped(_ sender: Any) {
+        let alert = UIAlertController(title: "Are you sure?", message: "This action cannot be reversed. The chat log will be deleted", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+            }}))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                self.dataChats.removeAll()
+                self.conversationTableView?.reloadData()
+                self.labelTopStatus?.isHidden = true
+                self.labelConvSessionInstruction?.isHidden = true
+                self.stackViewSaveChatButton?.isHidden = true
+                self.buttonClearChatLog?.isHidden = true
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+            }}))
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func yesSaveTapped(_ sender: Any) {
@@ -826,7 +859,10 @@ public class SpeechViewController: UIViewController {
         self.textViewRealTimeTextInput?.isHidden = true
         
         if isSuccessful {
-            self.stackViewSaveChatButton.isHidden = false
+            self.labelTopStatus?.isHidden = false
+            self.labelTopStatus?.text = "This person is deaf/hearing-impaired. Please answer their doubts by using the Type or Talk options at the bottom of the screen"
+            self.stackViewSaveChatButton?.isHidden = false
+            self.buttonClearChatLog?.isHidden = false
         }
     }
     
@@ -1018,6 +1054,14 @@ public class SpeechViewController: UIViewController {
             return false
         }
         return true */
+    }
+    
+    func didReceiveMessageFromOtherDevice() {
+        //Unhide all UI that interacts with a chat log
+        self.labelTopStatus?.isHidden = false
+        self.labelTopStatus?.text = "This person is deaf/hearing-impaired. Please answer their doubts by using the Type or Talk options at the bottom of the screen"
+        self.stackViewSaveChatButton?.isHidden = false
+        self.buttonClearChatLog?.isHidden = false
     }
     
     func isNetworkReachable(with flags: SCNetworkReachabilityFlags) -> Bool {
@@ -1358,6 +1402,7 @@ extension SpeechViewController : MCSessionDelegate {
                     self.dataChats.append(ChatListItem(text: textWithoutNewLine, origin: peerID.displayName))
                     self.conversationTableView.reloadData()
                     self.scrollToBottomOfConversationTable()
+                    self.didReceiveMessageFromOtherDevice()
                     self.textViewRealTimeTextInput?.text = ""
                     self.changeState(action: Action.PartnerCompleted)
                 }
@@ -1533,6 +1578,7 @@ extension SpeechViewController : WCSessionDelegate {
                         self.dataChats.append(ChatListItem(text: request, origin: "Apple Watch"))
                         self.conversationTableView?.reloadData()
                         self.scrollToBottomOfConversationTable()
+                        self.didReceiveMessageFromOtherDevice()
                         self.sayThis(string: request)
                         
                         self.viewDeafProfile?.isHidden = false
