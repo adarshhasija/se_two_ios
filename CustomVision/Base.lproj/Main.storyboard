@@ -88,7 +88,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xrj-WP-QK0">
+                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xrj-WP-QK0" customClass="UIControl">
                                                     <rect key="frame" x="15" y="11" width="200" height="22"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="LA6-8y-dbc" userLabel="Left Stack View">
@@ -144,6 +144,9 @@
                                                             <integer key="value" value="8"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="chatBubbleTapped:" destination="vgu-tB-U6o" eventType="touchUpInside" id="Qi7-9l-vqD"/>
+                                                    </connections>
                                                 </view>
                                             </subviews>
                                             <constraints>
@@ -165,7 +168,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fPK-FD-0yE">
+                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fPK-FD-0yE" customClass="UIControl">
                                                     <rect key="frame" x="80" y="11" width="200" height="22"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="eTG-nc-XtN" userLabel="Right Stack View">
@@ -221,6 +224,9 @@
                                                             <integer key="value" value="8"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="chatBubbleTapped:" destination="l9x-de-ZOH" eventType="touchUpInside" id="cvd-j0-AX7"/>
+                                                    </connections>
                                                 </view>
                                             </subviews>
                                             <constraints>

@@ -280,6 +280,7 @@ extension InterfaceController : WCSessionDelegate {
             }
         } else if let response = message["response"] as? String {
             if currentState.contains(State.Receiving) {
+                self.currentText = response
                 self.mainText?.setText(response)
                 self.statusText?.setText("")
             }

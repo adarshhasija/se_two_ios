@@ -1612,6 +1612,8 @@ extension SpeechViewController : UITableViewDataSource {
         cell.textViewLabel?.text = chatListItem.text
         cell.timeLabel?.text = chatListItem.time
         cell.messageOriginLabel?.text = chatListItem.origin
+        cell.delegate = self
+        cell.indexPath = indexPath
         
         return cell 
     }
@@ -1627,26 +1629,9 @@ extension SpeechViewController : UITableViewDataSource {
 
 extension SpeechViewController : UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let chatListItem : ChatListItem = dataChats[indexPath.row]
-        Analytics.logEvent("se3_row_selected", parameters: [
-            "os_version": UIDevice.current.systemVersion,
-            "device_type": getDeviceType(),
-            "origin": chatListItem.origin == EventOrigin.STATUS.rawValue ?
-                        chatListItem.origin :
-                        chatListItem.origin == peerID.displayName ?
-                        "host" :
-                        chatListItem.origin == EventOrigin.WATCH.rawValue ?
-                        chatListItem.origin :
-                        "other"
-            ])
-        
-        //Volume check is not done in 'sayThis' because it should not be done when the user has just enetered new text. Loading the dialog on the UI thread breaks the flow of returning to the main screen, which we do not want. Hence this is done only when the user selects a chat bubble
-        let audioSession = AVAudioSession.sharedInstance()
-        let volume = audioSession.outputVolume
-        if volume < 0.5 {
-            self.dialogOK(title: "Warning", message: "Your volume is low. You may not be able to hear audio. Please increase the volume")
-        }
-        self.sayThis(string: chatListItem.text)
+        //We do not want to trigger logic when the user taps on whitespace outside the chat bubble
+        //We only detect clicks inside the chat bubble.
+        //Solution is in ChatBubbleDelegate
     }
     
     private func sayThis(string: String) {
@@ -1685,6 +1670,35 @@ extension SpeechViewController : UITableViewDelegate {
         })
     }
 }
+
+extension SpeechViewController : ChatBubbleDelegate {
+    
+    func conversationBubbleTapped(at indexPath: IndexPath) {
+        let chatListItem : ChatListItem = dataChats[indexPath.row]
+        Analytics.logEvent("se3_row_selected", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "device_type": getDeviceType(),
+            "origin": chatListItem.origin == EventOrigin.STATUS.rawValue ?
+                chatListItem.origin :
+                chatListItem.origin == peerID.displayName ?
+                    "host" :
+                chatListItem.origin == EventOrigin.WATCH.rawValue ?
+                    chatListItem.origin :
+            "other"
+            ])
+        
+        //Volume check is not done in 'sayThis' because it should not be done when the user has just enetered new text. Loading the dialog on the UI thread breaks the flow of returning to the main screen, which we do not want. Hence this is done only when the user selects a chat bubble
+        let audioSession = AVAudioSession.sharedInstance()
+        let volume = audioSession.outputVolume
+        if volume < 0.5 {
+            self.dialogOK(title: "Warning", message: "Your volume is low. You may not be able to hear audio. Please increase the volume")
+        }
+        self.sayThis(string: chatListItem.text)
+    }
+    
+    
+}
+
 
 ///Protocol
 protocol SpeechViewControllerProtocol {
