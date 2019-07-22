@@ -128,11 +128,15 @@ public class SpeechViewController: UIViewController {
     
     //Same as the yes button. This saves the chat log.
     @IBAction func shareChatTapped(_ sender: Any) {
-        Analytics.logEvent("se3_save_chat_tapped", parameters: [:])
+        Analytics.logEvent("se3_save_chat_tapped", parameters: [
+            "log_size": dataChats.count
+            ])
         saveChatLog()
     }
     @IBAction func buttonClearChatLogTapped(_ sender: Any) {
-        Analytics.logEvent("se3_clear_chat_tapped", parameters: [:])
+        Analytics.logEvent("se3_clear_chat_tapped", parameters: [
+            "log_size": dataChats.count
+            ])
         
         let alert = UIAlertController(title: "Are you sure?", message: "This action cannot be reversed. The chat log will be deleted", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
@@ -212,10 +216,20 @@ public class SpeechViewController: UIViewController {
         else if action == Action.Tap && currentState.last == State.Idle {
             let result = checkAppleSpeechRecoginitionPermissions()
             if result == nil {
+                Analytics.logEvent("se3_talk_tapped", parameters: [
+                    "error":"no"
+                    ])
+                UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
+                sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap the screen when they have finished recording")
                 currentState.append(State.EditingMode)
                 enterStateEditingMode(editingType: EditingType.Speaking)
             }
             else {
+                Analytics.logEvent("se3_talk_tapped", parameters: [
+                    "error":"yes",
+                    "error_message": result
+                    ])
+                
                 //We will only dispay a warning message. Cannot prompt for permission. User has to do it themselves in the settings app
                 if result?.contains("internet") == true {
                     dialogOK(title: "No internet connection", message: "You need an internet connection to use speech-to-text")
@@ -228,11 +242,7 @@ public class SpeechViewController: UIViewController {
                 }
                 
             }
-            
-            
-            Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
-            UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
-            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap the screen when they have finished recording")
+
             
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
@@ -253,7 +263,7 @@ public class SpeechViewController: UIViewController {
             performSegue(withIdentifier: "segueHelpTopics", sender: nil)
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
-            Analytics.logEvent("se3_typing_not_connected", parameters: [:])
+            Analytics.logEvent("se3_typing_tapped", parameters: [:])
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is typing on iPhone. Please wait. Tell them to tap Return or Done when complete.")
             currentState.append(State.EditingMode)
             enterStateEditingMode(editingType: EditingType.Typing)
