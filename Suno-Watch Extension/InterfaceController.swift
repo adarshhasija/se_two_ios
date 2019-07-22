@@ -276,6 +276,8 @@ extension InterfaceController : WCSessionDelegate {
                 //If the user has pressed stop, we should not display
                 self.statusText?.setTextColor(success ? UIColor.green : UIColor.red)
                 self.statusText?.setText(status)
+                self.currentText = nil
+                self.mainText?.setText("")
                 changeState(action: Action.ReceivedUserStatusActionEnd)
             }
         } else if let response = message["response"] as? String {
