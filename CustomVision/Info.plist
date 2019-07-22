@@ -24,12 +24,10 @@
 	<true/>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>We will check if your Bluetooth is ON when you try to connect to a nearby device</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Camera used to classify scenes</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Microphone used to get speech</string>
+	<string>Microphone permission is needed  to hear what a person says</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>If a person speaks, we will convert the speech into text that a hearing-impaired person can read</string>
+	<string>Speech Recognition permission is needed to convert a person&apos;s speech into text you can read</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

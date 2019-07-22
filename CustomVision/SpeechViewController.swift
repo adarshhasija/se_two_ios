@@ -210,16 +210,30 @@ public class SpeechViewController: UIViewController {
             enterStateIdle()
         }
         else if action == Action.Tap && currentState.last == State.Idle {
-            Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
-            UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
-            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap Done or Return when done.")
-            if hasInternetConnection() {
+            let result = checkAppleSpeechRecoginitionPermissions()
+            if result == nil {
                 currentState.append(State.EditingMode)
                 enterStateEditingMode(editingType: EditingType.Speaking)
             }
             else {
-                dialogOK(title: "No internet connection", message: "You need an internet connection to use speech-to-text")
+                //We will only dispay a warning message. Cannot prompt for permission. User has to do it themselves in the settings app
+                if result?.contains("internet") == true {
+                    dialogOK(title: "No internet connection", message: "You need an internet connection to use speech-to-text")
+                }
+                else if result?.contains("mic") == true {
+                    dialogOK(title: "Permission Error", message: "Mic permission is needed to record what is being said. Please provide the permission in the settings app")
+                }
+                else if result?.contains("not_authorized") == true {
+                    dialogOK(title: "Permission Error", message: "Speech Recognition permission is needed to understand the words that are being said. Please provide the permission in the settings app")
+                }
+                
             }
+            
+            
+            Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
+            UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
+            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap the screen when they have finished recording")
+            
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
             changeState(action: Action.TypistFinishedTyping)
@@ -566,7 +580,12 @@ public class SpeechViewController: UIViewController {
         textViewBottom?.delegate = self
         speechRecognizer.delegate = self
         
-        SFSpeechRecognizer.requestAuthorization { authStatus in
+        let permission = checkAppleSpeechRecoginitionPermissions()
+        if permission != nil {
+            requestMicrophonePermission()
+            requestSpeechRecognitionPermission()
+        }
+     /*   SFSpeechRecognizer.requestAuthorization { authStatus in
             /*
                 The callback may not be called on the main thread. Add an
                 operation to the main queue to update the record button's state.
@@ -577,6 +596,7 @@ public class SpeechViewController: UIViewController {
                         self.recordButton?.isEnabled = true
 
                     case .denied:
+                        self.typingButton?.backgroundColor = UIColor.gray
                         self.recordButton?.isEnabled = false
                         self.recordButton?.setTitle("User denied access to speech recognition", for: .disabled)
                         self.recordLabel?.text = "User has denied access to speech recognition"
@@ -591,7 +611,7 @@ public class SpeechViewController: UIViewController {
                         self.recordLabel?.text = "Speech recognition not yet authorized"
                 }
             }
-        }
+        }   */
         
     }
     
@@ -627,13 +647,14 @@ public class SpeechViewController: UIViewController {
         
         // Configure request so that results are returned before audio recording is finished
         recognitionRequest.shouldReportPartialResults = true
-        
+
         // A recognition task represents a speech recognition session.
         // We keep a reference to the task so that it can be cancelled.
         recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { result, error in
             var isFinal = false
             
             if let result = result {
+                self.textViewBottom?.textColor = .black
                 if self.currentState.last != State.Reading {
                     self.textViewTop?.text = result.bestTranscription.formattedString
                     self.textViewBottom?.text = result.bestTranscription.formattedString
@@ -664,10 +685,10 @@ public class SpeechViewController: UIViewController {
                 
                 if self.currentState.last == State.Idle {
                     if let resultText = self.textViewBottom?.text {
-                        if resultText.count > 0 {
+                        if resultText.count > 0 && self.textViewBottom?.textColor == UIColor.black {
                             self.sayThis(string: resultText)
                         }
-                      /*  else {
+                     /*   else {
                             self.sendStatusToWatch(beginningOfAction: false, success: false, text: "User did not enter response")
                         }   */
                     }
@@ -689,6 +710,7 @@ public class SpeechViewController: UIViewController {
         textViewTop?.font = textViewTop?.font?.withSize(30)
         textViewTop?.text = "(Go ahead, I'm listening)"
         textViewBottom.font = textViewBottom.font?.withSize(30)
+        textViewBottom.textColor = .gray
         textViewBottom.text = "You can now talk. Tap the screen when finished. Go ahead, I'm listening"
     }
     
@@ -892,7 +914,12 @@ public class SpeechViewController: UIViewController {
     private func exitStateTyping() {
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
-        speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: textViewBottom.text)
+        if textViewBottom.textColor == UIColor.black {
+            speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: textViewBottom.text)
+        }
+        else {
+            speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil)
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -968,20 +995,10 @@ public class SpeechViewController: UIViewController {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration to indicate end of recording
             audioEngine.stop()
             recognitionRequest?.endAudio()
-            recordButton?.isEnabled = false
-            recordButton?.setTitle("Stopping", for: .disabled)
-            recordLabel?.text = "Stopping"
             resetTimer()
-            //textViewTop?.font = textViewTop?.font?.withSize(16)
             textViewTop?.text = ""
-            //textViewBottom.font = textViewBottom.font?.withSize(16)
+            textViewBottom.textColor = .gray
             textViewBottom.text = ""
-            swipeUpLabel?.isHidden = false
-            helpTopicsButton?.isHidden = false
-            swipeLeftLabel?.isHidden = false
-            connectDeviceButton?.isHidden = false
-            longPressLabel?.isHidden = false
-            recordLabel?.text = "Tap screen to start recording"
         }
     }
     
@@ -1476,6 +1493,7 @@ extension SpeechViewController : UITextViewDelegate {
             //It is the first character
             changeState(action: Action.TypistStartedTyping)
             str = String(str.last!)
+            self.textViewBottom?.textColor = .black
             self.textViewBottom?.text = str
             sendText(text: str)
             self.speechViewControllerProtocol?.newRealTimeInput(value: str)
@@ -1719,6 +1737,61 @@ extension SpeechViewController : UITableViewDelegate {
             toastLabel.removeFromSuperview()
         })
     }
+    
+    func requestMicrophonePermission() {
+        AVAudioSession.sharedInstance().requestRecordPermission({ (granted) in
+            // Handle granted
+            
+        })
+    }
+    
+    func checkAppleSpeechRecoginitionPermissions() -> String? {
+        if hasInternetConnection() == false {
+            return "internet"
+        }
+        if AVAudioSession.sharedInstance().recordPermission() != AVAudioSession.RecordPermission.granted {
+            self.speakingButton?.backgroundColor = UIColor.gray
+            return "mic"
+        }
+        if SFSpeechRecognizer.authorizationStatus() != .authorized {
+            self.speakingButton?.backgroundColor = UIColor.gray
+            return "not_authorized"
+        }
+        
+        self.speakingButton?.backgroundColor = UIColor.blue
+        return nil
+    }
+    
+    
+    func requestSpeechRecognitionPermission() {
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            /*
+             The callback may not be called on the main thread. Add an
+             operation to the main queue to update the record button's state.
+             */
+            OperationQueue.main.addOperation {
+                switch authStatus {
+                case .authorized:
+                    self.speakingButton?.backgroundColor = UIColor.blue
+                    self.recordButton?.isEnabled = true
+                case .denied:
+                    self.speakingButton?.backgroundColor = UIColor.gray
+                    self.recordButton?.isEnabled = false
+                    self.recordButton?.setTitle("User denied access to speech recognition", for: .disabled)
+                    self.recordLabel?.text = "User has denied access to speech recognition"
+                    
+                case .restricted:
+                    self.recordButton?.isEnabled = false
+                    self.recordButton?.setTitle("Speech recognition restricted on this device", for: .disabled)
+                    
+                case .notDetermined:
+                    self.recordButton?.isEnabled = false
+                    self.recordButton?.setTitle("Speech recognition not yet authorized", for: .disabled)
+                    self.recordLabel?.text = "Speech recognition not yet authorized"
+                }
+            }
+        }
+    }
 }
 
 extension SpeechViewController : ChatBubbleDelegate {
@@ -1770,6 +1843,7 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         }
         
         self.sendText(text: newText + "\n")
+        self.sayThis(string: newText)
         self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName))
         self.conversationTableView.reloadData()
         self.scrollToBottomOfConversationTable()
