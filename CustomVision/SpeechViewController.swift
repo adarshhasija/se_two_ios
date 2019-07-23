@@ -595,33 +595,6 @@ public class SpeechViewController: UIViewController {
             requestMicrophonePermission()
             requestSpeechRecognitionPermission()
         }
-     /*   SFSpeechRecognizer.requestAuthorization { authStatus in
-            /*
-                The callback may not be called on the main thread. Add an
-                operation to the main queue to update the record button's state.
-            */
-            OperationQueue.main.addOperation {
-                switch authStatus {
-                    case .authorized:
-                        self.recordButton?.isEnabled = true
-
-                    case .denied:
-                        self.typingButton?.backgroundColor = UIColor.gray
-                        self.recordButton?.isEnabled = false
-                        self.recordButton?.setTitle("User denied access to speech recognition", for: .disabled)
-                        self.recordLabel?.text = "User has denied access to speech recognition"
-
-                    case .restricted:
-                        self.recordButton?.isEnabled = false
-                        self.recordButton?.setTitle("Speech recognition restricted on this device", for: .disabled)
-
-                    case .notDetermined:
-                        self.recordButton?.isEnabled = false
-                        self.recordButton?.setTitle("Speech recognition not yet authorized", for: .disabled)
-                        self.recordLabel?.text = "Speech recognition not yet authorized"
-                }
-            }
-        }   */
         
     }
     
