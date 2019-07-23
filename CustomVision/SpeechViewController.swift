@@ -1181,7 +1181,7 @@ public class SpeechViewController: UIViewController {
     func saveChatLog() {
         let appName = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
         let dateFormatter : DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MMMM-dd HH:mm a"
+        dateFormatter.dateFormat = "yyyy-MMMM-dd h:mm a"
         let date = Date()
         let dateString = dateFormatter.string(from: date)
         var stringToSave = appName + " " + "Session" + " " + dateString + "\n\n"
