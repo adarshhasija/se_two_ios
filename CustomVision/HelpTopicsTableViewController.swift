@@ -43,7 +43,12 @@ public class HelpTopicsTableViewController: UITableViewController {
         
         helpTopics.append(HelpTopic(
             question: "Can I share chat history?",
-            answer: "You can use the Share Chat Log button to share a copy of the chat log with anyone else on any other messenger app(eg: iMessage or WhatsApp) for future reference. Note that we do not save chat logs within the app")
+            answer: "You can use the Share Chat button to share a copy of the chat log with anyone else on any other messenger app(eg: iMessage or WhatsApp) for future reference. This option will only be available once a chat has started. Note that we do not save chat logs within the app")
+        )
+        
+        helpTopics.append(HelpTopic(
+            question: "What does Clear Chat do? When should I use Clear Chat?",
+            answer: "It deletes the log of the current chat, giving you a blank screen on which to start a new chat. Use it when a particular chat has become too long and you are scrolling too much. In this case, it maybe better to start a new chat. This option will only be available once a chat has started")
         )
         
     /*    helpTopics.append(HelpTopic(
@@ -108,10 +113,10 @@ public class HelpTopicsTableViewController: UITableViewController {
             answer: "No. Suno for Apple Watch will only connect to Suno on the iPhone that the watch is paired with.")
         )   */
         
-        helpTopics.append(HelpTopic(
+     /*   helpTopics.append(HelpTopic(
             question: "Which devices does this app work on?",
             answer: "This app works on all iPhones and iPads running iOS 12 and above and on an Apple Watch running watchOS 5 and above, if the watch is connected to the iPhone.")
-        )
+        )   */
     }
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
