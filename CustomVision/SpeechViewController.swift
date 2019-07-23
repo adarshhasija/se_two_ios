@@ -888,6 +888,7 @@ public class SpeechViewController: UIViewController {
             self.stackViewBottomActions?.isHidden = true
             
             //inputAction already has a value means new view controller already pushed
+            self.textViewBottom.textColor = UIColor.gray
             self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
             textViewBottom?.isEditable = true
             textViewBottom?.becomeFirstResponder()
@@ -898,7 +899,10 @@ public class SpeechViewController: UIViewController {
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
         if textViewBottom.textColor == UIColor.black {
-            speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: textViewBottom.text)
+            let trimmedString = textViewBottom.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmedString.count > 0 {
+                speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: trimmedString)
+            }
         }
         else {
             speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil)
