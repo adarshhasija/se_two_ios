@@ -250,7 +250,7 @@ public class SpeechViewController: UIViewController {
         }
         else if action == Action.Tap && currentState.last == State.Speaking {
             currentState.popLast()
-            exitStateTyping()
+            //exitStateTyping()
             exitStateSpeaking()
             if currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking {
                 sendText(text: "\n") //Send to other other to confirm that speaking is done
@@ -604,7 +604,7 @@ public class SpeechViewController: UIViewController {
             if currentState.last == State.Speaking {
                 changeState(action: Action.SpeakerCancelledSpeaking)
             }
-            self.speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil)
+            self.speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil, mode: nil)
         }
         
     }
@@ -901,11 +901,11 @@ public class SpeechViewController: UIViewController {
         if textViewBottom.textColor == UIColor.black {
             let trimmedString = textViewBottom.text.trimmingCharacters(in: .whitespacesAndNewlines)
             if trimmedString.count > 0 {
-                speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: trimmedString)
+                speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: trimmedString, mode: "typing")
             }
         }
         else {
-            speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil)
+            speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil, mode: nil)
         }
         self.navigationController?.popViewController(animated: true)
     }
@@ -978,6 +978,19 @@ public class SpeechViewController: UIViewController {
     }
     
     private func exitStateSpeaking() {
+        //Adding the text to the chat log
+        if textViewBottom.textColor == UIColor.black {
+            let trimmedString = textViewBottom.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmedString.count > 0 {
+                speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: trimmedString, mode: "talking")
+            }
+        }
+        else {
+            speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: nil, mode: nil)
+        }
+        self.navigationController?.popViewController(animated: true)
+        /////
+        
         if audioEngine.isRunning {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration to indicate end of recording
             audioEngine.stop()
@@ -1660,9 +1673,13 @@ extension SpeechViewController : UITableViewDataSource {
         let cell : ConversationTableViewCell =
             (chatListItem.origin == EventOrigin.STATUS.rawValue) ?
                 tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCellStatus") as! ConversationTableViewCell :
-            (chatListItem.origin == peerID.displayName) ?
-                tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell :
+            (chatListItem.mode == "typing") ?
+                    tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell :
                 tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCellGuest") as! ConversationTableViewCell
+                
+          /*  (chatListItem.origin == peerID.displayName) ?
+                tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell :
+                tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCellGuest") as! ConversationTableViewCell   */
     
         cell.textViewLabel?.text = chatListItem.text
         cell.timeLabel?.text = chatListItem.time
@@ -1812,12 +1829,12 @@ extension SpeechViewController : ChatBubbleDelegate {
 
 ///Protocol
 protocol SpeechViewControllerProtocol {
-    func setResultOfTypingOrSpeaking(valueSent: String?)
+    func setResultOfTypingOrSpeaking(valueSent: String?, mode: String?)
     func newRealTimeInput(value : String)
 }
 
 extension SpeechViewController : SpeechViewControllerProtocol {
-    func setResultOfTypingOrSpeaking(valueSent: String?) {
+    func setResultOfTypingOrSpeaking(valueSent: String?, mode: String?) {
         guard var newText : String = valueSent else {
             self.sendText(text: "\0")
             changeState(action: Action.CancelledEditing)
@@ -1831,7 +1848,7 @@ extension SpeechViewController : SpeechViewControllerProtocol {
         
         self.sendText(text: newText + "\n")
         self.sayThis(string: newText)
-        self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName))
+        self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName, mode: mode))
         self.conversationTableView.reloadData()
         self.scrollToBottomOfConversationTable()
         self.viewDeafProfile?.isHidden = false
