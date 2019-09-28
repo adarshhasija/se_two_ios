@@ -30,6 +30,7 @@
 		31862B7D225E11650058883D /* ChatListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7C225E11650058883D /* ChatListItem.swift */; };
 		31862B7F226077950058883D /* EventOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7E226077950058883D /* EventOrigin.swift */; };
 		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
+		31CE81B0233FAEAD005DC2B6 /* MorecodeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CE81AF233FAEAD005DC2B6 /* MorecodeInterfaceController.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
 		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
 		31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */; };
@@ -123,6 +124,7 @@
 		31862B7C225E11650058883D /* ChatListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListItem.swift; sourceTree = "<group>"; };
 		31862B7E226077950058883D /* EventOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrigin.swift; sourceTree = "<group>"; };
 		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		31CE81AF233FAEAD005DC2B6 /* MorecodeInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorecodeInterfaceController.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
 		31F57B50211A14D100777EA3 /* Suno-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -225,6 +227,7 @@
 				317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */,
 				317D4C16217EC76D0081B38B /* Assets.xcassets */,
 				317D4C18217EC76D0081B38B /* Info.plist */,
+				31CE81AF233FAEAD005DC2B6 /* MorecodeInterfaceController.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -645,6 +648,7 @@
 			files = (
 				317D4C15217EC76C0081B38B /* ExtensionDelegate.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
+				31CE81B0233FAEAD005DC2B6 /* MorecodeInterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

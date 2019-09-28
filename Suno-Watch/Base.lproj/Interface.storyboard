@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14490.70" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch38" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14868" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="V63-br-2PY">
+    <device id="watch38"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14490.21"/>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14643"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -40,6 +39,20 @@
                     </connections>
                 </controller>
             </objects>
+            <point key="canvasLocation" x="34" y="32"/>
+        </scene>
+        <!--Morsecode Interface Controller-->
+        <scene sceneID="4pt-F2-1TS">
+            <objects>
+                <controller id="V63-br-2PY" customClass="MorsecodeInterfaceController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
+                            <string key="text">App is open. You may start typing in morse code. Tap the screen to enter a dot. Swipe left or right to enter a dash. Move the Digital Crown up or down for default message. Long press the screen for help</string>
+                        </label>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="34" y="391"/>
         </scene>
     </scenes>
 </document>
