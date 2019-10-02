@@ -41,18 +41,61 @@
             </objects>
             <point key="canvasLocation" x="34" y="32"/>
         </scene>
-        <!--Morsecode Interface Controller-->
+        <!--Interface Controller-->
         <scene sceneID="4pt-F2-1TS">
             <objects>
-                <controller id="V63-br-2PY" customClass="MorsecodeInterfaceController" customModule="Suno_Watch_Extension">
+                <controller id="V63-br-2PY" customClass="MCInterfaceController" customModule="Suno_Watch_Extension">
                     <items>
                         <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
                             <string key="text">App is open. You may start typing in morse code. Tap the screen to enter a dot. Swipe left or right to enter a dash. Move the Digital Crown up or down for default message. Long press the screen for help</string>
                         </label>
                     </items>
+                    <menu key="menu" id="CIl-sb-hrR">
+                        <items>
+                            <menuItem title="About" icon="info" id="ZFq-an-dDt">
+                                <connections>
+                                    <action selector="tappedAbout" destination="V63-br-2PY" id="kJG-3a-Woh"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Morse Code Dictionary" icon="more" id="ODK-tU-4U9">
+                                <connections>
+                                    <action selector="tappedDictionary" destination="V63-br-2PY" id="8ek-HE-l3F"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
                 </controller>
             </objects>
             <point key="canvasLocation" x="34" y="391"/>
+        </scene>
+        <!--Dictionary-->
+        <scene sceneID="oSs-BH-Sas">
+            <objects>
+                <controller identifier="Dictionary" id="69p-5f-ZNC" customClass="MCDictionaryInterfaceController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <table alignment="left" id="qQi-nE-gpJ">
+                            <items>
+                                <tableRow identifier="MorseCodeRow" id="qXn-9X-pzT" customClass="MCDictionaryRowController" customModule="Suno_Watch_Extension">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" layout="vertical" id="ZEY-py-oVX">
+                                        <items>
+                                            <label alignment="left" text="English" id="a8l-3v-L18"/>
+                                            <label alignment="left" text="Morse Code" id="Gxb-rS-SIj"/>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="englishLabel" destination="a8l-3v-L18" id="M3Y-Db-Jqi"/>
+                                        <outlet property="morseCodeLabel" destination="Gxb-rS-SIj" id="sD8-mq-HuS"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="morseCodeDictionaryTable" destination="qQi-nE-gpJ" id="4Ox-wh-vs1"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="428" y="741"/>
         </scene>
     </scenes>
 </document>
