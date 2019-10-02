@@ -70,7 +70,20 @@ class MCDictionaryInterfaceController : WKInterfaceController {
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let morseCodeCell = morseCodeDictionary[rowIndex]
-        presentAlert(withTitle: "", message: "For the letter/number: " + morseCodeCell.english + ", the morse code equivalent is: " + morseCodeCell.morseCode, preferredStyle: .alert, actions: [
+        var finalString = ""
+        for char in morseCodeCell.morseCode {
+            if char == "." {
+                finalString += "tap"
+            }
+            else if char == "-" {
+                finalString += "swipe"
+            }
+            
+            finalString += ","
+        }
+        finalString.removeLast() //Removes the last comma
+        
+        presentAlert(withTitle: "", message: "To type this out you must " + finalString, preferredStyle: .alert, actions: [
         WKAlertAction(title: "OK", style: .default) {}
         ])
     }
