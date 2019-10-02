@@ -108,6 +108,13 @@ class MCInterfaceController : WKInterfaceController {
             let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
             synth.speak(speechUtterance)
             WKInterfaceDevice.current().play(.success) //successfully played audio
+            
+            self.presentTextInputController(withSuggestions: [], allowedInputMode: .plain, completion: { (answers) -> Void in
+                if let answer = answers?[0] as? String {
+                    print("answer")
+                }
+                
+            })
         }
     }
     
@@ -143,12 +150,14 @@ class MCInterfaceController : WKInterfaceController {
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
+        WKInterfaceDevice.current().play(.success) //successfully launched app
     }
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
     }
+    
     
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible

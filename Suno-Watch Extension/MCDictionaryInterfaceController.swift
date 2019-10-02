@@ -55,6 +55,7 @@ class MCDictionaryInterfaceController : WKInterfaceController {
         morseCodeDictionary.append(MorseCodeCell(english: "8", morseCode: "---.."))
         morseCodeDictionary.append(MorseCodeCell(english: "9", morseCode: "----."))
         morseCodeDictionary.append(MorseCodeCell(english: "0", morseCode: "-----"))
+        morseCodeDictionary.append(MorseCodeCell(english: "Space (␣)", morseCode: "......."))
         
         morseCodeDictionaryTable.setNumberOfRows(morseCodeDictionary.count, withRowType: "MorseCodeRow")
 
