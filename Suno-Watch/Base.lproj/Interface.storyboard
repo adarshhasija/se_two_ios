@@ -44,11 +44,37 @@
         <!--Interface Controller-->
         <scene sceneID="4pt-F2-1TS">
             <objects>
-                <controller id="V63-br-2PY" customClass="MCInterfaceController" customModule="Suno_Watch_Extension">
+                <controller fullBounds="YES" id="V63-br-2PY" customClass="MCInterfaceController" customModule="Suno_Watch_Extension">
                     <items>
-                        <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
-                            <string key="text">App is open. You may start typing in morse code. Tap the screen to enter a dot. Swipe left or right to enter a dash. Move the Digital Crown up or down for default message. Long press the screen for help</string>
-                        </label>
+                        <group width="1" height="154" alignment="left" layout="vertical" id="dXO-f8-Ixc">
+                            <items>
+                                <label alignment="left" hidden="YES" text="Label" id="Bvs-FV-rgO"/>
+                                <label alignment="left" id="3xj-WN-big"/>
+                                <label width="1" alignment="left" text="App is open. You may start typing in morse code. Or you can force touch for more options" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf"/>
+                            </items>
+                            <gestureRecognizers>
+                                <tapGestureRecognizer id="fBy-or-tNT">
+                                    <connections>
+                                        <action selector="tapGesture:" destination="V63-br-2PY" id="AGg-0C-KSD"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                                <swipeGestureRecognizer id="nao-cR-r9t">
+                                    <connections>
+                                        <action selector="rightSwipe:" destination="V63-br-2PY" id="r9g-YC-Dzy"/>
+                                    </connections>
+                                </swipeGestureRecognizer>
+                                <swipeGestureRecognizer direction="8" id="Y1D-dn-sPp">
+                                    <connections>
+                                        <action selector="downSwipe:" destination="V63-br-2PY" id="ahC-HR-HsF"/>
+                                    </connections>
+                                </swipeGestureRecognizer>
+                                <swipeGestureRecognizer direction="4" id="vAZ-9w-GqS">
+                                    <connections>
+                                        <action selector="upSwipe:" destination="V63-br-2PY" id="4ee-gt-HEk"/>
+                                    </connections>
+                                </swipeGestureRecognizer>
+                            </gestureRecognizers>
+                        </group>
                     </items>
                     <menu key="menu" id="CIl-sb-hrR">
                         <items>
@@ -64,9 +90,14 @@
                             </menuItem>
                         </items>
                     </menu>
+                    <connections>
+                        <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
+                        <outlet property="morseCodeTextLabel" destination="3xj-WN-big" id="FdQ-gP-QKf"/>
+                        <outlet property="welcomeLabel" destination="Reo-fp-Kjf" id="05H-kS-0jN"/>
+                    </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="34" y="391"/>
+            <point key="canvasLocation" x="34" y="392.5"/>
         </scene>
         <!--Dictionary-->
         <scene sceneID="oSs-BH-Sas">

@@ -49,7 +49,7 @@ class MCDictionaryInterfaceController : WKInterfaceController {
         morseCodeDictionary.append(MorseCodeCell(english: "2", morseCode: "..---"))
         morseCodeDictionary.append(MorseCodeCell(english: "3", morseCode: "...--"))
         morseCodeDictionary.append(MorseCodeCell(english: "4", morseCode: "....-"))
-        morseCodeDictionary.append(MorseCodeCell(english: "5", morseCode: "....-"))
+        morseCodeDictionary.append(MorseCodeCell(english: "5", morseCode: "....."))
         morseCodeDictionary.append(MorseCodeCell(english: "6", morseCode: "-...."))
         morseCodeDictionary.append(MorseCodeCell(english: "7", morseCode: "--..."))
         morseCodeDictionary.append(MorseCodeCell(english: "8", morseCode: "---.."))
