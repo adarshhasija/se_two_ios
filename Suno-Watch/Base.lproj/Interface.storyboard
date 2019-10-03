@@ -63,14 +63,14 @@
                                         <action selector="rightSwipe:" destination="V63-br-2PY" id="r9g-YC-Dzy"/>
                                     </connections>
                                 </swipeGestureRecognizer>
-                                <swipeGestureRecognizer direction="8" id="Y1D-dn-sPp">
+                                <swipeGestureRecognizer direction="4" id="Y1D-dn-sPp">
                                     <connections>
-                                        <action selector="downSwipe:" destination="V63-br-2PY" id="ahC-HR-HsF"/>
+                                        <action selector="upSwipe:" destination="V63-br-2PY" id="ahC-HR-HsF"/>
                                     </connections>
                                 </swipeGestureRecognizer>
-                                <swipeGestureRecognizer direction="4" id="vAZ-9w-GqS">
+                                <swipeGestureRecognizer direction="2" id="vAZ-9w-GqS">
                                     <connections>
-                                        <action selector="upSwipe:" destination="V63-br-2PY" id="4ee-gt-HEk"/>
+                                        <action selector="leftSwipe:" destination="V63-br-2PY" id="4ee-gt-HEk"/>
                                     </connections>
                                 </swipeGestureRecognizer>
                             </gestureRecognizers>

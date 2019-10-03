@@ -34,6 +34,8 @@
 		31B5A84723435F8300196E96 /* MorseCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84623435F8300196E96 /* MorseCodeCell.swift */; };
 		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
 		31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */; };
+		31EC882623467A600088051C /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
+		31EC882823467AD50088051C /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
 		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
 		31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */; };
@@ -131,6 +133,8 @@
 		31B5A84623435F8300196E96 /* MorseCodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeCell.swift; sourceTree = "<group>"; };
 		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCInterfaceController.swift; sourceTree = "<group>"; };
+		31EC882523467A600088051C /* MorseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCode.swift; sourceTree = "<group>"; };
+		31EC882723467AD50088051C /* MCTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCTreeNode.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
 		31F57B50211A14D100777EA3 /* Suno-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -237,6 +241,8 @@
 				31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */,
 				31B5A84623435F8300196E96 /* MorseCodeCell.swift */,
 				310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */,
+				31EC882523467A600088051C /* MorseCode.swift */,
+				31EC882723467AD50088051C /* MCTreeNode.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -656,6 +662,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				317D4C15217EC76C0081B38B /* ExtensionDelegate.swift in Sources */,
+				31EC882823467AD50088051C /* MCTreeNode.swift in Sources */,
+				31EC882623467A600088051C /* MorseCode.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
 				310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */,
 				31B5A84723435F8300196E96 /* MorseCodeCell.swift in Sources */,

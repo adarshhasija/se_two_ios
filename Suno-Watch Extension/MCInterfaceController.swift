@@ -12,15 +12,10 @@ import AVFoundation
 
 class MCInterfaceController : WKInterfaceController {
     
-    enum MorseCode {
-        case dot
-        case dash
-    }
-    
     var mcTempBuffer : String = ""
     var englishString : String = ""
-    var morseCodeDictionary : [String : String] = [
-        ".-" : "A",
+    var mcToAlphabetDictionary : [String : String] = [:]
+     /*   ".-" : "A",
         "-..." : "B",
         "-.-." : "C",
         "-.." : "D",
@@ -57,7 +52,7 @@ class MCInterfaceController : WKInterfaceController {
         "----." : "9",
         "-----" : "0",
         "......." : "␣"
-    ]
+    ]   */
     
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
@@ -85,10 +80,10 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     
-    @IBAction func downSwipe(_ sender: Any) {
-        print("down swipe")
+    @IBAction func upSwipe(_ sender: Any) {
+        print("up swipe")
         if mcTempBuffer.count > 0 {
-            if let letterOrNumber = morseCodeDictionary[mcTempBuffer] {
+            if let letterOrNumber = mcToAlphabetDictionary[mcTempBuffer] {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
                 if englishString.last == "␣" {
                     englishString.removeLast()
@@ -119,7 +114,7 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     
-    @IBAction func upSwipe(_ sender: Any) {
+    @IBAction func leftSwipe(_ sender: Any) {
         if mcTempBuffer.count > 0 {
             mcTempBuffer.removeLast()
             morseCodeTextLabel.setText(mcTempBuffer)
@@ -151,6 +146,12 @@ class MCInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
+        if mcToAlphabetDictionary.count < 1 {
+            let morseCode : MorseCode = MorseCode()
+            for morseCodeCell in morseCode.dictionary {
+                mcToAlphabetDictionary[morseCodeCell.morseCode] = morseCodeCell.english
+            }
+        }
     }
     
     override func willActivate() {
