@@ -90,10 +90,80 @@ class MorseCode {
         dictionary.append(MorseCodeCell(english: "8", morseCode: "---.."))
         dictionary.append(MorseCodeCell(english: "9", morseCode: "----."))
         dictionary.append(MorseCodeCell(english: "0", morseCode: "-----"))
-        dictionary.append(MorseCodeCell(english: "Space (␣)", morseCode: "......."))
+        dictionary.append(MorseCodeCell(english: "Space (␣)", morseCode: ".......", displayChar: "␣"))
         
         for (morseCode, alphabet) in mcToAlphabetDictionary {
             alphabetToMCDictionary[alphabet] = morseCode
         }
+    }
+    
+    func getNearestMatches(inputMorseCode : String) -> [String] {
+        var nearestMatches : [String] = []
+        var node = createTree()
+        
+        for input in inputMorseCode {
+            if input == "." && node.dotNode != nil {
+                node = node.dotNode!
+            }
+            else if input == "-" && node.dashNode != nil {
+                node = node.dashNode!
+            }
+        }
+        //We have reached the final node. This function is only called when there is no match so clearly there was not a match
+        if node.parent?.alphabet != nil {
+            //take it
+        }
+        if node.dotNode != nil && node.dotNode?.character != nil {
+            //take it
+        }
+        if node.dashNode != nil && node.dashNode?.character != nil {
+            //take it
+        }
+        
+        
+        destroyTree(node: &node)
+        return nearestMatches
+        
+    }
+    
+    func createTree() -> MCTreeNode {
+        var i = 0
+        var node = mcTreeNode
+        for morseCodeCell in dictionary {
+            let morseCode = morseCodeCell.morseCode
+            i = 0
+            for morseCodeChar in morseCode {
+                if morseCodeChar == "." && node.dotNode == nil {
+                    node.dotNode = MCTreeNode(character : ".")
+                    node.dotNode!.parent = node
+                    node = node.dotNode!
+                }
+                else if morseCodeChar == "-" && node.dashNode == nil {
+                    node.dashNode = MCTreeNode(character: "-")
+                    node.dashNode!.parent = node
+                    node = node.dashNode!
+                }
+                
+                if i == (morseCode.count - 1) {
+                    node.alphabet = morseCodeCell.english
+                }
+                i+=1
+            }
+        }
+        return mcTreeNode
+    }
+    
+    func destroyTree() {
+        destroyTree(node: &mcTreeNode)
+    }
+    
+    func destroyTree(node : inout MCTreeNode) {
+        if node.dotNode != nil {
+            destroyTree(node: &(node.dotNode)!)
+        }
+        else if node.dashNode != nil {
+            destroyTree(node: &(node.dashNode)!)
+        }
+        //node = nil
     }
 }

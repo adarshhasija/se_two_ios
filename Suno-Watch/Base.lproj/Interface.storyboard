@@ -50,9 +50,16 @@
                             <items>
                                 <label alignment="left" hidden="YES" text="Label" id="Bvs-FV-rgO"/>
                                 <label alignment="left" id="3xj-WN-big"/>
-                                <label width="1" alignment="left" text="App is open. You may start typing in morse code. Or you can force touch for more options" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf"/>
+                                <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
+                                    <string key="text">App is open. You may start typing in morse code. Or you can long press screen for dictation. Or you can force touch for more options</string>
+                                </label>
                             </items>
                             <gestureRecognizers>
+                                <longPressGestureRecognizer id="H2U-j5-DN5">
+                                    <connections>
+                                        <action selector="longPress:" destination="V63-br-2PY" id="s4l-7h-nUL"/>
+                                    </connections>
+                                </longPressGestureRecognizer>
                                 <tapGestureRecognizer id="fBy-or-tNT">
                                     <connections>
                                         <action selector="tapGesture:" destination="V63-br-2PY" id="AGg-0C-KSD"/>

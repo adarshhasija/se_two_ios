@@ -14,45 +14,8 @@ class MCInterfaceController : WKInterfaceController {
     
     var mcTempBuffer : String = ""
     var englishString : String = ""
+    var alphabetToMcDictionary : [String : String] = [:]
     var mcToAlphabetDictionary : [String : String] = [:]
-     /*   ".-" : "A",
-        "-..." : "B",
-        "-.-." : "C",
-        "-.." : "D",
-        "." : "E",
-        "..-." : "F",
-        "--." : "G",
-        "...." : "H",
-        ".." : "I",
-        ".---" : "J",
-        "-.-" : "K",
-        ".-.." : "L",
-        "--" : "M",
-        "-." : "N",
-        "---" : "O",
-        ".--." : "P",
-        "--.-" : "Q",
-        ".-." : "R",
-        "..." : "S",
-        "-" : "T",
-        "..-" : "U",
-        "...-" : "V",
-        ".--" : "W",
-        "-..-" : "X",
-        "-.--" : "Y",
-        "--.." : "Z",
-        ".----" : "1",
-        "..---" : "2",
-        "...--" : "3",
-        "....-" : "4",
-        "....." : "5",
-        "-...." : "6",
-        "--..." : "7",
-        "---.." : "8",
-        "----." : "9",
-        "-----" : "0",
-        "......." : "␣"
-    ]   */
     
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
@@ -64,7 +27,7 @@ class MCInterfaceController : WKInterfaceController {
         welcomeLabel.setHidden(true)
         mcTempBuffer += "."
         morseCodeTextLabel.setText(mcTempBuffer)
-        WKInterfaceDevice.current().play(.click)
+        WKInterfaceDevice.current().play(.start)
     }
     
     @IBAction func rightSwipe(_ sender: Any) {
@@ -73,10 +36,11 @@ class MCInterfaceController : WKInterfaceController {
         mcTempBuffer += "-"
         morseCodeTextLabel.setText(mcTempBuffer)
         
-        WKInterfaceDevice.current().play(.click)
-        let ms = 1000
-        usleep(useconds_t(50 * ms)) //will sleep for 50 milliseconds
-        WKInterfaceDevice.current().play(.click)
+        WKInterfaceDevice.current().play(.stop)
+        //WKInterfaceDevice.current().play(.start)
+        //let ms = 1000
+        //usleep(useconds_t(750 * ms)) //will sleep for 50 milliseconds
+        //WKInterfaceDevice.current().play(.start)
     }
     
     
@@ -96,6 +60,13 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeTextLabel.setText("")
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
             }
+            else {
+                //did not get a letter/number
+                WKInterfaceDevice.current().play(.failure)
+                let morseCode = MorseCode()
+                
+                
+            }
         }
         else {
             let synth : AVSpeechSynthesizer = AVSpeechSynthesizer.init()
@@ -103,13 +74,6 @@ class MCInterfaceController : WKInterfaceController {
             let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
             synth.speak(speechUtterance)
             WKInterfaceDevice.current().play(.success) //successfully played audio
-            
-            self.presentTextInputController(withSuggestions: [], allowedInputMode: .plain, completion: { (answers) -> Void in
-                if let answer = answers?[0] as? String {
-                    print("answer")
-                }
-                
-            })
         }
     }
     
@@ -118,10 +82,18 @@ class MCInterfaceController : WKInterfaceController {
         if mcTempBuffer.count > 0 {
             mcTempBuffer.removeLast()
             morseCodeTextLabel.setText(mcTempBuffer)
+            WKInterfaceDevice.current().play(.success)
         }
         else if englishString.count > 0 {
             englishString.removeLast()
             englishTextLabel.setText(englishString)
+            WKInterfaceDevice.current().play(.success)
+            if englishString.count == 0 {
+                welcomeLabel.setHidden(false)
+            }
+        }
+        else if englishString.count == 0 {
+            WKInterfaceDevice.current().play(.success)
             if englishString.count == 0 {
                 welcomeLabel.setHidden(false)
             }
@@ -130,6 +102,41 @@ class MCInterfaceController : WKInterfaceController {
             print("nothing to delete")
             WKInterfaceDevice.current().play(.failure)
         }
+    }
+    
+    
+    @IBAction func longPress(_ sender: Any) {
+        self.presentTextInputController(withSuggestions: [], allowedInputMode: .plain, completion: { (answers) -> Void in
+            if var answer = answers?[0] as? String {
+                answer = answer.uppercased()
+                self.englishTextLabel.setText(answer)
+                self.englishTextLabel.setHidden(false)
+                self.morseCodeTextLabel.setText("")
+                var morseCodeString = ""
+                for char in answer {
+                    let charAsString : String = String(char)
+                    if let morseCode = self.alphabetToMcDictionary[charAsString] {
+                        morseCodeString += morseCode
+                    }
+                }
+                self.morseCodeTextLabel.setText(morseCodeString)
+                self.morseCodeTextLabel.setHidden(false)
+                self.welcomeLabel.setHidden(true)
+                for morseCodeItem in morseCodeString {
+                    if morseCodeItem == "." {
+                        WKInterfaceDevice.current().play(.start)
+                    }
+                    else if morseCodeItem == "-" {
+                        WKInterfaceDevice.current().play(.stop)
+                    }
+                    else {
+                        //space between characters
+                        
+                    }
+                }
+            }
+            
+        })
     }
     
     @IBAction func tappedAbout() {
@@ -146,10 +153,21 @@ class MCInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
-        if mcToAlphabetDictionary.count < 1 {
+        if mcToAlphabetDictionary.count < 1 && alphabetToMcDictionary.count < 1 {
             let morseCode : MorseCode = MorseCode()
             for morseCodeCell in morseCode.dictionary {
-                mcToAlphabetDictionary[morseCodeCell.morseCode] = morseCodeCell.english
+                if morseCodeCell.morseCode == "......." {
+                    //space
+                    alphabetToMcDictionary[" "] = morseCodeCell.morseCode
+                    
+                    mcToAlphabetDictionary[morseCodeCell.morseCode] = morseCodeCell.displayChar
+                }
+                else {
+                    alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
+                    
+                    mcToAlphabetDictionary[morseCodeCell.morseCode] = morseCodeCell.english
+                }
+                
             }
         }
     }

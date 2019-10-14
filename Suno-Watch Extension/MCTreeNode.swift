@@ -12,11 +12,16 @@ class MCTreeNode {
     
     var character : String?
     var alphabet : String?
+    var parent : MCTreeNode?
     var dotNode : MCTreeNode?
     var dashNode : MCTreeNode?
     
     init() {
         
+    }
+    
+    init(character : String) {
+        self.character = character
     }
     
     init(character : String, alphabet : String) {
