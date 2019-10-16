@@ -126,8 +126,10 @@ class MCInterfaceController : WKInterfaceController {
         self.presentTextInputController(withSuggestions: ["Yes", "No"], allowedInputMode: .plain, completion: { (answers) -> Void in
             if var answer = answers?[0] as? String {
                 self.isUserTyping = false
+                self.morseCodeStringIndex = -1
+                self.englishStringIndex = -1
                 
-                answer = answer.uppercased()
+                answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
                 self.englishString = answer
                 self.morseCodeString = ""
                 self.englishTextLabel.setText(answer)
@@ -138,8 +140,9 @@ class MCInterfaceController : WKInterfaceController {
                     if let morseCode = self.alphabetToMcDictionary[charAsString] {
                         self.morseCodeString += morseCode
                     }
-                    self.morseCodeString += " "
+                    self.morseCodeString += "|"
                 }
+                self.morseCodeString.removeLast() //Remove the last "|"
                 self.morseCodeTextLabel.setText(self.morseCodeString)
                 self.morseCodeTextLabel.setHidden(false)
                 self.welcomeLabel.setHidden(true)
@@ -194,16 +197,6 @@ class MCInterfaceController : WKInterfaceController {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
-    
-    
-    ///Private helpers
-    func userIsTyping(firstCharacter: String) {
-        //Its the first character. Dont append. Overwrite what is there
-        morseCodeString = firstCharacter
-        englishString = ""
-        englishTextLabel.setText(englishString)
-        isUserTyping = true
-    }
 }
 
 extension MCInterfaceController : WKCrownDelegate {
@@ -238,7 +231,12 @@ extension MCInterfaceController : WKCrownDelegate {
             if char == "-" {
                 WKInterfaceDevice.current().play(.stop)
             }
-            if char == " " || englishStringIndex == -1 {
+            if char == "|" {
+                WKInterfaceDevice.current().play(.success)
+            }
+            
+            
+            if isSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
                 englishStringIndex += 1
                 if englishStringIndex >= englishString.count {
                     WKInterfaceDevice.current().play(.failure)
@@ -283,10 +281,14 @@ extension MCInterfaceController : WKCrownDelegate {
             if char == "." {
                 WKInterfaceDevice.current().play(.start)
             }
-            else if char == "-" {
+            if char == "-" {
                 WKInterfaceDevice.current().play(.stop)
             }
-            else if char == " " {
+            if char == "|" {
+                WKInterfaceDevice.current().play(.success)
+            }
+            
+            if isSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                 englishStringIndex -= 1
                 
                 let range = NSRange(location:englishStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
@@ -301,6 +303,43 @@ extension MCInterfaceController : WKCrownDelegate {
         }
             
         
+    }
+    
+}
+
+///Private Helpers
+extension MCInterfaceController {
+   
+    func userIsTyping(firstCharacter: String) {
+        //Its the first character. Dont append. Overwrite what is there
+        morseCodeString = firstCharacter
+        englishString = ""
+        englishTextLabel.setText(englishString)
+        isUserTyping = true
+    }
+    
+    func isSpace(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
+        var retVal = false
+        if isReverse {
+            if currentIndex < input.count - 1 {
+                //To ensure the next character down exists
+                let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
+                let char = String(morseCodeString[index])
+                let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex + 1)
+                let prevChar = String(morseCodeString[prevIndex])
+                retVal = char != "|" && prevChar == "|"
+            }
+        }
+        else if currentIndex > 0 {
+            //To ensure the previous character exists
+            let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
+            let char = String(morseCodeString[index])
+            let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex - 1)
+            let prevChar = String(morseCodeString[prevIndex])
+            retVal = char != "|" && prevChar == "|"
+        }
+        
+        return retVal
     }
     
 }
