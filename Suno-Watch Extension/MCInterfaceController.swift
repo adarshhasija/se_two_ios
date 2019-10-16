@@ -30,7 +30,6 @@ class MCInterfaceController : WKInterfaceController {
     @IBAction func tapGesture(_ sender: Any) {
         englishStringIndex = -1
         morseCodeStringIndex = -1
-        welcomeLabel.setHidden(true)
         if isUserTyping == false {
             userIsTyping(firstCharacter: ".")
         }
@@ -76,6 +75,7 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeString.removeAll()
                 morseCodeTextLabel.setText("")
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
+                welcomeLabel.setText("Swipe up again to play audio")
             }
             else {
                 //did not get a letter/number
@@ -90,7 +90,7 @@ class MCInterfaceController : WKInterfaceController {
             synth.delegate = self as? AVSpeechSynthesizerDelegate
             let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
             synth.speak(speechUtterance)
-            WKInterfaceDevice.current().play(.success) //successfully played audio
+            WKInterfaceDevice.current().play(.success) 
         }
     }
     
@@ -165,7 +165,7 @@ class MCInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
-        welcomeLabel.setText("Tap=dot\nSwipe right=dash\n\nLong press=type/speak\n\nForce press=more options")
+        welcomeLabel.setText("Tap=Dot\nSwipe right=Dash\n\nForce press=more options")
         if mcToAlphabetDictionary.count < 1 && alphabetToMcDictionary.count < 1 {
             let morseCode : MorseCode = MorseCode()
             for morseCodeCell in morseCode.dictionary {
@@ -209,8 +209,12 @@ extension MCInterfaceController : WKCrownDelegate {
             morseCodeStringIndex += 1
             crownRotationalDelta = 0.0
             
-            if morseCodeStringIndex < 0 || morseCodeStringIndex >= morseCodeString.count {
+            if morseCodeStringIndex < 0 {
                 WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            if morseCodeStringIndex >= morseCodeString.count {
+                WKInterfaceDevice.current().play(.success)
                 return
             }
             

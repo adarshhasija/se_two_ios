@@ -48,8 +48,8 @@
                     <items>
                         <group width="1" height="154" alignment="left" layout="vertical" id="dXO-f8-Ixc">
                             <items>
-                                <label alignment="left" hidden="YES" text="Label" id="Bvs-FV-rgO"/>
-                                <label alignment="left" id="3xj-WN-big"/>
+                                <label alignment="left" hidden="YES" text="Label" numberOfLines="0" id="Bvs-FV-rgO"/>
+                                <label alignment="left" numberOfLines="0" id="3xj-WN-big"/>
                                 <label width="1" alignment="left" text="Welcome Label" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf"/>
                             </items>
                             <gestureRecognizers>
