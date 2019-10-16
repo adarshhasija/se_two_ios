@@ -214,27 +214,8 @@ extension MCInterfaceController : WKCrownDelegate {
                 return
             }
             
-            let range = NSRange(location:morseCodeStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
-            
-            let attributedString = NSMutableAttributedString(string: morseCodeString, attributes: nil)
-            // here you change the character to red color
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
-            morseCodeTextLabel.setAttributedText(attributedString)
-            
-            let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
-            let char = String(morseCodeString[index])
-            
-            //we are not using if/else because we want to reach the third if on the first iteration. The first character of the english string needs to highlight green
-            if char == "." {
-                WKInterfaceDevice.current().play(.start)
-            }
-            if char == "-" {
-                WKInterfaceDevice.current().play(.stop)
-            }
-            if char == "|" {
-                WKInterfaceDevice.current().play(.success)
-            }
-            
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel)
+            playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if isSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
                 englishStringIndex += 1
@@ -242,13 +223,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     WKInterfaceDevice.current().play(.failure)
                     return
                 }
-                
-                let range = NSRange(location:englishStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
-                
-                let attributedString = NSMutableAttributedString(string: englishString, attributes: nil)
-                // here you change the character to green color
-                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
-                englishTextLabel.setAttributedText(attributedString)
+                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel)
             }
         }
         else if crownRotationalDelta > expectedMoveDelta {
@@ -256,47 +231,23 @@ extension MCInterfaceController : WKCrownDelegate {
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
             
-            if morseCodeStringIndex < 0 {
-                morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
-                englishStringIndex = -1
-                englishTextLabel.setText(englishString)
+            if morseCodeStringIndex < 0 || morseCodeStringIndex >= morseCodeString.count {
                 WKInterfaceDevice.current().play(.failure)
+                
+                if morseCodeStringIndex < 0 {
+                    morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
+                    englishStringIndex = -1
+                    englishTextLabel.setText(englishString)
+                }
                 return
             }
             
-            if morseCodeStringIndex >= morseCodeString.count {
-                WKInterfaceDevice.current().play(.failure)
-                return
-            }
-            
-            let range = NSRange(location:morseCodeStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
-            
-            let attributedString = NSMutableAttributedString(string: morseCodeString, attributes: nil)
-            // here you change the character to red color
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
-            morseCodeTextLabel.setAttributedText(attributedString)
-            
-            let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
-            let char = String(morseCodeString[index])
-            if char == "." {
-                WKInterfaceDevice.current().play(.start)
-            }
-            if char == "-" {
-                WKInterfaceDevice.current().play(.stop)
-            }
-            if char == "|" {
-                WKInterfaceDevice.current().play(.success)
-            }
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel)
+            playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if isSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                 englishStringIndex -= 1
-                
-                let range = NSRange(location:englishStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
-                
-                let attributedString = NSMutableAttributedString(string: englishString, attributes: nil)
-                // here you change the character to green color
-                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
-                englishTextLabel.setAttributedText(attributedString)
+                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel)
             }
             
             
@@ -317,6 +268,21 @@ extension MCInterfaceController {
         englishTextLabel.setText(englishString)
         isUserTyping = true
     }
+    
+    func playSelectedCharacterHaptic(inputString : String, inputIndex : Int) {
+        let index = inputString.index(inputString.startIndex, offsetBy: inputIndex)
+        let char = String(morseCodeString[index])
+        if char == "." {
+            WKInterfaceDevice.current().play(.start)
+        }
+        if char == "-" {
+            WKInterfaceDevice.current().play(.stop)
+        }
+        if char == "|" {
+            WKInterfaceDevice.current().play(.success)
+        }
+    }
+
     
     func isSpace(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
         var retVal = false
@@ -341,6 +307,21 @@ extension MCInterfaceController {
         
         return retVal
     }
+    
+    
+    //Sets the particular character to green to indicate selected
+    //If the index is out of bounds, the entire string will come white. eg: when index = -1
+    func setSelectedCharInLabel(inputString : String, index : Int, label : WKInterfaceLabel) {
+        let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
+        
+        let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
+        // here you change the character to green color
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
+        label.setAttributedText(attributedString)
+    }
+    
+    
+    
     
 }
 
