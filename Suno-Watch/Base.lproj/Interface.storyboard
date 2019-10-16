@@ -50,9 +50,7 @@
                             <items>
                                 <label alignment="left" hidden="YES" text="Label" id="Bvs-FV-rgO"/>
                                 <label alignment="left" id="3xj-WN-big"/>
-                                <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
-                                    <string key="text">App is open. You may start typing in morse code. Or you can long press screen for dictation. Or you can force touch for more options</string>
-                                </label>
+                                <label width="1" alignment="left" text="Welcome Label" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf"/>
                             </items>
                             <gestureRecognizers>
                                 <longPressGestureRecognizer id="H2U-j5-DN5">

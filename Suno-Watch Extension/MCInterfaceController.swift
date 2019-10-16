@@ -12,10 +12,15 @@ import AVFoundation
 
 class MCInterfaceController : WKInterfaceController {
     
-    var mcTempBuffer : String = ""
+    var isUserTyping : Bool = false
+    var morseCodeString : String = ""
     var englishString : String = ""
     var alphabetToMcDictionary : [String : String] = [:]
     var mcToAlphabetDictionary : [String : String] = [:]
+    var englishStringIndex = -1
+    var morseCodeStringIndex = -1
+    let expectedMoveDelta = 0.523599 //Here, current delta value = 30° Degree, Set delta value according requirement.
+    var crownRotationalDelta = 0.0
     
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
@@ -23,18 +28,31 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func tapGesture(_ sender: Any) {
-        print("tap")
+        englishStringIndex = -1
+        morseCodeStringIndex = -1
         welcomeLabel.setHidden(true)
-        mcTempBuffer += "."
-        morseCodeTextLabel.setText(mcTempBuffer)
+        if isUserTyping == false {
+            userIsTyping(firstCharacter: ".")
+        }
+        else {
+            morseCodeString += "."
+        }
+        morseCodeTextLabel.setText(morseCodeString)
         WKInterfaceDevice.current().play(.start)
     }
     
     @IBAction func rightSwipe(_ sender: Any) {
-        print("right swipe")
+        englishStringIndex = -1
+        morseCodeStringIndex = -1
         welcomeLabel.setHidden(true)
-        mcTempBuffer += "-"
-        morseCodeTextLabel.setText(mcTempBuffer)
+        if isUserTyping == false {
+            userIsTyping(firstCharacter: "-")
+        }
+        else {
+            morseCodeString += "-"
+        }
+        
+        morseCodeTextLabel.setText(morseCodeString)
         
         WKInterfaceDevice.current().play(.stop)
         //WKInterfaceDevice.current().play(.start)
@@ -45,9 +63,8 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func upSwipe(_ sender: Any) {
-        print("up swipe")
-        if mcTempBuffer.count > 0 {
-            if let letterOrNumber = mcToAlphabetDictionary[mcTempBuffer] {
+        if morseCodeString.count > 0 {
+            if let letterOrNumber = mcToAlphabetDictionary[morseCodeString] {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
                 if englishString.last == "␣" {
                     englishString.removeLast()
@@ -56,7 +73,7 @@ class MCInterfaceController : WKInterfaceController {
                 englishString += letterOrNumber
                 englishTextLabel.setText(englishString)
                 englishTextLabel.setHidden(false)
-                mcTempBuffer.removeAll()
+                morseCodeString.removeAll()
                 morseCodeTextLabel.setText("")
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
             }
@@ -79,9 +96,9 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func leftSwipe(_ sender: Any) {
-        if mcTempBuffer.count > 0 {
-            mcTempBuffer.removeLast()
-            morseCodeTextLabel.setText(mcTempBuffer)
+        if morseCodeString.count > 0 {
+            morseCodeString.removeLast()
+            morseCodeTextLabel.setText(morseCodeString)
             WKInterfaceDevice.current().play(.success)
         }
         else if englishString.count > 0 {
@@ -106,34 +123,26 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func longPress(_ sender: Any) {
-        self.presentTextInputController(withSuggestions: [], allowedInputMode: .plain, completion: { (answers) -> Void in
+        self.presentTextInputController(withSuggestions: ["Yes", "No"], allowedInputMode: .plain, completion: { (answers) -> Void in
             if var answer = answers?[0] as? String {
+                self.isUserTyping = false
+                
                 answer = answer.uppercased()
+                self.englishString = answer
+                self.morseCodeString = ""
                 self.englishTextLabel.setText(answer)
                 self.englishTextLabel.setHidden(false)
                 self.morseCodeTextLabel.setText("")
-                var morseCodeString = ""
                 for char in answer {
                     let charAsString : String = String(char)
                     if let morseCode = self.alphabetToMcDictionary[charAsString] {
-                        morseCodeString += morseCode
+                        self.morseCodeString += morseCode
                     }
+                    self.morseCodeString += " "
                 }
-                self.morseCodeTextLabel.setText(morseCodeString)
+                self.morseCodeTextLabel.setText(self.morseCodeString)
                 self.morseCodeTextLabel.setHidden(false)
                 self.welcomeLabel.setHidden(true)
-                for morseCodeItem in morseCodeString {
-                    if morseCodeItem == "." {
-                        WKInterfaceDevice.current().play(.start)
-                    }
-                    else if morseCodeItem == "-" {
-                        WKInterfaceDevice.current().play(.stop)
-                    }
-                    else {
-                        //space between characters
-                        
-                    }
-                }
             }
             
         })
@@ -153,6 +162,7 @@ class MCInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
+        welcomeLabel.setText("Tap=dot\nSwipe right=dash\n\nLong press=type/speak\n\nForce press=more options")
         if mcToAlphabetDictionary.count < 1 && alphabetToMcDictionary.count < 1 {
             let morseCode : MorseCode = MorseCode()
             for morseCodeCell in morseCode.dictionary {
@@ -175,6 +185,8 @@ class MCInterfaceController : WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        self.crownSequencer.delegate = self
+        self.crownSequencer.focus()
     }
     
     
@@ -182,5 +194,114 @@ class MCInterfaceController : WKInterfaceController {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
+    
+    
+    ///Private helpers
+    func userIsTyping(firstCharacter: String) {
+        //Its the first character. Dont append. Overwrite what is there
+        morseCodeString = firstCharacter
+        englishString = ""
+        englishTextLabel.setText(englishString)
+        isUserTyping = true
+    }
+}
+
+extension MCInterfaceController : WKCrownDelegate {
+    
+    func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
+        crownRotationalDelta  += rotationalDelta
+        
+        if crownRotationalDelta < -expectedMoveDelta {
+            //downward scroll
+            morseCodeStringIndex += 1
+            crownRotationalDelta = 0.0
+            
+            if morseCodeStringIndex < 0 || morseCodeStringIndex >= morseCodeString.count {
+                WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            
+            let range = NSRange(location:morseCodeStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
+            
+            let attributedString = NSMutableAttributedString(string: morseCodeString, attributes: nil)
+            // here you change the character to red color
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
+            morseCodeTextLabel.setAttributedText(attributedString)
+            
+            let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
+            let char = String(morseCodeString[index])
+            
+            //we are not using if/else because we want to reach the third if on the first iteration. The first character of the english string needs to highlight green
+            if char == "." {
+                WKInterfaceDevice.current().play(.start)
+            }
+            if char == "-" {
+                WKInterfaceDevice.current().play(.stop)
+            }
+            if char == " " || englishStringIndex == -1 {
+                englishStringIndex += 1
+                if englishStringIndex >= englishString.count {
+                    WKInterfaceDevice.current().play(.failure)
+                    return
+                }
+                
+                let range = NSRange(location:englishStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
+                
+                let attributedString = NSMutableAttributedString(string: englishString, attributes: nil)
+                // here you change the character to green color
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
+                englishTextLabel.setAttributedText(attributedString)
+            }
+        }
+        else if crownRotationalDelta > expectedMoveDelta {
+            //upward scroll
+            morseCodeStringIndex -= 1
+            crownRotationalDelta = 0.0
+            
+            if morseCodeStringIndex < 0 {
+                morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
+                englishStringIndex = -1
+                englishTextLabel.setText(englishString)
+                WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            
+            if morseCodeStringIndex >= morseCodeString.count {
+                WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            
+            let range = NSRange(location:morseCodeStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
+            
+            let attributedString = NSMutableAttributedString(string: morseCodeString, attributes: nil)
+            // here you change the character to red color
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
+            morseCodeTextLabel.setAttributedText(attributedString)
+            
+            let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
+            let char = String(morseCodeString[index])
+            if char == "." {
+                WKInterfaceDevice.current().play(.start)
+            }
+            else if char == "-" {
+                WKInterfaceDevice.current().play(.stop)
+            }
+            else if char == " " {
+                englishStringIndex -= 1
+                
+                let range = NSRange(location:englishStringIndex,length:1) // specific location. This means "range" handle 1 character at location 2
+                
+                let attributedString = NSMutableAttributedString(string: englishString, attributes: nil)
+                // here you change the character to green color
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
+                englishTextLabel.setAttributedText(attributedString)
+            }
+            
+            
+        }
+            
+        
+    }
+    
 }
 
