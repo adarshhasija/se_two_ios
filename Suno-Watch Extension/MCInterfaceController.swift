@@ -23,6 +23,7 @@ class MCInterfaceController : WKInterfaceController {
     var morseCodeStringIndex = -1
     let expectedMoveDelta = 0.523599 //Here, current delta value = 30° Degree, Set delta value according requirement.
     var crownRotationalDelta = 0.0
+    var morseCode = MorseCode()
     
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
@@ -42,6 +43,7 @@ class MCInterfaceController : WKInterfaceController {
         else {
             morseCodeString += "."
         }
+        isAlphabetReached(input: ".")
         morseCodeTextLabel.setText(morseCodeString)
         WKInterfaceDevice.current().play(.start)
     }
@@ -60,6 +62,7 @@ class MCInterfaceController : WKInterfaceController {
             morseCodeString += "-"
         }
         
+        isAlphabetReached(input: "-")
         morseCodeTextLabel.setText(morseCodeString)
         
         WKInterfaceDevice.current().play(.stop)
@@ -89,6 +92,9 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeTextLabel.setText("")
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
                 welcomeLabel.setText("Swipe up again to play audio")
+                while morseCode.mcTreeNode?.parent != nil {
+                    morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
+                }
             }
             else {
                 //did not get a letter/number
@@ -121,6 +127,7 @@ class MCInterfaceController : WKInterfaceController {
         if morseCodeString.count > 0 {
             morseCodeString.removeLast()
             morseCodeTextLabel.setText(morseCodeString)
+            isAlphabetReached(input: "b") //backspace
             WKInterfaceDevice.current().play(.success)
         }
         else if englishString.count > 0 {
@@ -134,6 +141,10 @@ class MCInterfaceController : WKInterfaceController {
         else {
             print("nothing to delete")
             WKInterfaceDevice.current().play(.failure)
+        }
+        
+        if morseCodeString.count == 0 && englishString.count == 0 {
+            welcomeLabel.setText(defaultInstruction)
         }
     }
     
@@ -352,6 +363,44 @@ extension MCInterfaceController {
     func isReading() -> Bool {
         return !isUserTyping && morseCodeString.count > 0 && englishString.count > 0
     }
+    
+    func isAlphabetReached(input: String) {
+        if input == "." {
+            if morseCode.mcTreeNode?.dotNode != nil {
+                morseCode.mcTreeNode = morseCode.mcTreeNode?.dotNode
+                if morseCode.mcTreeNode?.alphabet != nil {
+                    welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
+                }
+                else {
+                    welcomeLabel.setText("")
+                }
+            }
+        }
+        else if input == "-" {
+            if morseCode.mcTreeNode?.dashNode != nil {
+                morseCode.mcTreeNode = morseCode.mcTreeNode?.dashNode
+                if morseCode.mcTreeNode?.alphabet != nil {
+                    welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
+                }
+                else {
+                    welcomeLabel.setText("")
+                }
+            }
+        }
+        else if input == "b" {
+            //backspace
+            if morseCode.mcTreeNode?.parent != nil {
+                morseCode.mcTreeNode = morseCode.mcTreeNode?.parent
+                if morseCode.mcTreeNode?.alphabet != nil {
+                    welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
+                }
+                else {
+                    welcomeLabel.setText("")
+                }
+            }
+        }
+    }
+    
     
 }
 

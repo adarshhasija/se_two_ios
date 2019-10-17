@@ -10,7 +10,7 @@ import Foundation
 
 class MorseCode {
     
-    var mcTreeNode : MCTreeNode = MCTreeNode()
+    var mcTreeNode : MCTreeNode?
     var dictionary: [MorseCodeCell] = []
     var alphabetToMCDictionary : [String : String] = [:]
     var mcToAlphabetDictionary : [String : String] = [
@@ -95,6 +95,9 @@ class MorseCode {
         for (morseCode, alphabet) in mcToAlphabetDictionary {
             alphabetToMCDictionary[alphabet] = morseCode
         }
+        
+        mcTreeNode = createTree()
+        var i = 0
     }
     
     func getNearestMatches(inputMorseCode : String) -> [String] {
@@ -102,68 +105,90 @@ class MorseCode {
         var node = createTree()
         
         for input in inputMorseCode {
-            if input == "." && node.dotNode != nil {
-                node = node.dotNode!
+            if input == "." && node?.dotNode != nil {
+                node = node?.dotNode!
             }
-            else if input == "-" && node.dashNode != nil {
-                node = node.dashNode!
+            else if input == "-" && node?.dashNode != nil {
+                node = node?.dashNode!
             }
         }
         //We have reached the final node. This function is only called when there is no match so clearly there was not a match
-        if node.parent?.alphabet != nil {
+        if node?.parent?.alphabet != nil {
             //take it
         }
-        if node.dotNode != nil && node.dotNode?.character != nil {
+        if node?.dotNode != nil && node?.dotNode?.character != nil {
             //take it
         }
-        if node.dashNode != nil && node.dashNode?.character != nil {
+        if node?.dashNode != nil && node?.dashNode?.character != nil {
             //take it
         }
         
         
-        destroyTree(node: &node)
+        if destroyTree(node: node) {
+            node = nil
+        }
         return nearestMatches
         
     }
     
-    func createTree() -> MCTreeNode {
+    func createTree() -> MCTreeNode? {
         var i = 0
-        var node = mcTreeNode
+        var node = mcTreeNode ?? MCTreeNode()
         for morseCodeCell in dictionary {
             let morseCode = morseCodeCell.morseCode
             i = 0
             for morseCodeChar in morseCode {
-                if morseCodeChar == "." && node.dotNode == nil {
-                    node.dotNode = MCTreeNode(character : ".")
+                if morseCodeChar == "." {
+                    if node.dotNode == nil {
+                        node.dotNode = MCTreeNode(character : ".")
+                    }
                     node.dotNode!.parent = node
                     node = node.dotNode!
                 }
-                else if morseCodeChar == "-" && node.dashNode == nil {
-                    node.dashNode = MCTreeNode(character: "-")
+                else if morseCodeChar == "-" {
+                    if node.dashNode == nil {
+                        node.dashNode = MCTreeNode(character: "-")
+                    }
                     node.dashNode!.parent = node
                     node = node.dashNode!
                 }
                 
                 if i == (morseCode.count - 1) {
-                    node.alphabet = morseCodeCell.english
+                    if morseCodeCell.displayChar != nil {
+                        node.alphabet = "␣"
+                    }
+                    else {
+                        
+                        node.alphabet = morseCodeCell.english
+                    }
                 }
                 i+=1
             }
+            while node.parent != nil {
+                node = node.parent! //Go back to the root so that we can traverse the next character
+            }
         }
-        return mcTreeNode
+        return node
     }
     
     func destroyTree() {
-        destroyTree(node: &mcTreeNode)
+        if destroyTree(node: mcTreeNode) {
+            mcTreeNode = nil
+        }
     }
     
-    func destroyTree(node : inout MCTreeNode) {
-        if node.dotNode != nil {
-            destroyTree(node: &(node.dotNode)!)
+    func destroyTree(node : MCTreeNode?) -> Bool {
+        if node?.dotNode != nil {
+            if destroyTree(node: node?.dotNode) {
+                node?.dotNode = nil
+            }
         }
-        else if node.dashNode != nil {
-            destroyTree(node: &(node.dashNode)!)
+        else if node?.dashNode != nil {
+            if destroyTree(node: node?.dashNode) {
+                node?.dashNode = nil
+            }
         }
-        //node = nil
+        //node = nil //This line does not work so we are returning a bool instead
+        return true
     }
 }
