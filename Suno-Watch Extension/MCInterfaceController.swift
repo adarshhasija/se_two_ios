@@ -12,6 +12,8 @@ import AVFoundation
 
 class MCInterfaceController : WKInterfaceController {
     
+    var defaultInstruction = "Tap=Dot\nSwipe right=Dash\n\nForce press=more options"
+    var dcScrollStart = "Rotate the digital crown down to read the morse code\nSwipe left once to stop reading and start typing"
     var isUserTyping : Bool = false
     var morseCodeString : String = ""
     var englishString : String = ""
@@ -28,6 +30,10 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func tapGesture(_ sender: Any) {
+        if isReading() == true {
+            //We do not want the user to accidently delete all the text by tapping
+            return
+        }
         englishStringIndex = -1
         morseCodeStringIndex = -1
         if isUserTyping == false {
@@ -41,9 +47,12 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     @IBAction func rightSwipe(_ sender: Any) {
+        if isReading() == true {
+            //We do not want the user to accidently delete all the text by swiping right
+            return
+        }
         englishStringIndex = -1
         morseCodeStringIndex = -1
-        welcomeLabel.setHidden(true)
         if isUserTyping == false {
             userIsTyping(firstCharacter: "-")
         }
@@ -62,6 +71,10 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func upSwipe(_ sender: Any) {
+        if isReading() == true {
+            //Should not be permitted when user is reading
+            return
+        }
         if morseCodeString.count > 0 {
             if let letterOrNumber = mcToAlphabetDictionary[morseCodeString] {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
@@ -90,12 +103,21 @@ class MCInterfaceController : WKInterfaceController {
             synth.delegate = self as? AVSpeechSynthesizerDelegate
             let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
             synth.speak(speechUtterance)
-            WKInterfaceDevice.current().play(.success) 
+            WKInterfaceDevice.current().play(.success)
+            welcomeLabel.setText("Lightly long press to reply by talking or typing")
         }
     }
     
     
     @IBAction func leftSwipe(_ sender: Any) {
+        if isReading() == true {
+            englishString = ""
+            englishTextLabel.setText("")
+            morseCodeString = ""
+            morseCodeTextLabel.setText("")
+            welcomeLabel.setText(defaultInstruction)
+            return
+        }
         if morseCodeString.count > 0 {
             morseCodeString.removeLast()
             morseCodeTextLabel.setText(morseCodeString)
@@ -105,15 +127,9 @@ class MCInterfaceController : WKInterfaceController {
             englishString.removeLast()
             englishTextLabel.setText(englishString)
             WKInterfaceDevice.current().play(.success)
-            if englishString.count == 0 {
-                welcomeLabel.setHidden(false)
-            }
         }
         else if englishString.count == 0 {
             WKInterfaceDevice.current().play(.success)
-            if englishString.count == 0 {
-                welcomeLabel.setHidden(false)
-            }
         }
         else {
             print("nothing to delete")
@@ -130,9 +146,12 @@ class MCInterfaceController : WKInterfaceController {
                 self.englishStringIndex = -1
                 
                 answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
+                if answer.count < 1 {
+                    return
+                }
                 self.englishString = answer
                 self.morseCodeString = ""
-                self.englishTextLabel.setText(answer)
+                self.englishTextLabel.setText(answer.replacingOccurrences(of: " ", with: "␣")) //We want to put a visible space for the viewer
                 self.englishTextLabel.setHidden(false)
                 self.morseCodeTextLabel.setText("")
                 for char in answer {
@@ -145,7 +164,8 @@ class MCInterfaceController : WKInterfaceController {
                 self.morseCodeString.removeLast() //Remove the last "|"
                 self.morseCodeTextLabel.setText(self.morseCodeString)
                 self.morseCodeTextLabel.setHidden(false)
-                self.welcomeLabel.setHidden(true)
+                
+                self.welcomeLabel.setText(self.dcScrollStart)
             }
             
         })
@@ -165,7 +185,7 @@ class MCInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
-        welcomeLabel.setText("Tap=Dot\nSwipe right=Dash\n\nForce press=more options")
+        welcomeLabel.setText(defaultInstruction)
         if mcToAlphabetDictionary.count < 1 && alphabetToMcDictionary.count < 1 {
             let morseCode : MorseCode = MorseCode()
             for morseCodeCell in morseCode.dictionary {
@@ -215,11 +235,13 @@ extension MCInterfaceController : WKCrownDelegate {
             }
             if morseCodeStringIndex >= morseCodeString.count {
                 WKInterfaceDevice.current().play(.success)
+                self.welcomeLabel.setText("Rotate the crown upwards to scroll back\nOr\nSwipe left once to stop reading and start typing")
                 return
             }
             
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+            self.welcomeLabel.setText("You can also rotate the crown upwards to scroll back\nOr\nSwipe left once to stop reading and start typing")
             
             if isSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
                 englishStringIndex += 1
@@ -237,6 +259,7 @@ extension MCInterfaceController : WKCrownDelegate {
             
             if morseCodeStringIndex < 0 || morseCodeStringIndex >= morseCodeString.count {
                 WKInterfaceDevice.current().play(.failure)
+                welcomeLabel.setText(dcScrollStart)
                 
                 if morseCodeStringIndex < 0 {
                     morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
@@ -318,14 +341,17 @@ extension MCInterfaceController {
     func setSelectedCharInLabel(inputString : String, index : Int, label : WKInterfaceLabel) {
         let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
         
-        let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
+        //The replacement of space with visible space only applies to english strings
+        let attributedString = NSMutableAttributedString(string: inputString.replacingOccurrences(of: " ", with: "␣"), attributes: nil)
         // here you change the character to green color
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
         label.setAttributedText(attributedString)
     }
     
     
-    
+    func isReading() -> Bool {
+        return !isUserTyping && morseCodeString.count > 0 && englishString.count > 0
+    }
     
 }
 

@@ -39,7 +39,7 @@ class MCDictionaryInterfaceController : WKInterfaceController {
                 finalString += "tap"
             }
             else if char == "-" {
-                finalString += "swipe"
+                finalString += "swipe right"
             }
             
             finalString += ","
