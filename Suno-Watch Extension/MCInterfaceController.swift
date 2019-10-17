@@ -99,9 +99,12 @@ class MCInterfaceController : WKInterfaceController {
             else {
                 //did not get a letter/number
                 WKInterfaceDevice.current().play(.failure)
-                let morseCode = MorseCode()
-                
-                
+                let nearestMatches : [String] = morseCode.getNearestMatches(currentNode: morseCode.mcTreeNode)
+                var nearestMatchesString = ""
+                for match in nearestMatches {
+                    nearestMatchesString += match
+                }
+                welcomeLabel.setText(nearestMatchesString)
             }
         }
         else {

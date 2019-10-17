@@ -97,11 +97,36 @@ class MorseCode {
         }
         
         mcTreeNode = createTree()
-        var i = 0
     }
     
-    func getNearestMatches(inputMorseCode : String) -> [String] {
+    deinit {
+        destroyTree()
+    }
+    
+    func getNearestMatches(currentNode : MCTreeNode?) -> [String] {
         var nearestMatches : [String] = []
+        if currentNode?.parent?.alphabet != nil {
+            nearestMatches.append("Delete the last character to get: " + currentNode!.parent!.alphabet! + "\n")
+        }
+        if currentNode?.dotNode?.alphabet != nil {
+            nearestMatches.append("Add a dot to get: " + currentNode!.dotNode!.alphabet! + "\n")
+        }
+        if currentNode?.dashNode?.alphabet != nil {
+            nearestMatches.append("Add a dash to get: " + currentNode!.dashNode!.alphabet! + "\n")
+        }
+        if currentNode?.parent?.dotNode?.alphabet != nil {
+            nearestMatches.append("Replace the last character with a dot to get: " + currentNode!.parent!.dotNode!.alphabet! + "\n")
+        }
+        if currentNode?.parent?.dashNode?.alphabet != nil {
+            nearestMatches.append("Replace the last character with a dash to get: " + currentNode!.parent!.dashNode!.alphabet! + "\n")
+        }
+        
+        if nearestMatches.count > 0 {
+            nearestMatches.insert("No matches found. Please try :-\n\n", at: 0)
+        }
+        return nearestMatches
+        
+     /*   var nearestMatches : [String] = []
         var node = createTree()
         
         for input in inputMorseCode {
@@ -127,7 +152,7 @@ class MorseCode {
         if destroyTree(node: node) {
             node = nil
         }
-        return nearestMatches
+        return nearestMatches   */
         
     }
     
