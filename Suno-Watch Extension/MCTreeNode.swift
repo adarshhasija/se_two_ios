@@ -20,6 +20,10 @@ class MCTreeNode {
         
     }
     
+    init(alphabet : String) {
+        self.alphabet = alphabet
+    }
+    
     init(character : String) {
         self.character = character
     }

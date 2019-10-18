@@ -100,7 +100,7 @@ class MorseCode {
     }
     
     deinit {
-        destroyTree()
+        //destroyTree()
     }
     
     func getNearestMatches(currentNode : MCTreeNode?) -> [String] {
@@ -121,38 +121,13 @@ class MorseCode {
             nearestMatches.append("Replace the last character with a dash to get: " + currentNode!.parent!.dashNode!.alphabet! + "\n")
         }
         
-        if nearestMatches.count > 0 {
+        if nearestMatches.count == 0 {
+            nearestMatches.insert(" " + "No matches found", at: 0)
+        }
+        else if nearestMatches.count > 0 {
             nearestMatches.insert("No matches found. Please try :-\n\n", at: 0)
         }
         return nearestMatches
-        
-     /*   var nearestMatches : [String] = []
-        var node = createTree()
-        
-        for input in inputMorseCode {
-            if input == "." && node?.dotNode != nil {
-                node = node?.dotNode!
-            }
-            else if input == "-" && node?.dashNode != nil {
-                node = node?.dashNode!
-            }
-        }
-        //We have reached the final node. This function is only called when there is no match so clearly there was not a match
-        if node?.parent?.alphabet != nil {
-            //take it
-        }
-        if node?.dotNode != nil && node?.dotNode?.character != nil {
-            //take it
-        }
-        if node?.dashNode != nil && node?.dashNode?.character != nil {
-            //take it
-        }
-        
-        
-        if destroyTree(node: node) {
-            node = nil
-        }
-        return nearestMatches   */
         
     }
     
@@ -166,15 +141,15 @@ class MorseCode {
                 if morseCodeChar == "." {
                     if node.dotNode == nil {
                         node.dotNode = MCTreeNode(character : ".")
+                        node.dotNode!.parent = node
                     }
-                    node.dotNode!.parent = node
                     node = node.dotNode!
                 }
                 else if morseCodeChar == "-" {
                     if node.dashNode == nil {
                         node.dashNode = MCTreeNode(character: "-")
+                        node.dashNode!.parent = node
                     }
-                    node.dashNode!.parent = node
                     node = node.dashNode!
                 }
                 
@@ -189,6 +164,18 @@ class MorseCode {
                 }
                 i+=1
             }
+            //Still on the final ./- node of the character
+            
+            //Additional empty node is created as a terminating node. The purpose of this is to allow the user to enter an additional character and we can verify that there are no additional morse code characters to be met. Then we can prompt the user to stop typing
+            if node.dotNode == nil {
+                node.dotNode = MCTreeNode()
+                node.dotNode!.parent = node
+            }
+            if node.dashNode == nil {
+                node.dashNode = MCTreeNode()
+                node.dashNode!.parent = node
+            }
+            
             while node.parent != nil {
                 node = node.parent! //Go back to the root so that we can traverse the next character
             }

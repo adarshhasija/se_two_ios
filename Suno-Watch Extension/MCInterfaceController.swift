@@ -12,8 +12,9 @@ import AVFoundation
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstruction = "Tap=Dot\nSwipe right=Dash\n\nForce press=more options"
+    var defaultInstruction = "Tap=Dot\nSwipe right=Dash\n\nLight long press=talk/type\n\nForce press=more options"
     var dcScrollStart = "Rotate the digital crown down to read the morse code\nSwipe left once to stop reading and start typing"
+    var noMoreMatchesString = "No more matches found for this morse code"
     var isUserTyping : Bool = false
     var morseCodeString : String = ""
     var englishString : String = ""
@@ -35,6 +36,12 @@ class MCInterfaceController : WKInterfaceController {
             //We do not want the user to accidently delete all the text by tapping
             return
         }
+        if isNoMoreMatchesAfterThis() == true {
+            //Prevent the user from entering another character
+            welcomeLabel.setText(noMoreMatchesString)
+            WKInterfaceDevice.current().play(.failure)
+            return
+        }
         englishStringIndex = -1
         morseCodeStringIndex = -1
         if isUserTyping == false {
@@ -51,6 +58,12 @@ class MCInterfaceController : WKInterfaceController {
     @IBAction func rightSwipe(_ sender: Any) {
         if isReading() == true {
             //We do not want the user to accidently delete all the text by swiping right
+            return
+        }
+        if  isNoMoreMatchesAfterThis() == true {
+            //Prevent the user from entering another character
+            welcomeLabel.setText(noMoreMatchesString)
+            WKInterfaceDevice.current().play(.failure)
             return
         }
         englishStringIndex = -1
@@ -158,6 +171,9 @@ class MCInterfaceController : WKInterfaceController {
                 self.isUserTyping = false
                 self.morseCodeStringIndex = -1
                 self.englishStringIndex = -1
+                while self.morseCode.mcTreeNode?.parent != nil {
+                    self.morseCode.mcTreeNode = self.morseCode.mcTreeNode?.parent
+                }
                 
                 answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
                 if answer.count < 1 {
@@ -230,6 +246,7 @@ class MCInterfaceController : WKInterfaceController {
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
+        //morseCode.destroyTree()
     }
 }
 
@@ -257,7 +274,8 @@ extension MCInterfaceController : WKCrownDelegate {
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             self.welcomeLabel.setText("You can also rotate the crown upwards to scroll back\nOr\nSwipe left once to stop reading and start typing")
             
-            if isSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
+            if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
+                //Need to change the selected character of the English string
                 englishStringIndex += 1
                 if englishStringIndex >= englishString.count {
                     WKInterfaceDevice.current().play(.failure)
@@ -286,7 +304,8 @@ extension MCInterfaceController : WKCrownDelegate {
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
-            if isSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
+            if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
+                //Need to change the selected character of the English string
                 englishStringIndex -= 1
                 setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel)
             }
@@ -324,8 +343,8 @@ extension MCInterfaceController {
         }
     }
 
-    
-    func isSpace(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
+    //This function tells us if the previous char was a pipe. It is a sign to change the character in the English string
+    func isPrevMCCharPipe(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
         var retVal = false
         if isReverse {
             if currentIndex < input.count - 1 {
@@ -347,6 +366,15 @@ extension MCInterfaceController {
         }
         
         return retVal
+    }
+    
+    func isEngCharSpace() -> Bool {
+        let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
+        let char = String(morseCodeString[index])
+        if char == " " {
+            return true
+        }
+        return false
     }
     
     
@@ -374,6 +402,11 @@ extension MCInterfaceController {
                 if morseCode.mcTreeNode?.alphabet != nil {
                     welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
                 }
+                else if isNoMoreMatchesAfterThis() == true {
+                    //The haptic for dot will be played so no failure haptic
+                    //Only want to display the message that there are no more matches
+                    welcomeLabel.setText(noMoreMatchesString)
+                }
                 else {
                     welcomeLabel.setText("")
                 }
@@ -384,6 +417,11 @@ extension MCInterfaceController {
                 morseCode.mcTreeNode = morseCode.mcTreeNode?.dashNode
                 if morseCode.mcTreeNode?.alphabet != nil {
                     welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
+                }
+                else if isNoMoreMatchesAfterThis() == true {
+                    //The haptic for dot will be played so no failure haptic
+                    //Only want to display the message that there are no more matches
+                    welcomeLabel.setText(noMoreMatchesString)
                 }
                 else {
                     welcomeLabel.setText("")
@@ -402,6 +440,15 @@ extension MCInterfaceController {
                 }
             }
         }
+    }
+    
+    //Returns true if there are no more matches to be found in the morse code dictionary no matter what the user types
+    func isNoMoreMatchesAfterThis() -> Bool? {
+        //Current node is empty
+        //does not have a dot or a dash after
+        return morseCode.mcTreeNode?.character == nil &&
+                morseCode.mcTreeNode?.dotNode == nil &&
+                morseCode.mcTreeNode?.dashNode == nil
     }
     
     
