@@ -181,7 +181,7 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 self.englishString = answer
                 self.morseCodeString = ""
-                self.englishTextLabel.setText(answer.replacingOccurrences(of: " ", with: "␣")) //We want to put a visible space for the viewer
+                self.englishTextLabel.setText(answer)
                 self.englishTextLabel.setHidden(false)
                 self.morseCodeTextLabel.setText("")
                 for char in answer {
@@ -281,6 +281,14 @@ extension MCInterfaceController : WKCrownDelegate {
                     WKInterfaceDevice.current().play(.failure)
                     return
                 }
+                if isEngCharSpace() {
+                    let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+                    let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
+                    englishString.replaceSubrange(start..<end, with: "␣")
+                }
+                else {
+                    englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+                }
                 setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel)
             }
         }
@@ -307,6 +315,14 @@ extension MCInterfaceController : WKCrownDelegate {
             if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                 //Need to change the selected character of the English string
                 englishStringIndex -= 1
+                if isEngCharSpace() {
+                    let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+                    let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
+                    englishString.replaceSubrange(start..<end, with: "␣")
+                }
+                else {
+                    englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+                }
                 setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel)
             }
             
@@ -369,8 +385,8 @@ extension MCInterfaceController {
     }
     
     func isEngCharSpace() -> Bool {
-        let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
-        let char = String(morseCodeString[index])
+        let index = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+        let char = String(englishString[index])
         if char == " " {
             return true
         }
@@ -384,7 +400,7 @@ extension MCInterfaceController {
         let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
         
         //The replacement of space with visible space only applies to english strings
-        let attributedString = NSMutableAttributedString(string: inputString.replacingOccurrences(of: " ", with: "␣"), attributes: nil)
+        let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
         // here you change the character to green color
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
         label.setAttributedText(attributedString)
