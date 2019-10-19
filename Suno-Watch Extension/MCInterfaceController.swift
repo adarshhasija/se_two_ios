@@ -12,7 +12,7 @@ import AVFoundation
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstruction = "Tap=Dot\nSwipe right=Dash\nSwipe left=Backspace\n\nLight long press=talk/type\n\nForce press=more options"
+    var defaultInstruction = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for morse code dictionary"
     var dcScrollStart = "Rotate the digital crown down to read the morse code"
     var stopReadingString = "Swipe left once to stop reading and start typing"
     var keepTypingString = "Keep typing"
@@ -30,7 +30,7 @@ class MCInterfaceController : WKInterfaceController {
     
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
-    @IBOutlet weak var welcomeLabel: WKInterfaceLabel!
+    @IBOutlet weak var instructionsLabel: WKInterfaceLabel!
     
     
     @IBAction func tapGesture(_ sender: Any) {
@@ -40,7 +40,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         if isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
-            welcomeLabel.setText(noMoreMatchesString)
+            instructionsLabel.setText(noMoreMatchesString)
             WKInterfaceDevice.current().play(.failure)
             return
         }
@@ -64,7 +64,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         if  isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
-            welcomeLabel.setText(noMoreMatchesString)
+            instructionsLabel.setText(noMoreMatchesString)
             WKInterfaceDevice.current().play(.failure)
             return
         }
@@ -94,7 +94,15 @@ class MCInterfaceController : WKInterfaceController {
             return
         }
         if morseCodeString.count > 0 {
-            if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
+            if morseCodeString.last == "|" {
+                let synth : AVSpeechSynthesizer = AVSpeechSynthesizer.init()
+                synth.delegate = self as? AVSpeechSynthesizerDelegate
+                let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
+                synth.speak(speechUtterance)
+                WKInterfaceDevice.current().play(.success)
+                instructionsLabel.setText("Lightly long press to reply by talking or typing")
+            }
+            else if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
                 if englishString.last == "␣" {
                     englishString.removeLast()
@@ -106,7 +114,7 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeString += "|"
                 morseCodeTextLabel.setText(morseCodeString)
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
-                welcomeLabel.setText("Keep Typing\nor\nSwipe up again to play audio")
+                instructionsLabel.setText("Keep Typing\nor\nSwipe up again to play audio")
                 while morseCode.mcTreeNode?.parent != nil {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
@@ -117,18 +125,10 @@ class MCInterfaceController : WKInterfaceController {
                 let nearestMatches : [String] = morseCode.getNearestMatches(currentNode: morseCode.mcTreeNode)
                 var nearestMatchesString = ""
                 for match in nearestMatches {
-                    nearestMatchesString += match
+                    nearestMatchesString += "\n" + match
                 }
-                welcomeLabel.setText(nearestMatchesString)
+                instructionsLabel.setText(nearestMatchesString)
             }
-        }
-        else {
-            let synth : AVSpeechSynthesizer = AVSpeechSynthesizer.init()
-            synth.delegate = self as? AVSpeechSynthesizerDelegate
-            let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
-            synth.speak(speechUtterance)
-            WKInterfaceDevice.current().play(.success)
-            welcomeLabel.setText("Lightly long press to reply by talking or typing")
         }
     }
     
@@ -139,7 +139,7 @@ class MCInterfaceController : WKInterfaceController {
             englishTextLabel.setText("")
             morseCodeString = ""
             morseCodeTextLabel.setText("")
-            welcomeLabel.setText(defaultInstruction)
+            instructionsLabel.setText(defaultInstruction)
             return
         }
         if morseCodeString.count > 0 {
@@ -158,8 +158,6 @@ class MCInterfaceController : WKInterfaceController {
                         morseCodeTextLabel.setText(morseCodeString)
                     }
                 }
-                
-                
                 englishString.removeLast()
                 englishTextLabel.setText(englishString)
             }
@@ -170,7 +168,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
-            welcomeLabel.setText(defaultInstruction)
+            instructionsLabel.setText(defaultInstruction)
         }
     }
     
@@ -205,7 +203,7 @@ class MCInterfaceController : WKInterfaceController {
                 self.morseCodeTextLabel.setText(self.morseCodeString)
                 self.morseCodeTextLabel.setHidden(false)
                 
-                self.welcomeLabel.setText(self.dcScrollStart)
+                self.instructionsLabel.setText(self.dcScrollStart)
             }
             
         })
@@ -225,7 +223,7 @@ class MCInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
-        welcomeLabel.setText(defaultInstruction)
+        instructionsLabel.setText(defaultInstruction)
         if mcToAlphabetDictionary.count < 1 && alphabetToMcDictionary.count < 1 {
             let morseCode : MorseCode = MorseCode()
             for morseCodeCell in morseCode.dictionary {
@@ -436,48 +434,55 @@ extension MCInterfaceController {
         if input == "." {
             if morseCode.mcTreeNode?.dotNode != nil {
                 morseCode.mcTreeNode = morseCode.mcTreeNode?.dotNode
-                if morseCode.mcTreeNode?.alphabet != nil {
-                    welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
-                }
-                else if isNoMoreMatchesAfterThis() == true {
-                    //The haptic for dot will be played so no failure haptic
-                    //Only want to display the message that there are no more matches
-                    welcomeLabel.setText(noMoreMatchesString)
-                }
-                else {
-                    welcomeLabel.setText("")
-                }
+                setRecommendedActionsText()
             }
         }
         else if input == "-" {
             if morseCode.mcTreeNode?.dashNode != nil {
                 morseCode.mcTreeNode = morseCode.mcTreeNode?.dashNode
-                if morseCode.mcTreeNode?.alphabet != nil {
-                    welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
-                }
-                else if isNoMoreMatchesAfterThis() == true {
-                    //The haptic for dot will be played so no failure haptic
-                    //Only want to display the message that there are no more matches
-                    welcomeLabel.setText(noMoreMatchesString)
-                }
-                else {
-                    welcomeLabel.setText("")
-                }
+                setRecommendedActionsText()
             }
         }
         else if input == "b" {
             //backspace
             if morseCode.mcTreeNode?.parent != nil {
                 morseCode.mcTreeNode = morseCode.mcTreeNode?.parent
-                if morseCode.mcTreeNode?.alphabet != nil {
-                    welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
-                }
-                else {
-                    welcomeLabel.setText("")
-                }
+                setRecommendedActionsText()
             }
         }
     }
+    
+    
+    func setRecommendedActionsText() {
+        var instructionsString = "" //"\n" + "Force press for morse code dictionary"
+        if morseCodeString.count == 1 {
+            //We will only show this when the user has typed 1 character
+            instructionsString += "\n" + "Swipe left to delete last character"
+        }
+        
+        if morseCode.mcTreeNode?.alphabet != nil {
+            //welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
+            var recommendations = ""
+            recommendations += "Swipe up to set: " + morseCode.mcTreeNode!.alphabet! + "\n"
+            let nextCharMatches = morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode)
+            for nextMatch in nextCharMatches {
+                recommendations += "\n" + nextMatch
+            }
+            instructionsString.insert(contentsOf: recommendations + "\n", at: instructionsString.startIndex)
+            
+        }
+        else if isNoMoreMatchesAfterThis() == true {
+            //The haptic for dot will be played so no failure haptic
+            //Only want to display the message that there are no more matches
+            instructionsString.insert(contentsOf: noMoreMatchesString + "\n", at: instructionsString.startIndex)
+        }
+        else {
+            
+        }
+        
+        instructionsLabel.setText(instructionsString)
+    }
+    
     
     //Returns true if there are no more matches to be found in the morse code dictionary no matter what the user types
     func isNoMoreMatchesAfterThis() -> Bool? {
@@ -497,7 +502,7 @@ extension MCInterfaceController {
         else {
             instructionString += "\nOr\n" + writingString
         }
-        self.welcomeLabel.setText(instructionString)
+        self.instructionsLabel.setText(instructionString)
     }
     
     

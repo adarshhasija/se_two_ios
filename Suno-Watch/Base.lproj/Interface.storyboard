@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14868" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="V63-br-2PY">
-    <device id="watch38"/>
     <dependencies>
-        <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14643"/>
     </dependencies>
@@ -100,8 +98,8 @@
                     </menu>
                     <connections>
                         <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
+                        <outlet property="instructionsLabel" destination="Reo-fp-Kjf" id="05H-kS-0jN"/>
                         <outlet property="morseCodeTextLabel" destination="3xj-WN-big" id="FdQ-gP-QKf"/>
-                        <outlet property="welcomeLabel" destination="Reo-fp-Kjf" id="05H-kS-0jN"/>
                     </connections>
                 </controller>
             </objects>
