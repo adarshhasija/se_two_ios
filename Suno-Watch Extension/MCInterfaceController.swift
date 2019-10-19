@@ -12,8 +12,10 @@ import AVFoundation
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstruction = "Tap=Dot\nSwipe right=Dash\n\nLight long press=talk/type\n\nForce press=more options"
-    var dcScrollStart = "Rotate the digital crown down to read the morse code\nSwipe left once to stop reading and start typing"
+    var defaultInstruction = "Tap=Dot\nSwipe right=Dash\nSwipe left=Backspace\n\nLight long press=talk/type\n\nForce press=more options"
+    var dcScrollStart = "Rotate the digital crown down to read the morse code"
+    var stopReadingString = "Swipe left once to stop reading and start typing"
+    var keepTypingString = "Keep typing"
     var noMoreMatchesString = "No more matches found for this morse code"
     var isUserTyping : Bool = false
     var morseCodeString : String = ""
@@ -92,7 +94,7 @@ class MCInterfaceController : WKInterfaceController {
             return
         }
         if morseCodeString.count > 0 {
-            if let letterOrNumber = mcToAlphabetDictionary[morseCodeString] {
+            if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
                 if englishString.last == "␣" {
                     englishString.removeLast()
@@ -101,10 +103,10 @@ class MCInterfaceController : WKInterfaceController {
                 englishString += letterOrNumber
                 englishTextLabel.setText(englishString)
                 englishTextLabel.setHidden(false)
-                morseCodeString.removeAll()
-                morseCodeTextLabel.setText("")
+                morseCodeString += "|"
+                morseCodeTextLabel.setText(morseCodeString)
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
-                welcomeLabel.setText("Swipe up again to play audio")
+                welcomeLabel.setText("Keep Typing\nor\nSwipe up again to play audio")
                 while morseCode.mcTreeNode?.parent != nil {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
@@ -141,18 +143,26 @@ class MCInterfaceController : WKInterfaceController {
             return
         }
         if morseCodeString.count > 0 {
-            morseCodeString.removeLast()
-            morseCodeTextLabel.setText(morseCodeString)
-            isAlphabetReached(input: "b") //backspace
-            WKInterfaceDevice.current().play(.success)
-        }
-        else if englishString.count > 0 {
-            englishString.removeLast()
-            englishTextLabel.setText(englishString)
-            WKInterfaceDevice.current().play(.success)
-        }
-        else if englishString.count == 0 {
-            WKInterfaceDevice.current().play(.success)
+            if morseCodeString.last != "|" {
+                //Should not be a character separator
+                morseCodeString.removeLast()
+                morseCodeTextLabel.setText(morseCodeString)
+                isAlphabetReached(input: "b") //backspace
+                WKInterfaceDevice.current().play(.success)
+            }
+            else {
+                //If it is a normal letter/number, delete the last english character and corresponding morse code characters
+                if let lastChar = englishString.last {
+                    if let lastCharMorseCodeLength = (morseCode.alphabetToMCDictionary[String(lastChar)])?.count {
+                        morseCodeString.removeLast(lastCharMorseCodeLength + 1) //+1 to include both the morse code part and the ending pipe "|"
+                        morseCodeTextLabel.setText(morseCodeString)
+                    }
+                }
+                
+                
+                englishString.removeLast()
+                englishTextLabel.setText(englishString)
+            }
         }
         else {
             print("nothing to delete")
@@ -266,13 +276,14 @@ extension MCInterfaceController : WKCrownDelegate {
             }
             if morseCodeStringIndex >= morseCodeString.count {
                 WKInterfaceDevice.current().play(.success)
-                self.welcomeLabel.setText("Rotate the crown upwards to scroll back\nOr\nSwipe left once to stop reading and start typing")
+                setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString)
                 return
             }
             
+            
+            setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString)
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
-            self.welcomeLabel.setText("You can also rotate the crown upwards to scroll back\nOr\nSwipe left once to stop reading and start typing")
             
             if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
                 //Need to change the selected character of the English string
@@ -299,7 +310,7 @@ extension MCInterfaceController : WKCrownDelegate {
             
             if morseCodeStringIndex < 0 || morseCodeStringIndex >= morseCodeString.count {
                 WKInterfaceDevice.current().play(.failure)
-                welcomeLabel.setText(dcScrollStart)
+                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
                 
                 if morseCodeStringIndex < 0 {
                     morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
@@ -406,6 +417,16 @@ extension MCInterfaceController {
         label.setAttributedText(attributedString)
     }
     
+    func setSelectedCharsInLabel(inputString : String, index : Int, label : WKInterfaceLabel, range : Int) {
+        let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
+        
+        //The replacement of space with visible space only applies to english strings
+        let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
+        // here you change the character to green color
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
+        label.setAttributedText(attributedString)
+    }
+    
     
     func isReading() -> Bool {
         return !isUserTyping && morseCodeString.count > 0 && englishString.count > 0
@@ -465,6 +486,18 @@ extension MCInterfaceController {
         return morseCode.mcTreeNode?.character == nil &&
                 morseCode.mcTreeNode?.dotNode == nil &&
                 morseCode.mcTreeNode?.dashNode == nil
+    }
+    
+    //2 strings for writing mode and reading mode
+    func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String) {
+        var instructionString = mainString
+        if !isUserTyping {
+            instructionString += "\nOr\n" + readingString
+        }
+        else {
+            instructionString += "\nOr\n" + writingString
+        }
+        self.welcomeLabel.setText(instructionString)
     }
     
     
