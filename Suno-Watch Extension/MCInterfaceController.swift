@@ -17,6 +17,7 @@ class MCInterfaceController : WKInterfaceController {
     var stopReadingString = "Swipe left once to stop reading and start typing"
     var keepTypingString = "Keep typing"
     var noMoreMatchesString = "No more matches found for this morse code"
+    var typingSuggestions : [String ] = [/*"Yes", "No"*/]
     var isUserTyping : Bool = false
     var morseCodeString : String = ""
     var englishString : String = ""
@@ -133,7 +134,7 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func longPress(_ sender: Any) {
-        self.presentTextInputController(withSuggestions: [/*"Yes", "No"*/], allowedInputMode: .plain, completion: { (answers) -> Void in
+        self.presentTextInputController(withSuggestions: self.typingSuggestions, allowedInputMode: .plain, completion: { (answers) -> Void in
             if var answer = answers?[0] as? String {
                 self.isUserTyping = false
                 self.morseCodeStringIndex = -1
@@ -220,12 +221,22 @@ class MCInterfaceController : WKInterfaceController {
 extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        instructionsLabel.setText("Lightly long press to reply by talking or typing")
+        var finalString = "Lightly long press to reply by talking"
+        if typingSuggestions.count > 0 {
+            finalString += " or typing"
+        }
+        instructionsLabel.setText(finalString)
+        WKInterfaceDevice.current().play(.success)
         synth = nil
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-        instructionsLabel.setText("Cancelled")
+        var finalString = "Lightly long press to reply by talking"
+        if typingSuggestions.count > 0 {
+            finalString += " or typing"
+        }
+        instructionsLabel.setText(finalString)
+        WKInterfaceDevice.current().play(.failure)
         synth = nil
     }
 }
