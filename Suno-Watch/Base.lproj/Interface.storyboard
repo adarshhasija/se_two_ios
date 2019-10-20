@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14868" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="V63-br-2PY">
+    <device id="watch38"/>
     <dependencies>
+        <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14643"/>
     </dependencies>
@@ -84,14 +86,14 @@
                     </items>
                     <menu key="menu" id="CIl-sb-hrR">
                         <items>
-                            <menuItem title="About" icon="info" id="ZFq-an-dDt">
-                                <connections>
-                                    <action selector="tappedAbout" destination="V63-br-2PY" id="kJG-3a-Woh"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Morse Code Dictionary" icon="more" id="ODK-tU-4U9">
                                 <connections>
                                     <action selector="tappedDictionary" destination="V63-br-2PY" id="8ek-HE-l3F"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="FAQs" icon="info" id="ZFq-an-dDt">
+                                <connections>
+                                    <action selector="tappedFAQs" destination="V63-br-2PY" id="kJG-3a-Woh"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -133,6 +135,34 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="428" y="741"/>
+        </scene>
+        <!--FAQs-->
+        <scene sceneID="5L1-bC-Dkf">
+            <objects>
+                <controller identifier="FAQs" id="9RI-3M-rQh" customClass="FAQInterfaceController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <table alignment="left" id="OcG-Wk-o2R">
+                            <items>
+                                <tableRow identifier="FAQRow" id="Ulf-bm-L9P" customClass="FAQRowController" customModule="Suno_Watch_Extension">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" layout="vertical" id="XqC-DW-jN2">
+                                        <items>
+                                            <label alignment="left" text="Question" numberOfLines="0" id="YZe-b0-AQS"/>
+                                        </items>
+                                        <edgeInsets key="margins" left="4" right="4" top="4" bottom="4"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="questionLabel" destination="YZe-b0-AQS" id="CrB-Gz-oHc"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="faqTable" destination="OcG-Wk-o2R" id="MCJ-Wd-9yI"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="428" y="391"/>
         </scene>
     </scenes>
 </document>

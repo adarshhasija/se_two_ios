@@ -11,9 +11,9 @@ import Foundation
 class MorseCode {
     
     var mcTreeNode : MCTreeNode?
-    var dictionary: [MorseCodeCell] = []
+    var mcArray: [MorseCodeCell] = []
     var alphabetToMCDictionary : [String : String] = [:]
-    var mcToAlphabetDictionary : [String : String] = [
+ /*   var mcToAlphabetDictionary : [String : String] = [
         ".-" : "A",
         "-..." : "B",
         "-.-." : "C",
@@ -51,49 +51,54 @@ class MorseCode {
         "----." : "9",
         "-----" : "0",
         "......." : "␣"
-    ]
+    ]   */
     
     init() {
-        dictionary.append(MorseCodeCell(english: "A", morseCode: ".-"))
-        dictionary.append(MorseCodeCell(english: "B", morseCode: "-..."))
-        dictionary.append(MorseCodeCell(english: "C", morseCode: "-.-."))
-        dictionary.append(MorseCodeCell(english: "D", morseCode: "-.."))
-        dictionary.append(MorseCodeCell(english: "E", morseCode: "."))
-        dictionary.append(MorseCodeCell(english: "F", morseCode: "..-."))
-        dictionary.append(MorseCodeCell(english: "G", morseCode: "--."))
-        dictionary.append(MorseCodeCell(english: "H", morseCode: "...."))
-        dictionary.append(MorseCodeCell(english: "I", morseCode: ".."))
-        dictionary.append(MorseCodeCell(english: "J", morseCode: ".---"))
-        dictionary.append(MorseCodeCell(english: "K", morseCode: "-.-"))
-        dictionary.append(MorseCodeCell(english: "L", morseCode: ".-.."))
-        dictionary.append(MorseCodeCell(english: "M", morseCode: "--"))
-        dictionary.append(MorseCodeCell(english: "N", morseCode: "-."))
-        dictionary.append(MorseCodeCell(english: "O", morseCode: "---"))
-        dictionary.append(MorseCodeCell(english: "P", morseCode: ".--."))
-        dictionary.append(MorseCodeCell(english: "Q", morseCode: "--.-"))
-        dictionary.append(MorseCodeCell(english: "R", morseCode: ".-."))
-        dictionary.append(MorseCodeCell(english: "S", morseCode: "..."))
-        dictionary.append(MorseCodeCell(english: "T", morseCode: "-"))
-        dictionary.append(MorseCodeCell(english: "U", morseCode: "..-"))
-        dictionary.append(MorseCodeCell(english: "V", morseCode: "...-"))
-        dictionary.append(MorseCodeCell(english: "W", morseCode: ".--"))
-        dictionary.append(MorseCodeCell(english: "X", morseCode: "-..-"))
-        dictionary.append(MorseCodeCell(english: "Y", morseCode: "-.--"))
-        dictionary.append(MorseCodeCell(english: "Z", morseCode: "--.."))
-        dictionary.append(MorseCodeCell(english: "1", morseCode: ".----"))
-        dictionary.append(MorseCodeCell(english: "2", morseCode: "..---"))
-        dictionary.append(MorseCodeCell(english: "3", morseCode: "...--"))
-        dictionary.append(MorseCodeCell(english: "4", morseCode: "....-"))
-        dictionary.append(MorseCodeCell(english: "5", morseCode: "....."))
-        dictionary.append(MorseCodeCell(english: "6", morseCode: "-...."))
-        dictionary.append(MorseCodeCell(english: "7", morseCode: "--..."))
-        dictionary.append(MorseCodeCell(english: "8", morseCode: "---.."))
-        dictionary.append(MorseCodeCell(english: "9", morseCode: "----."))
-        dictionary.append(MorseCodeCell(english: "0", morseCode: "-----"))
-        dictionary.append(MorseCodeCell(english: "Space (␣)", morseCode: ".......", displayChar: "␣"))
+        mcArray.append(MorseCodeCell(english: "A", morseCode: ".-"))
+        mcArray.append(MorseCodeCell(english: "B", morseCode: "-..."))
+        mcArray.append(MorseCodeCell(english: "C", morseCode: "-.-."))
+        mcArray.append(MorseCodeCell(english: "D", morseCode: "-.."))
+        mcArray.append(MorseCodeCell(english: "E", morseCode: "."))
+        mcArray.append(MorseCodeCell(english: "F", morseCode: "..-."))
+        mcArray.append(MorseCodeCell(english: "G", morseCode: "--."))
+        mcArray.append(MorseCodeCell(english: "H", morseCode: "...."))
+        mcArray.append(MorseCodeCell(english: "I", morseCode: ".."))
+        mcArray.append(MorseCodeCell(english: "J", morseCode: ".---"))
+        mcArray.append(MorseCodeCell(english: "K", morseCode: "-.-"))
+        mcArray.append(MorseCodeCell(english: "L", morseCode: ".-.."))
+        mcArray.append(MorseCodeCell(english: "M", morseCode: "--"))
+        mcArray.append(MorseCodeCell(english: "N", morseCode: "-."))
+        mcArray.append(MorseCodeCell(english: "O", morseCode: "---"))
+        mcArray.append(MorseCodeCell(english: "P", morseCode: ".--."))
+        mcArray.append(MorseCodeCell(english: "Q", morseCode: "--.-"))
+        mcArray.append(MorseCodeCell(english: "R", morseCode: ".-."))
+        mcArray.append(MorseCodeCell(english: "S", morseCode: "..."))
+        mcArray.append(MorseCodeCell(english: "T", morseCode: "-"))
+        mcArray.append(MorseCodeCell(english: "U", morseCode: "..-"))
+        mcArray.append(MorseCodeCell(english: "V", morseCode: "...-"))
+        mcArray.append(MorseCodeCell(english: "W", morseCode: ".--"))
+        mcArray.append(MorseCodeCell(english: "X", morseCode: "-..-"))
+        mcArray.append(MorseCodeCell(english: "Y", morseCode: "-.--"))
+        mcArray.append(MorseCodeCell(english: "Z", morseCode: "--.."))
+        mcArray.append(MorseCodeCell(english: "1", morseCode: ".----"))
+        mcArray.append(MorseCodeCell(english: "2", morseCode: "..---"))
+        mcArray.append(MorseCodeCell(english: "3", morseCode: "...--"))
+        mcArray.append(MorseCodeCell(english: "4", morseCode: "....-"))
+        mcArray.append(MorseCodeCell(english: "5", morseCode: "....."))
+        mcArray.append(MorseCodeCell(english: "6", morseCode: "-...."))
+        mcArray.append(MorseCodeCell(english: "7", morseCode: "--..."))
+        mcArray.append(MorseCodeCell(english: "8", morseCode: "---.."))
+        mcArray.append(MorseCodeCell(english: "9", morseCode: "----."))
+        mcArray.append(MorseCodeCell(english: "0", morseCode: "-----"))
+        mcArray.append(MorseCodeCell(english: "Space (␣)", morseCode: ".......", displayChar: "␣"))
         
-        for (morseCode, alphabet) in mcToAlphabetDictionary {
-            alphabetToMCDictionary[alphabet] = morseCode
+        for morseCodeCell in mcArray {
+            if morseCodeCell.displayChar != nil {
+                alphabetToMCDictionary[morseCodeCell.displayChar!] = morseCodeCell.morseCode
+            }
+            else {
+                alphabetToMCDictionary[morseCodeCell.english] = morseCodeCell.morseCode
+            }
         }
         
         mcTreeNode = createTree()
@@ -141,7 +146,7 @@ class MorseCode {
     func createTree() -> MCTreeNode? {
         var i = 0
         var node = mcTreeNode ?? MCTreeNode()
-        for morseCodeCell in dictionary {
+        for morseCodeCell in mcArray {
             let morseCode = morseCodeCell.morseCode
             i = 0
             for morseCodeChar in morseCode {

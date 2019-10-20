@@ -17,12 +17,11 @@ class MCInterfaceController : WKInterfaceController {
     var stopReadingString = "Swipe left once to stop reading and start typing"
     var keepTypingString = "Keep typing"
     var noMoreMatchesString = "No more matches found for this morse code"
-    var typingSuggestions : [String ] = [/*"Yes", "No"*/]
+    var typingSuggestions : [String ] = ["How are you"]
     var isUserTyping : Bool = false
     var morseCodeString : String = ""
     var englishString : String = ""
     var alphabetToMcDictionary : [String : String] = [:]
-    var mcToAlphabetDictionary : [String : String] = [:]
     var englishStringIndex = -1
     var morseCodeStringIndex = -1
     let expectedMoveDelta = 0.523599 //Here, current delta value = 30° Degree, Set delta value according requirement.
@@ -169,10 +168,11 @@ class MCInterfaceController : WKInterfaceController {
         })
     }
     
-    @IBAction func tappedAbout() {
-        presentAlert(withTitle: "About App", message: "This Apple Watch app is designed to help the deaf-blind communicate via touch. Deaf-blind can type using morse-code  and the app will speak it out in English. The other person can then speak and the app will convert the speech into morce-code taps that the deaf-blind can feel", preferredStyle: .alert, actions: [
+    @IBAction func tappedFAQs() {
+      /*  presentAlert(withTitle: "About App", message: "This Apple Watch app is designed to help the deaf-blind communicate via touch. Deaf-blind can type using morse-code  and the app will speak it out in English. The other person can then speak and the app will convert the speech into morce-code taps that the deaf-blind can feel", preferredStyle: .alert, actions: [
         WKAlertAction(title: "OK", style: .default) {}
-        ])
+        ])  */
+        pushController(withName: "FAQs", context: nil)
     }
     
     
@@ -184,19 +184,15 @@ class MCInterfaceController : WKInterfaceController {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
         instructionsLabel.setText(defaultInstruction)
-        if mcToAlphabetDictionary.count < 1 && alphabetToMcDictionary.count < 1 {
+        if alphabetToMcDictionary.count < 1 {
             let morseCode : MorseCode = MorseCode()
-            for morseCodeCell in morseCode.dictionary {
+            for morseCodeCell in morseCode.mcArray {
                 if morseCodeCell.morseCode == "......." {
                     //space
                     alphabetToMcDictionary[" "] = morseCodeCell.morseCode
-                    
-                    mcToAlphabetDictionary[morseCodeCell.morseCode] = morseCodeCell.displayChar
                 }
                 else {
                     alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
-                    
-                    mcToAlphabetDictionary[morseCodeCell.morseCode] = morseCodeCell.english
                 }
                 
             }

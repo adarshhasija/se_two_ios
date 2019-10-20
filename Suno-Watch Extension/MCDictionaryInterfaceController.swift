@@ -19,9 +19,9 @@ class MCDictionaryInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        morseCodeDictionaryTable.setNumberOfRows(morseCode.dictionary.count, withRowType: "MorseCodeRow")
+        morseCodeDictionaryTable.setNumberOfRows(morseCode.mcArray.count, withRowType: "MorseCodeRow")
 
-        for (index, morseCode) in morseCode.dictionary.enumerated() {
+        for (index, morseCode) in morseCode.mcArray.enumerated() {
             let row = morseCodeDictionaryTable.rowController(at: index) as! MCDictionaryRowController
             row.englishLabel.setText(morseCode.english)
             row.morseCodeLabel.setText(morseCode.morseCode)
@@ -32,7 +32,7 @@ class MCDictionaryInterfaceController : WKInterfaceController {
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-        let morseCodeCell = morseCode.dictionary[rowIndex]
+        let morseCodeCell = morseCode.mcArray[rowIndex]
         var finalString = ""
         for char in morseCodeCell.morseCode {
             if char == "." {
