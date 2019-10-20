@@ -27,6 +27,7 @@ class MCInterfaceController : WKInterfaceController {
     let expectedMoveDelta = 0.523599 //Here, current delta value = 30° Degree, Set delta value according requirement.
     var crownRotationalDelta = 0.0
     var morseCode = MorseCode()
+    var synth : AVSpeechSynthesizer?
     
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
@@ -34,57 +35,11 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func tapGesture(_ sender: Any) {
-        if isReading() == true {
-            //We do not want the user to accidently delete all the text by tapping
-            return
-        }
-        if isNoMoreMatchesAfterThis() == true {
-            //Prevent the user from entering another character
-            instructionsLabel.setText(noMoreMatchesString)
-            WKInterfaceDevice.current().play(.failure)
-            return
-        }
-        englishStringIndex = -1
-        morseCodeStringIndex = -1
-        if isUserTyping == false {
-            userIsTyping(firstCharacter: ".")
-        }
-        else {
-            morseCodeString += "."
-        }
-        isAlphabetReached(input: ".")
-        morseCodeTextLabel.setText(morseCodeString)
-        WKInterfaceDevice.current().play(.start)
+        morseCodeInput(input: ".")
     }
     
     @IBAction func rightSwipe(_ sender: Any) {
-        if isReading() == true {
-            //We do not want the user to accidently delete all the text by swiping right
-            return
-        }
-        if  isNoMoreMatchesAfterThis() == true {
-            //Prevent the user from entering another character
-            instructionsLabel.setText(noMoreMatchesString)
-            WKInterfaceDevice.current().play(.failure)
-            return
-        }
-        englishStringIndex = -1
-        morseCodeStringIndex = -1
-        if isUserTyping == false {
-            userIsTyping(firstCharacter: "-")
-        }
-        else {
-            morseCodeString += "-"
-        }
-        
-        isAlphabetReached(input: "-")
-        morseCodeTextLabel.setText(morseCodeString)
-        
-        WKInterfaceDevice.current().play(.stop)
-        //WKInterfaceDevice.current().play(.start)
-        //let ms = 1000
-        //usleep(useconds_t(750 * ms)) //will sleep for 50 milliseconds
-        //WKInterfaceDevice.current().play(.start)
+        morseCodeInput(input: "-")
     }
     
     
@@ -93,14 +48,17 @@ class MCInterfaceController : WKInterfaceController {
             //Should not be permitted when user is reading
             return
         }
+        if synth?.isSpeaking == true {
+            return
+        }
         if morseCodeString.count > 0 {
             if morseCodeString.last == "|" {
-                let synth : AVSpeechSynthesizer = AVSpeechSynthesizer.init()
-                synth.delegate = self as? AVSpeechSynthesizerDelegate
+                synth = AVSpeechSynthesizer.init()
+                synth?.delegate = self
                 let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
-                synth.speak(speechUtterance)
+                synth?.speak(speechUtterance)
                 WKInterfaceDevice.current().play(.success)
-                instructionsLabel.setText("Lightly long press to reply by talking or typing")
+                instructionsLabel.setText("System is speaking the text...")
             }
             else if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
@@ -114,7 +72,7 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeString += "|"
                 morseCodeTextLabel.setText(morseCodeString)
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
-                instructionsLabel.setText("Keep Typing\nor\nSwipe up again to play audio")
+                instructionsLabel.setText("Keep Typing\nor\nSwipe up again to play audio. Ensure your watch is not on Silent Mode.")
                 while morseCode.mcTreeNode?.parent != nil {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
@@ -160,6 +118,7 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 englishString.removeLast()
                 englishTextLabel.setText(englishString)
+                WKInterfaceDevice.current().play(.success)
             }
         }
         else {
@@ -174,7 +133,7 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func longPress(_ sender: Any) {
-        self.presentTextInputController(withSuggestions: ["Yes", "No"], allowedInputMode: .plain, completion: { (answers) -> Void in
+        self.presentTextInputController(withSuggestions: [/*"Yes", "No"*/], allowedInputMode: .plain, completion: { (answers) -> Void in
             if var answer = answers?[0] as? String {
                 self.isUserTyping = false
                 self.morseCodeStringIndex = -1
@@ -183,7 +142,7 @@ class MCInterfaceController : WKInterfaceController {
                     self.morseCode.mcTreeNode = self.morseCode.mcTreeNode?.parent
                 }
                 
-                answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
+                answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "'", with: "")
                 if answer.count < 1 {
                     return
                 }
@@ -255,6 +214,19 @@ class MCInterfaceController : WKInterfaceController {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
         //morseCode.destroyTree()
+    }
+}
+
+extension MCInterfaceController : AVSpeechSynthesizerDelegate {
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        instructionsLabel.setText("Lightly long press to reply by talking or typing")
+        synth = nil
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        instructionsLabel.setText("Cancelled")
+        synth = nil
     }
 }
 
@@ -503,6 +475,41 @@ extension MCInterfaceController {
             instructionString += "\nOr\n" + writingString
         }
         self.instructionsLabel.setText(instructionString)
+    }
+    
+    
+    func morseCodeInput(input : String) {
+        if isReading() == true {
+            //We do not want the user to accidently delete all the text by tapping
+            return
+        }
+        if isNoMoreMatchesAfterThis() == true {
+            //Prevent the user from entering another character
+            instructionsLabel.setText(noMoreMatchesString)
+            WKInterfaceDevice.current().play(.failure)
+            return
+        }
+        englishStringIndex = -1
+        morseCodeStringIndex = -1
+        if isUserTyping == false {
+            userIsTyping(firstCharacter: input)
+        }
+        else {
+            morseCodeString += input
+        }
+        isAlphabetReached(input: input)
+        morseCodeTextLabel.setText(morseCodeString)
+        englishTextLabel.setText(englishString) //This is to ensure that no characters are highlighted
+        if input == "." {
+            WKInterfaceDevice.current().play(.start)
+        }
+        else if input == "-" {
+            WKInterfaceDevice.current().play(.stop)
+            //WKInterfaceDevice.current().play(.start)
+            //let ms = 1000
+            //usleep(useconds_t(750 * ms)) //will sleep for 50 milliseconds
+            //WKInterfaceDevice.current().play(.start)
+        }
     }
     
     
