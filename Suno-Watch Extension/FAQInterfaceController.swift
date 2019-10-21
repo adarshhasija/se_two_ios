@@ -20,6 +20,8 @@ class FAQInterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
+        faqArray.append(FAQCell(question: "Who is this app designed for", answer: "It is designed for the deaf-blind. However it is highly recommended that a someone who can see and hear and is known to the deaf-blind person use it first to understand it before giving it to the deaf-blind person"))
+        faqArray.append(FAQCell(question: "What is special about this app", answer: "Allows communicating using touch. App will convert english alphabets to morse code. The morse code will translate to taps on the wrist which a deaf-blind person can feel."))
         faqArray.append(FAQCell(question: "Typing in morse code", answer: "Tap the screen for a dot. The watch will tap your wrist once. Swipe right for a dash. The watch will tap your wrist twice."))
         faqArray.append(FAQCell(question: "Morse code to alphabet", answer: "Swipe up on the screen. If the morse code matches an alphabet character, the alphabet will be displayed and the watch will ping you once on your wrist."))
         faqArray.append(FAQCell(question: "Deleting characters", answer: "Just swipe left. The watch will ping you once if the delete was successful"))
@@ -27,6 +29,7 @@ class FAQInterfaceController: WKInterfaceController {
         faqArray.append(FAQCell(question: "How to reply", answer: "Lightly long press on the screen. Then choose dictation or typing to enter a message."))
         faqArray.append(FAQCell(question: "Reading a reply", answer: "The app will automatically convert the english reply to morse code. Rotate the digital crown downwards to scroll through each character of morse code. The watch will tap you once for dot, twice for dash and once again for end of character. You can also rotate the digital crown upwards to scroll back"))
         faqArray.append(FAQCell(question: "Stop reading and start typing in morse code again", answer: "Just swipe left once. Then you can start typing in morse code again."))
+        faqArray.append(FAQCell(question: "Dictation is not working", answer: "Dictation will not work if you are out of range of your iPhone or your iPhone is switched off or your iPhone is on Airplane mode."))
         
         // Configure interface objects here.
         faqTable.setNumberOfRows(faqArray.count, withRowType: "FAQRow")
