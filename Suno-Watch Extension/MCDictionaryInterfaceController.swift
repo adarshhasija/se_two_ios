@@ -8,6 +8,7 @@
 
 import Foundation
 import WatchKit
+import WatchConnectivity
 
 class MCDictionaryInterfaceController : WKInterfaceController {
     
@@ -33,6 +34,10 @@ class MCDictionaryInterfaceController : WKInterfaceController {
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let morseCodeCell = morseCode.mcArray[rowIndex]
+        sendAnalytics(eventName: "se3_watch_row_tap", parameters: [
+            "screen" : "mc_dictionary",
+            "question" : morseCodeCell.english.prefix(100)
+        ])
         var finalString = ""
         for char in morseCodeCell.morseCode {
             if char == "." {
@@ -49,6 +54,25 @@ class MCDictionaryInterfaceController : WKInterfaceController {
         presentAlert(withTitle: "", message: "To type this out you must " + finalString, preferredStyle: .alert, actions: [
         WKAlertAction(title: "OK", style: .default) {}
         ])
+    }
+    
+}
+
+
+extension MCDictionaryInterfaceController {
+    
+    func sendAnalytics(eventName : String, parameters : Dictionary<String, Any>) {
+        var message : [String : Any] = [:]
+        message["event_name"] = eventName
+        message["parameters"] = parameters
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            if session.isReachable {
+                // In your WatchKit extension, the value of this property is true when the paired iPhone is reachable via Bluetooth.
+                session.sendMessage(message, replyHandler: nil, errorHandler: nil)
+            }
+            
+        }
     }
     
 }
