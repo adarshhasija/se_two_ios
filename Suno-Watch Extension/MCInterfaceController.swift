@@ -193,7 +193,7 @@ class MCInterfaceController : WKInterfaceController {
                     }
                     self.morseCodeString += "|"
                 }
-                self.morseCodeString.removeLast() //Remove the last "|"
+                //self.morseCodeString.removeLast() //Remove the last "|"
                 self.morseCodeTextLabel.setText(self.morseCodeString)
                 self.morseCodeTextLabel.setHidden(false)
                 
@@ -289,9 +289,12 @@ extension MCInterfaceController : WKCrownDelegate {
                     "state" : "index_greater_equal_0",
                     "is_reading" : self.isReading()
                 ])
+                morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
+                englishTextLabel.setText(englishString)
                 WKInterfaceDevice.current().play(.success)
                 setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString)
                 morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
+                englishStringIndex = englishString.count
                 return
             }
             
