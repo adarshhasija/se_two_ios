@@ -37,6 +37,21 @@ public class HelpTopicsTableViewController: UITableViewController {
         )   */
         
         helpTopics.append(HelpTopic(
+        question: "Apple Watch:\nWho is the Apple Watch app designed for?",
+        answer: "The watch app is designed specially for user who are both deaf and blind. It is designed to allow these users to communicate via touch. The user can type using morse code which will be converted to English. When the other person replies in English, the reply will be converted to morse code. As the deaf-blind user scrolls through the morse code, the app will convey the characters via a series of taps on the wrist; communication through touch.\n\nPlease note: It is highly recommended that a caregiver/guardian learn the Apple Watch app first before teaching the deaf-blind person how to use it")
+        )
+        
+        helpTopics.append(HelpTopic(
+        question: "Apple Watch:\nHow does a deaf-blind person use the Apple Watch app?",
+        answer: "The user can type in morse code. If the user taps the screen, they get a dot and the watch will tap their wrist once to confirm that. If they swipe right, they get a dash and the app will tap their wrist twice to confirm this. Like this they can write a message in morse code which the app will convert to English and play an audio for the other person.\n\nThe other person can then reply on the watch in English and the app will convert it to morse code. When the deaf-blind user scrolls through the morse code, the app will again tap once for dot and twice for dash to help the user understand what was said in English")
+        )
+        
+        helpTopics.append(HelpTopic(
+        question: "Apple Watch:\nWhat is the purpose of the blue text?",
+        answer: "The blue text are hints designed to guide a caregiver/guardian. It will help them understand how to use the app. For example: Once the deaf-blind user has typed out a message in morse code, the hint will inform the caregiver to lightly long press on the screen to reply in English")
+        )
+        
+        helpTopics.append(HelpTopic(
             question: "I am hearing-imapired and speech-impaired and I would like to get help from a person in front of me",
             answer: "Tap the Type button towards the bottom of the screen. Type out a message and show the device to the other person so they can read it. They can tap Type a reply or Talk a reply. If they talk a reply, their words will appear on the screen as text.")
         )
@@ -85,33 +100,6 @@ public class HelpTopicsTableViewController: UITableViewController {
             question: "How long can a voice recording be?",
             answer: "A voice recording can be a maximum of 1 minute in length. There will be a timer near the bottom of the screen. Recording will stop automatically after 1 minute if it is not stopped be the user.")
         )
-        
-        helpTopics.append(HelpTopic(
-            question: "Apple Watch:\nHow do I use the Apple Watch app?",
-            answer: "The watch app comes with 3 pre-loaded messages. You can use those or type out one of your own. Show the watch to the other person so they can read the message.\n\nAlternatively, you can open Suno on your iPhone and give your iPhone to the other person. Enter a message on your watch and they can read it on the iPhone. They can then type out or talk a message on the iPhone and it will apeaar on the watch. You can have a back and forth conversation this way.")
-            
-            //\n\nNote that messages from the watch will not be displayed on the iPhone if the phone is involved in a conversation session with another iOS device.
-        )
-        
-        helpTopics.append(HelpTopic(
-            question: "Apple Watch:\nMy partner is speaking on the iPhone and the words are appearing on the phone but not on the watch.",
-            answer: "Your partner must tap the screen on the iPhone after they have finished speaking. Only then will the spoken words appear on the watch screen.")
-        )
-        
-        helpTopics.append(HelpTopic(
-            question: "Apple Watch:\nMy partner is typing on the iPhone and the words are appearing on the phone but not on the watch.",
-            answer: "Your partner must tap the Done button on the iPhone after they have finished typing. Only then will the spoken words appear on the watch screen.")
-        )
-        
-        helpTopics.append(HelpTopic(
-            question: "Apple Watch:\nI am wearing the watch but the phone is not nearby. Can I use Suno?",
-            answer: "Yes. You can open Suno on the watch, enter a message and show your watch screen to someone else so they can read the message. We also have three pre-built messages for your convinience.")
-        )
-        
-     /*   helpTopics.append(HelpTopic(
-            question: "Apple Watch:\nCan I connect to somebody else's iPhone or iPad from my Apple Watch?",
-            answer: "No. Suno for Apple Watch will only connect to Suno on the iPhone that the watch is paired with.")
-        )   */
         
      /*   helpTopics.append(HelpTopic(
             question: "Which devices does this app work on?",
