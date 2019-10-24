@@ -70,13 +70,13 @@ class MCInterfaceController : WKInterfaceController {
                 synth?.delegate = self
                 let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
                 synth?.speak(speechUtterance)
-                WKInterfaceDevice.current().play(.success)
                 instructionsLabel.setText("System is speaking the text...")
             }
             else if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
                 sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
-                    "state" : "mc_2_alphanumeric"
+                    "state" : "mc_2_alphanumeric",
+                    "text" : letterOrNumber
                 ])
                 if englishString.last == "␣" {
                     englishString.removeLast()
