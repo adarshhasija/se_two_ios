@@ -463,6 +463,7 @@ public class SpeechViewController: UIViewController {
             enterStateListening()
         }
         else if action == Action.TypistFinishedTyping {
+            exitStateTyping()
             if currentState.last == State.TypingStarted {
                 //User is not in conversation session
                 //User had started typing
@@ -482,7 +483,7 @@ public class SpeechViewController: UIViewController {
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
-            exitStateTyping()
+            //exitStateTyping()
         }
         else if action == Action.PartnerCompleted && currentState.last == State.Reading {
             currentState.popLast() //pop reading
@@ -898,7 +899,7 @@ public class SpeechViewController: UIViewController {
     private func exitStateTyping() {
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
-        if textViewBottom.textColor == UIColor.black {
+        if currentState.last == State.TypingStarted {
             let trimmedString = textViewBottom.text.trimmingCharacters(in: .whitespacesAndNewlines)
             if trimmedString.count > 0 {
                 speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: trimmedString, mode: "typing")
@@ -1493,7 +1494,7 @@ extension SpeechViewController : UITextViewDelegate {
             //It is the first character
             changeState(action: Action.TypistStartedTyping)
             str = String(str.last!)
-            self.textViewBottom?.textColor = .black
+            //self.textViewBottom?.textColor = .black
             self.textViewBottom?.text = str
             sendText(text: str)
             self.speechViewControllerProtocol?.newRealTimeInput(value: str)
