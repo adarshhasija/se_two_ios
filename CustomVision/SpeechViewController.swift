@@ -249,9 +249,10 @@ public class SpeechViewController: UIViewController {
             changeState(action: Action.TypistFinishedTyping)
         }
         else if action == Action.Tap && currentState.last == State.Speaking {
+            exitStateSpeaking()
             currentState.popLast()
             //exitStateTyping()
-            exitStateSpeaking()
+            //exitStateSpeaking()
             if currentState.last == State.ConnectedTyping || currentState.last == State.ConnectedSpeaking {
                 sendText(text: "\n") //Send to other other to confirm that speaking is done
                 currentState.append(State.Reading)
@@ -638,7 +639,7 @@ public class SpeechViewController: UIViewController {
             var isFinal = false
             
             if let result = result {
-                self.textViewBottom?.textColor = .black
+                //self.textViewBottom?.textColor = .black
                 if self.currentState.last != State.Reading {
                     self.textViewTop?.text = result.bestTranscription.formattedString
                     self.textViewBottom?.text = result.bestTranscription.formattedString
@@ -667,9 +668,10 @@ public class SpeechViewController: UIViewController {
                 self.recordButton?.isEnabled = true
                 self.recordButton?.setTitle("Start Recording", for: [])
                 
-                if self.currentState.last == State.Idle {
+                //App saying the text right after the user has said it is not necessary. Can remove this code block in future
+             /*   if self.currentState.last == State.Idle {
                     if let resultText = self.textViewBottom?.text {
-                        if resultText.count > 0 && self.textViewBottom?.textColor == UIColor.black {
+                        if resultText.count > 0 /*&& self.textViewBottom?.textColor == UIColor.black*/ {
                             self.sayThis(string: resultText)
                         }
                      /*   else {
@@ -677,7 +679,7 @@ public class SpeechViewController: UIViewController {
                         }   */
                     }
                     
-                }
+                }   */
                 
             }
         }
@@ -980,7 +982,7 @@ public class SpeechViewController: UIViewController {
     
     private func exitStateSpeaking() {
         //Adding the text to the chat log
-        if textViewBottom.textColor == UIColor.black {
+        if currentState.last == State.Speaking {
             let trimmedString = textViewBottom.text.trimmingCharacters(in: .whitespacesAndNewlines)
             if trimmedString.count > 0 {
                 speechViewControllerProtocol?.setResultOfTypingOrSpeaking(valueSent: trimmedString, mode: "talking")
