@@ -65,7 +65,7 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstItem="pPr-Vm-DYG" firstAttribute="top" secondItem="zNJ-zL-gN3" secondAttribute="bottom" id="Igh-9w-Y0y"/>
                                             <constraint firstItem="zNJ-zL-gN3" firstAttribute="leading" secondItem="JZi-xm-KFL" secondAttribute="leading" id="NhZ-Iw-hXi"/>
@@ -80,7 +80,7 @@
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gJX-l0-cct">
                                 <rect key="frame" x="16" y="200" width="288" height="168"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="conversationTableViewCell" id="vgu-tB-U6o" customClass="ConversationTableViewCell" customModule="Suno" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="288" height="91"/>

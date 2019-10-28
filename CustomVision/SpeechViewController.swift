@@ -1653,7 +1653,6 @@ extension SpeechViewController : UITableViewDataSource {
             
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text          = emptyTableText
-            noDataLabel.textColor     = UIColor.black
             noDataLabel.textAlignment = .center
             noDataLabel.numberOfLines = 5
             noDataLabel.lineBreakMode = .byWordWrapping
