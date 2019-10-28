@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		22D2C163A464B8AA5B31A8D1 /* Pods_Suno.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */; };
+		310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
 		317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */; };
 		3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */; };
@@ -29,7 +30,15 @@
 		317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */; };
 		31862B7D225E11650058883D /* ChatListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7C225E11650058883D /* ChatListItem.swift */; };
 		31862B7F226077950058883D /* EventOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7E226077950058883D /* EventOrigin.swift */; };
+		31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */; };
+		31A67B81235CAC6600F506BD /* FAQRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B80235CAC6600F506BD /* FAQRowController.swift */; };
+		31A67B83235CB55800F506BD /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B82235CB55800F506BD /* FAQCell.swift */; };
+		31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */; };
+		31B5A84723435F8300196E96 /* MorseCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84623435F8300196E96 /* MorseCodeCell.swift */; };
 		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
+		31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */; };
+		31EC882623467A600088051C /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
+		31EC882823467AD50088051C /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
 		31F57B53211A14D100777EA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B52211A14D100777EA3 /* AppDelegate.swift */; };
 		31F57B55211A14D100777EA3 /* SpeechMacViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B54211A14D100777EA3 /* SpeechMacViewController.swift */; };
@@ -102,6 +111,7 @@
 
 /* Begin PBXFileReference section */
 		00A518D03A10503E18B775E7 /* Pods-Suno.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno/Pods-Suno.release.xcconfig"; sourceTree = "<group>"; };
+		310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryRowController.swift; sourceTree = "<group>"; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
 		317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewController.swift; sourceTree = "<group>"; };
 		3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicViewController.swift; sourceTree = "<group>"; };
@@ -122,7 +132,15 @@
 		317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteSpeechViewController.swift; sourceTree = "<group>"; };
 		31862B7C225E11650058883D /* ChatListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListItem.swift; sourceTree = "<group>"; };
 		31862B7E226077950058883D /* EventOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrigin.swift; sourceTree = "<group>"; };
+		31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQInterfaceController.swift; sourceTree = "<group>"; };
+		31A67B80235CAC6600F506BD /* FAQRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRowController.swift; sourceTree = "<group>"; };
+		31A67B82235CB55800F506BD /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
+		31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryInterfaceController.swift; sourceTree = "<group>"; };
+		31B5A84623435F8300196E96 /* MorseCodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeCell.swift; sourceTree = "<group>"; };
 		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCInterfaceController.swift; sourceTree = "<group>"; };
+		31EC882523467A600088051C /* MorseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCode.swift; sourceTree = "<group>"; };
+		31EC882723467AD50088051C /* MCTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCTreeNode.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
 		31F57B4A211A137000777EA3 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
 		31F57B50211A14D100777EA3 /* Suno-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -225,6 +243,15 @@
 				317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */,
 				317D4C16217EC76D0081B38B /* Assets.xcassets */,
 				317D4C18217EC76D0081B38B /* Info.plist */,
+				31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */,
+				31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */,
+				31B5A84623435F8300196E96 /* MorseCodeCell.swift */,
+				310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */,
+				31EC882523467A600088051C /* MorseCode.swift */,
+				31EC882723467AD50088051C /* MCTreeNode.swift */,
+				31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */,
+				31A67B80235CAC6600F506BD /* FAQRowController.swift */,
+				31A67B82235CB55800F506BD /* FAQCell.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -644,7 +671,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				317D4C15217EC76C0081B38B /* ExtensionDelegate.swift in Sources */,
+				31A67B81235CAC6600F506BD /* FAQRowController.swift in Sources */,
+				31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */,
+				31EC882823467AD50088051C /* MCTreeNode.swift in Sources */,
+				31EC882623467A600088051C /* MorseCode.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
+				310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */,
+				31B5A84723435F8300196E96 /* MorseCodeCell.swift in Sources */,
+				31A67B83235CB55800F506BD /* FAQCell.swift in Sources */,
+				31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */,
+				31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,11 +801,11 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.1.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
@@ -793,11 +829,11 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.1.5;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1115,12 +1151,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1134,12 +1170,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

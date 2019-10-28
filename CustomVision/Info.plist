@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>This is needed when connecting to other iOS devices</string>
+	<string>abc</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>We will check if your Bluetooth is ON when you try to connect to a nearby device</string>
 	<key>NSMicrophoneUsageDescription</key>

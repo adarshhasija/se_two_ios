@@ -19,11 +19,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
-      /*  if WCSession.isSupported() {
+        if WCSession.isSupported() {
             let session = WCSession.default
             session.delegate = self
             session.activate()
-        }   */
+        }
     }
 
     func applicationDidBecomeActive() {

@@ -571,11 +571,11 @@ public class SpeechViewController: UIViewController {
         
         //Setup watch connectivity only if it is the main screen
         if inputAction == nil {
-            if WCSession.isSupported() {
+         /*   if WCSession.isSupported() {
                 let session = WCSession.default
                 session.delegate = self
                 session.activate()
-            }
+            }   */
         }
         
     }
