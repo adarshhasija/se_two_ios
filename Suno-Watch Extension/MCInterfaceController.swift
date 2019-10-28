@@ -120,6 +120,7 @@ class MCInterfaceController : WKInterfaceController {
             morseCodeString = ""
             morseCodeTextLabel.setText("")
             instructionsLabel.setText(defaultInstruction)
+            WKInterfaceDevice.current().play(.success)
             return
         }
         if morseCodeString.count > 0 {
