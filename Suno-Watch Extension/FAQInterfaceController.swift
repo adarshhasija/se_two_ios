@@ -22,7 +22,7 @@ class FAQInterfaceController: WKInterfaceController {
         
         faqArray.append(FAQCell(question: "Who is this app designed for", answer: "It is designed for the deaf-blind. However it is highly recommended that a someone who can see and hear and is known to the deaf-blind person use it first to understand it before giving it to the deaf-blind person"))
         faqArray.append(FAQCell(question: "What is special about this app", answer: "Allows communicating using touch. App will convert english alphabets to morse code. The morse code will translate to taps on the wrist which a deaf-blind person can feel."))
-        faqArray.append(FAQCell(question: "Meaning of blue text", answer: "It is for the guardian/helper of the deaf-blind person. It guides you on how to take the next step in the app."))
+        faqArray.append(FAQCell(question: "Meaning of blue text", answer: "It is for the guardian/caregiver of the deaf-blind person. It guides you on how to take the next step in the app."))
         faqArray.append(FAQCell(question: "Typing in morse code", answer: "Tap the screen for a dot. The watch will tap your wrist once. Swipe right for a dash. The watch will tap your wrist twice."))
         faqArray.append(FAQCell(question: "Morse code to alphabet", answer: "Swipe up on the screen. If the morse code matches an alphabet character, the alphabet will be displayed and the watch will ping you once on your wrist."))
         faqArray.append(FAQCell(question: "Deleting characters", answer: "Just swipe left. The watch will ping you once if the delete was successful"))

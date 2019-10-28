@@ -38,31 +38,31 @@ public class HelpTopicsTableViewController: UITableViewController {
         
         helpTopics.append(HelpTopic(
         question: "Apple Watch:\nWho is the Apple Watch app designed for?",
-        answer: "The watch app is designed specially for user who are both deaf and blind. It is designed to allow these users to communicate via touch. The user can type using morse code which will be converted to English. When the other person replies in English, the reply will be converted to morse code. As the deaf-blind user scrolls through the morse code, the app will convey the characters via a series of taps on the wrist; communication through touch.\n\nPlease note: It is highly recommended that a caregiver/guardian learn the Apple Watch app first before teaching the deaf-blind person how to use it")
+        answer: "The watch app is designed specially for user who are both deaf and blind. It is designed to allow these users to communicate via touch. The user types in morse code by doing gestures anywhere on the screen. There is no need to be able to see the screen. As the user does gestures, the app confirms what has been typed by tapping the user on the wrist.\n\nTo find out what another person has said in English, the deaf-blind user simply scrolls through the morse code. The app will tap them on the wrist to tell them what has been said.\n\nThis is communicating through touch/taps on the wrist.\n\nWe highly recommend that a guardian/caregiver try out the app before giving it to the deaf-blind user.")
         )
         
         helpTopics.append(HelpTopic(
         question: "Apple Watch:\nHow does a deaf-blind person use the Apple Watch app?",
-        answer: "The user can type in morse code. If the user taps the screen, they get a dot and the watch will tap their wrist once to confirm that. If they swipe right, they get a dash and the app will tap their wrist twice to confirm this. Like this they can write a message in morse code which the app will convert to English and play an audio for the other person.\n\nThe other person can then reply on the watch in English and the app will convert it to morse code. When the deaf-blind user scrolls through the morse code, the app will again tap once for dot and twice for dash to help the user understand what was said in English")
+        answer: "The user can type in morse code. If the user taps the screen, they get a dot and the watch will tap their wrist once to confirm that. If they swipe right, they get a dash and the app will tap their wrist twice to confirm this. Like this they can write a message in morse code which the app will convert to English and play an audio for the other person.\n\nThe other person can then reply on the watch in English and the app will convert it to morse code. When the deaf-blind user scrolls through the morse code, the app will again tap once for dot and twice for dash to help the user understand what was said in English.\n\nWe highly recoomend that a guardian/caregiver try out the app before giving it to the deaf-blind user.\n\nAlso note that it is not neccessary to see the screen. One can tap anywhere on the screen")
         )
         
         helpTopics.append(HelpTopic(
         question: "Apple Watch:\nWhat is the purpose of the blue text?",
-        answer: "The blue text are hints designed to guide a caregiver/guardian. It will help them understand how to use the app. For example: Once the deaf-blind user has typed out a message in morse code, the hint will inform the caregiver to lightly long press on the screen to reply in English")
+        answer: "The blue text are hints designed to guide a caregiver/guardian. It will help them understand how to use the app. For example: Once the deaf-blind user has typed out a message in morse code, the hint will inform the caregiver to lightly long press on the screen to reply in English\n\nWe highly recommend that a guardian/caregiver user these hints to understand how to use this app before giving it to the deaf-blind user.")
         )
         
         helpTopics.append(HelpTopic(
-            question: "I am hearing-imapired and speech-impaired and I would like to get help from a person in front of me",
+            question: "iPhone/iPad:\nI am hearing-imapired and speech-impaired and I would like to get help from a person in front of me",
             answer: "Tap the Type button towards the bottom of the screen. Type out a message and show the device to the other person so they can read it. They can tap Type a reply or Talk a reply. If they talk a reply, their words will appear on the screen as text.")
         )
         
         helpTopics.append(HelpTopic(
-            question: "Can I share chat history?",
+            question: "iPhone/iPad:\nCan I share chat history?",
             answer: "You can use the Share Chat button to share a copy of the chat log with anyone else on any other messenger app(eg: iMessage or WhatsApp) for future reference. This option will only be available once a chat has started. Note that we do not save chat logs within the app")
         )
         
         helpTopics.append(HelpTopic(
-            question: "What does Clear Chat do? When should I use Clear Chat?",
+            question: "iPhone/iPad:\nWhat does Clear Chat do? When should I use Clear Chat?",
             answer: "It deletes the log of the current chat, giving you a blank screen on which to start a new chat. Use it when a particular chat has become too long and you are scrolling too much. In this case, it maybe better to start a new chat. This option will only be available once a chat has started")
         )
         
@@ -97,7 +97,7 @@ public class HelpTopicsTableViewController: UITableViewController {
         )   */
         
         helpTopics.append(HelpTopic(
-            question: "How long can a voice recording be?",
+            question: "iPhone/iPad:\nHow long can a voice recording be?",
             answer: "A voice recording can be a maximum of 1 minute in length. There will be a timer near the bottom of the screen. Recording will stop automatically after 1 minute if it is not stopped be the user.")
         )
         
