@@ -29,7 +29,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone permission is needed to hear what a person says</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Speech Recognition permission is needed to convert a person&apos;s speech into text you can read</string>
+	<string>Speech Recognition permission is needed to convert a person's speech into text you can read</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
