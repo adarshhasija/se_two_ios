@@ -15,7 +15,7 @@ class MCInterfaceController : WKInterfaceController {
     
     var defaultInstruction = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for talk/type options"
     var dcScrollStart = "Rotate the digital crown down to read the morse code"
-    var stopReadingString = "Swipe left once to stop reading and start typing"
+    var stopReadingString = "Swipe left once to stop reading and type"
     var keepTypingString = "Keep typing"
     var noMoreMatchesString = "No more matches found for this morse code"
     var typingSuggestions : [String ] = ["How are you"]
@@ -431,7 +431,7 @@ extension MCInterfaceController {
         // here you change the character to green color
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
         if isMorseCode {
-            attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 30), range: range)
+            attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 25), range: range)
         }
         label.setAttributedText(attributedString)
     }
