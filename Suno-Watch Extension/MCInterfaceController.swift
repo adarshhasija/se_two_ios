@@ -13,7 +13,7 @@ import WatchConnectivity
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstruction = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for morse code dictionary"
+    var defaultInstruction = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for talk/type options"
     var dcScrollStart = "Rotate the digital crown down to read the morse code"
     var stopReadingString = "Swipe left once to stop reading and start typing"
     var keepTypingString = "Keep typing"
@@ -166,42 +166,7 @@ class MCInterfaceController : WKInterfaceController {
     
     @IBAction func longPress(_ sender: Any) {
         sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
-        self.presentTextInputController(withSuggestions: self.typingSuggestions, allowedInputMode: .plain, completion: { (answers) -> Void in
-            if var answer = answers?[0] as? String {
-                self.sendAnalytics(eventName: "se3_watch_reply", parameters: [
-                    "text" : answer.prefix(100)
-                ])
-                self.isUserTyping = false
-                self.morseCodeStringIndex = -1
-                self.englishStringIndex = -1
-                while self.morseCode.mcTreeNode?.parent != nil {
-                    self.morseCode.mcTreeNode = self.morseCode.mcTreeNode?.parent
-                }
-                
-                answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains) //Remove anything that is not alphanumeric
-                if answer.count < 1 {
-                    return
-                }
-                self.englishString = answer
-                self.morseCodeString = ""
-                self.englishTextLabel.setText(answer)
-                self.englishTextLabel.setHidden(false)
-                self.morseCodeTextLabel.setText("")
-                for char in answer {
-                    let charAsString : String = String(char)
-                    if let morseCode = self.alphabetToMcDictionary[charAsString] {
-                        self.morseCodeString += morseCode
-                    }
-                    self.morseCodeString += "|"
-                }
-                //self.morseCodeString.removeLast() //Remove the last "|"
-                self.morseCodeTextLabel.setText(self.morseCodeString)
-                self.morseCodeTextLabel.setHidden(false)
-                
-                self.instructionsLabel.setText(self.dcScrollStart)
-            }
-            
-        })
+        openTalkTypeMode()
     }
     
     @IBAction func tappedFAQs() {
@@ -216,6 +181,12 @@ class MCInterfaceController : WKInterfaceController {
     @IBAction func tappedDictionary() {
         sendAnalytics(eventName: "se3_watch_dictionary_tap", parameters: [:])
         pushController(withName: "Dictionary", context: nil)
+    }
+    
+    
+    @IBAction func tappedTalkType() {
+        sendAnalytics(eventName: "se3_watch_talktype_tap", parameters: [:])
+        openTalkTypeMode()
     }
     
     override func awake(withContext context: Any?) {
@@ -304,7 +275,7 @@ extension MCInterfaceController : WKCrownDelegate {
                 "isReading" : self.isReading()
             ])
             setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString)
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel)
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
@@ -326,7 +297,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     "state" : "index_alpha_change",
                     "is_reading" : self.isReading()
                 ])
-                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel)
+                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false)
             }
         }
         else if crownRotationalDelta > expectedMoveDelta {
@@ -355,7 +326,7 @@ extension MCInterfaceController : WKCrownDelegate {
                 "state" : "scrolling",
                 "is_reading" : self.isReading()
             ])
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel)
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
@@ -365,7 +336,8 @@ extension MCInterfaceController : WKCrownDelegate {
                     "state" : "index_alpha_change",
                     "is_reading" : self.isReading()
                 ])
-                if isEngCharSpace() {
+                //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
+                if englishStringIndex > -1 && isEngCharSpace() {
                     let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
                     let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
                     englishString.replaceSubrange(start..<end, with: "␣")
@@ -373,7 +345,12 @@ extension MCInterfaceController : WKCrownDelegate {
                 else {
                     englishString = englishString.replacingOccurrences(of: "␣", with: " ")
                 }
-                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel)
+                
+                if englishStringIndex > -1 {
+                    //Ensure that the index is within bounds
+                    setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false)
+                }
+                
             }
             
             
@@ -446,23 +423,16 @@ extension MCInterfaceController {
     
     //Sets the particular character to green to indicate selected
     //If the index is out of bounds, the entire string will come white. eg: when index = -1
-    func setSelectedCharInLabel(inputString : String, index : Int, label : WKInterfaceLabel) {
+    func setSelectedCharInLabel(inputString : String, index : Int, label : WKInterfaceLabel, isMorseCode : Bool) {
         let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
         
         //The replacement of space with visible space only applies to english strings
         let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
         // here you change the character to green color
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
-        label.setAttributedText(attributedString)
-    }
-    
-    func setSelectedCharsInLabel(inputString : String, index : Int, label : WKInterfaceLabel, range : Int) {
-        let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
-        
-        //The replacement of space with visible space only applies to english strings
-        let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
-        // here you change the character to green color
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
+        if isMorseCode {
+            attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 30), range: range)
+        }
         label.setAttributedText(attributedString)
     }
     
@@ -593,6 +563,45 @@ extension MCInterfaceController {
             }
             
         }
+    }
+    
+    func openTalkTypeMode() {
+        self.presentTextInputController(withSuggestions: self.typingSuggestions, allowedInputMode: .plain, completion: { (answers) -> Void in
+            if var answer = answers?[0] as? String {
+                self.sendAnalytics(eventName: "se3_watch_reply", parameters: [
+                    "text" : answer.prefix(100)
+                ])
+                self.isUserTyping = false
+                self.morseCodeStringIndex = -1
+                self.englishStringIndex = -1
+                while self.morseCode.mcTreeNode?.parent != nil {
+                    self.morseCode.mcTreeNode = self.morseCode.mcTreeNode?.parent
+                }
+                
+                answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains) //Remove anything that is not alphanumeric
+                if answer.count < 1 {
+                    return
+                }
+                self.englishString = answer
+                self.morseCodeString = ""
+                self.englishTextLabel.setText(answer)
+                self.englishTextLabel.setHidden(false)
+                self.morseCodeTextLabel.setText("")
+                for char in answer {
+                    let charAsString : String = String(char)
+                    if let morseCode = self.alphabetToMcDictionary[charAsString] {
+                        self.morseCodeString += morseCode
+                    }
+                    self.morseCodeString += "|"
+                }
+                //self.morseCodeString.removeLast() //Remove the last "|"
+                self.morseCodeTextLabel.setText(self.morseCodeString)
+                self.morseCodeTextLabel.setHidden(false)
+                
+                self.instructionsLabel.setText(self.dcScrollStart)
+            }
+            
+        })
     }
     
     

@@ -86,6 +86,11 @@
                     </items>
                     <menu key="menu" id="CIl-sb-hrR">
                         <items>
+                            <menuItem title="Talk/Type" icon="add" id="xAH-Dg-9VP">
+                                <connections>
+                                    <action selector="tappedTalkType" destination="V63-br-2PY" id="Ipx-9V-fNY"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Morse Code Dictionary" icon="more" id="ODK-tU-4U9">
                                 <connections>
                                     <action selector="tappedDictionary" destination="V63-br-2PY" id="8ek-HE-l3F"/>
