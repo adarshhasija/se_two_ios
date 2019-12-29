@@ -93,6 +93,29 @@ class MCInterfaceController : WKInterfaceController {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
             }
+            else if let action = morseCode.mcTreeNode?.action {
+                if action == "TIME" {
+                    let hh = (Calendar.current.component(.hour, from: Date()))
+                    let mm = (Calendar.current.component(.minute, from: Date()))
+                    englishString = String(hh) + String(mm)
+                    englishTextLabel?.setText(englishString)
+                    englishTextLabel?.setHidden(false)
+                    englishStringIndex = -1
+                    morseCodeString = ""
+                    for character in englishString {
+                        morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
+                        morseCodeString += "|"
+                    }
+                    morseCodeTextLabel.setText(morseCodeString)
+                    morseCodeStringIndex = -1
+                    isUserTyping = false
+                    instructionsLabel.setText("Scroll with the Digital Crown to read the time")
+                    WKInterfaceDevice.current().play(.success)
+                    while morseCode.mcTreeNode?.parent != nil {
+                        morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
+                    }
+                }
+            }
             else {
                 sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                     "state" : "no_result"
@@ -471,10 +494,16 @@ extension MCInterfaceController {
             instructionsString += "\n" + "Swipe left to delete last character"
         }
         
-        if morseCode.mcTreeNode?.alphabet != nil {
+        if morseCode.mcTreeNode?.alphabet != nil || morseCode.mcTreeNode?.action != nil {
             //welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
             var recommendations = ""
-            recommendations += "Swipe up to set: " + morseCode.mcTreeNode!.alphabet! + "\n"
+            if morseCode.mcTreeNode?.alphabet != nil {
+                recommendations += "Swipe up to set: " + morseCode.mcTreeNode!.alphabet! + "\n"
+            }
+            else if morseCode.mcTreeNode?.action != nil {
+                recommendations += "Swipe up to get: " + morseCode.mcTreeNode!.action! + "\n"
+            }
+            
             let nextCharMatches = morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode)
             for nextMatch in nextCharMatches {
                 recommendations += "\n" + nextMatch

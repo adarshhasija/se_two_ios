@@ -12,6 +12,7 @@ class MCTreeNode {
     
     var character : String?
     var alphabet : String?
+    var action : String?  //Cannot have both an alphabet and an action
     var parent : MCTreeNode?
     var dotNode : MCTreeNode?
     var dashNode : MCTreeNode?

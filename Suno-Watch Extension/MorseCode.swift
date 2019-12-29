@@ -91,6 +91,7 @@ class MorseCode {
         mcArray.append(MorseCodeCell(english: "9", morseCode: "----."))
         mcArray.append(MorseCodeCell(english: "0", morseCode: "-----"))
         mcArray.append(MorseCodeCell(english: "Space (␣)", morseCode: ".......", displayChar: "␣"))
+        mcArray.append(MorseCodeCell(english: "TIME", morseCode: ".........."))
         
         for morseCodeCell in mcArray {
             if morseCodeCell.displayChar != nil {
@@ -121,6 +122,13 @@ class MorseCode {
             nearestMatches.append("Replace the last character with a dash to get: " + currentNode!.parent!.dashNode!.alphabet! + "\n")
         }
         
+        if currentNode?.parent?.dotNode?.action != nil {
+            nearestMatches.append("Replace the last character with a dot to get: " + currentNode!.parent!.dotNode!.action! + "\n")
+        }
+        if currentNode?.parent?.dashNode?.action != nil {
+            nearestMatches.append("Replace the last character with a dash to get: " + currentNode!.parent!.dashNode!.action! + "\n")
+        }
+        
         if nearestMatches.count == 0 {
             nearestMatches.insert(" " + "No matches found", at: 0)
         }
@@ -137,8 +145,14 @@ class MorseCode {
         if currentNode?.dotNode?.alphabet != nil {
             matches.append("Add a dot to get: " + currentNode!.dotNode!.alphabet!)
         }
+        if currentNode?.dotNode?.action != nil {
+            matches.append("Add a dot to get: " + currentNode!.dotNode!.action!)
+        }
         if currentNode?.dashNode?.alphabet != nil {
             matches.append("Add a dash to get: " + currentNode!.dashNode!.alphabet!)
+        }
+        if currentNode?.dashNode?.action != nil {
+            matches.append("Add a dash to get: " + currentNode!.dashNode!.action!)
         }
         return matches
     }
@@ -167,10 +181,12 @@ class MorseCode {
                 
                 if i == (morseCode.count - 1) {
                     if morseCodeCell.displayChar != nil {
-                        node.alphabet = "␣"
+                        node.alphabet = morseCodeCell.displayChar
+                    }
+                    else if morseCodeCell.english == "TIME" {
+                        node.action = "TIME"
                     }
                     else {
-                        
                         node.alphabet = morseCodeCell.english
                     }
                 }
