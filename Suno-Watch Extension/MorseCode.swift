@@ -173,6 +173,20 @@ class MorseCode {
                         node.dotNode = MCTreeNode(character : ".")
                         node.dotNode!.parent = node
                     }
+                    else if node.dotNode!.character == nil {
+                        //It exists as a dummy node but has no character
+                        node.dotNode!.character = "."
+                        node.dotNode!.parent = node
+                    }
+                    
+                    //Error condition:
+                    //Additional empty terminating node is created. If there is no dash for this node, we will allow the user to enter the character and move to this node. Then we will notify the user that no additional characters are around. Every character, if it does not have a dash, will have this empty node.
+                    if node.dashNode == nil {
+                        node.dashNode = MCTreeNode()
+                        node.dashNode!.parent = node
+                    }
+                    
+                    //The dot node is the valid node. Move to it
                     node = node.dotNode!
                 }
                 else if morseCodeChar == "-" {
@@ -180,6 +194,20 @@ class MorseCode {
                         node.dashNode = MCTreeNode(character: "-")
                         node.dashNode!.parent = node
                     }
+                    else if node.dashNode!.character == nil {
+                        //It exists as a dummy node but has no character
+                        node.dashNode!.character = "."
+                        node.dashNode!.parent = node
+                    }
+                    
+                    //Error condition:
+                    //Additional empty terminating node is created. If there is no dot for this node, we will allow the user to enter the character and move to this node. Then we will notify the user that no additional characters are around. Every character, if it does not have a dot, will have this empty node.
+                    if node.dotNode == nil {
+                        node.dotNode = MCTreeNode()
+                        node.dotNode!.parent = node
+                    }
+                    
+                    //This dash node is the valid node. Move to it.
                     node = node.dashNode!
                 }
                 
@@ -213,6 +241,7 @@ class MorseCode {
                 node = node.parent! //Go back to the root so that we can traverse the next character
             }
         }
+        
         return node
     }
     

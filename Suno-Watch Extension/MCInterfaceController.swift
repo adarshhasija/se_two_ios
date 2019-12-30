@@ -70,7 +70,10 @@ class MCInterfaceController : WKInterfaceController {
                 synth?.delegate = self
                 let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
                 synth?.speak(speechUtterance)
-                instructionsLabel.setText("System is speaking the text...")
+                //instructionsLabel.setText("System is speaking the text...")
+                instructionsLabel.setText("")
+                morseCodeTextLabel?.setHidden(true)
+                changeEnteredTextSize(inputString: englishString, textSize: 40)
             }
             else if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
@@ -260,23 +263,41 @@ class MCInterfaceController : WKInterfaceController {
 extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        var finalString = "Lightly long press to reply by talking"
-        if typingSuggestions.count > 0 {
-            finalString += " or typing"
+        var finalString = ""
+        if isUserTyping == true {
+            finalString.append("Lightly long press to reply by talking")
+            if typingSuggestions.count > 0 {
+                finalString += " or typing"
+            }
+            instructionsLabel.setText(finalString)
         }
-        instructionsLabel.setText(finalString)
+        else {
+            setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
+        }
+        
         WKInterfaceDevice.current().play(.success)
         synth = nil
+        morseCodeTextLabel?.setHidden(false)
+        changeEnteredTextSize(inputString: englishString, textSize: 16)
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-        var finalString = "Lightly long press to reply by talking"
-        if typingSuggestions.count > 0 {
-            finalString += " or typing"
+        var finalString = ""
+        if isUserTyping == true {
+            finalString.append("Lightly long press to reply by talking")
+            if typingSuggestions.count > 0 {
+                finalString += " or typing"
+            }
+            instructionsLabel.setText(finalString)
         }
-        instructionsLabel.setText(finalString)
+        else {
+            setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
+        }
+        
         WKInterfaceDevice.current().play(.failure)
         synth = nil
+        morseCodeTextLabel?.setHidden(false)
+        changeEnteredTextSize(inputString: englishString, textSize: 16)
     }
 }
 
@@ -309,7 +330,7 @@ extension MCInterfaceController : WKCrownDelegate {
                 "isReading" : self.isReading()
             ])
             setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString)
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true)
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
@@ -331,7 +352,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     "state" : "index_alpha_change",
                     "is_reading" : self.isReading()
                 ])
-                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false)
+                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
             }
         }
         else if crownRotationalDelta > expectedMoveDelta {
@@ -360,7 +381,7 @@ extension MCInterfaceController : WKCrownDelegate {
                 "state" : "scrolling",
                 "is_reading" : self.isReading()
             ])
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true)
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
@@ -382,7 +403,7 @@ extension MCInterfaceController : WKCrownDelegate {
                 
                 if englishStringIndex > -1 {
                     //Ensure that the index is within bounds
-                    setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false)
+                    setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
                 }
                 
             }
@@ -455,15 +476,27 @@ extension MCInterfaceController {
     }
     
     
+    //This is used when the user has just completed entering a message in morse code and is ready for the watch to say it aloud.
+    func changeEnteredTextSize(inputString : String, textSize: Int) {
+        let range = NSRange(location:0,length:inputString.count) // specific location. This means "range" handle 1 character at location 2
+        
+        //The replacement of space with visible space only applies to english strings
+        let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
+        
+        attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: CGFloat(textSize)), range: range)
+        englishTextLabel.setAttributedText(attributedString)
+    }
+    
+    
     //Sets the particular character to green to indicate selected
     //If the index is out of bounds, the entire string will come white. eg: when index = -1
-    func setSelectedCharInLabel(inputString : String, index : Int, label : WKInterfaceLabel, isMorseCode : Bool) {
+    func setSelectedCharInLabel(inputString : String, index : Int, label : WKInterfaceLabel, isMorseCode : Bool, color : UIColor) {
         let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
         
         //The replacement of space with visible space only applies to english strings
         let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
         // here you change the character to green color
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: range)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
         if isMorseCode {
             attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 25), range: range)
         }
@@ -500,40 +533,40 @@ extension MCInterfaceController {
     
     func setRecommendedActionsText() {
         var instructionsString = "" //"\n" + "Force press for morse code dictionary"
-        if morseCodeString.count == 1 {
+        //if morseCodeString.count == 1 {
             //We will only show this when the user has typed 1 character
-            instructionsString += "\n" + "Swipe left to delete last character"
-        }
+            //instructionsString += "\n" + "Swipe left to delete last character"
+        //}
         
+        
+        var recommendations = ""
         if morseCode.mcTreeNode?.alphabet != nil || morseCode.mcTreeNode?.action != nil {
             //welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
-            var recommendations = ""
             if morseCode.mcTreeNode?.alphabet != nil {
                 recommendations += "Swipe up to set: " + morseCode.mcTreeNode!.alphabet! + "\n"
             }
             else if morseCode.mcTreeNode?.action != nil {
                 recommendations += "Swipe up to get: " + morseCode.mcTreeNode!.action! + "\n"
             }
-            
-            let nextCharMatches = morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode)
-            for nextMatch in nextCharMatches {
-                recommendations += "\n" + nextMatch
-            }
-            instructionsString.insert(contentsOf: recommendations + "\n", at: instructionsString.startIndex)
-            
         }
-        else if isNoMoreMatchesAfterThis() == true {
-            //The haptic for dot will be played so no failure haptic
+        let nextCharMatches = morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode)
+        for nextMatch in nextCharMatches {
+            recommendations += "\n" + nextMatch
+        }
+        instructionsString.insert(contentsOf: recommendations + "\n", at: instructionsString.startIndex)
+            
+        
+        
+        if isNoMoreMatchesAfterThis() == true {
+            //The haptic for dot/dash will be played so no failure haptic
             //Only want to display the message that there are no more matches
             instructionsString.insert(contentsOf: noMoreMatchesString + "\n", at: instructionsString.startIndex)
         }
-        else {
-            
-        }
         
+        instructionsString += "\n" + "Swipe left to delete last character"
         instructionsLabel.setText(instructionsString)
     }
-    
+
     
     //Returns true if there are no more matches to be found in the morse code dictionary no matter what the user types
     func isNoMoreMatchesAfterThis() -> Bool? {
@@ -564,7 +597,8 @@ extension MCInterfaceController {
         }
         if isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
-            instructionsLabel.setText(noMoreMatchesString)
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
+            setRecommendedActionsText()
             WKInterfaceDevice.current().play(.failure)
             return
         }
@@ -636,9 +670,13 @@ extension MCInterfaceController {
                 }
                 //self.morseCodeString.removeLast() //Remove the last "|"
                 self.morseCodeTextLabel.setText(self.morseCodeString)
-                self.morseCodeTextLabel.setHidden(false)
-                
-                self.instructionsLabel.setText(self.dcScrollStart)
+                self.morseCodeTextLabel?.setHidden(true)
+                self.instructionsLabel.setText("")
+                self.changeEnteredTextSize(inputString: self.englishString, textSize: 40)
+                self.synth = AVSpeechSynthesizer.init()
+                self.synth?.delegate = self
+                let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: self.englishString)
+                self.synth?.speak(speechUtterance)
             }
             
         })
