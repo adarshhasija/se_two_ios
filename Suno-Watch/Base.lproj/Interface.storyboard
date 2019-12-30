@@ -101,6 +101,11 @@
                                     <action selector="tappedFAQs" destination="V63-br-2PY" id="kJG-3a-Woh"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Deaf-Blind Setting" icon="accept" id="VUr-fI-NOR">
+                                <connections>
+                                    <action selector="tappedSettingsDeafBlind" destination="V63-br-2PY" id="hzb-6q-mTK"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                     <connections>
@@ -111,6 +116,28 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="34" y="392.5"/>
+        </scene>
+        <!--SettingsDeafBlind-->
+        <scene sceneID="oB8-Af-fYy">
+            <objects>
+                <controller identifier="SettingsDeafBlind" id="kWR-Bg-fDW" customClass="SettingDBController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <switch width="1" alignment="left" title="Deaf-Blind" id="J7V-0h-m3S">
+                            <connections>
+                                <action selector="switchValueChange:" destination="kWR-Bg-fDW" id="kMH-Hn-Era"/>
+                            </connections>
+                        </switch>
+                        <label width="1" alignment="left" text="Instruction Label" textAlignment="center" numberOfLines="0" id="wuB-3M-dA0">
+                            <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
+                        </label>
+                    </items>
+                    <connections>
+                        <outlet property="deafBlindSwitch" destination="J7V-0h-m3S" id="Hfz-V6-1U4"/>
+                        <outlet property="instructionLabel" destination="wuB-3M-dA0" id="5BN-eJ-IoY"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="34" y="741"/>
         </scene>
         <!--Dictionary-->
         <scene sceneID="oSs-BH-Sas">

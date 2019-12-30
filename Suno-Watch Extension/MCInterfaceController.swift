@@ -13,7 +13,9 @@ import WatchConnectivity
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstruction = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for talk/type options"
+    var defaultInstructions = ""
+    var deafBlindInstructions = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for more options"
+    var notDeafBlindInstructions = "Long press to talk or type out a message\n\nOr\n\nForce press for more options"
     var dcScrollStart = "Rotate the digital crown down to read the morse code"
     var stopReadingString = "Swipe left once to stop reading and type"
     var keepTypingString = "Keep typing"
@@ -156,7 +158,7 @@ class MCInterfaceController : WKInterfaceController {
             englishTextLabel.setText("")
             morseCodeString = ""
             morseCodeTextLabel.setText("")
-            instructionsLabel.setText(defaultInstruction)
+            instructionsLabel.setText(defaultInstructions)
             WKInterfaceDevice.current().play(.success)
             return
         }
@@ -196,7 +198,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
-            instructionsLabel.setText(defaultInstruction)
+            instructionsLabel.setText(defaultInstructions)
         }
     }
     
@@ -226,10 +228,16 @@ class MCInterfaceController : WKInterfaceController {
         openTalkTypeMode()
     }
     
+    
+    @IBAction func tappedSettingsDeafBlind() {
+        sendAnalytics(eventName: "se3_watch_settings_db_tap", parameters: [:])
+        pushController(withName: "SettingsDeafBlind", context: self)
+    }
+    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
-        instructionsLabel.setText(defaultInstruction)
+        instructionsLabel.setText(defaultInstructions)
         if alphabetToMcDictionary.count < 1 {
             let morseCode : MorseCode = MorseCode()
             for morseCodeCell in morseCode.mcArray {
@@ -242,6 +250,20 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 
             }
+        }
+        
+        let isDeafBlind = UserDefaults.standard.integer(forKey: "SE3_IS_DEAF_BLIND")
+        if isDeafBlind == 0 {
+            pushController(withName: "SettingsDeafBlind", context: self)
+        }
+        else {
+            if isDeafBlind == 1 {
+                defaultInstructions = deafBlindInstructions
+            }
+            if isDeafBlind == 2 {
+                defaultInstructions = notDeafBlindInstructions
+            }
+            instructionsLabel.setText(defaultInstructions)
         }
     }
     
@@ -683,5 +705,22 @@ extension MCInterfaceController {
     }
     
     
+}
+
+///Protocol
+protocol MCInterfaceControllerProtocol {
+    func settingDeafBlindChanged(isDeafBlind: Int)
+}
+
+extension MCInterfaceController : MCInterfaceControllerProtocol {
+    func settingDeafBlindChanged(isDeafBlind: Int) {
+        if isDeafBlind == 1 {
+            defaultInstructions = deafBlindInstructions
+        }
+        else if isDeafBlind == 2 {
+            defaultInstructions = notDeafBlindInstructions
+        }
+        instructionsLabel.setText(defaultInstructions)
+    }
 }
 
