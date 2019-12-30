@@ -18,7 +18,7 @@ class MCInterfaceController : WKInterfaceController {
     var stopReadingString = "Swipe left once to stop reading and type"
     var keepTypingString = "Keep typing"
     var noMoreMatchesString = "No more matches found for this morse code"
-    var typingSuggestions : [String ] = ["How are you"]
+    var typingSuggestions : [String ] = ["Hi", "Yes", "No"]
     var isUserTyping : Bool = false
     var morseCodeString : String = ""
     var englishString : String = ""
@@ -97,23 +97,34 @@ class MCInterfaceController : WKInterfaceController {
                 if action == "TIME" {
                     let hh = (Calendar.current.component(.hour, from: Date()))
                     let mm = (Calendar.current.component(.minute, from: Date()))
-                    englishString = String(hh) + String(mm)
+                    let hourString = hh < 10 ? "0" + String(hh) : String(hh)
+                    let minString = mm < 10 ? "0" + String(mm) : String(mm)
+                    englishString = hourString + minString
                     englishTextLabel?.setText(englishString)
                     englishTextLabel?.setHidden(false)
                     englishStringIndex = -1
-                    morseCodeString = ""
-                    for character in englishString {
-                        morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
-                        morseCodeString += "|"
-                    }
-                    morseCodeTextLabel.setText(morseCodeString)
-                    morseCodeStringIndex = -1
-                    isUserTyping = false
-                    instructionsLabel.setText("Scroll with the Digital Crown to read the time")
-                    WKInterfaceDevice.current().play(.success)
-                    while morseCode.mcTreeNode?.parent != nil {
-                        morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
-                    }
+                }
+                else if action == "DATE" {
+                    let day = (Calendar.current.component(.day, from: Date()))
+                    let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
+                    let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
+                    englishString = String(day) + weekdayString.prefix(2).uppercased()
+                    englishTextLabel?.setText(englishString)
+                    englishTextLabel?.setHidden(false)
+                    englishStringIndex = -1
+                }
+                morseCodeString = ""
+                for character in englishString {
+                    morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
+                    morseCodeString += "|"
+                }
+                morseCodeTextLabel.setText(morseCodeString)
+                morseCodeStringIndex = -1
+                isUserTyping = false
+                instructionsLabel.setText("Scroll with the Digital Crown to read")
+                WKInterfaceDevice.current().play(.success)
+                while morseCode.mcTreeNode?.parent != nil {
+                    morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
             }
             else {

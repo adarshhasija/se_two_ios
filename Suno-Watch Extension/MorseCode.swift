@@ -91,7 +91,8 @@ class MorseCode {
         mcArray.append(MorseCodeCell(english: "9", morseCode: "----."))
         mcArray.append(MorseCodeCell(english: "0", morseCode: "-----"))
         mcArray.append(MorseCodeCell(english: "Space (␣)", morseCode: ".......", displayChar: "␣"))
-        mcArray.append(MorseCodeCell(english: "TIME", morseCode: ".........."))
+        mcArray.append(MorseCodeCell(english: "TIME", morseCode: "........"))
+        mcArray.append(MorseCodeCell(english: "DATE", morseCode: "........."))
         
         for morseCodeCell in mcArray {
             if morseCodeCell.displayChar != nil {
@@ -122,6 +123,9 @@ class MorseCode {
             nearestMatches.append("Replace the last character with a dash to get: " + currentNode!.parent!.dashNode!.alphabet! + "\n")
         }
         
+        if currentNode?.parent?.action != nil {
+            nearestMatches.append("Delete the last character to get: " + currentNode!.parent!.action! + "\n")
+        }
         if currentNode?.parent?.dotNode?.action != nil {
             nearestMatches.append("Replace the last character with a dot to get: " + currentNode!.parent!.dotNode!.action! + "\n")
         }
@@ -183,8 +187,9 @@ class MorseCode {
                     if morseCodeCell.displayChar != nil {
                         node.alphabet = morseCodeCell.displayChar
                     }
-                    else if morseCodeCell.english == "TIME" {
-                        node.action = "TIME"
+                    else if morseCodeCell.english.count > 1 {
+                        //Itd an action
+                        node.action = morseCodeCell.english
                     }
                     else {
                         node.alphabet = morseCodeCell.english
