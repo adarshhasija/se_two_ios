@@ -13,10 +13,10 @@ import WatchConnectivity
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstructions = ""
+    var defaultInstructions = "Tap to start typing"
     var deafBlindInstructions = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for more options"
     var notDeafBlindInstructions = "Long press to talk or type out a message\n\nOr\n\nForce press for more options"
-    var dcScrollStart = "Rotate the digital crown down to read the morse code"
+    var dcScrollStart = "Rotate the digital crown to read"
     var stopReadingString = "Swipe left once to stop reading and type"
     var keepTypingString = "Keep typing"
     var noMoreMatchesString = "No more matches found for this morse code"
@@ -126,7 +126,7 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeTextLabel.setText(morseCodeString)
                 morseCodeStringIndex = -1
                 isUserTyping = false
-                instructionsLabel.setText("Scroll with the Digital Crown to read")
+                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
                 WKInterfaceDevice.current().play(.success)
                 while morseCode.mcTreeNode?.parent != nil {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
@@ -185,6 +185,11 @@ class MCInterfaceController : WKInterfaceController {
                     }
                 }
                 englishString.removeLast()
+                if englishString.last == " " {
+                    //If the last character is now is space, replace it with the carrat so that it can be seen
+                    englishString.removeLast()
+                    englishString.append("␣")
+                }
                 englishTextLabel.setText(englishString)
                 WKInterfaceDevice.current().play(.success)
             }
@@ -252,6 +257,7 @@ class MCInterfaceController : WKInterfaceController {
             }
         }
         
+        //UserDefaults.standard.removeObject(forKey: "SE3_IS_DEAF_BLIND")
         let isDeafBlind = UserDefaults.standard.integer(forKey: "SE3_IS_DEAF_BLIND")
         if isDeafBlind == 0 {
             pushController(withName: "SettingsDeafBlind", context: self)
@@ -603,10 +609,10 @@ extension MCInterfaceController {
     func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String) {
         var instructionString = mainString
         if !isUserTyping {
-            instructionString += "\nOr\n" + readingString
+            instructionString += "\n\nOr\n\n" + readingString
         }
         else {
-            instructionString += "\nOr\n" + writingString
+            instructionString += "\n\nOr\n\n" + writingString
         }
         self.instructionsLabel.setText(instructionString)
     }
