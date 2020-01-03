@@ -20,8 +20,8 @@ class FAQInterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        faqArray.append(FAQCell(question: "How can deaf-blind read the time", answer: "Tap 8 times and swipe up. The app will display the time in 24 hour format. The deaf-blind user can scroll through the morse code"))
-        faqArray.append(FAQCell(question: "How can deaf-blind read the date", answer: "Tap 9 times and swipe up. The app will display the date and the first 2 letters of the day. eg: Tuesday 20th will be 20TU. The deaf-blind user can scroll through the morse code"))
+        //faqArray.append(FAQCell(question: "How can deaf-blind read the time", answer: "Tap 8 times and swipe up. The app will display the time in 24 hour format. The deaf-blind user can scroll through the morse code"))
+        //faqArray.append(FAQCell(question: "How can deaf-blind read the date", answer: "Tap 9 times and swipe up. The app will display the date and the first 2 letters of the day. eg: Tuesday 20th will be 20TU. The deaf-blind user can scroll through the morse code"))
         faqArray.append(FAQCell(question: "Who is this app designed for", answer: "It is designed for the deaf-blind. However it is highly recommended that a someone who can see and hear and is known to the deaf-blind person use it first to understand it before giving it to the deaf-blind person"))
         faqArray.append(FAQCell(question: "What is special about this app", answer: "Allows communicating using touch. App will convert english alphabets to morse code. The morse code will translate to taps on the wrist which a deaf-blind person can feel."))
         faqArray.append(FAQCell(question: "Meaning of blue text", answer: "It is for the guardian/caregiver of the deaf-blind person. It guides you on how to take the next step in the app."))

@@ -68,6 +68,12 @@ class MCInterfaceController : WKInterfaceController {
                     "state" : "start_speaking",
                     "text" : self.englishString
                 ])
+                let mathResult = performMathCalculation(inputString: englishString)
+                if mathResult != nil {
+                    englishString = mathResult!
+                    englishTextLabel?.setText(englishString)
+                    updateMorseCodeForActions()
+                }
                 synth = AVSpeechSynthesizer.init()
                 synth?.delegate = self
                 let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
@@ -118,19 +124,7 @@ class MCInterfaceController : WKInterfaceController {
                     englishTextLabel?.setHidden(false)
                     englishStringIndex = -1
                 }
-                morseCodeString = ""
-                for character in englishString {
-                    morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
-                    morseCodeString += "|"
-                }
-                morseCodeTextLabel.setText(morseCodeString)
-                morseCodeStringIndex = -1
-                isUserTyping = false
-                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
-                WKInterfaceDevice.current().play(.success)
-                while morseCode.mcTreeNode?.parent != nil {
-                    morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
-                }
+                updateMorseCodeForActions()
             }
             else {
                 sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
@@ -446,6 +440,72 @@ extension MCInterfaceController : WKCrownDelegate {
 
 ///Private Helpers
 extension MCInterfaceController {
+    
+    //Only used for TIME, DATE, Maths
+    func updateMorseCodeForActions() {
+        morseCodeString = ""
+        for character in englishString {
+            morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
+            morseCodeString += "|"
+        }
+        morseCodeTextLabel.setText(morseCodeString)
+        morseCodeStringIndex = -1
+        isUserTyping = false
+        setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
+        WKInterfaceDevice.current().play(.success)
+        while morseCode.mcTreeNode?.parent != nil {
+            morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
+        }
+    }
+    
+    //If there is a result, returns string of result
+    //If there is no result, returns null
+    func performMathCalculation(inputString: String) -> String? {
+        let variablesPlus = inputString.split(separator: "+")
+        let variablesMinus = inputString.split(separator: "-")
+        let variablesMultiply = inputString.split(separator: "X")
+        let variablesDivide = inputString.split(separator: "/")
+        
+        
+        if variablesPlus.count == 2 {
+            let variable0 = Double(variablesPlus[0])
+            let variable1 = Double(variablesPlus[1])
+            if variable0 != nil && variable1 != nil {
+                let result = variable0! + variable1!
+                return String(result)
+            }
+        }
+        if variablesMinus.count == 2 {
+            let variable0 = Int(variablesMinus[0])
+            let variable1 = Int(variablesMinus[1])
+            if variable0 != nil && variable1 != nil {
+                let result = variable0! - variable1!
+                return String(result)
+            }
+        }
+        if variablesMultiply.count == 2 {
+            let variable0 = Int(variablesMultiply[0])
+            let variable1 = Int(variablesMultiply[1])
+            if variable0 != nil && variable1 != nil {
+                let result = variable0! * variable1!
+                return String(result)
+            }
+        }
+        if variablesDivide.count == 2 {
+            let variable0 = Int(variablesDivide[0])
+            let variable1 = Int(variablesDivide[1])
+            if variable0 != nil && variable1 != nil {
+                if variable0! < 1 || variable1! < 1 {
+                    //It will throw a divide by 0 error
+                    return nil
+                }
+                let result = variable0! / variable1!
+                return String(result)
+            }
+        }
+        
+        return nil
+    }
    
     func userIsTyping(firstCharacter: String) {
         //Its the first character. Dont append. Overwrite what is there

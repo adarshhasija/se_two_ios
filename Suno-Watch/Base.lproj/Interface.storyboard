@@ -107,6 +107,11 @@
                                 </connections>
                             </menuItem>
                         </items>
+                        <variation key="default">
+                            <mask key="items">
+                                <exclude reference="ZFq-an-dDt"/>
+                            </mask>
+                        </variation>
                     </menu>
                     <connections>
                         <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>

@@ -91,6 +91,10 @@ class MorseCode {
         mcArray.append(MorseCodeCell(english: "9", morseCode: "----."))
         mcArray.append(MorseCodeCell(english: "0", morseCode: "-----"))
         mcArray.append(MorseCodeCell(english: "Space (␣)", morseCode: ".......", displayChar: "␣"))
+        mcArray.append(MorseCodeCell(english: ".", morseCode: ".-.-.-"))
+        mcArray.append(MorseCodeCell(english: "+", morseCode: ".-.-."))
+        mcArray.append(MorseCodeCell(english: "-", morseCode: "-....-"))
+        mcArray.append(MorseCodeCell(english: "/", morseCode: "-..-."))
         mcArray.append(MorseCodeCell(english: "TIME", morseCode: "........"))
         mcArray.append(MorseCodeCell(english: "DATE", morseCode: "........."))
         
