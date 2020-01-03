@@ -49,13 +49,14 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func upSwipe(_ sender: Any) {
-        if isReading() == true {
+        //This is not needed. In reading mode user can swipe up as many times as he likes to repeat the audio
+      /*  if isReading() == true {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                 "state" : "reading"
             ])
             //Should not be permitted when user is reading
             return
-        }
+        }   */
         if synth?.isSpeaking == true {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                 "state" : "is_speaking"
