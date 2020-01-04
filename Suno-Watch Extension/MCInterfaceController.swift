@@ -69,9 +69,9 @@ class MCInterfaceController : WKInterfaceController {
                     "state" : "start_speaking",
                     "text" : self.englishString
                 ])
-                let mathResult = performMathCalculation(inputString: englishString)
+                let mathResult = performMathCalculation(inputString: englishString) //NSExpression(format:englishString).expressionValue(with: nil, context: nil) as? Int //This wont work if the string also contains alphabets
                 if mathResult != nil {
-                    englishString = mathResult!
+                    englishString = String(mathResult!)
                     englishTextLabel?.setText(englishString)
                     updateMorseCodeForActions()
                 }
@@ -461,6 +461,7 @@ extension MCInterfaceController {
     
     //If there is a result, returns string of result
     //If there is no result, returns null
+    //Only accepts format x +-x/ y
     func performMathCalculation(inputString: String) -> String? {
         let variablesPlus = inputString.split(separator: "+")
         let variablesMinus = inputString.split(separator: "-")
@@ -469,8 +470,8 @@ extension MCInterfaceController {
         
         
         if variablesPlus.count == 2 {
-            let variable0 = Double(variablesPlus[0])
-            let variable1 = Double(variablesPlus[1])
+            let variable0 = Int(variablesPlus[0])
+            let variable1 = Int(variablesPlus[1])
             if variable0 != nil && variable1 != nil {
                 let result = variable0! + variable1!
                 return String(result)
