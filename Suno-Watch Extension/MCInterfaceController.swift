@@ -65,15 +65,24 @@ class MCInterfaceController : WKInterfaceController {
         }
         if morseCodeString.count > 0 {
             if morseCodeString.last == "|" {
-                sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
-                    "state" : "start_speaking",
-                    "text" : self.englishString
-                ])
+                
                 let mathResult = performMathCalculation(inputString: englishString) //NSExpression(format:englishString).expressionValue(with: nil, context: nil) as? Int //This wont work if the string also contains alphabets
+                var isMath = false
                 if mathResult != nil {
+                    isMath = true
                     englishString = String(mathResult!)
                     englishTextLabel?.setText(englishString)
                     updateMorseCodeForActions()
+                }
+                if isMath {
+                    sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                        "state" : "speak_math"
+                    ])
+                }
+                else {
+                    sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                        "state" : "speak"
+                    ])
                 }
                 synth = AVSpeechSynthesizer.init()
                 synth?.delegate = self
@@ -106,6 +115,9 @@ class MCInterfaceController : WKInterfaceController {
                 }
             }
             else if let action = morseCode.mcTreeNode?.action {
+                sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                    "state" : "action_"+action
+                ])
                 if action == "TIME" {
                     let hh = (Calendar.current.component(.hour, from: Date()))
                     let mm = (Calendar.current.component(.minute, from: Date()))
@@ -783,9 +795,15 @@ protocol MCInterfaceControllerProtocol {
 extension MCInterfaceController : MCInterfaceControllerProtocol {
     func settingDeafBlindChanged(isDeafBlind: Int) {
         if isDeafBlind == 1 {
+            sendAnalytics(eventName: "se3_watch_settings_change", parameters: [
+                "is_deaf_blind": true
+            ])
             defaultInstructions = deafBlindInstructions
         }
         else if isDeafBlind == 2 {
+            sendAnalytics(eventName: "se3_watch_settings_change", parameters: [
+                "is_deaf_blind": false
+            ])
             defaultInstructions = notDeafBlindInstructions
         }
         instructionsLabel.setText(defaultInstructions)
