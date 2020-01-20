@@ -811,9 +811,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Placeholder text here..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cdX-dl-fuc">
-                                <rect key="frame" x="16" y="44" width="288" height="466"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Placeholder text here..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cdX-dl-fuc">
+                                <rect key="frame" x="16" y="74" width="288" height="436"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
@@ -826,53 +826,60 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ho5-xE-Ubr">
-                                <rect key="frame" x="5.5" y="476" width="309" height="82"/>
+                                <rect key="frame" x="5.5" y="54" width="309" height="20.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;- Swipe left for help topics --" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKi-ls-x1Z">
-                                        <rect key="frame" x="0.0" y="0.0" width="309" height="20.5"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;- Swipe left for help topics --" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKi-ls-x1Z">
+                                        <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u7C-xI-V54" userLabel="Timer Label">
-                                        <rect key="frame" x="0.0" y="20.5" width="309" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to start recording" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY">
-                                        <rect key="frame" x="0.0" y="20.5" width="309" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap &amp; Hold to Record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY" userLabel="Tap to Record Label">
+                                        <rect key="frame" x="0.0" y="0.0" width="309" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe up to type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhE-i2-hZD">
-                                        <rect key="frame" x="0.0" y="41" width="309" height="20.5"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe up to type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhE-i2-hZD">
+                                        <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to connect to another device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCY-F6-qYh">
-                                        <rect key="frame" x="0.0" y="61.5" width="309" height="20.5"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to connect to another device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCY-F6-qYh">
+                                        <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Swipe left for transcript" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kPp-Xt-sUc">
+                                <rect key="frame" x="186" y="509" width="118" height="39"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="TTt-38-1LB" firstAttribute="leading" secondItem="Rro-IL-Boh" secondAttribute="leadingMargin" id="5cP-0L-6E0"/>
                             <constraint firstItem="cdX-dl-fuc" firstAttribute="leading" secondItem="Rro-IL-Boh" secondAttribute="leadingMargin" id="L9e-a9-L28"/>
                             <constraint firstItem="cdX-dl-fuc" firstAttribute="trailing" secondItem="Rro-IL-Boh" secondAttribute="trailingMargin" id="TFw-ic-NjZ"/>
+                            <constraint firstItem="mei-RG-Ydf" firstAttribute="top" secondItem="kPp-Xt-sUc" secondAttribute="bottom" constant="20" id="Tlm-m8-7vw"/>
                             <constraint firstItem="Ho5-xE-Ubr" firstAttribute="centerX" secondItem="Rro-IL-Boh" secondAttribute="centerX" id="Xf3-Io-5eI"/>
                             <constraint firstItem="TTt-38-1LB" firstAttribute="trailing" secondItem="Rro-IL-Boh" secondAttribute="trailingMargin" id="XjO-2t-ibU"/>
                             <constraint firstItem="mei-RG-Ydf" firstAttribute="top" secondItem="TTt-38-1LB" secondAttribute="bottom" constant="20" id="XlJ-wc-ZTc"/>
-                            <constraint firstItem="cdX-dl-fuc" firstAttribute="top" secondItem="iXE-x7-1PV" secondAttribute="bottom" id="mm9-9k-q4Y"/>
+                            <constraint firstItem="cdX-dl-fuc" firstAttribute="top" secondItem="iXE-x7-1PV" secondAttribute="bottom" constant="30" id="mm9-9k-q4Y"/>
+                            <constraint firstItem="Ho5-xE-Ubr" firstAttribute="top" secondItem="iXE-x7-1PV" secondAttribute="bottom" constant="10" id="noE-W9-Ev5"/>
                             <constraint firstItem="TTt-38-1LB" firstAttribute="top" secondItem="cdX-dl-fuc" secondAttribute="bottom" constant="8" id="qk5-r8-7U0"/>
-                            <constraint firstItem="mei-RG-Ydf" firstAttribute="top" secondItem="Ho5-xE-Ubr" secondAttribute="bottom" constant="10" id="wnI-oB-7Gz"/>
+                            <constraint firstItem="kPp-Xt-sUc" firstAttribute="trailing" secondItem="Rro-IL-Boh" secondAttribute="trailingMargin" id="sMy-hF-XVG"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="dKf-RZ-4Nw" appends="YES" id="5hN-ia-uUi"/>
@@ -926,7 +933,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1112" y="-2795"/>
+            <point key="canvasLocation" x="1111.875" y="-2795.0704225352115"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="DG3-Yo-Q37">

@@ -88,8 +88,9 @@ public class WhiteSpeechViewController: UIViewController {
             "action": action.rawValue,
             "current_state": currentState.last?.rawValue
             ])
-        if action == Action.AppOpened {
-            enterStateIdle()
+        if action == Action.AppOpened && currentState.last == State.ControllerLoaded {
+            enterStateControllerLoaded()
+            currentState.append(State.Idle)
         }
         else if action == Action.Tap && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
@@ -323,7 +324,7 @@ public class WhiteSpeechViewController: UIViewController {
         super.viewDidLoad()
         
         //currentState.append(State.SubscriptionNotPaid)
-        currentState.append(State.Idle) //Push
+        currentState.append(State.ControllerLoaded) //Push
         changeState(action: Action.AppOpened)
         
         // Disable the record buttons until authorization has been granted.
@@ -485,8 +486,21 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     // MARK: State Machine Private Helpers
+    private func enterStateControllerLoaded() {
+        self.recordLabel?.text = "Tap & Hold to Record"
+        UIView.animate(withDuration: 2.0) {
+            guard let y = self.recordLabel?.center.y else {
+                return
+            }
+            self.recordLabel?.center.y = y - 100
+            self.recordLabel?.transform = CGAffineTransform(scaleX: 2, y: 2)
+            //self.view.layoutIfNeeded()
+        }
+        self.textViewBottom?.text = ""
+    }
+    
     private func enterStateIdle() {
-        self.textViewBottom?.text = "If you are hearing-impaired, you can use this app to have a conversation with someone face to face. Tap to talk, swipe up to type, or long press to start a session with another device."
+        //self.textViewBottom?.text = "Tap & Hold to Record"
     }
     
     private func enterStatePromptUserRole() {

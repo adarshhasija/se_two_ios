@@ -10,6 +10,7 @@ import Foundation
 
 enum State :String{
     case SubscriptionNotPaid
+    case ControllerLoaded
     case Idle
     case PromptUserRole         //Ask the user if they are typing or speaking
     case Hosting
