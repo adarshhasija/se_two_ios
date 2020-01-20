@@ -264,16 +264,16 @@ class MCInterfaceController : WKInterfaceController {
             }
         }
         
-        //UserDefaults.standard.removeObject(forKey: "SE3_IS_DEAF_BLIND")
-        let isDeafBlind = UserDefaults.standard.integer(forKey: "SE3_IS_DEAF_BLIND")
-        if isDeafBlind == 0 {
+        //UserDefaults.standard.removeObject(forKey: "SE3_USER_TYPE")
+        let se3UserType = UserDefaults.standard.integer(forKey: "SE3_USER_TYPE")
+        if se3UserType == 0 {
             pushController(withName: "SettingsDeafBlind", context: self)
         }
         else {
-            if isDeafBlind == 1 {
+            if se3UserType == 1 {
                 defaultInstructions = deafBlindInstructions
             }
-            if isDeafBlind == 2 {
+            if se3UserType == 2 {
                 defaultInstructions = notDeafBlindInstructions
             }
             instructionsLabel.setText(defaultInstructions)

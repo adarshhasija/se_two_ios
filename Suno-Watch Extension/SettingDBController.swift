@@ -10,6 +10,8 @@ import Foundation
 import WatchKit
 
 class SettingDBController: WKInterfaceController {
+    
+    //SE3_USER_TYPE: 0 = NOT SET, 1 = DEAF BLIND, 2 = NOT DEAF BLIND
 
     
     @IBOutlet weak var deafBlindSwitch: WKInterfaceSwitch!
@@ -23,14 +25,14 @@ class SettingDBController: WKInterfaceController {
     
     @IBAction func switchValueChange(_ value: Bool) {
         isDeafBlind = value ? 1 : 2
-        UserDefaults.standard.set(isDeafBlind, forKey: "SE3_IS_DEAF_BLIND")
+        UserDefaults.standard.set(isDeafBlind, forKey: "SE3_USER_TYPE")
         instructionLabel.setText(value ? instructionNotDeafBlind : instructionDeafBlind)
         delegate?.settingDeafBlindChanged(isDeafBlind: value ? 1 : 2)
     }
     
     override func awake(withContext context: Any?) {
         self.delegate = context as? MCInterfaceControllerProtocol
-        isDeafBlind = UserDefaults.standard.integer(forKey: "SE3_IS_DEAF_BLIND")
+        isDeafBlind = UserDefaults.standard.integer(forKey: "SE3_USER_TYPE")
         if isDeafBlind == 1 {
             deafBlindSwitch.setOn(true)
             instructionLabel.setText(instructionNotDeafBlind)
@@ -47,13 +49,13 @@ class SettingDBController: WKInterfaceController {
     }
     
     override func willDisappear() {
-        let userDefaultsValue = UserDefaults.standard.integer(forKey: "SE3_IS_DEAF_BLIND")
+        let userDefaultsValue = UserDefaults.standard.integer(forKey: "SE3_USER_TYPE")
         if userDefaultsValue == 0 {
             if isDeafBlind == 0 {
                 //We have no value stored and user tapped on back without changing the value
                 isDeafBlind = 2
             }
-            UserDefaults.standard.set(2, forKey: "SE3_IS_DEAF_BLIND")
+            UserDefaults.standard.set(2, forKey: "SE3_USER_TYPE")
             delegate?.settingDeafBlindChanged(isDeafBlind: isDeafBlind)
         }
     }
