@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2wf-Ck-sTi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JUW-UG-VXo">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -882,12 +882,15 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Suno" id="2ZI-nq-DhT">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" style="plain" systemItem="bookmarks" id="uef-Tw-mVX">
-                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <action selector="helpBarButtonItemTapped:" destination="tNc-1S-FN5" id="sCz-na-y3o"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Item" image="ellipsis" catalog="system" largeContentSizeImage="ellipsis" id="df1-Q0-IQi"/>
+                            <barButtonItem enabled="NO" style="plain" systemItem="bookmarks" id="uef-Tw-mVX">
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="helpBarButtonItemTapped:" destination="tNc-1S-FN5" id="sCz-na-y3o"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="helpBarButtonItem" destination="uef-Tw-mVX" id="gGF-SM-iOL"/>
@@ -946,8 +949,9 @@
     </scenes>
     <resources>
         <image name="SpeakerIcon" width="170.66667175292969" height="170.66667175292969"/>
+        <image name="ellipsis" catalog="system" width="64" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="dSE-Cb-JSO"/>
+        <segue reference="2ZQ-Pc-kt3"/>
     </inferredMetricsTieBreakers>
 </document>
