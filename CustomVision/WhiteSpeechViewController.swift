@@ -44,6 +44,7 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet var mainView : UIView?
     @IBOutlet var textViewTop : UITextView?
     @IBOutlet var textViewBottom : UITextView!
+    @IBOutlet weak var composerStackView: UIStackView!
     @IBOutlet var recordButton : UIButton?
     @IBOutlet weak var longPressLabel: UILabel?
     @IBOutlet weak var recordLabel: UILabel?
@@ -482,18 +483,22 @@ public class WhiteSpeechViewController: UIViewController {
         textViewTop?.font = textViewTop?.font?.withSize(30)
         textViewTop?.text = "(Go ahead, I'm listening)"
         textViewBottom.font = textViewBottom.font?.withSize(30)
-        textViewBottom.text = "You can now talk. Tap the screen when finished. Go ahead, I'm listening"
+        textViewBottom.text = "I am listening..."
     }
     
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
         self.recordLabel?.text = "Tap & Hold to Record"
+        let transform1 = self.composerStackView?.transform.translatedBy(x: 0, y: 50)
+        let transform2 = self.recordLabel?.transform.scaledBy(x: 2, y: 2)
         UIView.animate(withDuration: 2.0) {
-            guard let y = self.recordLabel?.center.y else {
+            guard let y = self.composerStackView?.center.y else {
                 return
             }
-            self.recordLabel?.center.y = y - 100
-            self.recordLabel?.transform = CGAffineTransform(scaleX: 2, y: 2)
+            //self.composerStackView?.center.y = y - 100
+            self.composerStackView?.transform = transform1 ?? CGAffineTransform()
+            self.recordLabel?.transform = transform2 ?? CGAffineTransform() //CGAffineTransform(scaleX: 2, y: 2)
+            
             //self.view.layoutIfNeeded()
         }
         self.textViewBottom?.text = ""
@@ -618,10 +623,38 @@ public class WhiteSpeechViewController: UIViewController {
     private func enterStateSpeaking() {
         if hasInternetConnection() {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration ONLY if not receiving
-            try! startRecording()
-            runTimer()
-            recordButton?.setTitle("Stop recording", for: [])
-            recordLabel?.text = "TAP SCREEN TO STOP RECORDING"
+            //try! startRecording()
+            //runTimer()
+            //recordButton?.setTitle("Stop recording", for: [])
+            self.timerLabel?.alpha = 0
+            
+            let labelTransform = self.recordLabel?.transform.scaledBy(x: 0.5, y: 0.5)
+            let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0.0, y: -50.0)
+            UIView.animate(withDuration: 0.5, animations: {
+                self.recordLabel?.transform = labelTransform ?? CGAffineTransform()
+                self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+                self.timerLabel?.alpha = 1
+                
+                if self.recordLabel != nil {
+                    
+                    UIView.transition(with: self.recordLabel!,
+                                      duration: 2.0,
+                                      options: .transitionCrossDissolve,
+                                      animations: { [weak self] in
+                                        self!.recordLabel!.text = "Start Speaking..."
+                        }, completion: nil)
+                }
+                
+                try! self.startRecording()
+                self.runTimer()
+            })
+            
+        /*    UIView.animate(withDuration: 2.0) {
+                self.timerLabel?.alpha = 1
+                self.recordLabel?.transform.scaledBy(x: 1, y: 1) //CGAffineTransform(scaleX: 1, y: 1)
+                self.composerStackView?.transform.translatedBy(x: 0.0, y: -100.0)
+                //self.view.layoutIfNeeded()
+            }   */
             recordLabel?.isHidden = false
             swipeUpLabel?.isHidden = true
             swipeLeftLabel?.isHidden = true
@@ -939,6 +972,7 @@ public class WhiteSpeechViewController: UIViewController {
         }
         return result
     }
+    
 }
 
 extension WhiteSpeechViewController : SFSpeechRecognizerDelegate {
