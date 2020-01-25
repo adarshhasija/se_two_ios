@@ -11,6 +11,9 @@ import Foundation
 enum Action :String{
     case AppOpened
     case Tap
+    case SpeakerDidSpeak
+    case PressAndHold
+    case ReleaseHold
     case SwipeUp //Open keyboard
     case SwipeLeft //Open help topics
     case BarButtonHelpTapped

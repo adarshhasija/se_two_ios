@@ -811,10 +811,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Placeholder text here..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cdX-dl-fuc">
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Spoken and written text here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cdX-dl-fuc">
                                 <rect key="frame" x="16" y="164" width="288" height="346"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
@@ -826,7 +826,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ho5-xE-Ubr">
-                                <rect key="frame" x="5.5" y="124" width="309" height="20.5"/>
+                                <rect key="frame" x="5.5" y="124" width="309" height="14.5"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;- Swipe left for help topics --" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKi-ls-x1Z">
                                         <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
@@ -840,9 +840,9 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap &amp; Hold to Record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY" userLabel="Tap to Record Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="309" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY" userLabel="Tap to Record Label">
+                                        <rect key="frame" x="0.0" y="0.0" width="309" height="14.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -861,18 +861,28 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="rux-eZ-Lcm">
-                                <rect key="frame" x="122" y="526" width="76.5" height="22"/>
+                                <rect key="frame" x="89" y="504" width="142" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZvB-EK-JAC">
-                                        <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="3hq-Si-cT4"/>
+                                            <constraint firstAttribute="width" constant="44" id="gwf-3d-bBI"/>
+                                        </constraints>
                                         <state key="normal" image="gear" catalog="system"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qye-hS-X10">
-                                        <rect key="frame" x="27" y="0.0" width="23" height="22"/>
+                                        <rect key="frame" x="49" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="cT2-Dt-4Vz"/>
+                                        </constraints>
                                         <state key="normal" image="house" catalog="system"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5w-8R-TTj">
-                                        <rect key="frame" x="55" y="0.0" width="21.5" height="22"/>
+                                        <rect key="frame" x="98" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="Bxk-1K-npc"/>
+                                        </constraints>
                                         <state key="normal" image="book" catalog="system"/>
                                     </button>
                                 </subviews>
@@ -912,6 +922,7 @@
                         <outlet property="composerStackView" destination="Ho5-xE-Ubr" id="4GV-dI-Slc"/>
                         <outlet property="helpBarButtonItem" destination="uef-Tw-mVX" id="gGF-SM-iOL"/>
                         <outlet property="longPressLabel" destination="pCY-F6-qYh" id="FYe-c6-v7u"/>
+                        <outlet property="navStackView" destination="rux-eZ-Lcm" id="tA6-Uf-fec"/>
                         <outlet property="recordButton" destination="TTt-38-1LB" id="WZG-Hp-Zce"/>
                         <outlet property="recordLabel" destination="HFy-dY-UoY" id="tyS-TS-CSl"/>
                         <outlet property="swipeLeftLabel" destination="gKi-ls-x1Z" id="tdu-vE-gQw"/>

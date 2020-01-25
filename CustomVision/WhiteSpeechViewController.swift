@@ -45,6 +45,7 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet var textViewTop : UITextView?
     @IBOutlet var textViewBottom : UITextView!
     @IBOutlet weak var composerStackView: UIStackView!
+    @IBOutlet weak var navStackView: UIStackView!
     @IBOutlet var recordButton : UIButton?
     @IBOutlet weak var longPressLabel: UILabel?
     @IBOutlet weak var recordLabel: UILabel?
@@ -66,7 +67,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     @IBAction func longPressGesture(_ sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began {
-           changeState(action: Action.LongPress)
+           //changeState(action: Action.LongPress)
         }
     }
     
@@ -105,10 +106,15 @@ public class WhiteSpeechViewController: UIViewController {
         else if action == Action.Tap && currentState.contains(State.Typing) {
             changeState(action: Action.TypistFinishedTyping)
         }
-        else if action == Action.Tap && currentState.last == State.Speaking {
-            currentState.popLast()
-            exitStateTyping()
+        else if action == Action.SpeakerDidSpeak && currentState.last == State.Speaking {
+            currentState.append(State.SpeechInProgress)
+        }
+        else if action == Action.Tap && (currentState.last == State.Speaking || currentState.last == State.SpeechInProgress) {
             exitStateSpeaking()
+            if State.SpeechInProgress == currentState.popLast() {
+                currentState.popLast() //Remove speaking as well
+            }
+            
             if currentState.last == State.Idle {
                 UIApplication.shared.isIdleTimerDisabled = false //The screen is allowed to dim
             }
@@ -276,6 +282,7 @@ public class WhiteSpeechViewController: UIViewController {
             enterStateListening()
         }
         else if action == Action.TypistFinishedTyping {
+            exitStateTyping()
             if currentState.last == State.TypingStarted {
                 //User is not in conversation session
                 //User had started typing
@@ -291,7 +298,6 @@ public class WhiteSpeechViewController: UIViewController {
             while currentState.last != State.Idle {
                 currentState.popLast()
             }
-            exitStateTyping()
         }
         else if action == Action.PartnerCompleted && currentState.last == State.Reading {
             currentState.popLast() //pop reading
@@ -323,6 +329,8 @@ public class WhiteSpeechViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        (view as? ThreeDTouchView)?.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         
         //currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.ControllerLoaded) //Push
@@ -429,6 +437,7 @@ public class WhiteSpeechViewController: UIViewController {
             var isFinal = false
             
             if let result = result {
+                self.changeState(action: Action.SpeakerDidSpeak)
                 if self.currentState.last != State.Reading {
                     self.textViewTop?.text = result.bestTranscription.formattedString
                     self.textViewBottom?.text = result.bestTranscription.formattedString
@@ -488,19 +497,17 @@ public class WhiteSpeechViewController: UIViewController {
     
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
-        self.recordLabel?.text = "Tap & Hold to Record"
-        let transform1 = self.composerStackView?.transform.translatedBy(x: 0, y: 50)
-        let transform2 = self.recordLabel?.transform.scaledBy(x: 2, y: 2)
+        self.recordLabel?.text = "Press & Hold to Record"
+        self.recordLabel?.textColor = UIColor.lightGray
+        //let transform1 = self.composerStackView?.transform.translatedBy(x: 0, y: 50)
+        let transform2 = self.recordLabel?.transform.scaledBy(x: 1.5, y: 1.5)
         UIView.animate(withDuration: 2.0) {
-            guard let y = self.composerStackView?.center.y else {
-                return
-            }
-            //self.composerStackView?.center.y = y - 100
-            self.composerStackView?.transform = transform1 ?? CGAffineTransform()
-            self.recordLabel?.transform = transform2 ?? CGAffineTransform() //CGAffineTransform(scaleX: 2, y: 2)
+            //self.composerStackView?.transform = transform1 ?? CGAffineTransform()
+            self.recordLabel?.transform = transform2 ?? CGAffineTransform()
             
             //self.view.layoutIfNeeded()
         }
+        
         self.textViewBottom?.text = ""
     }
     
@@ -585,14 +592,34 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func enterStateTyping() {
-        self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
+        self.recordLabel?.text = "Tap Screen or Tap Return button to complete"
+        self.textViewBottom?.text = "Start typing..."
         textViewBottom?.isEditable = true
         textViewBottom?.becomeFirstResponder()
+        
+        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -80)
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -110)
+        UIView.animate(withDuration: 2.0) {
+            self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+            self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
+        }
     }
     
     private func exitStateTyping() {
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
+        recordLabel?.text = "Tap screen to record"
+        if currentState.last == State.Typing {
+            //Means nothing was actually entered
+            textViewBottom?.text = ""
+        }
+        
+        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 80)
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 110)
+        UIView.animate(withDuration: 2.0) {
+            self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+            self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
+        }
     }
     
     private func enterStateReceivingFromWatch() {
@@ -626,13 +653,14 @@ public class WhiteSpeechViewController: UIViewController {
             //try! startRecording()
             //runTimer()
             //recordButton?.setTitle("Stop recording", for: [])
+            navStackView?.isHidden = true
             self.timerLabel?.alpha = 0
             
-            let labelTransform = self.recordLabel?.transform.scaledBy(x: 0.5, y: 0.5)
-            let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0.0, y: -50.0)
+            //let labelTransform = self.recordLabel?.transform.scaledBy(x: 0.5, y: 0.5)
+            //let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0.0, y: -50.0)
             UIView.animate(withDuration: 0.5, animations: {
-                self.recordLabel?.transform = labelTransform ?? CGAffineTransform()
-                self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+                //self.recordLabel?.transform = labelTransform ?? CGAffineTransform()
+                //self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
                 self.timerLabel?.alpha = 1
                 
                 if self.recordLabel != nil {
@@ -641,7 +669,7 @@ public class WhiteSpeechViewController: UIViewController {
                                       duration: 2.0,
                                       options: .transitionCrossDissolve,
                                       animations: { [weak self] in
-                                        self!.recordLabel!.text = "Start Speaking..."
+                                        self!.recordLabel!.text = "Tap screen to stop recording"
                         }, completion: nil)
                 }
                 
@@ -666,11 +694,23 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func exitStateSpeaking() {
+        textViewBottom?.isEditable = false
+        textViewBottom?.resignFirstResponder() //If keyboard is open for any reason, close it
+        
         if audioEngine.isRunning {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration to indicate end of recording
             audioEngine.stop()
             recognitionRequest?.endAudio()
-            recordButton?.isEnabled = false
+            resetTimer()
+            self.timerLabel?.isHidden = true
+            recordLabel?.text = "Tap screen to start recording"
+            navStackView?.isHidden = false
+            if currentState.last != State.SpeechInProgress {
+                //Means nothing was spoken
+                textViewBottom?.text = ""
+            }
+            
+        /*    recordButton?.isEnabled = false
             recordButton?.setTitle("Stopping", for: .disabled)
             recordLabel?.text = "Stopping"
             resetTimer()
@@ -681,7 +721,7 @@ public class WhiteSpeechViewController: UIViewController {
             swipeUpLabel?.isHidden = false
             swipeLeftLabel?.isHidden = false
             longPressLabel?.isHidden = false
-            recordLabel?.text = "Tap screen to start recording"
+             */
         }
     }
     
@@ -1209,3 +1249,57 @@ extension WhiteSpeechViewController : WCSessionDelegate {
     }
 }
 
+
+///Protocol
+protocol WhiteSpeechViewControllerProtocol {
+    func touchBegan(withForce : CGFloat)
+    func touchEnded(numberOfTransformations : Int)
+    func maxForceReached()
+}
+
+extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
+    func maxForceReached() {
+        changeState(action: Action.PressAndHold)
+    }
+    
+    func touchEnded(numberOfTransformations : Int) {
+        var mutableNumberOfTransformations = numberOfTransformations
+        while mutableNumberOfTransformations > 0 {
+            let labelTransform = self.recordLabel?.transform.scaledBy(x: 1.005, y: 1.005)
+            let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0.0, y: 5.0)
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.recordLabel?.transform = labelTransform ?? CGAffineTransform()
+                self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+                
+            })
+            
+            mutableNumberOfTransformations -= 1
+        }
+        changeState(action: Action.ReleaseHold)
+        
+    }
+    
+    func touchBegan(withForce: CGFloat) {
+        let labelTransform = self.recordLabel?.transform.scaledBy(x: withForce > 0 ? 0.99 : 1.01, y: withForce > 0 ? 0.99 : 1.01)
+        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0.0, y: -5*withForce)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.recordLabel?.transform = labelTransform ?? CGAffineTransform()
+            self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+            //self.timerLabel?.alpha = 1
+            
+            if self.recordLabel != nil {
+                
+             /*   UIView.transition(with: self.recordLabel!,
+                                  duration: 2.0,
+                                  options: .transitionCrossDissolve,
+                                  animations: { [weak self] in
+                                    self!.recordLabel!.text = "Start Speaking..."
+                    }, completion: nil) */
+            }
+            
+            //try! self.startRecording()
+            //self.runTimer()
+        })
+    }
+}

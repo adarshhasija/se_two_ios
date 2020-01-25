@@ -25,6 +25,7 @@ enum State :String{
     case Typing
     case TypingStarted
     case Speaking
+    case SpeechInProgress
     case Listening              //Listening to other person speaking
     case Reading                //Reading what the other person is typing
     
