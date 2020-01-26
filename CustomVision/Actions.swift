@@ -40,9 +40,12 @@ enum Action :String{
     //Opening of new view controller
     case OpenedEditingModeForTyping
     case OpenedEditingModeForSpeaking
+    case OpenedChatLogForReading
     
     //Closing of new view controller
     case CompletedEditing
     case CancelledEditing
     case SpeakerCancelledSpeaking
+    
+    case ChatLogsCleared
 }

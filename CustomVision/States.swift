@@ -30,4 +30,6 @@ enum State :String{
     case Reading                //Reading what the other person is typing
     
     case ReceivingFromWatch
+    
+    case ChatsReadAndShareOnly
 }

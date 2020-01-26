@@ -20,6 +20,7 @@ public class SpeechViewController: UIViewController {
     // MARK: Properties
     let synth = AVSpeechSynthesizer()
     var inputAction : Action? = nil //Action that is passed in from previous controller
+    var whiteSpeechViewControllerProtocol : WhiteSpeechViewControllerProtocol?
     var speechViewControllerProtocol : SpeechViewControllerProtocol?
     let networkManager = NetworkManager.sharedInstance
     var currentState: [State] = []
@@ -67,7 +68,7 @@ public class SpeechViewController: UIViewController {
     @IBOutlet weak var labelConvSessionInstruction: UILabel!
     @IBOutlet weak var textViewRealTimeTextInput: UITextView!
     @IBOutlet weak var conversationTableView: UITableView!
-    private var dataChats: [ChatListItem] = []
+    var dataChats: [ChatListItem] = []
     
     
     @IBOutlet weak var stackViewBottomActions: UIStackView!
@@ -161,6 +162,9 @@ public class SpeechViewController: UIViewController {
                 self.labelConvSessionInstruction?.isHidden = true
                 self.stackViewSaveChatButton?.isHidden = true
                 self.buttonClearChatLog?.isHidden = true
+                
+                self.whiteSpeechViewControllerProtocol?.chatLogsCleared()
+                self.navigationController?.popViewController(animated: true)
             case .cancel:
                 print("cancel")
                 
@@ -284,6 +288,12 @@ public class SpeechViewController: UIViewController {
         else if action == Action.OpenedEditingModeForSpeaking && currentState.last == State.Idle {
             currentState.append(State.Speaking)
             enterStateSpeaking()
+        }
+        else if action == Action.OpenedChatLogForReading && currentState.last == State.Idle {
+            if dataChats.count > 0 {
+                currentState.append(State.ChatsReadAndShareOnly)
+                enterStateChatsReadAndShareOnly()
+            }
         }
         else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
             currentState.popLast() //pop editing mode
@@ -952,6 +962,19 @@ public class SpeechViewController: UIViewController {
             //self.connectDeviceButton?.backgroundColor = UIColor.init(red: 0.1, green: 0.4, blue: 0.2, alpha: 1.0) //dark green
             //self.connectDeviceButton?.isHidden = false
         })
+    }
+    
+    private func enterStateChatsReadAndShareOnly() {
+        self.title = ""
+        viewDeafProfile?.isHidden = false
+        labelTopStatus?.text = "We do not store any chat logs. All logs are deleted when the app is closed"
+        conversationTableView?.isHidden = false
+        typingButton?.isHidden = true
+        speakingButton?.isHidden = true
+        stackViewSaveChatButton?.isHidden = false
+        buttonClearChatLog?.isHidden = false
+        self.conversationTableView.reloadData()
+        self.scrollToBottomOfConversationTable()
     }
     
     private func enterStateSpeaking() {

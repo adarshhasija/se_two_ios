@@ -22,12 +22,14 @@ public class WhiteSpeechViewController: UIViewController {
     var seconds = 60
     var timer = Timer()
     var isTimerRunning = false
+    private var dataChats: [ChatListItem] = []
     
     // MARK: Multipeer Connectivity Properties
     var peerID: MCPeerID!
     var mcSession: MCSession!
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     var mcNearbyServiceBrowser: MCNearbyServiceBrowser!
+    
     
     // MARK: Bluetooth check
     var cbCentralManager:CBCentralManager!
@@ -46,6 +48,11 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet var textViewBottom : UITextView!
     @IBOutlet weak var composerStackView: UIStackView!
     @IBOutlet weak var navStackView: UIStackView!
+    
+    @IBOutlet weak var settingsBtn: UIImageView!
+    @IBOutlet weak var houseImageView: UIImageView!
+    @IBOutlet weak var chatLogBtn: UIImageView!
+    
     @IBOutlet var recordButton : UIButton?
     @IBOutlet weak var longPressLabel: UILabel?
     @IBOutlet weak var recordLabel: UILabel?
@@ -59,6 +66,33 @@ public class WhiteSpeechViewController: UIViewController {
     @IBAction func helpBarButtonItemTapped(_ sender: Any) {
         changeState(action: Action.BarButtonHelpTapped)
     }
+    
+    
+    @IBAction func settingsButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func chatLogButtonTapped(_ sender: Any) {
+        if dataChats.count > 0 {
+            guard let storyBoard : UIStoryboard = self.storyboard else {
+                return
+            }
+            let speechViewController = storyBoard.instantiateViewController(withIdentifier: "SpeechViewController") as! SpeechViewController
+            speechViewController.dataChats.removeAll()
+            speechViewController.dataChats.append(contentsOf: dataChats)
+            speechViewController.inputAction = Action.OpenedChatLogForReading
+            speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+            if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                navigationController.pushViewController(speechViewController, animated: true)
+            }
+        }
+        else {
+            self.chatLogBtn.transform = CGAffineTransform(translationX: 20, y: 0)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                self.chatLogBtn.transform = CGAffineTransform.identity
+            }, completion: nil)
+        }
+    }
+    
     
     @IBAction func tapGesture() {
         changeState(action: Action.Tap)
@@ -93,6 +127,9 @@ public class WhiteSpeechViewController: UIViewController {
         if action == Action.AppOpened && currentState.last == State.ControllerLoaded {
             enterStateControllerLoaded()
             currentState.append(State.Idle)
+        }
+        else if action == Action.ChatLogsCleared && currentState.last == State.Idle {
+            enterStateControllerLoaded() //Reset
         }
         else if action == Action.Tap && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
@@ -405,8 +442,18 @@ public class WhiteSpeechViewController: UIViewController {
         
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        //We do not want the navigation bar on this screen
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.setNavigationBarHidden(true, animated: false)
+        }
+    }
+    
     public override func viewWillDisappear(_ animated: Bool) {
-        
+        //Set the nav bar to visible for next view controller so that user can come back
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.setNavigationBarHidden(false, animated: false)
+        }
     }
     
     /// MARK:- Speech Recognition Helpers
@@ -613,6 +660,32 @@ public class WhiteSpeechViewController: UIViewController {
             //Means nothing was actually entered
             textViewBottom?.text = ""
         }
+        else {
+            guard let newText = textViewBottom?.text else {
+                return
+            }
+            self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName, mode: "typing"))
+            
+            if dataChats.count == 1 {
+                //Means its the first entry in the chat list
+                if #available(iOS 13.0, *) {
+                    self.chatLogBtn?.image = UIImage(systemName: "book.fill")
+                } else {
+                    // Fallback on earlier versions
+                }
+                self.chatLogBtn?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                UIView.animate(withDuration: 2.0,
+                               delay: 0,
+                               usingSpringWithDamping: 0.2,
+                               initialSpringVelocity: 6.0,
+                               options: .allowUserInteraction,
+                               animations: { [weak self] in
+                                self?.chatLogBtn.transform = .identity
+                    },
+                               completion: nil)
+            }
+            
+        }
         
         let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 80)
         let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 110)
@@ -708,6 +781,12 @@ public class WhiteSpeechViewController: UIViewController {
             if currentState.last != State.SpeechInProgress {
                 //Means nothing was spoken
                 textViewBottom?.text = ""
+            }
+            else {
+                guard let newText = textViewBottom?.text else {
+                    return
+                }
+                self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName, mode: "talking"))
             }
             
         /*    recordButton?.isEnabled = false
@@ -1255,9 +1334,22 @@ protocol WhiteSpeechViewControllerProtocol {
     func touchBegan(withForce : CGFloat)
     func touchEnded(numberOfTransformations : Int)
     func maxForceReached()
+    
+    //Coming back from chat logs
+    func chatLogsCleared()
 }
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
+    func chatLogsCleared() {
+        if #available(iOS 13.0, *) {
+            self.chatLogBtn?.image = UIImage(systemName: "book")
+        } else {
+            // Fallback on earlier versions
+        }
+        dataChats.removeAll()
+        changeState(action: Action.ChatLogsCleared)
+    }
+    
     func maxForceReached() {
         changeState(action: Action.PressAndHold)
     }

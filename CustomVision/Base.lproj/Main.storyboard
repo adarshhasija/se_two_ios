@@ -802,7 +802,7 @@
         <!--Suno-->
         <scene sceneID="J7z-Oy-3Ow">
             <objects>
-                <viewController id="tNc-1S-FN5" customClass="WhiteSpeechViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WhiteSpeechViewController" id="tNc-1S-FN5" customClass="WhiteSpeechViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iXE-x7-1PV"/>
                         <viewControllerLayoutGuide type="bottom" id="mei-RG-Ydf"/>
@@ -861,30 +861,37 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="rux-eZ-Lcm">
-                                <rect key="frame" x="89" y="504" width="142" height="44"/>
+                                <rect key="frame" x="127.5" y="518" width="65" height="30"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZvB-EK-JAC">
-                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gear" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XOG-3c-Jnu">
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="31"/>
+                                        <gestureRecognizers/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="3hq-Si-cT4"/>
-                                            <constraint firstAttribute="width" constant="44" id="gwf-3d-bBI"/>
+                                            <constraint firstAttribute="height" constant="30" id="QLh-Qg-In2"/>
+                                            <constraint firstAttribute="width" constant="30" id="pZB-WE-VXc"/>
                                         </constraints>
-                                        <state key="normal" image="gear" catalog="system"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qye-hS-X10">
-                                        <rect key="frame" x="49" y="0.0" width="44" height="44"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="sJr-kL-lmW" appends="YES" id="dkH-3m-Jan"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.25" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="house.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="A00-rX-fz6">
+                                        <rect key="frame" x="32.5" y="-0.5" width="100" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="cT2-Dt-4Vz"/>
+                                            <constraint firstAttribute="height" constant="100" id="UYD-LG-2b0"/>
+                                            <constraint firstAttribute="width" constant="100" id="fdt-b1-fI1"/>
                                         </constraints>
-                                        <state key="normal" image="house" catalog="system"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5w-8R-TTj">
-                                        <rect key="frame" x="98" y="0.0" width="44" height="44"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="book" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Crx-J5-gSE">
+                                        <rect key="frame" x="35" y="1.5" width="30" height="27.5"/>
+                                        <gestureRecognizers/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="Bxk-1K-npc"/>
+                                            <constraint firstAttribute="height" constant="30" id="VRg-3J-TpQ"/>
+                                            <constraint firstAttribute="width" constant="30" id="lR8-wP-xU3"/>
                                         </constraints>
-                                        <state key="normal" image="book" catalog="system"/>
-                                    </button>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="wHL-qa-roD" appends="YES" id="WG6-MA-F9v"/>
+                                        </connections>
+                                    </imageView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -919,12 +926,15 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="chatLogBtn" destination="Crx-J5-gSE" id="qsn-8U-RNl"/>
                         <outlet property="composerStackView" destination="Ho5-xE-Ubr" id="4GV-dI-Slc"/>
                         <outlet property="helpBarButtonItem" destination="uef-Tw-mVX" id="gGF-SM-iOL"/>
+                        <outlet property="houseImageView" destination="A00-rX-fz6" id="eWn-Vr-doJ"/>
                         <outlet property="longPressLabel" destination="pCY-F6-qYh" id="FYe-c6-v7u"/>
                         <outlet property="navStackView" destination="rux-eZ-Lcm" id="tA6-Uf-fec"/>
                         <outlet property="recordButton" destination="TTt-38-1LB" id="WZG-Hp-Zce"/>
                         <outlet property="recordLabel" destination="HFy-dY-UoY" id="tyS-TS-CSl"/>
+                        <outlet property="settingsBtn" destination="XOG-3c-Jnu" id="Lwq-Xd-Ee0"/>
                         <outlet property="swipeLeftLabel" destination="gKi-ls-x1Z" id="tdu-vE-gQw"/>
                         <outlet property="swipeUpLabel" destination="hhE-i2-hZD" id="Ul0-YX-BeT"/>
                         <outlet property="textViewBottom" destination="cdX-dl-fuc" id="Qgj-Ws-A9j"/>
@@ -953,6 +963,16 @@
                         <action selector="swipeGesture:" destination="tNc-1S-FN5" id="Peo-sh-nej"/>
                     </connections>
                 </swipeGestureRecognizer>
+                <tapGestureRecognizer id="wHL-qa-roD">
+                    <connections>
+                        <action selector="chatLogButtonTapped:" destination="tNc-1S-FN5" id="qEx-1r-ZsY"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="sJr-kL-lmW">
+                    <connections>
+                        <action selector="settingsButtonTapped:" destination="tNc-1S-FN5" id="sde-QA-9Ac"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1111.875" y="-2795.0704225352115"/>
         </scene>
@@ -961,7 +981,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JUW-UG-VXo" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" hidden="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xrg-Qa-2XA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xrg-Qa-2XA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -979,7 +999,7 @@
         <image name="SpeakerIcon" width="170.66667175292969" height="170.66667175292969"/>
         <image name="book" catalog="system" width="64" height="52"/>
         <image name="gear" catalog="system" width="64" height="60"/>
-        <image name="house" catalog="system" width="64" height="54"/>
+        <image name="house.fill" catalog="system" width="64" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="2ZQ-Pc-kt3"/>
