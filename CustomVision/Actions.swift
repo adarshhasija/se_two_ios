@@ -48,4 +48,5 @@ enum Action :String{
     case SpeakerCancelledSpeaking
     
     case ChatLogsCleared
+    case UserProfileButtonTapped
 }

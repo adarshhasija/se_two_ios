@@ -23,6 +23,8 @@ public class WhiteSpeechViewController: UIViewController {
     var timer = Timer()
     var isTimerRunning = false
     private var dataChats: [ChatListItem] = []
+    var speechToTextInstructionString = "Tap screen to record"
+    var typingInstructionString = "Swipe up to type"
     
     // MARK: Multipeer Connectivity Properties
     var peerID: MCPeerID!
@@ -69,7 +71,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func settingsButtonTapped(_ sender: Any) {
-        performSegue(withIdentifier: "ProfileSegue", sender: nil)
+        changeState(action: Action.UserProfileButtonTapped)
     }
     
     @IBAction func chatLogButtonTapped(_ sender: Any) {
@@ -121,6 +123,9 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if action == Action.ChatLogsCleared && currentState.last == State.Idle {
             enterStateControllerLoaded() //Reset
+        }
+        else if action == Action.UserProfileButtonTapped && currentState.last == State.Idle {
+            openUserProfileOptions()
         }
         else if action == Action.Tap && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
@@ -391,6 +396,19 @@ public class WhiteSpeechViewController: UIViewController {
             session.activate()
         }
         
+        //UserDefaults.standard.removeObject(forKey: "SE3_IOS_USER_TYPE")
+        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        if se3UserType == "_0" || se3UserType == nil {
+            //None selected
+            changeState(action: Action.UserProfileButtonTapped)
+        }
+        else {
+            //Selection has been made
+            if #available(iOS 13.0, *) {
+                self.settingsBtn?.image = UIImage(systemName: "person.circle.fill")
+            }
+        }
+        
     }
     
     public func sessionReachabilityDidChange(_ session: WCSession) {
@@ -536,7 +554,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
-        self.recordLabel?.text = "Press & Hold to Record"
+        self.recordLabel?.text = speechToTextInstructionString
         self.recordLabel?.textColor = UIColor.lightGray
         //let transform1 = self.composerStackView?.transform.translatedBy(x: 0, y: 50)
         let transform2 = self.recordLabel?.transform.scaledBy(x: 1.5, y: 1.5)
@@ -562,6 +580,18 @@ public class WhiteSpeechViewController: UIViewController {
         speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(speechViewController, animated: true)
+        }
+    }
+    
+    private func openUserProfileOptions() {
+        guard let storyBoard : UIStoryboard = self.storyboard else {
+            return
+        }
+        let userProfileOptionsTableViewController = storyBoard.instantiateViewController(withIdentifier: "UserProfileOptions") as! UserProfileTableViewController
+        userProfileOptionsTableViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        userProfileOptionsTableViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(userProfileOptionsTableViewController, animated: true)
         }
     }
     
@@ -662,7 +692,7 @@ public class WhiteSpeechViewController: UIViewController {
     private func exitStateTyping() {
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
-        recordLabel?.text = "Tap screen to record"
+        recordLabel?.text = speechToTextInstructionString
         if currentState.last == State.Typing {
             //Means nothing was actually entered
             textViewBottom?.text = ""
@@ -783,7 +813,7 @@ public class WhiteSpeechViewController: UIViewController {
             recognitionRequest?.endAudio()
             resetTimer()
             self.timerLabel?.isHidden = true
-            recordLabel?.text = "Tap screen to start recording"
+            recordLabel?.text = typingInstructionString
             navStackView?.isHidden = false
             if currentState.last != State.SpeechInProgress {
                 //Means nothing was spoken
@@ -1344,9 +1374,36 @@ protocol WhiteSpeechViewControllerProtocol {
     
     //Coming back from chat logs
     func chatLogsCleared()
+    
+    //Coming back after setting user profile
+    func userProfileOptionSet(se3UserType : String)
 }
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
+    func userProfileOptionSet(se3UserType : String) {
+        
+        if se3UserType == "_1" {
+            recordLabel?.text = speechToTextInstructionString
+        }
+        else if se3UserType == "_2" {
+            recordLabel?.text = typingInstructionString
+        }
+        
+        if #available(iOS 13.0, *) {
+            self.settingsBtn?.image = UIImage(systemName: "person.circle.fill")
+        }
+        self.settingsBtn?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 6.0,
+                       options: .allowUserInteraction,
+                       animations: { [weak self] in
+                        self?.settingsBtn.transform = .identity
+            },
+                       completion: nil)
+    }
+    
     func chatLogsCleared() {
         if #available(iOS 13.0, *) {
             self.chatLogBtn?.image = UIImage(systemName: "book")

@@ -863,15 +863,15 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="rux-eZ-Lcm">
                                 <rect key="frame" x="127.5" y="518" width="65" height="30"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XOG-3c-Jnu">
-                                        <rect key="frame" x="0.0" y="1.5" width="30" height="28"/>
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XOG-3c-Jnu">
+                                        <rect key="frame" x="0.0" y="0.5" width="30" height="29.5"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="QLh-Qg-In2"/>
                                             <constraint firstAttribute="width" constant="30" id="pZB-WE-VXc"/>
                                         </constraints>
                                         <connections>
-                                            <outletCollection property="gestureRecognizers" destination="sJr-kL-lmW" appends="YES" id="dkH-3m-Jan"/>
+                                            <outletCollection property="gestureRecognizers" destination="2mg-iG-I7r" appends="YES" id="Hmr-uB-4uX"/>
                                         </connections>
                                     </imageView>
                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.25" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="house.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="A00-rX-fz6">
@@ -940,7 +940,6 @@
                         <outlet property="textViewBottom" destination="cdX-dl-fuc" id="Qgj-Ws-A9j"/>
                         <outlet property="timerLabel" destination="u7C-xI-V54" id="iku-5t-mvv"/>
                         <segue destination="1zW-16-RpD" kind="show" identifier="segueHelpTopics" id="2ZQ-Pc-kt3"/>
-                        <segue destination="VQn-PA-uaE" kind="presentation" identifier="segueUserProfile" id="GJn-xP-3VK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iaO-C9-H0C" sceneMemberID="firstResponder"/>
@@ -969,76 +968,68 @@
                         <action selector="chatLogButtonTapped:" destination="tNc-1S-FN5" id="qEx-1r-ZsY"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="sJr-kL-lmW">
+                <tapGestureRecognizer id="2mg-iG-I7r">
                     <connections>
-                        <action selector="settingsButtonTapped:" destination="tNc-1S-FN5" id="sde-QA-9Ac"/>
+                        <action selector="settingsButtonTapped:" destination="tNc-1S-FN5" id="KBH-Nt-PW0"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1111.875" y="-2795.0704225352115"/>
         </scene>
-        <!--Table View Controller-->
+        <!--User Profile Table View Controller-->
         <scene sceneID="xiL-Mt-JF0">
             <objects>
-                <tableViewController id="VQn-PA-uaE" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" alpha="0.5" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="x0w-1M-3M4">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                <tableViewController storyboardIdentifier="UserProfileOptions" id="VQn-PA-uaE" customClass="UserProfileTableViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="x0w-1M-3M4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <sections>
-                            <tableViewSection headerTitle="Section-1" id="xXh-zX-NaR">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="yzz-vu-ujz">
-                                        <rect key="frame" x="0.0" y="28" width="320" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yzz-vu-ujz" id="0cw-wR-CVv">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="UserProfileOptionCell" id="yzz-vu-ujz" customClass="UserProfileOptionTableViewCell" customModule="Suno" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="320" height="99"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yzz-vu-ujz" id="0cw-wR-CVv">
+                                    <rect key="frame" x="0.0" y="0.0" width="280" height="99"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="center" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dlv-z1-sXt">
+                                            <rect key="frame" x="20" y="30" width="230" height="39"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="center" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dlv-z1-sXt">
-                                                    <rect key="frame" x="16" y="-79" width="345" height="37.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I can see hear and speak" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6c-rM-GNz">
-                                                            <rect key="frame" x="0.0" y="0.0" width="345" height="20.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I need to talk to someone who cannot hear and speak" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tl3-mR-aLa">
-                                                            <rect key="frame" x="0.0" y="20.5" width="345" height="17"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="My abilities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6c-rM-GNz">
+                                                    <rect key="frame" x="0.0" y="0.0" width="230" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="My partner abilities" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tl3-mR-aLa">
+                                                    <rect key="frame" x="0.0" y="21.5" width="230" height="17.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="FoP-gk-j8c">
-                                        <rect key="frame" x="0.0" y="71.5" width="320" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FoP-gk-j8c" id="wN9-RF-dlz">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="mYq-cX-6Xg">
-                                        <rect key="frame" x="0.0" y="115" width="320" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mYq-cX-6Xg" id="wYG-I1-h3D">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="dlv-z1-sXt" secondAttribute="trailing" constant="30" id="ELZ-Ox-6p3"/>
+                                        <constraint firstItem="dlv-z1-sXt" firstAttribute="top" secondItem="0cw-wR-CVv" secondAttribute="top" constant="30" id="RYl-Mn-dic"/>
+                                        <constraint firstAttribute="bottom" secondItem="dlv-z1-sXt" secondAttribute="bottom" constant="30" id="YY7-mQ-RI2"/>
+                                        <constraint firstItem="dlv-z1-sXt" firstAttribute="leading" secondItem="0cw-wR-CVv" secondAttribute="leading" constant="20" id="Zle-fy-R1W"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="myAbiltiesDescriptionLabel" destination="I6c-rM-GNz" id="Zrg-Ur-iSQ"/>
+                                    <outlet property="partnerAbilitiesDescriptionLabel" destination="Tl3-mR-aLa" id="yYw-BP-dIG"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
                         <connections>
                             <outlet property="dataSource" destination="VQn-PA-uaE" id="GoQ-iB-Okf"/>
                             <outlet property="delegate" destination="VQn-PA-uaE" id="lE8-Xk-rT7"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="Aop-zv-CtS"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HMA-Vk-ONp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1067,7 +1058,7 @@
         <image name="SpeakerIcon" width="170.66667175292969" height="170.66667175292969"/>
         <image name="book" catalog="system" width="64" height="52"/>
         <image name="house.fill" catalog="system" width="64" height="52"/>
-        <image name="person" catalog="system" width="64" height="60"/>
+        <image name="person.circle" catalog="system" width="64" height="62"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="2ZQ-Pc-kt3"/>
