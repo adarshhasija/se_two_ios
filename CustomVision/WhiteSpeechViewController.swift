@@ -69,21 +69,12 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func settingsButtonTapped(_ sender: Any) {
+        performSegue(withIdentifier: "ProfileSegue", sender: nil)
     }
     
     @IBAction func chatLogButtonTapped(_ sender: Any) {
         if dataChats.count > 0 {
-            guard let storyBoard : UIStoryboard = self.storyboard else {
-                return
-            }
-            let speechViewController = storyBoard.instantiateViewController(withIdentifier: "SpeechViewController") as! SpeechViewController
-            speechViewController.dataChats.removeAll()
-            speechViewController.dataChats.append(contentsOf: dataChats)
-            speechViewController.inputAction = Action.OpenedChatLogForReading
-            speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
-            if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-                navigationController.pushViewController(speechViewController, animated: true)
-            }
+            changeState(action: Action.SwipeLeft)
         }
         else {
             self.chatLogBtn.transform = CGAffineTransform(translationX: 20, y: 0)
@@ -162,8 +153,9 @@ public class WhiteSpeechViewController: UIViewController {
             }
         }
         else if (action == Action.SwipeLeft || action == Action.BarButtonHelpTapped) && currentState.last == State.Idle {
-            Analytics.logEvent("se3_help_topics", parameters: [:])
-            performSegue(withIdentifier: "segueHelpTopics", sender: nil)
+            Analytics.logEvent("se3_view_chat_log", parameters: [:])
+            swipeLeft()
+            //performSegue(withIdentifier: "segueHelpTopics", sender: nil)
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
@@ -558,6 +550,21 @@ public class WhiteSpeechViewController: UIViewController {
         self.textViewBottom?.text = ""
     }
     
+    private func swipeLeft() {
+        //Open the chat log
+        guard let storyBoard : UIStoryboard = self.storyboard else {
+            return
+        }
+        let speechViewController = storyBoard.instantiateViewController(withIdentifier: "SpeechViewController") as! SpeechViewController
+        speechViewController.dataChats.removeAll()
+        speechViewController.dataChats.append(contentsOf: dataChats)
+        speechViewController.inputAction = Action.OpenedChatLogForReading
+        speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(speechViewController, animated: true)
+        }
+    }
+    
     private func enterStateIdle() {
         //self.textViewBottom?.text = "Tap & Hold to Record"
     }
@@ -646,7 +653,7 @@ public class WhiteSpeechViewController: UIViewController {
         
         let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -80)
         let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -110)
-        UIView.animate(withDuration: 2.0) {
+        UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
         }
@@ -674,7 +681,7 @@ public class WhiteSpeechViewController: UIViewController {
                     // Fallback on earlier versions
                 }
                 self.chatLogBtn?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                UIView.animate(withDuration: 2.0,
+                UIView.animate(withDuration: 1.0,
                                delay: 0,
                                usingSpringWithDamping: 0.2,
                                initialSpringVelocity: 6.0,
@@ -689,7 +696,7 @@ public class WhiteSpeechViewController: UIViewController {
         
         let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 80)
         let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 110)
-        UIView.animate(withDuration: 2.0) {
+        UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
         }

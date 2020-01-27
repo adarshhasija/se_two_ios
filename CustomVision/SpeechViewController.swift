@@ -290,10 +290,8 @@ public class SpeechViewController: UIViewController {
             enterStateSpeaking()
         }
         else if action == Action.OpenedChatLogForReading && currentState.last == State.Idle {
-            if dataChats.count > 0 {
-                currentState.append(State.ChatsReadAndShareOnly)
-                enterStateChatsReadAndShareOnly()
-            }
+            currentState.append(State.ChatsReadAndShareOnly)
+            enterStateChatsReadAndShareOnly()
         }
         else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
             currentState.popLast() //pop editing mode
@@ -971,10 +969,17 @@ public class SpeechViewController: UIViewController {
         conversationTableView?.isHidden = false
         typingButton?.isHidden = true
         speakingButton?.isHidden = true
-        stackViewSaveChatButton?.isHidden = false
-        buttonClearChatLog?.isHidden = false
-        self.conversationTableView.reloadData()
-        self.scrollToBottomOfConversationTable()
+        if dataChats.count > 0 {
+            stackViewSaveChatButton?.isHidden = false
+            buttonClearChatLog?.isHidden = false
+            conversationTableView.reloadData()
+            scrollToBottomOfConversationTable()
+        }
+        else {
+            stackViewSaveChatButton?.isHidden = true
+            buttonClearChatLog?.isHidden = true
+        }
+        
     }
     
     private func enterStateSpeaking() {
@@ -1671,7 +1676,7 @@ extension SpeechViewController : UITableViewDataSource {
         }
         else {
             if emptyTableText == nil {
-                emptyTableText = "No conversation in progress.\nUse the options below to begin."
+                emptyTableText = "No conversation in progress"
             }
             
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
