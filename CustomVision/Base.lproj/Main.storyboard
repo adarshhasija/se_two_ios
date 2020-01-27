@@ -812,7 +812,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Spoken and written text here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cdX-dl-fuc">
-                                <rect key="frame" x="16" y="164" width="288" height="346"/>
+                                <rect key="frame" x="16" y="184" width="288" height="326"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -826,34 +826,43 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ho5-xE-Ubr">
-                                <rect key="frame" x="5.5" y="124" width="309" height="14.5"/>
+                                <rect key="frame" x="10" y="124" width="300" height="14.5"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;- Swipe left for help topics --" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKi-ls-x1Z">
-                                        <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disabled context label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4i-9M-6Li">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="300" id="2MT-vr-tX2"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u7C-xI-V54" userLabel="Timer Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY" userLabel="Tap to Record Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="309" height="14.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="14.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe up to type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhE-i2-hZD">
-                                        <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to connect to another device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCY-F6-qYh">
-                                        <rect key="frame" x="0.0" y="0.0" width="309" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -906,7 +915,7 @@
                             <constraint firstItem="Ho5-xE-Ubr" firstAttribute="centerX" secondItem="Rro-IL-Boh" secondAttribute="centerX" id="Xf3-Io-5eI"/>
                             <constraint firstItem="TTt-38-1LB" firstAttribute="trailing" secondItem="Rro-IL-Boh" secondAttribute="trailingMargin" id="XjO-2t-ibU"/>
                             <constraint firstItem="mei-RG-Ydf" firstAttribute="top" secondItem="TTt-38-1LB" secondAttribute="bottom" constant="20" id="XlJ-wc-ZTc"/>
-                            <constraint firstItem="cdX-dl-fuc" firstAttribute="top" secondItem="iXE-x7-1PV" secondAttribute="bottom" constant="120" id="mm9-9k-q4Y"/>
+                            <constraint firstItem="cdX-dl-fuc" firstAttribute="top" secondItem="iXE-x7-1PV" secondAttribute="bottom" constant="140" id="mm9-9k-q4Y"/>
                             <constraint firstItem="Ho5-xE-Ubr" firstAttribute="top" secondItem="iXE-x7-1PV" secondAttribute="bottom" constant="80" id="noE-W9-Ev5"/>
                             <constraint firstItem="TTt-38-1LB" firstAttribute="top" secondItem="cdX-dl-fuc" secondAttribute="bottom" constant="8" id="qk5-r8-7U0"/>
                         </constraints>
@@ -928,6 +937,7 @@
                     <connections>
                         <outlet property="chatLogBtn" destination="Crx-J5-gSE" id="qsn-8U-RNl"/>
                         <outlet property="composerStackView" destination="Ho5-xE-Ubr" id="4GV-dI-Slc"/>
+                        <outlet property="disabledContextLabel" destination="c4i-9M-6Li" id="oJ4-nO-mGD"/>
                         <outlet property="helpBarButtonItem" destination="uef-Tw-mVX" id="gGF-SM-iOL"/>
                         <outlet property="houseImageView" destination="A00-rX-fz6" id="eWn-Vr-doJ"/>
                         <outlet property="longPressLabel" destination="pCY-F6-qYh" id="FYe-c6-v7u"/>

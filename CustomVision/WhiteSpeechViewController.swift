@@ -17,14 +17,16 @@ import WatchConnectivity
 public class WhiteSpeechViewController: UIViewController {
 
     // MARK: Properties
+    let synth = AVSpeechSynthesizer()
     let networkManager = NetworkManager.sharedInstance
     var currentState: [State] = []
     var seconds = 60
     var timer = Timer()
     var isTimerRunning = false
     private var dataChats: [ChatListItem] = []
-    var speechToTextInstructionString = "Tap screen to record"
+    var speechToTextInstructionString = "Tap screen to record speech"
     var typingInstructionString = "Swipe up to type"
+    var hiSIContextString = "This person cannot hear or speak. Please help them"
     
     // MARK: Multipeer Connectivity Properties
     var peerID: MCPeerID!
@@ -61,6 +63,8 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet weak var timerLabel: UILabel?
     @IBOutlet weak var swipeUpLabel: UILabel!
     @IBOutlet weak var swipeLeftLabel: UILabel!
+    @IBOutlet weak var disabledContextLabel: UILabel!
+    
     
     // MARK: Interface Builder actions
     
@@ -134,6 +138,9 @@ public class WhiteSpeechViewController: UIViewController {
             if hasInternetConnection() {
                 currentState.append(State.Speaking)
                 enterStateSpeaking()
+            }
+            else {
+                dialogOK(title: "Alert", message: "No internet connection")
             }
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
@@ -554,8 +561,17 @@ public class WhiteSpeechViewController: UIViewController {
     
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
-        self.recordLabel?.text = speechToTextInstructionString
-        self.recordLabel?.textColor = UIColor.lightGray
+        self.disabledContextLabel?.textColor = UIColor.lightGray
+        self.recordLabel?.textColor = UIColor.darkGray
+        
+        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        if se3UserType == "_1" {
+            self.recordLabel?.text = speechToTextInstructionString
+        }
+        else {
+            self.recordLabel?.text = typingInstructionString
+        }
+
         //let transform1 = self.composerStackView?.transform.translatedBy(x: 0, y: 50)
         let transform2 = self.recordLabel?.transform.scaledBy(x: 1.5, y: 1.5)
         UIView.animate(withDuration: 2.0) {
@@ -676,13 +692,15 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func enterStateTyping() {
+        self.disabledContextLabel?.text = ""
+        self.disabledContextLabel?.isHidden = true
         self.recordLabel?.text = "Tap Screen or Tap Return button to complete"
         self.textViewBottom?.text = "Start typing..."
         textViewBottom?.isEditable = true
         textViewBottom?.becomeFirstResponder()
         
         let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -80)
-        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -110)
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -130)
         UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
@@ -692,15 +710,26 @@ public class WhiteSpeechViewController: UIViewController {
     private func exitStateTyping() {
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
-        recordLabel?.text = speechToTextInstructionString
         if currentState.last == State.Typing {
             //Means nothing was actually entered
-            textViewBottom?.text = ""
+            recordLabel?.text = typingInstructionString
+            if dataChats.count > 0 {
+                if dataChats[dataChats.count - 1].mode == "typing" {
+                    //If the last message was typed
+                    disabledContextLabel?.isHidden = false
+                    disabledContextLabel?.text = hiSIContextString
+                }
+                textViewBottom?.text = dataChats[dataChats.count - 1].text
+            }
+            else {
+                textViewBottom?.text = ""
+            }
         }
         else {
             guard let newText = textViewBottom?.text else {
                 return
             }
+            sayThis(string: newText)
             self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName, mode: "typing"))
             
             if dataChats.count == 1 {
@@ -722,10 +751,18 @@ public class WhiteSpeechViewController: UIViewController {
                                completion: nil)
             }
             
+            recordLabel?.text = speechToTextInstructionString
+            if "_2" == UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") {
+                //HI and SI
+                disabledContextLabel?.isHidden = false
+                disabledContextLabel?.text = hiSIContextString
+            }
+
         }
         
+        
         let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 80)
-        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 110)
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 130)
         UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
@@ -763,6 +800,8 @@ public class WhiteSpeechViewController: UIViewController {
             //try! startRecording()
             //runTimer()
             //recordButton?.setTitle("Stop recording", for: [])
+            disabledContextLabel?.isHidden = true
+            disabledContextLabel?.text = ""
             navStackView?.isHidden = true
             self.timerLabel?.alpha = 0
             
@@ -817,13 +856,43 @@ public class WhiteSpeechViewController: UIViewController {
             navStackView?.isHidden = false
             if currentState.last != State.SpeechInProgress {
                 //Means nothing was spoken
-                textViewBottom?.text = ""
+                if dataChats.count > 0 {
+                    if dataChats[dataChats.count - 1].mode == "typing" {
+                        //If the last message was typed
+                        disabledContextLabel?.isHidden = false
+                        disabledContextLabel?.text = hiSIContextString
+                    }
+                    textViewBottom?.text = dataChats[dataChats.count - 1].text
+                }
+                else {
+                   textViewBottom?.text = ""
+                }
             }
             else {
                 guard let newText = textViewBottom?.text else {
                     return
                 }
+                sayThis(string: newText)
                 self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName, mode: "talking"))
+                
+                if dataChats.count == 1 {
+                    //Means its the first entry in the chat list
+                    if #available(iOS 13.0, *) {
+                        self.chatLogBtn?.image = UIImage(systemName: "book.fill")
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                    self.chatLogBtn?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                    UIView.animate(withDuration: 1.0,
+                                   delay: 0,
+                                   usingSpringWithDamping: 0.2,
+                                   initialSpringVelocity: 6.0,
+                                   options: .allowUserInteraction,
+                                   animations: { [weak self] in
+                                    self?.chatLogBtn.transform = .identity
+                        },
+                                   completion: nil)
+                }
             }
             
         /*    recordButton?.isEnabled = false
@@ -1129,6 +1198,42 @@ public class WhiteSpeechViewController: UIViewController {
         return result
     }
     
+    private func sayThis(string: String) {
+        let audioSession = AVAudioSession.sharedInstance()
+        do { try audioSession.setCategory(AVAudioSessionCategoryPlayback) }
+        catch { showToast(message: "Sorry, audio failed to play") }
+        do { try audioSession.setMode(AVAudioSessionModeDefault) }
+        catch { showToast(message: "Sorry, audio failed to play") }
+        
+        let utterance = AVSpeechUtterance(string: string)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        if synth.isPaused {
+            synth.continueSpeaking()
+        }
+        else {
+            synth.speak(utterance)
+        }
+    }
+    
+    func showToast(message : String) {
+        
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 75, y: self.view.frame.size.height-100, width: 150, height: 60))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(1.0) //0.6
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center;
+        toastLabel.numberOfLines = 2
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+    
 }
 
 extension WhiteSpeechViewController : SFSpeechRecognizerDelegate {
@@ -1381,6 +1486,9 @@ protocol WhiteSpeechViewControllerProtocol {
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     func userProfileOptionSet(se3UserType : String) {
+        Analytics.logEvent("se3_user_profile_setxs", parameters: [
+            "user_type": se3UserType
+        ])
         
         if se3UserType == "_1" {
             recordLabel?.text = speechToTextInstructionString
