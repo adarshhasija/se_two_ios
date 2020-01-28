@@ -264,16 +264,16 @@ class MCInterfaceController : WKInterfaceController {
             }
         }
         
-        //UserDefaults.standard.removeObject(forKey: "SE3_IS_DEAF_BLIND")
-        let isDeafBlind = UserDefaults.standard.integer(forKey: "SE3_IS_DEAF_BLIND")
-        if isDeafBlind == 0 {
+        //UserDefaults.standard.removeObject(forKey: "SE3_WATCHOS_USER_TYPE")
+        let se3UserType = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
+        if se3UserType == nil {
             pushController(withName: "SettingsDeafBlind", context: self)
         }
         else {
-            if isDeafBlind == 1 {
+            if se3UserType == "_2" {
                 defaultInstructions = deafBlindInstructions
             }
-            if isDeafBlind == 2 {
+            if se3UserType == "_1" {
                 defaultInstructions = notDeafBlindInstructions
             }
             instructionsLabel.setText(defaultInstructions)
@@ -789,18 +789,18 @@ extension MCInterfaceController {
 
 ///Protocol
 protocol MCInterfaceControllerProtocol {
-    func settingDeafBlindChanged(isDeafBlind: Int)
+    func settingDeafBlindChanged(se3UserType: String)
 }
 
 extension MCInterfaceController : MCInterfaceControllerProtocol {
-    func settingDeafBlindChanged(isDeafBlind: Int) {
-        if isDeafBlind == 1 {
+    func settingDeafBlindChanged(se3UserType: String) {
+        if se3UserType == "_2" {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [
                 "is_deaf_blind": true
             ])
             defaultInstructions = deafBlindInstructions
         }
-        else if isDeafBlind == 2 {
+        else if se3UserType == "_1" {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [
                 "is_deaf_blind": false
             ])
