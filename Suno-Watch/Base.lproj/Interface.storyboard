@@ -86,12 +86,12 @@
                     </items>
                     <menu key="menu" id="CIl-sb-hrR">
                         <items>
-                            <menuItem title="Talk/Type" icon="add" id="xAH-Dg-9VP">
+                            <menuItem title="Talk/Type" image="pencil" catalog="system" id="xAH-Dg-9VP">
                                 <connections>
                                     <action selector="tappedTalkType" destination="V63-br-2PY" id="Ipx-9V-fNY"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Morse Code Dictionary" icon="more" id="ODK-tU-4U9">
+                            <menuItem title="Morse Code Dictionary" image="book.fill" catalog="system" id="ODK-tU-4U9">
                                 <connections>
                                     <action selector="tappedDictionary" destination="V63-br-2PY" id="8ek-HE-l3F"/>
                                 </connections>
@@ -101,7 +101,7 @@
                                     <action selector="tappedFAQs" destination="V63-br-2PY" id="kJG-3a-Woh"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Deaf-Blind Setting" icon="accept" id="VUr-fI-NOR">
+                            <menuItem title="Deaf-Blind Setting" image="person.fill" catalog="system" id="VUr-fI-NOR">
                                 <connections>
                                     <action selector="tappedSettingsDeafBlind" destination="V63-br-2PY" id="hzb-6q-mTK"/>
                                 </connections>
@@ -202,4 +202,9 @@
             <point key="canvasLocation" x="428" y="391"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="book.fill" catalog="system" width="64" height="50"/>
+        <image name="pencil" catalog="system" width="64" height="58"/>
+        <image name="person.fill" catalog="system" width="64" height="60"/>
+    </resources>
 </document>
