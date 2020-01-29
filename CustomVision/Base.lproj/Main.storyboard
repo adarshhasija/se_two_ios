@@ -814,7 +814,7 @@
                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Spoken and written text here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cdX-dl-fuc">
                                 <rect key="frame" x="16" y="184" width="288" height="326"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
@@ -851,7 +851,7 @@
                                     </label>
                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wifi.slash" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Qah-8m-dI7">
                                         <rect key="frame" x="0.0" y="-2.5" width="300" height="1"/>
-                                        <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY" userLabel="Tap to Record Label">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="14.5"/>
@@ -1016,10 +1016,10 @@
             </objects>
             <point key="canvasLocation" x="1111.875" y="-2795.0704225352115"/>
         </scene>
-        <!--View Controller-->
+        <!--Watch App View Controller-->
         <scene sceneID="d9e-ir-RAr">
             <objects>
-                <viewController id="Q2u-rg-DAP" sceneMemberID="viewController">
+                <viewController id="Q2u-rg-DAP" customClass="WatchAppViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="U9D-Mv-hQs"/>
                         <viewControllerLayoutGuide type="bottom" id="WBb-61-XXw"/>
@@ -1028,19 +1028,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="liW-0r-SCq">
-                                <rect key="frame" x="40" y="210" width="240" height="128"/>
-                                <connections>
-                                    <segue destination="f8e-tm-SA9" kind="embed" id="fNp-Tl-LMZ"/>
-                                </connections>
-                            </containerView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mbq-vP-Vq0">
+                                <rect key="frame" x="7.5" y="274" width="305.5" height="50"/>
+                                <subviews>
+                                    <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="liW-0r-SCq">
+                                        <rect key="frame" x="0.0" y="0.0" width="305.5" height="50"/>
+                                        <connections>
+                                            <segue destination="f8e-tm-SA9" kind="embed" id="fNp-Tl-LMZ"/>
+                                        </connections>
+                                    </containerView>
+                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5gR-BR-hrz">
+                                        <rect key="frame" x="0.0" y="0.0" width="305.5" height="0.0"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SunoWatchIcon" translatesAutoresizingMaskIntoConstraints="NO" id="gaJ-Pb-HmQ">
+                                                <rect key="frame" x="0.0" y="0.0" width="305.5" height="0.0"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watch app installed but user unknown..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yog-3K-kiu">
+                                                <rect key="frame" x="0.0" y="0.0" width="305.5" height="0.0"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="liW-0r-SCq" firstAttribute="centerX" secondItem="9fW-SO-pyG" secondAttribute="centerX" id="VMH-hw-Kgu"/>
-                            <constraint firstItem="liW-0r-SCq" firstAttribute="centerY" secondItem="9fW-SO-pyG" secondAttribute="centerY" id="YB7-T7-w7K"/>
+                            <constraint firstItem="mbq-vP-Vq0" firstAttribute="centerX" secondItem="9fW-SO-pyG" secondAttribute="centerX" id="ga0-N7-zg9"/>
+                            <constraint firstItem="mbq-vP-Vq0" firstAttribute="centerY" secondItem="9fW-SO-pyG" secondAttribute="centerY" id="sHZ-7P-BCw"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="noWatchAppContainerView" destination="liW-0r-SCq" id="ftM-Od-KCW"/>
+                        <outlet property="watchUserTypeLabel" destination="Yog-3K-kiu" id="1fi-Cq-PTh"/>
+                        <outlet property="yesWatchAppStackView" destination="5gR-BR-hrz" id="pDI-dg-aoQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EMX-gM-zpW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1127,12 +1151,16 @@
         <scene sceneID="bJy-0C-3RG">
             <objects>
                 <viewController id="f8e-tm-SA9" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FFQ-h0-UtS"/>
+                        <viewControllerLayoutGuide type="bottom" id="Oc5-fm-y7v"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="U6Z-wy-hx4">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                        <rect key="frame" x="0.0" y="0.0" width="305.5" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="pZM-qD-Bnl">
-                                <rect key="frame" x="-5" y="-184" width="250" height="496"/>
+                                <rect key="frame" x="28" y="-223" width="250" height="496"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SunoWatchIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ukf-lt-xit">
                                         <rect key="frame" x="0.0" y="0.0" width="250" height="33"/>

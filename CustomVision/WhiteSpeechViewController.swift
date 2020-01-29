@@ -758,6 +758,7 @@ public class WhiteSpeechViewController: UIViewController {
             if dataChats.count > 0 {
                 if dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
+                    recordLabel?.text = speechToTextInstructionString
                     disabledContextLabel?.isHidden = false
                     disabledContextLabel?.text = hiSIContextString
                 }
@@ -794,11 +795,8 @@ public class WhiteSpeechViewController: UIViewController {
             }
             
             recordLabel?.text = speechToTextInstructionString
-            if "_2" == UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") {
-                //HI and SI
-                disabledContextLabel?.isHidden = false
-                disabledContextLabel?.text = hiSIContextString
-            }
+            disabledContextLabel?.isHidden = false
+            disabledContextLabel?.text = hiSIContextString
 
         }
         

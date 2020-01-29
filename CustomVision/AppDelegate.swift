@@ -41,5 +41,8 @@ extension AppDelegate : WCSessionDelegate {
             {
             Analytics.logEvent(eventName, parameters: parameters)
         }
+        if let watchUserType = message["user_type"] as? String {
+            
+        }
     }
 }
