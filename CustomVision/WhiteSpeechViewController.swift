@@ -52,13 +52,15 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet var textViewBottom : UITextView!
     @IBOutlet weak var composerStackView: UIStackView!
     @IBOutlet weak var navStackView: UIStackView!
+    @IBOutlet weak var bottomLeftStackView: UIStackView!
     
-    @IBOutlet weak var settingsBtn: UIImageView!
+    @IBOutlet weak var userProfileBtn: UIImageView!
     @IBOutlet weak var houseImageView: UIImageView!
     @IBOutlet weak var chatLogBtn: UIImageView!
     
     @IBOutlet var recordButton : UIButton?
-    @IBOutlet weak var longPressLabel: UILabel?
+    @IBOutlet weak var longPressLabel: UILabel?   
+    @IBOutlet weak var noInternetImageView: UIImageView!
     @IBOutlet weak var recordLabel: UILabel?
     @IBOutlet weak var timerLabel: UILabel?
     @IBOutlet weak var swipeUpLabel: UILabel!
@@ -74,7 +76,13 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     
-    @IBAction func settingsButtonTapped(_ sender: Any) {
+    @IBAction func appleWatchButtonTapped(_ sender: Any) {
+        Analytics.logEvent("se3_btn_watch_tap", parameters: [:])
+        performSegue(withIdentifier: "segueAppleWatch", sender: nil)
+    }
+    
+    
+    @IBAction func userProfileButtonTapped(_ sender: Any) {
         changeState(action: Action.UserProfileButtonTapped)
     }
     
@@ -140,7 +148,8 @@ public class WhiteSpeechViewController: UIViewController {
                 enterStateSpeaking()
             }
             else {
-                dialogOK(title: "Alert", message: "No internet connection")
+                //dialogOK(title: "Alert", message: "No internet connection")
+                animateNoInternetConnection()
             }
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
@@ -412,7 +421,7 @@ public class WhiteSpeechViewController: UIViewController {
         else {
             //Selection has been made
             if #available(iOS 13.0, *) {
-                self.settingsBtn?.image = UIImage(systemName: "person.circle.fill")
+                self.userProfileBtn?.image = UIImage(systemName: "person.circle.fill")
             }
         }
         
@@ -559,6 +568,23 @@ public class WhiteSpeechViewController: UIViewController {
         textViewBottom.text = "I am listening..."
     }
     
+    private func animateNoInternetConnection() {
+        self.noInternetImageView?.isHidden = false
+        self.noInternetImageView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 6.0,
+                       options: .allowUserInteraction,
+                       animations: { [weak self] in
+                        self?.noInternetImageView.transform = .identity
+            },
+                       completion: { _ in
+                           self.noInternetImageView?.isHidden = true
+                           self.sayThis(string: "No internet connection")
+                       })
+    }
+    
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
         self.disabledContextLabel?.textColor = UIColor.lightGray
@@ -692,6 +718,11 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func enterStateTyping() {
+        //Close stack views
+        bottomLeftStackView?.isHidden = true
+        navStackView?.isHidden = true
+        //
+        
         self.disabledContextLabel?.text = ""
         self.disabledContextLabel?.isHidden = true
         self.recordLabel?.text = "Tap Screen or Tap Return button to complete"
@@ -708,6 +739,11 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func exitStateTyping() {
+        //Show stack views
+        navStackView?.isHidden = false
+        bottomLeftStackView?.isHidden = false
+        //
+        
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
         if currentState.last == State.Typing {
@@ -800,6 +836,12 @@ public class WhiteSpeechViewController: UIViewController {
             //try! startRecording()
             //runTimer()
             //recordButton?.setTitle("Stop recording", for: [])
+            
+            //Close/hide stack views
+            navStackView?.isHidden = true
+            bottomLeftStackView?.isHidden = true
+            //
+            
             disabledContextLabel?.isHidden = true
             disabledContextLabel?.text = ""
             navStackView?.isHidden = true
@@ -838,11 +880,17 @@ public class WhiteSpeechViewController: UIViewController {
             longPressLabel?.isHidden = true
         }
         else {
-            dialogOK(title: "Alert", message: "No internet connection")
+            //dialogOK(title: "Alert", message: "No internet connection")
+            animateNoInternetConnection()
         }
     }
     
     private func exitStateSpeaking() {
+        //Show stack views
+        navStackView?.isHidden = false
+        bottomLeftStackView?.isHidden = false
+        //
+        
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder() //If keyboard is open for any reason, close it
         
@@ -1498,16 +1546,16 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         }
         
         if #available(iOS 13.0, *) {
-            self.settingsBtn?.image = UIImage(systemName: "person.circle.fill")
+            self.userProfileBtn?.image = UIImage(systemName: "person.circle.fill")
         }
-        self.settingsBtn?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        self.userProfileBtn?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         UIView.animate(withDuration: 1.0,
                        delay: 0,
                        usingSpringWithDamping: 0.2,
                        initialSpringVelocity: 6.0,
                        options: .allowUserInteraction,
                        animations: { [weak self] in
-                        self?.settingsBtn.transform = .identity
+                        self?.userProfileBtn.transform = .identity
             },
                        completion: nil)
     }
