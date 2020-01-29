@@ -77,8 +77,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func appleWatchButtonTapped(_ sender: Any) {
-        Analytics.logEvent("se3_btn_watch_tap", parameters: [:])
-        performSegue(withIdentifier: "segueAppleWatch", sender: nil)
+        changeState(action: Action.AppleWatchButtonTapped)
     }
     
     
@@ -135,6 +134,9 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if action == Action.ChatLogsCleared && currentState.last == State.Idle {
             enterStateControllerLoaded() //Reset
+        }
+        else if action == Action.AppleWatchButtonTapped && currentState.last == State.Idle {
+            openAppleWatchAppInfoScreen()
         }
         else if action == Action.UserProfileButtonTapped && currentState.last == State.Idle {
             openUserProfileOptions()
@@ -623,6 +625,10 @@ public class WhiteSpeechViewController: UIViewController {
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(speechViewController, animated: true)
         }
+    }
+    
+    private func openAppleWatchAppInfoScreen() {
+        performSegue(withIdentifier: "segueAppleWatch", sender: nil)
     }
     
     private func openUserProfileOptions() {

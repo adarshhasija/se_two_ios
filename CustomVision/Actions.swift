@@ -49,4 +49,5 @@ enum Action :String{
     
     case ChatLogsCleared
     case UserProfileButtonTapped
+    case AppleWatchButtonTapped
 }
