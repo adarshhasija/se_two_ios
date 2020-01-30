@@ -601,15 +601,15 @@ public class WhiteSpeechViewController: UIViewController {
             self.recordLabel?.text = typingInstructionString
         }
 
-        let transform2 = self.recordLabel?.transform.scaledBy(x: 1.5, y: 1.5)
+     /*   let transform2 = self.recordLabel?.transform.scaledBy(x: 1.5, y: 1.5)
         UIView.animate(withDuration: 2.0) {
             //self.composerStackView?.transform = transform1 ?? CGAffineTransform()
             self.recordLabel?.transform = transform2 ?? CGAffineTransform()
             
             //self.view.layoutIfNeeded()
-        }
-     /*   self.recordLabel?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        UIView.animate(withDuration: 1.0,
+        }   */
+        self.recordLabel?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        UIView.animate(withDuration: 2.0,
                        delay: 0,
                        usingSpringWithDamping: 0.2,
                        initialSpringVelocity: 6.0,
@@ -617,7 +617,7 @@ public class WhiteSpeechViewController: UIViewController {
                        animations: { [weak self] in
                         self?.recordLabel?.transform = .identity
             },
-                       completion: nil) */
+                       completion: nil)
         
         self.textViewBottom?.text = ""
     }

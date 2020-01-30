@@ -826,16 +826,16 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ho5-xE-Ubr">
-                                <rect key="frame" x="10" y="124" width="300" height="14.5"/>
+                                <rect key="frame" x="20" y="124" width="280" height="21.5"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;- Swipe left for help topics --" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKi-ls-x1Z">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disabled context label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4i-9M-6Li">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="300" id="2MT-vr-tX2"/>
                                         </constraints>
@@ -844,29 +844,29 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wifi.slash" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Qah-8m-dI7">
-                                        <rect key="frame" x="0.0" y="-2.5" width="300" height="1"/>
+                                        <rect key="frame" x="0.0" y="-2.5" width="280" height="1"/>
                                         <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY" userLabel="Tap to Record Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="14.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="21.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u7C-xI-V54" userLabel="Timer Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe up to type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhE-i2-hZD">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to connect to another device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCY-F6-qYh">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -929,6 +929,7 @@
                         <constraints>
                             <constraint firstItem="TTt-38-1LB" firstAttribute="leading" secondItem="Rro-IL-Boh" secondAttribute="leadingMargin" id="5cP-0L-6E0"/>
                             <constraint firstItem="mei-RG-Ydf" firstAttribute="top" secondItem="rux-eZ-Lcm" secondAttribute="bottom" constant="20" id="7Ed-8u-6aX"/>
+                            <constraint firstItem="Ho5-xE-Ubr" firstAttribute="leading" secondItem="Rro-IL-Boh" secondAttribute="leading" constant="20" id="8GG-Yk-c7f"/>
                             <constraint firstItem="pI4-sX-dZk" firstAttribute="leading" secondItem="Rro-IL-Boh" secondAttribute="leading" constant="10" id="Fa5-OS-fZz"/>
                             <constraint firstItem="cdX-dl-fuc" firstAttribute="leading" secondItem="Rro-IL-Boh" secondAttribute="leadingMargin" id="L9e-a9-L28"/>
                             <constraint firstItem="cdX-dl-fuc" firstAttribute="trailing" secondItem="Rro-IL-Boh" secondAttribute="trailingMargin" id="TFw-ic-NjZ"/>
@@ -940,6 +941,7 @@
                             <constraint firstItem="cdX-dl-fuc" firstAttribute="top" secondItem="iXE-x7-1PV" secondAttribute="bottom" constant="140" id="mm9-9k-q4Y"/>
                             <constraint firstItem="Ho5-xE-Ubr" firstAttribute="top" secondItem="iXE-x7-1PV" secondAttribute="bottom" constant="80" id="noE-W9-Ev5"/>
                             <constraint firstItem="TTt-38-1LB" firstAttribute="top" secondItem="cdX-dl-fuc" secondAttribute="bottom" constant="8" id="qk5-r8-7U0"/>
+                            <constraint firstAttribute="trailing" secondItem="Ho5-xE-Ubr" secondAttribute="trailing" constant="20" id="zlQ-Fo-9jz"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="dKf-RZ-4Nw" appends="YES" id="5hN-ia-uUi"/>
