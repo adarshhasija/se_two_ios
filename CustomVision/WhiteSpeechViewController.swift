@@ -590,6 +590,7 @@ public class WhiteSpeechViewController: UIViewController {
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
         self.disabledContextLabel?.textColor = UIColor.lightGray
+        self.disabledContextLabel?.isHidden = true
         self.recordLabel?.textColor = UIColor.darkGray
         
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
@@ -600,7 +601,6 @@ public class WhiteSpeechViewController: UIViewController {
             self.recordLabel?.text = typingInstructionString
         }
 
-        //let transform1 = self.composerStackView?.transform.translatedBy(x: 0, y: 50)
         let transform2 = self.recordLabel?.transform.scaledBy(x: 1.5, y: 1.5)
         UIView.animate(withDuration: 2.0) {
             //self.composerStackView?.transform = transform1 ?? CGAffineTransform()
@@ -608,6 +608,16 @@ public class WhiteSpeechViewController: UIViewController {
             
             //self.view.layoutIfNeeded()
         }
+     /*   self.recordLabel?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 6.0,
+                       options: .allowUserInteraction,
+                       animations: { [weak self] in
+                        self?.recordLabel?.transform = .identity
+            },
+                       completion: nil) */
         
         self.textViewBottom?.text = ""
     }
@@ -909,14 +919,23 @@ public class WhiteSpeechViewController: UIViewController {
                 //Means nothing was spoken
                 if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
-                    recordLabel?.text = typingInstructionString
+                    recordLabel?.text = speechToTextInstructionString
                     disabledContextLabel?.isHidden = false
                     disabledContextLabel?.text = hiSIContextString
                     textViewBottom?.text = dataChats[dataChats.count - 1].text
                 }
+                else if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "talking" {
+                    recordLabel?.text = typingInstructionString
+                    disabledContextLabel?.isHidden = true
+                    disabledContextLabel?.text = ""
+                    textViewBottom?.text = dataChats[dataChats.count - 1].text
+                }
                 else {
-                   recordLabel?.text = speechToTextInstructionString
-                   textViewBottom?.text = ""
+                    recordLabel?.isHidden = false
+                    recordLabel?.text = speechToTextInstructionString
+                    disabledContextLabel?.isHidden = true
+                    disabledContextLabel?.text = ""
+                    textViewBottom?.text = ""
                 }
             }
             else {
