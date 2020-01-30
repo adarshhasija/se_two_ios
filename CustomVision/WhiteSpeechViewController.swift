@@ -731,13 +731,13 @@ public class WhiteSpeechViewController: UIViewController {
         
         self.disabledContextLabel?.text = ""
         self.disabledContextLabel?.isHidden = true
-        self.recordLabel?.text = "Tap Screen or Tap Return button to complete"
+        self.recordLabel?.text = "Tap Screen or Tap Return button to complete\nShow text to the other person"
         self.textViewBottom?.text = "Start typing..."
         textViewBottom?.isEditable = true
         textViewBottom?.becomeFirstResponder()
         
-        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -80)
-        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -130)
+        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -70) //-80
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -100) //-130
         UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
@@ -801,8 +801,8 @@ public class WhiteSpeechViewController: UIViewController {
         }
         
         
-        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 80)
-        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 130)
+        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 70) //80
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 100) //130
         UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
@@ -864,7 +864,7 @@ public class WhiteSpeechViewController: UIViewController {
                                       duration: 2.0,
                                       options: .transitionCrossDissolve,
                                       animations: { [weak self] in
-                                        self!.recordLabel!.text = "Tap screen to stop recording"
+                                        self!.recordLabel!.text = "Tap screen to stop recording\nShow message to the deaf person"
                         }, completion: nil)
                 }
                 
@@ -904,23 +904,23 @@ public class WhiteSpeechViewController: UIViewController {
             recognitionRequest?.endAudio()
             resetTimer()
             self.timerLabel?.isHidden = true
-            recordLabel?.text = typingInstructionString
             navStackView?.isHidden = false
             if currentState.last != State.SpeechInProgress {
                 //Means nothing was spoken
-                if dataChats.count > 0 {
-                    if dataChats[dataChats.count - 1].mode == "typing" {
-                        //If the last message was typed
-                        disabledContextLabel?.isHidden = false
-                        disabledContextLabel?.text = hiSIContextString
-                    }
+                if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "typing" {
+                    //If the last message was typed
+                    recordLabel?.text = typingInstructionString
+                    disabledContextLabel?.isHidden = false
+                    disabledContextLabel?.text = hiSIContextString
                     textViewBottom?.text = dataChats[dataChats.count - 1].text
                 }
                 else {
+                   recordLabel?.text = speechToTextInstructionString
                    textViewBottom?.text = ""
                 }
             }
             else {
+                recordLabel?.text = typingInstructionString
                 guard let newText = textViewBottom?.text else {
                     return
                 }
@@ -1178,7 +1178,8 @@ public class WhiteSpeechViewController: UIViewController {
             tapGesture() //this should stop the recording
         }
         if seconds < 11 {
-            timerLabel?.textColor = UIColor.red
+            //Removing this for now as we do not know how to switch back to system color in swift. System color is needed for light/dark mode
+            //timerLabel?.textColor = UIColor.red
         }
     }
     
@@ -1194,7 +1195,6 @@ public class WhiteSpeechViewController: UIViewController {
         timer.invalidate()
         isTimerRunning = false
         seconds = 60
-        timerLabel?.textColor = UIColor.black
         timerLabel?.text = "1:00"
         timerLabel?.isHidden = true
     }

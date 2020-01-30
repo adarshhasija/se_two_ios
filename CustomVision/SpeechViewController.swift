@@ -1334,7 +1334,6 @@ public class SpeechViewController: UIViewController {
         timer.invalidate()
         isTimerRunning = false
         seconds = 60
-        timerLabel?.textColor = UIColor.black
         timerLabel?.text = "1:00"
         timerLabel?.isHidden = true
     }
