@@ -91,7 +91,22 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func userProfileStackViewTapped(_ sender: Any) {
-        changeState(action: Action.UserProfileButtonTapped)
+        if currentState.last == State.Idle {
+            changeState(action: Action.UserProfileButtonTapped)
+        }
+        else {
+            //Cannot move away from this screen if we are in the middle of typing or speaking
+            self.recordLabel?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 1.0,
+                           delay: 0,
+                           usingSpringWithDamping: 0.2,
+                           initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction,
+                           animations: { [weak self] in
+                            self?.recordLabel?.transform = .identity
+                },
+                           completion: nil)
+        }
     }
     
     @IBAction func chatLogButtonTapped(_ sender: Any) {
@@ -428,7 +443,17 @@ public class WhiteSpeechViewController: UIViewController {
         if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
             //If none selected, Assuming person to be deaf
             if #available(iOS 13.0, *) {
-                self.userStatusLabel?.text = ""
+                if se3UserType == nil {
+                    //No selection made
+                    self.userStatusLabel?.text = "Tap here to change"
+                    self.userStatusLabel.transform = CGAffineTransform(translationX: 20, y: 0)
+                    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                        self.userStatusLabel.transform = CGAffineTransform.identity
+                    }, completion: nil)
+                }
+                else {
+                    self.userStatusLabel?.text = ""
+                }
                 self.hiLeftImageView?.tintColor = UIColor.systemBlue
                 self.viLeftImageView?.tintColor = UIColor.systemGray
                 self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
@@ -650,18 +675,23 @@ public class WhiteSpeechViewController: UIViewController {
             
             //self.view.layoutIfNeeded()
         }   */
-        self.recordLabel?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        UIView.animate(withDuration: 2.0,
-                       delay: 0,
-                       usingSpringWithDamping: 0.2,
-                       initialSpringVelocity: 6.0,
-                       options: .allowUserInteraction,
-                       animations: { [weak self] in
-                        self?.recordLabel?.transform = .identity
-            },
-                       completion: nil)
+        if se3UserType != nil {
+            //If it is nil, it means user has never gone to the user profile. We need to emphasize that instead. If it is not nil, they have gone there before. We can animate this.s
+            self.recordLabel?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 2.0,
+                           delay: 0,
+                           usingSpringWithDamping: 0.2,
+                           initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction,
+                           animations: { [weak self] in
+                            self?.recordLabel?.transform = .identity
+                },
+                           completion: nil)
+            
+        }
         
         self.textViewBottom?.text = ""
+        
     }
     
     private func swipeLeft() {
@@ -687,9 +717,9 @@ public class WhiteSpeechViewController: UIViewController {
         guard let storyBoard : UIStoryboard = self.storyboard else {
             return
         }
-        let userProfileOptionsViewController = storyBoard.instantiateViewController(withIdentifier: "TwoPeopleProfileOptions") as! UIViewController
-        //userProfileOptionsTableViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        //userProfileOptionsTableViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        let userProfileOptionsViewController = storyBoard.instantiateViewController(withIdentifier: "TwoPeopleProfileOptions") as! TwoPeopleSettingsViewController
+        userProfileOptionsViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        userProfileOptionsViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         self.present(userProfileOptionsViewController, animated: true, completion: nil)
      /*   if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(userProfileOptionsViewController, animated: true)
