@@ -53,9 +53,7 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet weak var composerStackView: UIStackView!
     @IBOutlet weak var navStackView: UIStackView!
     @IBOutlet weak var bottomLeftStackView: UIStackView!
-    
-    @IBOutlet weak var userProfileBtn: UIImageView!
-    @IBOutlet weak var houseImageView: UIImageView!
+
     @IBOutlet weak var chatLogBtn: UIImageView!
     
     @IBOutlet var recordButton : UIButton?
@@ -67,6 +65,17 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet weak var swipeLeftLabel: UILabel!
     @IBOutlet weak var disabledContextLabel: UILabel!
     
+    //User profile view
+    @IBOutlet weak var userProfileVerticalStackView: UIStackView!
+    @IBOutlet weak var hiLeftImageView: UIImageView!
+    @IBOutlet weak var viLeftImageView: UIImageView!
+    @IBOutlet weak var userLeftImageView: UIImageView!
+    @IBOutlet weak var appIconButton: UIImageView!
+    @IBOutlet weak var userRightImageView: UIImageView!  
+    @IBOutlet weak var hiRightImageView: UIImageView!
+    @IBOutlet weak var viRightImageView: UIImageView!
+    @IBOutlet weak var userStatusLabel: UILabel!
+    ///
     
     // MARK: Interface Builder actions
     
@@ -81,7 +90,7 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     
-    @IBAction func userProfileButtonTapped(_ sender: Any) {
+    @IBAction func userProfileStackViewTapped(_ sender: Any) {
         changeState(action: Action.UserProfileButtonTapped)
     }
     
@@ -416,14 +425,38 @@ public class WhiteSpeechViewController: UIViewController {
         
         //UserDefaults.standard.removeObject(forKey: "SE3_IOS_USER_TYPE")
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        if se3UserType == "_0" || se3UserType == nil {
-            //None selected
-            changeState(action: Action.UserProfileButtonTapped)
+        if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
+            //If none selected, Assuming person to be deaf
+            if #available(iOS 13.0, *) {
+                self.userStatusLabel?.text = ""
+                self.hiLeftImageView?.tintColor = UIColor.systemBlue
+                self.viLeftImageView?.tintColor = UIColor.systemGray
+                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
+                self.userLeftImageView?.image = UIImage(systemName: "person")
+                self.appIconButton?.image = UIImage(systemName: "app.fill")
+                self.userRightImageView?.image = UIImage(systemName: "person")
+                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viRightImageView?.image = UIImage(systemName: "eye.slash")
+                self.hiRightImageView?.tintColor = UIColor.systemGray
+                self.viRightImageView?.tintColor = UIColor.systemGray
+            }
         }
         else {
-            //Selection has been made
+            //Person has declared themselves not p-w-d
             if #available(iOS 13.0, *) {
-                self.userProfileBtn?.image = UIImage(systemName: "person.circle.fill")
+                self.userStatusLabel?.text = ""
+                self.hiLeftImageView?.isHidden = true
+                self.viLeftImageView?.isHidden = true
+                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
+                self.userLeftImageView?.image = UIImage(systemName: "person")
+                self.appIconButton?.image = UIImage(systemName: "app.fill")
+                self.userRightImageView?.image = UIImage(systemName: "person")
+                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viRightImageView?.image = UIImage(systemName: "eye.slash")
+                self.hiRightImageView?.isHidden = false
+                self.viRightImageView?.isHidden = true
             }
         }
         
@@ -589,6 +622,15 @@ public class WhiteSpeechViewController: UIViewController {
     
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
+        if #available(iOS 13.0, *) {
+            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+            self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
+            self.userLeftImageView?.image = UIImage(systemName: "person")
+            self.appIconButton?.image = UIImage(systemName: "app.fill")
+            self.userRightImageView?.image = UIImage(systemName: "person")
+            self.viRightImageView?.image = UIImage(systemName: "eye.slash")
+            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+        }
         self.disabledContextLabel?.textColor = UIColor.lightGray
         self.disabledContextLabel?.isHidden = true
         self.recordLabel?.textColor = UIColor.darkGray
@@ -645,12 +687,13 @@ public class WhiteSpeechViewController: UIViewController {
         guard let storyBoard : UIStoryboard = self.storyboard else {
             return
         }
-        let userProfileOptionsTableViewController = storyBoard.instantiateViewController(withIdentifier: "UserProfileOptions") as! UserProfileTableViewController
-        userProfileOptionsTableViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        userProfileOptionsTableViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
-        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            navigationController.pushViewController(userProfileOptionsTableViewController, animated: true)
-        }
+        let userProfileOptionsViewController = storyBoard.instantiateViewController(withIdentifier: "TwoPeopleProfileOptions") as! UIViewController
+        //userProfileOptionsTableViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        //userProfileOptionsTableViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        self.present(userProfileOptionsViewController, animated: true, completion: nil)
+     /*   if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(userProfileOptionsViewController, animated: true)
+        } */
     }
     
     private func enterStateIdle() {
@@ -739,15 +782,39 @@ public class WhiteSpeechViewController: UIViewController {
         navStackView?.isHidden = true
         //
         
+        if #available(iOS 13.0, *) {
+            let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+            if se3UserType == nil || se3UserType == "_0" || se3UserType == "_1" {
+                // Normal user
+                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
+                self.userLeftImageView?.image = UIImage(systemName: "person")
+                self.appIconButton?.image = UIImage(systemName: "app")
+                self.userRightImageView?.image = UIImage(systemName: "person.fill")
+                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                self.viRightImageView?.image = UIImage(systemName: "eye.slash.fill")
+            }
+            else if se3UserType == "_2" {
+                // Deaf user
+                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                self.viLeftImageView?.image = UIImage(systemName: "eye.slash.fill")
+                self.userLeftImageView?.image = UIImage(systemName: "person.fill")
+                self.appIconButton?.image = UIImage(systemName: "app")
+                self.userRightImageView?.image = UIImage(systemName: "person")
+                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viRightImageView?.image = UIImage(systemName: "eye.slash")
+            }
+        }
+        self.userStatusLabel?.text = "Hearing-impaired person typing"
         self.disabledContextLabel?.text = ""
         self.disabledContextLabel?.isHidden = true
-        self.recordLabel?.text = "Tap Screen or Tap Return button to complete\nShow text to the other person"
+        self.recordLabel?.text = "Tap Screen or Tap Return button to complete"
         self.textViewBottom?.text = "Start typing..."
         textViewBottom?.isEditable = true
         textViewBottom?.becomeFirstResponder()
         
-        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -70) //-80
-        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -100) //-130
+        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -40) // delta = -10
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -65) // delta = -40
         UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
@@ -759,11 +826,13 @@ public class WhiteSpeechViewController: UIViewController {
         navStackView?.isHidden = false
         bottomLeftStackView?.isHidden = false
         //
+        exitStateTypingOrSpeaking()
         
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
         if currentState.last == State.Typing {
             //Means nothing was actually entered
+            userStatusLabel?.text = ""
             recordLabel?.text = typingInstructionString
             if dataChats.count > 0 {
                 if dataChats[dataChats.count - 1].mode == "typing" {
@@ -804,6 +873,7 @@ public class WhiteSpeechViewController: UIViewController {
                                completion: nil)
             }
             
+            userStatusLabel?.text = "Give the device to the other person"
             recordLabel?.text = speechToTextInstructionString
             disabledContextLabel?.isHidden = false
             disabledContextLabel?.text = hiSIContextString
@@ -811,11 +881,23 @@ public class WhiteSpeechViewController: UIViewController {
         }
         
         
-        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 70) //80
-        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 100) //130
+        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 40) //80
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 65) //130
         UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
+        }
+    }
+    
+    private func exitStateTypingOrSpeaking() {
+        if #available(iOS 13.0, *) {
+            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+            self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
+            self.userLeftImageView?.image = UIImage(systemName: "person")
+            self.appIconButton?.image = UIImage(systemName: "app.fill")
+            self.userRightImageView?.image = UIImage(systemName: "person")
+            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+            self.viRightImageView?.image = UIImage(systemName: "eye.slash")
         }
     }
     
@@ -856,6 +938,30 @@ public class WhiteSpeechViewController: UIViewController {
             bottomLeftStackView?.isHidden = true
             //
             
+            if #available(iOS 13.0, *) {
+                let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+                if se3UserType == nil || se3UserType == "_0" || se3UserType == "_1" {
+                    // Normal user
+                    self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                    self.viLeftImageView?.image = UIImage(systemName: "eye.slash.fill")
+                    self.userLeftImageView?.image = UIImage(systemName: "person.fill")
+                    self.appIconButton?.image = UIImage(systemName: "app")
+                    self.userRightImageView?.image = UIImage(systemName: "person")
+                    self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                    self.viRightImageView?.image = UIImage(systemName: "eye.slash")
+                }
+                else if se3UserType == "_2" {
+                    // Deaf user
+                    self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                    self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
+                    self.userLeftImageView?.image = UIImage(systemName: "person")
+                    self.appIconButton?.image = UIImage(systemName: "app")
+                    self.userRightImageView?.image = UIImage(systemName: "person.fill")
+                    self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                    self.viRightImageView?.image = UIImage(systemName: "eye.slash.fill")
+                }
+            }
+            self.userStatusLabel?.text = "Non hearing-impaired person speaking"
             disabledContextLabel?.isHidden = true
             disabledContextLabel?.text = ""
             navStackView?.isHidden = true
@@ -874,7 +980,7 @@ public class WhiteSpeechViewController: UIViewController {
                                       duration: 2.0,
                                       options: .transitionCrossDissolve,
                                       animations: { [weak self] in
-                                        self!.recordLabel!.text = "Tap screen to stop recording\nShow message to the deaf person"
+                                        self!.recordLabel!.text = "Tap screen to stop recording"
                         }, completion: nil)
                 }
                 
@@ -904,6 +1010,7 @@ public class WhiteSpeechViewController: UIViewController {
         navStackView?.isHidden = false
         bottomLeftStackView?.isHidden = false
         //
+        exitStateTypingOrSpeaking()
         
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder() //If keyboard is open for any reason, close it
@@ -917,6 +1024,7 @@ public class WhiteSpeechViewController: UIViewController {
             navStackView?.isHidden = false
             if currentState.last != State.SpeechInProgress {
                 //Means nothing was spoken
+                userStatusLabel?.text = ""
                 if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
                     recordLabel?.text = speechToTextInstructionString
@@ -939,6 +1047,7 @@ public class WhiteSpeechViewController: UIViewController {
                 }
             }
             else {
+                userStatusLabel?.text = "Give the device to the other person"
                 recordLabel?.text = typingInstructionString
                 guard let newText = textViewBottom?.text else {
                     return
@@ -1009,7 +1118,7 @@ public class WhiteSpeechViewController: UIViewController {
             self.textViewBottom?.text = "Connected, waiting for the other person to start typing..."
         }
         else {
-            self.textViewBottom?.text = "You can now start typing. Tap the screen or tap enter when done..."
+            self.textViewBottom?.text = "Start typing..."
         }
     }
     
@@ -1562,23 +1671,28 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         ])
         
         if se3UserType == "_1" {
+            hiLeftImageView?.tintColor = UIColor.systemGray // Main user is normal
+            viLeftImageView?.tintColor = UIColor.systemGray
+            hiRightImageView?.tintColor = UIColor.systemBlue // Other user is deaf
+            viRightImageView?.tintColor = UIColor.systemGray
             recordLabel?.text = speechToTextInstructionString
         }
         else if se3UserType == "_2" {
+            hiLeftImageView?.tintColor = UIColor.systemBlue // Main user is deaf
+            viLeftImageView?.tintColor = UIColor.systemGray
+            hiRightImageView?.tintColor = UIColor.systemGray // Other user is normal
+            viRightImageView?.tintColor = UIColor.systemGray
             recordLabel?.text = typingInstructionString
         }
         
-        if #available(iOS 13.0, *) {
-            self.userProfileBtn?.image = UIImage(systemName: "person.circle.fill")
-        }
-        self.userProfileBtn?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        self.userProfileVerticalStackView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         UIView.animate(withDuration: 1.0,
                        delay: 0,
                        usingSpringWithDamping: 0.2,
                        initialSpringVelocity: 6.0,
                        options: .allowUserInteraction,
                        animations: { [weak self] in
-                        self?.userProfileBtn.transform = .identity
+                        self?.userProfileVerticalStackView.transform = .identity
             },
                        completion: nil)
     }
