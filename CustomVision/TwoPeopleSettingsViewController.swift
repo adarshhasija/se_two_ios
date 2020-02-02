@@ -93,6 +93,8 @@ public class TwoPeopleSettingsViewController : UIViewController {
     }
     @IBAction func twoHiSwitchValueChanged(_ sender: Any) {
         twoHiSwitch?.isOn = !twoHiSwitch.isOn //Switch back to the old value
+        
+        //Indicate the it is the switch for Person 1 that should be changed in order to change this. Cannot change this directly
         self.oneHiSwitch?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         UIView.animate(withDuration: 1.0,
                        delay: 0,
