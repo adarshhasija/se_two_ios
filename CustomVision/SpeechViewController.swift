@@ -600,11 +600,12 @@ public class SpeechViewController: UIViewController {
         textViewBottom?.delegate = self
         speechRecognizer.delegate = self
         
-        let permission = checkAppleSpeechRecoginitionPermissions()
+        //Uncomment if this is root controller
+     /*   let permission = checkAppleSpeechRecoginitionPermissions()
         if permission != nil {
             requestMicrophonePermission()
             requestSpeechRecognitionPermission()
-        }
+        }   */
         
     }
     
