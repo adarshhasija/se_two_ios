@@ -443,7 +443,7 @@ public class WhiteSpeechViewController: UIViewController {
         textViewTop?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi)) //To turn one textView upside down
         //recordLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
         //timerLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-        mainView?.accessibilityLabel = "Tap screen to start recording"
+        mainView?.accessibilityLabel = speechToTextInstructionString
         
         //self.textViewTop?.layoutManager.allowsNonContiguousLayout = false //Allows scrolling if text is more than screen real-estate
         //self.textViewBottom.layoutManager.allowsNonContiguousLayout = false
@@ -712,7 +712,18 @@ public class WhiteSpeechViewController: UIViewController {
                             self?.recordLabel?.transform = .identity
                 },
                            completion: nil)
-            
+        }
+        else {
+            self.userStatusLabel?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 2.0,
+                           delay: 0,
+                           usingSpringWithDamping: 0.2,
+                           initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction,
+                           animations: { [weak self] in
+                            self?.userStatusLabel?.transform = .identity
+                },
+                           completion: nil)
         }
         
         self.textViewBottom?.text = ""
@@ -1511,7 +1522,7 @@ extension WhiteSpeechViewController : SFSpeechRecognizerDelegate {
         if available {
             recordButton?.isEnabled = true
             recordButton?.setTitle("Start Recording", for: [])
-            recordLabel?.text = "Tap screen to start recording"
+            recordLabel?.text = speechToTextInstructionString
             
         } else {
             recordButton?.isEnabled = false
