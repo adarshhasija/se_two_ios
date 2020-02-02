@@ -20,6 +20,7 @@ class WatchAppViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //No logic performed in this view controller at the moment
       /*  if isWatchAppInstalled() {
             noWatchAppContainerView?.isHidden = true
             yesWatchAppStackView?.isHidden = false

@@ -24,9 +24,10 @@ public class WhiteSpeechViewController: UIViewController {
     var timer = Timer()
     var isTimerRunning = false
     private var dataChats: [ChatListItem] = []
-    var speechToTextInstructionString = "Tap screen to record speech"
+    var speechToTextInstructionString = "Long press on screen to record speech"
     var typingInstructionString = "Swipe up to type"
     var hiSIContextString = "This person cannot hear or speak. Please help them"
+    var tapToRepeat = "Tap to repeat"
     
     // MARK: Multipeer Connectivity Properties
     var peerID: MCPeerID!
@@ -128,8 +129,8 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func longPressGesture(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.began {
-           //changeState(action: Action.LongPress)
+        if sender.state == UIGestureRecognizerState.recognized {
+           changeState(action: Action.LongPress)
         }
     }
     
@@ -166,6 +167,26 @@ public class WhiteSpeechViewController: UIViewController {
             openUserProfileOptions()
         }
         else if action == Action.Tap && currentState.last == State.Idle {
+            if textViewBottom.text.count > 0 {
+                sayThis(string: textViewBottom.text)
+            }
+            else {
+                let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+                if se3UserType != nil {
+                    self.recordLabel?.transform = CGAffineTransform(translationX: 20, y: 0)
+                    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                        self.recordLabel?.transform = CGAffineTransform.identity
+                    }, completion: nil)
+                }
+                else {
+                    self.userStatusLabel?.transform = CGAffineTransform(translationX: 20, y: 0)
+                    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                        self.userStatusLabel?.transform = CGAffineTransform.identity
+                    }, completion: nil)
+                }
+            }
+        }
+        else if action == Action.LongPress && currentState.last == State.Idle {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
@@ -214,11 +235,11 @@ public class WhiteSpeechViewController: UIViewController {
             currentState.append(State.Typing)
             enterStateTyping()
         }
-        else if action == Action.LongPress && currentState.last == State.Idle {
+     /*   else if action == Action.LongPress && currentState.last == State.Idle {
             Analytics.logEvent("se3_long_press_not_connected", parameters: [:])
             currentState.append(State.PromptUserRole)
             enterStatePromptUserRole()
-        }
+        }   */
         else if action == Action.ReceivedStatusFromWatch && currentState.last == State.Idle {
             //Entering listening state
             while currentState.last != State.Idle {
@@ -848,7 +869,7 @@ public class WhiteSpeechViewController: UIViewController {
         textViewBottom?.becomeFirstResponder()
         
         let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -40) // delta = -10
-        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -65) // delta = -40
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -85) // delta = -40
         UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
@@ -916,7 +937,7 @@ public class WhiteSpeechViewController: UIViewController {
         
         
         let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 40) //80
-        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 65) //130
+        let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 85) //130
         UIView.animate(withDuration: 1.0) {
             self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
@@ -1061,10 +1082,10 @@ public class WhiteSpeechViewController: UIViewController {
                 userStatusLabel?.text = ""
                 if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
-                    recordLabel?.text = speechToTextInstructionString
                     disabledContextLabel?.isHidden = false
                     disabledContextLabel?.text = hiSIContextString
                     textViewBottom?.text = dataChats[dataChats.count - 1].text
+                    recordLabel?.text = speechToTextInstructionString
                 }
                 else if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "talking" {
                     recordLabel?.text = typingInstructionString
@@ -1082,7 +1103,7 @@ public class WhiteSpeechViewController: UIViewController {
             }
             else {
                 userStatusLabel?.text = "Give the device to the other person"
-                recordLabel?.text = typingInstructionString
+                recordLabel?.text = typingInstructionString //In this section we are guaranteed to have new text
                 guard let newText = textViewBottom?.text else {
                     return
                 }
@@ -1452,6 +1473,10 @@ public class WhiteSpeechViewController: UIViewController {
         synth.delegate = self
         let utterance = AVSpeechUtterance(string: string)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        if synth.isSpeaking {
+            synth.stopSpeaking(at: AVSpeechBoundary.immediate)
+            synth.speak(utterance)
+        }
         if synth.isPaused {
             synth.continueSpeaking()
         }
