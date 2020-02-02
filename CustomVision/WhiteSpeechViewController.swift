@@ -169,13 +169,17 @@ public class WhiteSpeechViewController: UIViewController {
             Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
-            if hasInternetConnection() {
-                currentState.append(State.Speaking)
-                enterStateSpeaking()
+            let permission = checkAppleSpeechRecoginitionPermissions()
+            if permission != nil {
+                showErrorMessageFormPermission(permission: permission)
             }
-            else {
+            else if !hasInternetConnection() {
                 //dialogOK(title: "Alert", message: "No internet connection")
                 animateNoInternetConnection()
+            }
+            else {
+                currentState.append(State.Speaking)
+                enterStateSpeaking()
             }
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
@@ -814,17 +818,7 @@ public class WhiteSpeechViewController: UIViewController {
         
         if #available(iOS 13.0, *) {
             let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-            if se3UserType == nil || se3UserType == "_0" || se3UserType == "_1" {
-                // Normal user
-                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
-                self.userLeftImageView?.image = UIImage(systemName: "person")
-                self.appIconButton?.image = UIImage(systemName: "app")
-                self.userRightImageView?.image = UIImage(systemName: "person.fill")
-                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                self.viRightImageView?.image = UIImage(systemName: "eye.slash.fill")
-            }
-            else if se3UserType == "_2" {
+            if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
                 // Deaf user
                 self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
                 self.viLeftImageView?.image = UIImage(systemName: "eye.slash.fill")
@@ -833,6 +827,16 @@ public class WhiteSpeechViewController: UIViewController {
                 self.userRightImageView?.image = UIImage(systemName: "person")
                 self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
                 self.viRightImageView?.image = UIImage(systemName: "eye.slash")
+            }
+            else if se3UserType == "_1" {
+                // Normal user
+                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
+                self.userLeftImageView?.image = UIImage(systemName: "person")
+                self.appIconButton?.image = UIImage(systemName: "app")
+                self.userRightImageView?.image = UIImage(systemName: "person.fill")
+                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                self.viRightImageView?.image = UIImage(systemName: "eye.slash.fill")
             }
         }
         self.userStatusLabel?.text = "Hearing-impaired person typing"
@@ -970,18 +974,8 @@ public class WhiteSpeechViewController: UIViewController {
             
             if #available(iOS 13.0, *) {
                 let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-                if se3UserType == nil || se3UserType == "_0" || se3UserType == "_1" {
+                if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
                     // Normal user
-                    self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                    self.viLeftImageView?.image = UIImage(systemName: "eye.slash.fill")
-                    self.userLeftImageView?.image = UIImage(systemName: "person.fill")
-                    self.appIconButton?.image = UIImage(systemName: "app")
-                    self.userRightImageView?.image = UIImage(systemName: "person")
-                    self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                    self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-                }
-                else if se3UserType == "_2" {
-                    // Deaf user
                     self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
                     self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
                     self.userLeftImageView?.image = UIImage(systemName: "person")
@@ -989,6 +983,16 @@ public class WhiteSpeechViewController: UIViewController {
                     self.userRightImageView?.image = UIImage(systemName: "person.fill")
                     self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
                     self.viRightImageView?.image = UIImage(systemName: "eye.slash.fill")
+                }
+                else if se3UserType == "_1" {
+                    // Deaf user
+                    self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                    self.viLeftImageView?.image = UIImage(systemName: "eye.slash.fill")
+                    self.userLeftImageView?.image = UIImage(systemName: "person.fill")
+                    self.appIconButton?.image = UIImage(systemName: "app")
+                    self.userRightImageView?.image = UIImage(systemName: "person")
+                    self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                    self.viRightImageView?.image = UIImage(systemName: "eye.slash")
                 }
             }
             self.userStatusLabel?.text = "Non hearing-impaired person speaking"
@@ -1176,6 +1180,32 @@ public class WhiteSpeechViewController: UIViewController {
         return true */
     }
     
+    func checkAppleSpeechRecoginitionPermissions() -> String? {
+        if hasInternetConnection() == false {
+            return "internet"
+        }
+      /*  if AVAudioSession.sharedInstance().recordPermission() != AVAudioSession.RecordPermission.granted {
+            return "mic"
+        }   */
+        if SFSpeechRecognizer.authorizationStatus() != .authorized {
+            return "not_authorized"
+        }
+        return nil
+    }
+    
+    func showErrorMessageFormPermission(permission: String?) {
+        //We will only dispay a warning message. Cannot prompt for permission. User has to do it themselves in the settings app
+        if permission?.contains("internet") == true {
+            dialogOK(title: "No internet connection", message: "You need an internet connection to use speech-to-text")
+        }
+        else if permission?.contains("mic") == true {
+            dialogOK(title: "Permission Error", message: "Mic permission is needed to record what is being said. Please provide the permission in the settings app")
+        }
+        else if permission?.contains("not_authorized") == true {
+            dialogOK(title: "Permission Error", message: "Speech Recognition permission is needed to understand the words that are being said. Please provide the permission in the settings app")
+        }
+    }
+    
     func isNetworkReachable(with flags: SCNetworkReachabilityFlags) -> Bool {
         let isReachable = flags.contains(.reachable)
         let needsConnection = flags.contains(.connectionRequired)
@@ -1335,9 +1365,13 @@ public class WhiteSpeechViewController: UIViewController {
             resetTimer()
             tapGesture() //this should stop the recording
         }
-        if seconds < 11 {
+        if seconds == 10 {
             //Removing this for now as we do not know how to switch back to system color in swift. System color is needed for light/dark mode
             //timerLabel?.textColor = UIColor.red
+            timerLabel?.transform = CGAffineTransform(translationX: 20, y: 0)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                self.timerLabel?.transform = CGAffineTransform.identity
+            }, completion: nil)
         }
     }
     
@@ -1415,6 +1449,7 @@ public class WhiteSpeechViewController: UIViewController {
         do { try audioSession.setMode(AVAudioSessionModeDefault) }
         catch { showToast(message: "Sorry, audio failed to play") }
         
+        synth.delegate = self
         let utterance = AVSpeechUtterance(string: string)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         if synth.isPaused {
@@ -1677,6 +1712,22 @@ extension WhiteSpeechViewController : WCSessionDelegate {
         }
         
         replyHandler(["status": status, "response":response])
+    }
+}
+
+extension WhiteSpeechViewController : AVSpeechSynthesizerDelegate {
+    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
+        let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
+        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.green, range: characterRange)
+        let font = textViewBottom?.font
+        let alignment = textViewBottom.textAlignment
+        textViewBottom?.attributedText = mutableAttributedString //all attributes get ovverridden here. necessary to save it before hand
+        textViewBottom?.font = font
+        textViewBottom?.textAlignment = alignment
+    }
+    
+    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        textViewBottom?.text = utterance.speechString
     }
 }
 
