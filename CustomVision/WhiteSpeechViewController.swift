@@ -28,6 +28,8 @@ public class WhiteSpeechViewController: UIViewController {
     var typingInstructionString = "Swipe up to type"
     var hiSIContextString = "This person cannot hear or speak. Please help them"
     var tapToRepeat = "Tap to repeat"
+    var lastActionTypingDeaf = "Typed by hearing-impaired"
+    var lastActionSpeaking = "Spoken by non-hearing-impaired"
     
     // MARK: Multipeer Connectivity Properties
     var peerID: MCPeerID!
@@ -52,10 +54,17 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet var textViewTop : UITextView?
     @IBOutlet var textViewBottom : UITextView!
     @IBOutlet weak var composerStackView: UIStackView!
+    
+    // Bottom nav stack
     @IBOutlet weak var navStackView: UIStackView!
     @IBOutlet weak var bottomLeftStackView: UIStackView!
-
+    @IBOutlet weak var bottomMiddleStackView: UIStackView!
+    @IBOutlet weak var bottomMiddleDisabilityIconsStackView: UIStackView!
+    @IBOutlet weak var bottomMiddleSpeakerImageView: UIImageView!
+    @IBOutlet weak var bottomMiddleEyeImageView: UIImageView!
+    @IBOutlet weak var bottomMiddleActionLabel: UILabel!
     @IBOutlet weak var chatLogBtn: UIImageView!
+    //
     
     @IBOutlet var recordButton : UIButton?
     @IBOutlet weak var longPressLabel: UILabel?   
@@ -129,7 +138,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func longPressGesture(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.recognized {
+        if sender.state == UIGestureRecognizerState.began {
            changeState(action: Action.LongPress)
         }
     }
@@ -159,6 +168,9 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if action == Action.ChatLogsCleared && currentState.last == State.Idle {
             enterStateControllerLoaded() //Reset
+        }
+        else if action == Action.UserProfileChanged && currentState.last == State.Idle {
+            enterStateControllerLoaded() //Clear chat logs and reset after user profile changed
         }
         else if action == Action.AppleWatchButtonTapped && currentState.last == State.Idle {
             openAppleWatchAppInfoScreen()
@@ -467,20 +479,19 @@ public class WhiteSpeechViewController: UIViewController {
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
         if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
             //If none selected, Assuming person to be deaf
+            if se3UserType == nil {
+                //No selection made
+                self.userStatusLabel?.text = "Tap here to change"
+                self.userStatusLabel.transform = CGAffineTransform(translationX: 20, y: 0)
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                    self.userStatusLabel.transform = CGAffineTransform.identity
+                }, completion: nil)
+            }
+            else {
+                self.userStatusLabel?.text = ""
+            }
+            alphaChangeIsHearingImpaired()
             if #available(iOS 13.0, *) {
-                if se3UserType == nil {
-                    //No selection made
-                    self.userStatusLabel?.text = "Tap here to change"
-                    self.userStatusLabel.transform = CGAffineTransform(translationX: 20, y: 0)
-                    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
-                        self.userStatusLabel.transform = CGAffineTransform.identity
-                    }, completion: nil)
-                }
-                else {
-                    self.userStatusLabel?.text = ""
-                }
-                self.hiLeftImageView?.tintColor = UIColor.systemBlue
-                self.viLeftImageView?.tintColor = UIColor.systemGray
                 self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
                 self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
                 self.userLeftImageView?.image = UIImage(systemName: "person")
@@ -488,16 +499,12 @@ public class WhiteSpeechViewController: UIViewController {
                 self.userRightImageView?.image = UIImage(systemName: "person")
                 self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
                 self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-                self.hiRightImageView?.tintColor = UIColor.systemGray
-                self.viRightImageView?.tintColor = UIColor.systemGray
             }
         }
         else {
-            //Person has declared themselves not p-w-d
+            //Person has declared themselves not p-w-d. So other person is p-w-d
+            alphaChangeNotHearingImpaired()
             if #available(iOS 13.0, *) {
-                self.userStatusLabel?.text = ""
-                self.hiLeftImageView?.isHidden = true
-                self.viLeftImageView?.isHidden = true
                 self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
                 self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
                 self.userLeftImageView?.image = UIImage(systemName: "person")
@@ -505,8 +512,6 @@ public class WhiteSpeechViewController: UIViewController {
                 self.userRightImageView?.image = UIImage(systemName: "person")
                 self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
                 self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-                self.hiRightImageView?.isHidden = false
-                self.viRightImageView?.isHidden = true
             }
         }
         
@@ -673,6 +678,7 @@ public class WhiteSpeechViewController: UIViewController {
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
         if #available(iOS 13.0, *) {
+            //Reset everything
             self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
             self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
             self.userLeftImageView?.image = UIImage(systemName: "person")
@@ -681,9 +687,11 @@ public class WhiteSpeechViewController: UIViewController {
             self.viRightImageView?.image = UIImage(systemName: "eye.slash")
             self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
         }
+        self.userStatusLabel?.text = ""
         self.disabledContextLabel?.textColor = UIColor.lightGray
         self.disabledContextLabel?.isHidden = true
         self.recordLabel?.textColor = UIColor.darkGray
+        self.bottomMiddleActionLabel?.text = ""
         
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
         if se3UserType == "_1" {
@@ -846,6 +854,7 @@ public class WhiteSpeechViewController: UIViewController {
         //Close stack views
         bottomLeftStackView?.isHidden = true
         navStackView?.isHidden = true
+        bottomMiddleActionLabel?.text = ""
         //
         
         if #available(iOS 13.0, *) {
@@ -891,6 +900,7 @@ public class WhiteSpeechViewController: UIViewController {
         //Show stack views
         navStackView?.isHidden = false
         bottomLeftStackView?.isHidden = false
+        bottomMiddleStackView?.isHidden = false
         //
         exitStateTypingOrSpeaking()
         
@@ -900,12 +910,17 @@ public class WhiteSpeechViewController: UIViewController {
             //Means nothing was actually entered
             userStatusLabel?.text = ""
             recordLabel?.text = typingInstructionString
+            bottomMiddleActionLabel?.text = ""
             if dataChats.count > 0 {
                 if dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
                     recordLabel?.text = speechToTextInstructionString
+                    bottomMiddleActionLabel?.text = lastActionTypingDeaf
                     disabledContextLabel?.isHidden = false
                     disabledContextLabel?.text = hiSIContextString
+                }
+                else if dataChats[dataChats.count - 1].mode == "talking" {
+                    bottomMiddleActionLabel?.text = lastActionSpeaking
                 }
                 textViewBottom?.text = dataChats[dataChats.count - 1].text
             }
@@ -943,6 +958,7 @@ public class WhiteSpeechViewController: UIViewController {
             recordLabel?.text = speechToTextInstructionString
             disabledContextLabel?.isHidden = false
             disabledContextLabel?.text = hiSIContextString
+            bottomMiddleActionLabel?.text = lastActionTypingDeaf
 
         }
         
@@ -1002,6 +1018,7 @@ public class WhiteSpeechViewController: UIViewController {
             //Close/hide stack views
             navStackView?.isHidden = true
             bottomLeftStackView?.isHidden = true
+            bottomMiddleActionLabel?.text = ""
             //
             
             if #available(iOS 13.0, *) {
@@ -1097,12 +1114,14 @@ public class WhiteSpeechViewController: UIViewController {
                     disabledContextLabel?.text = hiSIContextString
                     textViewBottom?.text = dataChats[dataChats.count - 1].text
                     recordLabel?.text = speechToTextInstructionString
+                    bottomMiddleActionLabel?.text = lastActionTypingDeaf
                 }
                 else if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "talking" {
                     recordLabel?.text = typingInstructionString
                     disabledContextLabel?.isHidden = true
                     disabledContextLabel?.text = ""
                     textViewBottom?.text = dataChats[dataChats.count - 1].text
+                    bottomMiddleActionLabel?.text = lastActionSpeaking
                 }
                 else {
                     recordLabel?.isHidden = false
@@ -1110,11 +1129,13 @@ public class WhiteSpeechViewController: UIViewController {
                     disabledContextLabel?.isHidden = true
                     disabledContextLabel?.text = ""
                     textViewBottom?.text = ""
+                    bottomMiddleActionLabel?.text = ""
                 }
             }
             else {
                 userStatusLabel?.text = "Give the device to the other person"
                 recordLabel?.text = typingInstructionString //In this section we are guaranteed to have new text
+                bottomMiddleActionLabel?.text = lastActionSpeaking
                 guard let newText = textViewBottom?.text else {
                     return
                 }
@@ -1189,6 +1210,25 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     // MARK: General Private Helpers
+    
+    //Main user has declared themselves HI
+    //Therefore other user is normal
+    private func alphaChangeIsHearingImpaired() {
+        self.hiLeftImageView?.alpha = 1
+        self.viLeftImageView?.alpha = 0.5
+        self.hiRightImageView?.alpha = 0.5
+        self.viRightImageView?.alpha = 0.5
+    }
+    
+    //Main user has declared themselves not hearing impaired
+    //Therefore other user is HI
+    private func alphaChangeNotHearingImpaired() {
+        self.userStatusLabel?.text = ""
+        self.hiLeftImageView?.alpha = 0.5
+        self.viLeftImageView?.alpha = 0.5
+        self.hiRightImageView?.alpha = 1
+        self.viRightImageView?.alpha = 0.5
+    }
     
     func hasInternetConnection() -> Bool {
         return networkManager.reachability?.connection == .wifi || networkManager.reachability?.connection == .cellular
@@ -1491,7 +1531,7 @@ public class WhiteSpeechViewController: UIViewController {
         if synth.isPaused {
             synth.continueSpeaking()
         }
-        else {
+        else if !synth.isSpeaking {
             synth.speak(utterance)
         }
     }
@@ -1754,7 +1794,7 @@ extension WhiteSpeechViewController : WCSessionDelegate {
 extension WhiteSpeechViewController : AVSpeechSynthesizerDelegate {
     public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
         let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
-        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.green, range: characterRange)
+        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: characterRange)
         let font = textViewBottom?.font
         let alignment = textViewBottom.textAlignment
         textViewBottom?.attributedText = mutableAttributedString //all attributes get ovverridden here. necessary to save it before hand
@@ -1783,22 +1823,16 @@ protocol WhiteSpeechViewControllerProtocol {
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     func userProfileOptionSet(se3UserType : String) {
-        Analytics.logEvent("se3_user_profile_setxs", parameters: [
+        Analytics.logEvent("se3_user_profile_set", parameters: [
             "user_type": se3UserType
         ])
         
         if se3UserType == "_1" {
-            hiLeftImageView?.tintColor = UIColor.systemGray // Main user is normal
-            viLeftImageView?.tintColor = UIColor.systemGray
-            hiRightImageView?.tintColor = UIColor.systemBlue // Other user is deaf
-            viRightImageView?.tintColor = UIColor.systemGray
+            alphaChangeNotHearingImpaired()
             recordLabel?.text = speechToTextInstructionString
         }
         else if se3UserType == "_2" {
-            hiLeftImageView?.tintColor = UIColor.systemBlue // Main user is deaf
-            viLeftImageView?.tintColor = UIColor.systemGray
-            hiRightImageView?.tintColor = UIColor.systemGray // Other user is normal
-            viRightImageView?.tintColor = UIColor.systemGray
+            alphaChangeIsHearingImpaired()
             recordLabel?.text = typingInstructionString
         }
         
@@ -1812,6 +1846,13 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
                         self?.userProfileVerticalStackView.transform = .identity
             },
                        completion: nil)
+        
+        //If user profile has been changed, clear chat logs and reset. Otherwise it will lead to confusion
+        if #available(iOS 13.0, *) {
+            self.chatLogBtn?.image = UIImage(systemName: "book")
+        }
+        dataChats.removeAll()
+        changeState(action: Action.ChatLogsCleared)
     }
     
     func chatLogsCleared() {

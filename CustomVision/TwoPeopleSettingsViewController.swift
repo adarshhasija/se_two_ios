@@ -71,17 +71,17 @@ public class TwoPeopleSettingsViewController : UIViewController {
     @IBAction func oneHiSwitchValueChanged(_ sender: Any) {
         if oneHiSwitch.isOn {
             oneHiExplanationLabel?.text = hiSwitchOnExplanationString
-            oneHiImageView?.tintColor = UIColor.systemBlue
+            oneHiImageView?.alpha = 1
             twoHiSwitch?.isOn = false
             twoHiExplanationLabel?.text = hiSwitchOffExplanationString
-            twoHiImageView?.tintColor = UIColor.systemGray
+            twoHiImageView?.alpha = 0.5
         }
         else {
-            oneHiImageView?.tintColor = UIColor.systemGray
+            oneHiImageView?.alpha = 0.5
             oneHiExplanationLabel?.text = hiSwitchOffExplanationString
             twoHiSwitch?.isOn = true
             twoHiExplanationLabel?.text = hiSwitchOnExplanationString
-            twoHiImageView?.tintColor = UIColor.systemBlue
+            twoHiImageView?.alpha = 1
         }
     }
     @IBAction func oneViSwitchValueChanged(_ sender: Any) {
@@ -121,6 +121,8 @@ public class TwoPeopleSettingsViewController : UIViewController {
         
         oneViExplanationLabel?.text = hiViString
         twoViExplanationLabel?.text = hiViString
+        oneViImageView?.alpha = 0.5
+        twoViImageView?.alpha = 0.5
         
         if inputUserProfileOption == nil
             || inputUserProfileOption == "_0"
@@ -129,19 +131,19 @@ public class TwoPeopleSettingsViewController : UIViewController {
             // _2 = Deaf
             oneHiSwitch?.isOn = true
             oneHiExplanationLabel?.text = hiSwitchOnExplanationString
-            oneHiImageView?.tintColor = UIColor.systemBlue
+            oneHiImageView?.alpha = 1
             twoHiSwitch?.isOn = false
             twoHiExplanationLabel?.text = hiSwitchOffExplanationString
-            twoHiImageView?.tintColor = UIColor.systemGray
+            twoHiImageView?.alpha = 0.5
         }
         else if inputUserProfileOption == "_1" {
             // _1 = normal
             oneHiSwitch?.isOn = false
             oneHiExplanationLabel?.text = hiSwitchOffExplanationString
-            oneHiImageView?.tintColor = UIColor.systemGray
+            oneHiImageView?.alpha = 0.5
             twoHiSwitch?.isOn = true
             twoHiExplanationLabel?.text = hiSwitchOnExplanationString
-            twoHiImageView?.tintColor = UIColor.systemBlue
+            twoHiImageView?.alpha = 1
         }
     }
     

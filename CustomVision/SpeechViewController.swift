@@ -20,6 +20,7 @@ public class SpeechViewController: UIViewController {
     // MARK: Properties
     let synth = AVSpeechSynthesizer()
     var inputAction : Action? = nil //Action that is passed in from previous controller
+    var se3UserType : String? //Used in chat log reading mode
     var whiteSpeechViewControllerProtocol : WhiteSpeechViewControllerProtocol?
     var speechViewControllerProtocol : SpeechViewControllerProtocol?
     let networkManager = NetworkManager.sharedInstance
@@ -600,7 +601,7 @@ public class SpeechViewController: UIViewController {
         textViewBottom?.delegate = self
         speechRecognizer.delegate = self
         
-        //Uncomment if this is root controller
+        //Uncomment if this is root controller. If WhiteSpeechViewController is the root controller, this block results in an unnecessary call for microphone permission when viewing the chat log
      /*   let permission = checkAppleSpeechRecoginitionPermissions()
         if permission != nil {
             requestMicrophonePermission()
@@ -973,6 +974,7 @@ public class SpeechViewController: UIViewController {
         if dataChats.count > 0 {
             stackViewSaveChatButton?.isHidden = false
             buttonClearChatLog?.isHidden = false
+            se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
             conversationTableView.reloadData()
             scrollToBottomOfConversationTable()
         }
@@ -1698,12 +1700,12 @@ extension SpeechViewController : UITableViewDataSource {
         let chatListItem : ChatListItem = dataChats[indexPath.row]
         
         //Option 1: Status of chat
-        //Option 2: Message from host phone
-        //Option 3: Message from another device
+        //Option 2: Message from host user(HI/normal)
+        //Option 3: Message from guest user on same device(HI/normal)
         let cell : ConversationTableViewCell =
             (chatListItem.origin == EventOrigin.STATUS.rawValue) ?
                 tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCellStatus") as! ConversationTableViewCell :
-            (chatListItem.mode == "typing") ?
+                ((chatListItem.mode == "typing" && se3UserType != "_1") || (chatListItem.mode == "talking" && se3UserType == "_1")) ?
                     tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell :
                 tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCellGuest") as! ConversationTableViewCell
                 
