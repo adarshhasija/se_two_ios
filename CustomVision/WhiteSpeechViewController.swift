@@ -1215,19 +1215,19 @@ public class WhiteSpeechViewController: UIViewController {
     //Therefore other user is normal
     private func alphaChangeIsHearingImpaired() {
         self.hiLeftImageView?.alpha = 1
-        self.viLeftImageView?.alpha = 0.5
-        self.hiRightImageView?.alpha = 0.5
-        self.viRightImageView?.alpha = 0.5
+        self.viLeftImageView?.alpha = 0.25
+        self.hiRightImageView?.alpha = 0.25
+        self.viRightImageView?.alpha = 0.25
     }
     
     //Main user has declared themselves not hearing impaired
     //Therefore other user is HI
     private func alphaChangeNotHearingImpaired() {
         self.userStatusLabel?.text = ""
-        self.hiLeftImageView?.alpha = 0.5
-        self.viLeftImageView?.alpha = 0.5
+        self.hiLeftImageView?.alpha = 0.25
+        self.viLeftImageView?.alpha = 0.25
         self.hiRightImageView?.alpha = 1
-        self.viRightImageView?.alpha = 0.5
+        self.viRightImageView?.alpha = 0.25
     }
     
     func hasInternetConnection() -> Bool {

@@ -74,10 +74,10 @@ public class TwoPeopleSettingsViewController : UIViewController {
             oneHiImageView?.alpha = 1
             twoHiSwitch?.isOn = false
             twoHiExplanationLabel?.text = hiSwitchOffExplanationString
-            twoHiImageView?.alpha = 0.5
+            twoHiImageView?.alpha = 0.25
         }
         else {
-            oneHiImageView?.alpha = 0.5
+            oneHiImageView?.alpha = 0.25
             oneHiExplanationLabel?.text = hiSwitchOffExplanationString
             twoHiSwitch?.isOn = true
             twoHiExplanationLabel?.text = hiSwitchOnExplanationString
@@ -121,8 +121,8 @@ public class TwoPeopleSettingsViewController : UIViewController {
         
         oneViExplanationLabel?.text = hiViString
         twoViExplanationLabel?.text = hiViString
-        oneViImageView?.alpha = 0.5
-        twoViImageView?.alpha = 0.5
+        oneViImageView?.alpha = 0.25
+        twoViImageView?.alpha = 0.25
         
         if inputUserProfileOption == nil
             || inputUserProfileOption == "_0"
@@ -134,13 +134,13 @@ public class TwoPeopleSettingsViewController : UIViewController {
             oneHiImageView?.alpha = 1
             twoHiSwitch?.isOn = false
             twoHiExplanationLabel?.text = hiSwitchOffExplanationString
-            twoHiImageView?.alpha = 0.5
+            twoHiImageView?.alpha = 0.25
         }
         else if inputUserProfileOption == "_1" {
             // _1 = normal
             oneHiSwitch?.isOn = false
             oneHiExplanationLabel?.text = hiSwitchOffExplanationString
-            oneHiImageView?.alpha = 0.5
+            oneHiImageView?.alpha = 0.25
             twoHiSwitch?.isOn = true
             twoHiExplanationLabel?.text = hiSwitchOnExplanationString
             twoHiImageView?.alpha = 1
