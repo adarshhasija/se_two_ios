@@ -75,6 +75,17 @@ public class TwoPeopleSettingsViewController : UIViewController {
             twoHiSwitch?.isOn = false
             twoHiExplanationLabel?.text = hiSwitchOffExplanationString
             twoHiImageView?.alpha = 0.25
+            
+            self.oneHiImageView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 1.0,
+                           delay: 0,
+                           usingSpringWithDamping: 0.2,
+                           initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction,
+                           animations: { [weak self] in
+                            self?.oneHiImageView.transform = .identity
+                },
+                           completion: nil)
         }
         else {
             oneHiImageView?.alpha = 0.25
@@ -82,6 +93,17 @@ public class TwoPeopleSettingsViewController : UIViewController {
             twoHiSwitch?.isOn = true
             twoHiExplanationLabel?.text = hiSwitchOnExplanationString
             twoHiImageView?.alpha = 1
+            
+            self.twoHiImageView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 1.0,
+                           delay: 0,
+                           usingSpringWithDamping: 0.2,
+                           initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction,
+                           animations: { [weak self] in
+                            self?.twoHiImageView.transform = .identity
+                },
+                           completion: nil)
         }
     }
     @IBAction func oneViSwitchValueChanged(_ sender: Any) {

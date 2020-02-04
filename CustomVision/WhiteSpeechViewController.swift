@@ -30,6 +30,7 @@ public class WhiteSpeechViewController: UIViewController {
     var tapToRepeat = "Tap to repeat"
     var lastActionTypingDeaf = "Typed by hearing-impaired"
     var lastActionSpeaking = "Spoken by non-hearing-impaired"
+    var userStatusInstructionLongPress = "Long press here to change"
     
     // MARK: Multipeer Connectivity Properties
     var peerID: MCPeerID!
@@ -101,7 +102,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func userProfileStackViewTapped(_ sender: Any) {
-        if currentState.last == State.Idle {
+        if currentState.last == State.Idle || currentState.last == State.UserProfileStackViewInstructions {
             changeState(action: Action.UserProfileButtonTapped)
         }
         else {
@@ -116,6 +117,13 @@ public class WhiteSpeechViewController: UIViewController {
                             self?.recordLabel?.transform = .identity
                 },
                            completion: nil)
+        }
+    }
+    
+    
+    @IBAction func userProfileStackViewLongPress(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.began {
+           changeState(action: Action.UserProfileButtonLongPress)
         }
     }
     
@@ -176,6 +184,22 @@ public class WhiteSpeechViewController: UIViewController {
             openAppleWatchAppInfoScreen()
         }
         else if action == Action.UserProfileButtonTapped && currentState.last == State.Idle {
+            currentState.append(State.UserProfileStackViewInstructions)
+            userStackViewStartAnimation()
+        }
+        else if action == Action.UserProfileButtonTapped && currentState.last == State.UserProfileStackViewInstructions {
+            currentState.popLast()
+            userStackViewEndAnimation()
+        }
+        else if action == Action.UserProfileAnimationComplete && currentState.last == State.UserProfileStackViewInstructions {
+            currentState.popLast()
+            userStackViewEndAnimation()
+        }
+        else if (action == Action.Tap || action == Action.LongPress || action == Action.SwipeUp || action == Action.SwipeLeft) && currentState.last == State.UserProfileStackViewInstructions {
+            currentState.popLast()
+            userStackViewEndAnimation()
+        }
+        else if action == Action.UserProfileButtonLongPress && currentState.last == State.Idle {
             openUserProfileOptions()
         }
         else if action == Action.Tap && currentState.last == State.Idle {
@@ -481,7 +505,7 @@ public class WhiteSpeechViewController: UIViewController {
             //If none selected, Assuming person to be deaf
             if se3UserType == nil {
                 //No selection made
-                self.userStatusLabel?.text = "Tap here to change"
+                self.userStatusLabel?.text = userStatusInstructionLongPress
                 self.userStatusLabel.transform = CGAffineTransform(translationX: 20, y: 0)
                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                     self.userStatusLabel.transform = CGAffineTransform.identity
@@ -768,6 +792,158 @@ public class WhiteSpeechViewController: UIViewController {
      /*   if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(userProfileOptionsViewController, animated: true)
         } */
+    }
+    
+    private func userStackViewStartAnimation() {
+        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        
+        composerStackView?.isHidden = true
+        textViewBottom?.isHidden = true
+        navStackView?.isHidden = true
+        
+        // START HERE
+        let stackViewTransform = self.userProfileVerticalStackView?.transform.translatedBy(x: 0, y: 150)
+        UIView.animate(withDuration: 1.0) {
+            self.userProfileVerticalStackView?.transform = stackViewTransform ?? CGAffineTransform()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+            
+            if #available(iOS 13.0, *) {
+                self.userLeftImageView?.image = UIImage(systemName: "person.fill")
+                self.appIconButton?.image = UIImage(systemName: "app")
+                self.userRightImageView?.image = UIImage(systemName: "person")
+            }
+            self.userStatusLabel?.text = "This is the owner of the device"
+            
+            if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                    if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+
+                    if #available(iOS 13.0, *) {
+                        self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                        self.userLeftImageView?.image = UIImage(systemName: "person")
+                        self.appIconButton?.image = UIImage(systemName: "app")
+                        self.userRightImageView?.image = UIImage(systemName: "person")
+                        self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                    }
+                    self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
+                    self.userStatusLabel?.text = "This person is hearing impaired\nThey will communicate by typing"
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                        if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+
+                        if #available(iOS 13.0, *) {
+                            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                            self.userLeftImageView?.image = UIImage(systemName: "person")
+                            self.appIconButton?.image = UIImage(systemName: "app")
+                            self.userRightImageView?.image = UIImage(systemName: "person.fill")
+                            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                        }
+                        self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
+                        self.userStatusLabel?.text = "The person who device owner is talking to"
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                            
+                            if #available(iOS 13.0, *) {
+                                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                                self.userLeftImageView?.image = UIImage(systemName: "person")
+                                self.appIconButton?.image = UIImage(systemName: "app")
+                                self.userRightImageView?.image = UIImage(systemName: "person")
+                                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                            }
+                            self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
+                            self.userStatusLabel?.text = "The person is not hearing-impaired\nThey will communicate by speaking into the device"
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                                self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //Necessary to do this before potentially returning
+                                
+                                if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                                
+                                self.changeState(action: Action.UserProfileAnimationComplete)
+                            })
+                            
+                        })
+                        
+                    })
+                })
+            }
+            else if se3UserType == "_1" {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                    if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                    
+                    if #available(iOS 13.0, *) {
+                        self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                        self.userLeftImageView?.image = UIImage(systemName: "person")
+                        self.appIconButton?.image = UIImage(systemName: "app")
+                        self.userRightImageView?.image = UIImage(systemName: "person")
+                        self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                    }
+                    self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
+                    self.userStatusLabel?.text = "This person is not hearing impaired\nThey will communicate by speaking into the device"
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                        if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                        if #available(iOS 13.0, *) {
+                            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                            self.userLeftImageView?.image = UIImage(systemName: "person")
+                            self.appIconButton?.image = UIImage(systemName: "app")
+                            self.userRightImageView?.image = UIImage(systemName: "person.fill")
+                            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                        }
+                        self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
+                        self.userStatusLabel?.text = "The person who device owner is talking to"
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                            if #available(iOS 13.0, *) {
+                                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                                self.userLeftImageView?.image = UIImage(systemName: "person")
+                                self.appIconButton?.image = UIImage(systemName: "app")
+                                self.userRightImageView?.image = UIImage(systemName: "person")
+                                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
+                            }
+                            self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
+                            self.userStatusLabel?.text = "This person is hearing impaired\nThey will communicate by typing"
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                                self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //Necessary to do this before returning
+                                if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                                self.changeState(action: Action.UserProfileAnimationComplete)
+                            })
+                        })
+                    })
+                })
+            }
+        })
+        
+        // END HERE
+
+    }
+    
+    private func userStackViewEndAnimation() {
+        // START HERE
+        if #available(iOS 13.0, *) {
+            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+            self.userLeftImageView?.image = UIImage(systemName: "person")
+            self.appIconButton?.image = UIImage(systemName: "app.fill")
+            self.userRightImageView?.image = UIImage(systemName: "person")
+            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+        }
+        
+        let stackViewTransform = self.userProfileVerticalStackView?.transform.translatedBy(x: 0, y: -150)
+        UIView.animate(withDuration: 1.0) {
+            self.userProfileVerticalStackView?.transform = stackViewTransform ?? CGAffineTransform()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                self.userStatusLabel?.text = self.userStatusInstructionLongPress
+                
+                self.navStackView?.isHidden = false
+                self.textViewBottom?.isHidden = false
+                self.composerStackView?.isHidden = false
+            })
+        }
     }
     
     private func enterStateIdle() {

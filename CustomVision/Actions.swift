@@ -51,4 +51,8 @@ enum Action :String{
     case UserProfileChanged
     case UserProfileButtonTapped
     case AppleWatchButtonTapped
+    
+    case UserProfileButtonLongPress
+    case UserProfileAnimationComplete
+
 }

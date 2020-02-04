@@ -893,6 +893,7 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="14u-1h-Fl6" appends="YES" id="5jf-6K-zoW"/>
+                                    <outletCollection property="gestureRecognizers" destination="yTh-Bw-rbc" appends="YES" id="WeI-BS-cM3"/>
                                 </connections>
                             </stackView>
                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Spoken and written text here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cdX-dl-fuc">
@@ -1117,6 +1118,11 @@
                         <action selector="userProfileStackViewTapped:" destination="tNc-1S-FN5" id="KXy-IV-LOY"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="yTh-Bw-rbc">
+                    <connections>
+                        <action selector="userProfileStackViewLongPress:" destination="tNc-1S-FN5" id="6sg-fA-MNE"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1111.875" y="-2795.0704225352115"/>
         </scene>
