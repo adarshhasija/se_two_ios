@@ -686,7 +686,7 @@ public class WhiteSpeechViewController: UIViewController {
         
         textViewTop?.font = textViewTop?.font?.withSize(30)
         textViewTop?.text = "(Go ahead, I'm listening)"
-        textViewBottom.font = textViewBottom.font?.withSize(30)
+        //textViewBottom.font = textViewBottom.font?.withSize(30)
         textViewBottom.text = "I am listening..."
     }
     
@@ -1074,8 +1074,17 @@ public class WhiteSpeechViewController: UIViewController {
         bottomMiddleActionLabel?.text = ""
         //
         
+        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+    /*    if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
+           //Device owner = grey
+            view.backgroundColor = UIColor.gray
+        }
+        else if se3UserType == "_1" {
+           // Device owner = normal. Typing = other user = green
+           view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 0.2)
+        }   */
+        
         if #available(iOS 13.0, *) {
-            let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
             if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
                 // Deaf user
                 self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
@@ -1126,8 +1135,8 @@ public class WhiteSpeechViewController: UIViewController {
         if currentState.last == State.Typing {
             //Means nothing was actually entered
             userStatusLabel?.text = ""
-            recordLabel?.text = typingInstructionString
             bottomMiddleActionLabel?.text = ""
+            textViewBottom?.text = dataChats[dataChats.count - 1].text
             if dataChats.count > 0 {
                 if dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
@@ -1137,9 +1146,17 @@ public class WhiteSpeechViewController: UIViewController {
                     disabledContextLabel?.text = hiSIContextString
                 }
                 else if dataChats[dataChats.count - 1].mode == "talking" {
+                    //If the last message was spoken
+                 /*   if UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") == "_1" {
+                        // Device owner was talking
+                        view.backgroundColor = UIColor.gray
+                    }
+                    else {
+                        view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 1)
+                    }   */
+                    recordLabel?.text = typingInstructionString
                     bottomMiddleActionLabel?.text = lastActionSpeaking
                 }
-                textViewBottom?.text = dataChats[dataChats.count - 1].text
             }
             else {
                 textViewBottom?.text = ""
