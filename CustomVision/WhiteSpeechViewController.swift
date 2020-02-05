@@ -31,6 +31,7 @@ public class WhiteSpeechViewController: UIViewController {
     var lastActionTypingDeaf = "Typed by hearing-impaired"
     var lastActionSpeaking = "Spoken by non-hearing-impaired"
     var userStatusInstructionLongPress = "Long press here to change"
+    var userStatusMoreInfoTap = "Tap here for more info"
     
     // MARK: Multipeer Connectivity Properties
     var peerID: MCPeerID!
@@ -510,6 +511,13 @@ public class WhiteSpeechViewController: UIViewController {
                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                     self.userStatusLabel.transform = CGAffineTransform.identity
                 }, completion: nil)
+                
+                if se3UserType == nil {
+                    self.userStatusLabel?.text = userStatusMoreInfoTap
+                }
+                else {
+                    self.userStatusLabel?.text = ""
+                }
             }
             else {
                 self.userStatusLabel?.text = ""
@@ -802,14 +810,16 @@ public class WhiteSpeechViewController: UIViewController {
         navStackView?.isHidden = true
         
         // START HERE
+        //Bring the entire portion down to the center of the screen
         let stackViewTransform = self.userProfileVerticalStackView?.transform.translatedBy(x: 0, y: 150)
         UIView.animate(withDuration: 1.0) {
             self.userProfileVerticalStackView?.transform = stackViewTransform ?? CGAffineTransform()
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
             
+            //Highlight the left profile first
             if #available(iOS 13.0, *) {
                 self.userLeftImageView?.image = UIImage(systemName: "person.fill")
                 self.appIconButton?.image = UIImage(systemName: "app")
@@ -818,8 +828,13 @@ public class WhiteSpeechViewController: UIViewController {
             self.userStatusLabel?.text = "This is the owner of the device"
             
             if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
+                //In this case, the user is deaf.
+                //Currently nil and "_0" are both considered deaf
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                    if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                    // Highlight the HI icon on the left and declare them HI
+                    
+                    if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
 
                     if #available(iOS 13.0, *) {
                         self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
@@ -832,7 +847,9 @@ public class WhiteSpeechViewController: UIViewController {
                     self.userStatusLabel?.text = "This person is hearing impaired\nThey will communicate by typing"
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                        if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                        //Hightlight icon for the person on the right
+                        
+                        if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
 
                         if #available(iOS 13.0, *) {
                             self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
@@ -845,7 +862,9 @@ public class WhiteSpeechViewController: UIViewController {
                         self.userStatusLabel?.text = "The person who device owner is talking to"
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                            //Highling the HI icon on the right and declare them not HI
+                            
+                            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
                             
                             if #available(iOS 13.0, *) {
                                 self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
@@ -858,9 +877,11 @@ public class WhiteSpeechViewController: UIViewController {
                             self.userStatusLabel?.text = "The person is not hearing-impaired\nThey will communicate by speaking into the device"
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                                //With all explanations done, trigger the end animation sequence
+                                
                                 self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //Necessary to do this before potentially returning
                                 
-                                if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                                if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
                                 
                                 self.changeState(action: Action.UserProfileAnimationComplete)
                             })
@@ -871,8 +892,12 @@ public class WhiteSpeechViewController: UIViewController {
                 })
             }
             else if se3UserType == "_1" {
+                // This means the user on the left is not HI
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                    if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                    // Hightlight the HI icon on the left, declare them NOT HI
+                    
+                    if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
                     
                     if #available(iOS 13.0, *) {
                         self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
@@ -885,7 +910,10 @@ public class WhiteSpeechViewController: UIViewController {
                     self.userStatusLabel?.text = "This person is not hearing impaired\nThey will communicate by speaking into the device"
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                        if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                        //Now highlight the person on the right
+                        
+                        if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
+                        
                         if #available(iOS 13.0, *) {
                             self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
                             self.userLeftImageView?.image = UIImage(systemName: "person")
@@ -897,7 +925,10 @@ public class WhiteSpeechViewController: UIViewController {
                         self.userStatusLabel?.text = "The person who device owner is talking to"
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                            // Highlight the HI icon on the right. Declare it as HI
+                            
+                            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
+                            
                             if #available(iOS 13.0, *) {
                                 self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
                                 self.userLeftImageView?.image = UIImage(systemName: "person")
@@ -909,8 +940,11 @@ public class WhiteSpeechViewController: UIViewController {
                             self.userStatusLabel?.text = "This person is hearing impaired\nThey will communicate by typing"
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                                // All explanations done, trigger the end of animation flow
+                                
                                 self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //Necessary to do this before returning
-                                if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation
+                                if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
+                                
                                 self.changeState(action: Action.UserProfileAnimationComplete)
                             })
                         })
@@ -931,6 +965,13 @@ public class WhiteSpeechViewController: UIViewController {
             self.appIconButton?.image = UIImage(systemName: "app.fill")
             self.userRightImageView?.image = UIImage(systemName: "person")
             self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+        }
+        
+        //Finish this before calling another thread. Can be moved if required
+        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        if se3UserType == nil {
+            // If it is a new install, set this value to 0 so that we dont keep prompting the user about this
+            UserDefaults.standard.set("_0", forKey: "SE3_IOS_USER_TYPE")
         }
         
         let stackViewTransform = self.userProfileVerticalStackView?.transform.translatedBy(x: 0, y: -150)

@@ -15,6 +15,12 @@ public class TwoPeopleSettingsViewController : UIViewController {
     // Hi: Hearing-impaired
     // Vi: Visually-impaired
     
+    // User Type:
+    // nil = No selection made
+    // _0 = No selection made by user. Automatic selection made by app. Eg: When user first installs and after we play loading animation
+    // _1 = User is not HI or VI
+    // _2 = User is HI
+    
     // Properties
     var inputUserProfileOption : String?
     var whiteSpeechViewControllerProtocol : WhiteSpeechViewControllerProtocol?
