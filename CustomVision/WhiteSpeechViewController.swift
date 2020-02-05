@@ -719,6 +719,12 @@ public class WhiteSpeechViewController: UIViewController {
             self.viRightImageView?.image = UIImage(systemName: "eye.slash")
             self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
         }
+        if #available(iOS 13.0, *) {
+            self.view.backgroundColor = UIColor.systemBackground
+        } else {
+            // Fallback on earlier versions
+            self.view.backgroundColor = UIColor.blue
+        }
         self.userStatusLabel?.text = ""
         self.disabledContextLabel?.textColor = UIColor.lightGray
         self.disabledContextLabel?.isHidden = true
@@ -1075,14 +1081,14 @@ public class WhiteSpeechViewController: UIViewController {
         //
         
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-    /*    if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
+        if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
            //Device owner = grey
             view.backgroundColor = UIColor.gray
         }
         else if se3UserType == "_1" {
            // Device owner = normal. Typing = other user = green
            view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 0.2)
-        }   */
+        }
         
         if #available(iOS 13.0, *) {
             if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
@@ -1147,13 +1153,13 @@ public class WhiteSpeechViewController: UIViewController {
                 }
                 else if dataChats[dataChats.count - 1].mode == "talking" {
                     //If the last message was spoken
-                 /*   if UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") == "_1" {
+                    if UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") == "_1" {
                         // Device owner was talking
                         view.backgroundColor = UIColor.gray
                     }
                     else {
                         view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 1)
-                    }   */
+                    }
                     recordLabel?.text = typingInstructionString
                     bottomMiddleActionLabel?.text = lastActionSpeaking
                 }
@@ -1255,8 +1261,17 @@ public class WhiteSpeechViewController: UIViewController {
             bottomMiddleActionLabel?.text = ""
             //
             
+            let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+            if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
+               //Not device owner = green
+                view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 1)
+            }
+            else if se3UserType == "_1" {
+               // Device owner = gray
+               view.backgroundColor = UIColor.gray
+            }
             if #available(iOS 13.0, *) {
-                let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+                
                 if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
                     // Normal user
                     self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
@@ -1344,6 +1359,14 @@ public class WhiteSpeechViewController: UIViewController {
                 userStatusLabel?.text = ""
                 if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
+                    if UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") == "_1" {
+                        // other person was typing
+                        view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 1)
+                    }
+                    else {
+                        // device owner was typing
+                        view.backgroundColor = UIColor.gray
+                    }
                     disabledContextLabel?.isHidden = false
                     disabledContextLabel?.text = hiSIContextString
                     textViewBottom?.text = dataChats[dataChats.count - 1].text
@@ -1449,9 +1472,9 @@ public class WhiteSpeechViewController: UIViewController {
     //Therefore other user is normal
     private func alphaChangeIsHearingImpaired() {
         self.hiLeftImageView?.alpha = 1
-        self.viLeftImageView?.alpha = 0.25
+        //self.viLeftImageView?.alpha = 0.25
         self.hiRightImageView?.alpha = 0.25
-        self.viRightImageView?.alpha = 0.25
+        //self.viRightImageView?.alpha = 0.25
     }
     
     //Main user has declared themselves not hearing impaired
@@ -1459,9 +1482,9 @@ public class WhiteSpeechViewController: UIViewController {
     private func alphaChangeNotHearingImpaired() {
         self.userStatusLabel?.text = ""
         self.hiLeftImageView?.alpha = 0.25
-        self.viLeftImageView?.alpha = 0.25
+        //self.viLeftImageView?.alpha = 0.25
         self.hiRightImageView?.alpha = 1
-        self.viRightImageView?.alpha = 0.25
+        //self.viRightImageView?.alpha = 0.25
     }
     
     func hasInternetConnection() -> Bool {
