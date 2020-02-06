@@ -1142,8 +1142,8 @@ public class WhiteSpeechViewController: UIViewController {
             //Means nothing was actually entered
             userStatusLabel?.text = ""
             bottomMiddleActionLabel?.text = ""
-            textViewBottom?.text = dataChats[dataChats.count - 1].text
             if dataChats.count > 0 {
+                textViewBottom?.text = dataChats[dataChats.count - 1].text
                 if dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
                     recordLabel?.text = speechToTextInstructionString
@@ -1165,6 +1165,15 @@ public class WhiteSpeechViewController: UIViewController {
                 }
             }
             else {
+                if #available(iOS 13.0, *) {
+                    view.backgroundColor = UIColor.systemBackground
+                }
+                if UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") == "_1" {
+                    recordLabel?.text = speechToTextInstructionString
+                }
+                else {
+                    recordLabel?.text = typingInstructionString
+                }
                 textViewBottom?.text = ""
             }
         }
@@ -1381,8 +1390,17 @@ public class WhiteSpeechViewController: UIViewController {
                     bottomMiddleActionLabel?.text = lastActionSpeaking
                 }
                 else {
+                    //There was no message before. THis was the first message
+                    if #available(iOS 13.0, *) {
+                        view.backgroundColor = UIColor.systemBackground
+                    }
                     recordLabel?.isHidden = false
-                    recordLabel?.text = speechToTextInstructionString
+                    if UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") == "_1" {
+                        recordLabel?.text = speechToTextInstructionString
+                    }
+                    else {
+                        recordLabel?.text = typingInstructionString
+                    }
                     disabledContextLabel?.isHidden = true
                     disabledContextLabel?.text = ""
                     textViewBottom?.text = ""

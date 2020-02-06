@@ -27,6 +27,9 @@ public class TwoPeopleSettingsViewController : UIViewController {
     var hiSwitchOnExplanationString = "Will type out messages and show the other person"
     var hiSwitchOffExplanationString = "Will speak and show the written text to the hearing-impaired person"
     var hiViString = "Use on Apple Watch.\niOS version for deaf and blind coming in a future update!"
+    var HiWillTypeString = "Hearing-impaired:\nWill type"
+    var noAilmentsWillTalkString = "No ailments:\nWill talk"
+    var pickerData : [String] = []
     
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var oneView: UIView!
@@ -71,6 +74,13 @@ public class TwoPeopleSettingsViewController : UIViewController {
     @IBOutlet weak var twoViLabel: UILabel!
     @IBOutlet weak var twoViSwitch: UISwitch!
     @IBOutlet weak var twoViExplanationLabel: UILabel!
+    
+    
+    @IBOutlet weak var hostPickerView: UIPickerView!
+    @IBOutlet weak var hostRoleLabel: UILabel!
+    @IBOutlet weak var guestRoleLabel: UILabel!
+    @IBOutlet weak var errorMessageLabel: UILabel! //only needed when we start with deaf-blind mode
+    
     
     
     
@@ -147,37 +157,90 @@ public class TwoPeopleSettingsViewController : UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        pickerData.append(contentsOf: ["Hearing-impaired", /*"Deaf-blind",*/ "No ailments"])
+        hostPickerView.delegate = self
+        hostPickerView.dataSource = self
+        errorMessageLabel?.text = ""
+        
         oneViExplanationLabel?.text = hiViString
         twoViExplanationLabel?.text = hiViString
-        oneViImageView?.alpha = 0.25
-        twoViImageView?.alpha = 0.25
+        //oneViImageView?.alpha = 0.25
+        //twoViImageView?.alpha = 0.25
         
         if inputUserProfileOption == nil
             || inputUserProfileOption == "_0"
             || inputUserProfileOption == "_2" {
             //No input = deaf
             // _2 = Deaf
-            oneHiSwitch?.isOn = true
-            oneHiExplanationLabel?.text = hiSwitchOnExplanationString
+            //oneHiSwitch?.isOn = true
+            //oneHiExplanationLabel?.text = hiSwitchOnExplanationString
             oneHiImageView?.alpha = 1
-            twoHiSwitch?.isOn = false
-            twoHiExplanationLabel?.text = hiSwitchOffExplanationString
+            //twoHiSwitch?.isOn = false
+            //twoHiExplanationLabel?.text = hiSwitchOffExplanationString
             twoHiImageView?.alpha = 0.25
+            
+            hostRoleLabel?.text = HiWillTypeString
+            guestRoleLabel?.text = noAilmentsWillTalkString
+            hostPickerView?.selectRow(0, inComponent: 0, animated: false)
         }
         else if inputUserProfileOption == "_1" {
             // _1 = normal
-            oneHiSwitch?.isOn = false
-            oneHiExplanationLabel?.text = hiSwitchOffExplanationString
+            //oneHiSwitch?.isOn = false
+            //oneHiExplanationLabel?.text = hiSwitchOffExplanationString
             oneHiImageView?.alpha = 0.25
-            twoHiSwitch?.isOn = true
-            twoHiExplanationLabel?.text = hiSwitchOnExplanationString
+            //twoHiSwitch?.isOn = true
+            //twoHiExplanationLabel?.text = hiSwitchOnExplanationString
             twoHiImageView?.alpha = 1
+            
+            hostRoleLabel?.text = noAilmentsWillTalkString
+            guestRoleLabel?.text = HiWillTypeString
+            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
         }
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
-        let userType = oneHiSwitch.isOn ? "_2" : "_1"
+        let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_2" : "_1"
         UserDefaults.standard.set(userType, forKey: "SE3_IOS_USER_TYPE")
         whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: userType)
     }
+}
+
+extension TwoPeopleSettingsViewController : UIPickerViewDataSource {
+    
+    //number of columns
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let label = UILabel()
+        label.lineBreakMode = .byWordWrapping;
+        label.numberOfLines = 0;
+        label.text = pickerData[row]
+        label.sizeToFit()
+        return label;
+    }
+}
+
+extension TwoPeopleSettingsViewController : UIPickerViewDelegate {
+    
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if row == 0 {
+            hostRoleLabel?.text = HiWillTypeString
+            guestRoleLabel?.text = noAilmentsWillTalkString
+            oneHiImageView?.alpha = 1
+            twoHiImageView?.alpha = 0.25
+        }
+        else if row == 1 {
+            hostRoleLabel?.text = noAilmentsWillTalkString
+            guestRoleLabel?.text = HiWillTypeString
+            oneHiImageView?.alpha = 0.25
+            twoHiImageView?.alpha = 1
+        }
+    }
+    
 }
