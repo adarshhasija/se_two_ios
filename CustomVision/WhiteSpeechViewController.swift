@@ -831,6 +831,7 @@ public class WhiteSpeechViewController: UIViewController {
                 self.appIconButton?.image = UIImage(systemName: "app")
                 self.userRightImageView?.image = UIImage(systemName: "person")
             }
+            self.userLeftImageView?.transform = self.userLeftImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
             self.userStatusLabel?.text = "This is the owner of the device"
             
             if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
@@ -849,6 +850,7 @@ public class WhiteSpeechViewController: UIViewController {
                         self.userRightImageView?.image = UIImage(systemName: "person")
                         self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
                     }
+                    self.userLeftImageView?.transform = self.userLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
                     self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
                     self.userStatusLabel?.text = "This person is hearing impaired\nThey will communicate by typing"
                     
@@ -865,6 +867,7 @@ public class WhiteSpeechViewController: UIViewController {
                             self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
                         }
                         self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
+                        self.userRightImageView?.transform = self.userRightImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
                         self.userStatusLabel?.text = "The person who device owner is talking to"
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
@@ -879,6 +882,7 @@ public class WhiteSpeechViewController: UIViewController {
                                 self.userRightImageView?.image = UIImage(systemName: "person")
                                 self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
                             }
+                            self.userRightImageView?.transform = self.userRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
                             self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
                             self.userStatusLabel?.text = "The person is not hearing-impaired\nThey will communicate by speaking into the device"
                             
