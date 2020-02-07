@@ -45,7 +45,7 @@ class SettingDBController: WKInterfaceController {
         piDeafBlind.title = "Deaf-blind"
         pickerItems.append(piDeafBlind)
         let piNoAilments = WKPickerItem()
-        piNoAilments.title = "No ailments"
+        piNoAilments.title = "Not impaired"
         pickerItems.append(piNoAilments)
         picker.setItems(pickerItems)
         
