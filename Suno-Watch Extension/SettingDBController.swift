@@ -17,53 +17,62 @@ class SettingDBController: WKInterfaceController {
      2: Deaf-Blind
      */
     
-    @IBOutlet weak var deafBlindSwitch: WKInterfaceSwitch!
     @IBOutlet weak var instructionLabel: WKInterfaceLabel!
+    @IBOutlet weak var picker: WKInterfacePicker!
     
     var se3UserType : String?
-    var instructionDeafBlind = "Set to ON if the user of the watch is deaf-blind. We will modify the experience accordingly"
-    var instructionNotDeafBlind = "Set to OFF if the user of the watch needs to communicate with a deaf-blind person. We will modify the experience accordingly"
+    var instructionDeafBlind = "You will type in morse code"
+    var instructionNotDeafBlind = "You will type or speak in normal English"
     var delegate : MCInterfaceControllerProtocol?
     
     
-    @IBAction func switchValueChange(_ value: Bool) {
-        se3UserType = value ? "_2" : "_1"
-        UserDefaults.standard.set(se3UserType, forKey: "SE3_WATCHOS_USER_TYPE")
-        instructionLabel.setText(value ? instructionNotDeafBlind : instructionDeafBlind)
-        if se3UserType != nil {
-            delegate?.settingDeafBlindChanged(se3UserType: se3UserType!)
+    @IBAction func pickerValueChanged(_ value: Int) {
+        if value == 0 {
+            se3UserType = "_2"
+            instructionLabel.setText(instructionDeafBlind)
+        }
+        else if value == 1 {
+            se3UserType = "_1"
+            instructionLabel.setText(instructionNotDeafBlind)
         }
     }
     
     override func awake(withContext context: Any?) {
         self.delegate = context as? MCInterfaceControllerProtocol
+        
+        var pickerItems : [WKPickerItem] = []
+        let piDeafBlind = WKPickerItem()
+        piDeafBlind.title = "Deaf-blind"
+        pickerItems.append(piDeafBlind)
+        let piNoAilments = WKPickerItem()
+        piNoAilments.title = "No ailments"
+        pickerItems.append(piNoAilments)
+        picker.setItems(pickerItems)
+        
         se3UserType = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
         if se3UserType == "_2" {
-            deafBlindSwitch.setOn(true)
-            instructionLabel.setText(instructionNotDeafBlind)
-        }
-        else if se3UserType == "_1" {
-            deafBlindSwitch.setOn(false)
+            picker.setSelectedItemIndex(0)
             instructionLabel.setText(instructionDeafBlind)
         }
+        else if se3UserType == "_1" {
+            picker.setSelectedItemIndex(1)
+            instructionLabel.setText(instructionNotDeafBlind)
+        }
         else {
-            deafBlindSwitch.setOn(false)
+            picker.setSelectedItemIndex(0)
             instructionLabel.setText(instructionDeafBlind)
         }
         
     }
     
     override func willDisappear() {
-        let userDefaultsValue = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
-        if userDefaultsValue == nil {
-            if se3UserType == nil {
-                //We have no value stored and user tapped on back without changing the value
-                se3UserType = "_1"
-            }
-            UserDefaults.standard.set(se3UserType, forKey: "SE3_WATCHOS_USER_TYPE")
-            if se3UserType != nil {
-                delegate?.settingDeafBlindChanged(se3UserType: se3UserType!)
-            }
+        if se3UserType == nil {
+            //We have no value stored and user tapped on back without changing the value. Therefore set it to deaf-blind
+            se3UserType = "_2"
+        }
+        UserDefaults.standard.set(se3UserType, forKey: "SE3_WATCHOS_USER_TYPE")
+        if se3UserType != nil {
+            delegate?.settingDeafBlindChanged(se3UserType: se3UserType!)
         }
     }
     
