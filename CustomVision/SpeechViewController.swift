@@ -965,7 +965,7 @@ public class SpeechViewController: UIViewController {
     }
     
     private func enterStateChatsReadAndShareOnly() {
-        self.title = ""
+        self.title = "Chat Log"
         viewDeafProfile?.isHidden = false
         labelTopStatus?.text = "We do not store any chat logs. All logs are deleted when the app is closed"
         conversationTableView?.isHidden = false
