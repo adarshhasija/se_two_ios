@@ -60,7 +60,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        pickerData.append(contentsOf: ["Hearing-impaired", /*"Deaf-blind",*/ "No ailments"])
+        pickerData.append(contentsOf: ["Hearing-impaired", /*"Deaf-blind",*/ "Not impaired"])
         hostPickerView.delegate = self
         hostPickerView.dataSource = self
         errorMessageLabel?.text = ""

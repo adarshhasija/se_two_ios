@@ -236,9 +236,9 @@ public class WhiteSpeechViewController: UIViewController {
                 //dialogOK(title: "Alert", message: "No internet connection")
                 animateNoInternetConnection()
             }
-            else if AVAudioSession.sharedInstance().recordPermission() != AVAudioSession.RecordPermission.granted {
+       /*     else if AVAudioSession.sharedInstance().recordPermission() != AVAudioSession.RecordPermission.granted {
                 showErrorMessageFormPermission(permission: "mic")
-            }
+            }   */
             else {
                 currentState.append(State.Speaking)
                 enterStateSpeaking()
