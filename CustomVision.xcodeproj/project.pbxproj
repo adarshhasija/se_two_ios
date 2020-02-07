@@ -11,6 +11,8 @@
 		310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */; };
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
+		315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */; };
+		315A776823EDF03D00FC75E3 /* WatchAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776723EDF03D00FC75E3 /* WatchAppViewController.swift */; };
 		317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */; };
 		3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */; };
 		3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */; };
@@ -118,6 +120,8 @@
 		310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryRowController.swift; sourceTree = "<group>"; };
 		313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDTouchView.swift; sourceTree = "<group>"; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
+		315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoPeopleSettingsViewController.swift; sourceTree = "<group>"; };
+		315A776723EDF03D00FC75E3 /* WatchAppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchAppViewController.swift; sourceTree = "<group>"; };
 		317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewController.swift; sourceTree = "<group>"; };
 		3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicViewController.swift; sourceTree = "<group>"; };
 		3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewCell.swift; sourceTree = "<group>"; };
@@ -328,6 +332,8 @@
 		5EBF65101F0AA47700BCD353 /* CustomVision */ = {
 			isa = PBXGroup;
 			children = (
+				315A776723EDF03D00FC75E3 /* WatchAppViewController.swift */,
+				315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */,
 				317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */,
 				31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */,
 				31F57B4A211A137000777EA3 /* SpeechViewController.swift */,
@@ -730,12 +736,14 @@
 				317D4C242188CCC50081B38B /* States.swift in Sources */,
 				31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */,
 				31862B7D225E11650058883D /* ChatListItem.swift in Sources */,
+				315A776823EDF03D00FC75E3 /* WatchAppViewController.swift in Sources */,
 				31862B7F226077950058883D /* EventOrigin.swift in Sources */,
 				317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */,
 				313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */,
 				31E5344523DEB20600F163B1 /* UserProfileOptionTableViewCell.swift in Sources */,
 				3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */,
 				3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */,
+				315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */,
 				5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */,
 				31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */,
 			);
