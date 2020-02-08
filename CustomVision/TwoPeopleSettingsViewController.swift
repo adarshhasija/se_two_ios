@@ -18,8 +18,8 @@ public class TwoPeopleSettingsViewController : UIViewController {
     // User Type:
     // nil = No selection made
     // _0 = No selection made by user. Automatic selection made by app. Eg: When user first installs and after we play loading animation
-    // _1 = User is not HI or VI
-    // _2 = User is HI
+    // _1 = Host is not HI or VI. Guest is HI
+    // _2 = Host is HI. Guest is not HI or VI
     
     // Properties
     var inputUserProfileOption : String?
@@ -28,7 +28,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
     var hiSwitchOffExplanationString = "Will speak and show the written text to the hearing-impaired person"
     var hiViString = "Use on Apple Watch.\niOS version for deaf and blind coming in a future update!"
     var HiWillTypeString = "Hearing-impaired:\nWill type"
-    var noAilmentsWillTalkString = "No ailments:\nWill talk"
+    var noAilmentsWillTalkString = "Not impaired:\nWill talk"
     var deafBlindMorseCodeString = "Deaf-blind:\nWill type in morse code"
     var notDeafBlindWillTypeString = "Not deaf-blind:\nWill type"
     var pickerData : [String] = []

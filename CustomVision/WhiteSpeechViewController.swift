@@ -185,6 +185,7 @@ public class WhiteSpeechViewController: UIViewController {
             openAppleWatchAppInfoScreen()
         }
         else if action == Action.UserProfileButtonTapped && currentState.last == State.Idle {
+            Analytics.logEvent("se3_uprofile_tap", parameters: [:])
             currentState.append(State.UserProfileStackViewInstructions)
             userStackViewStartAnimation()
         }
