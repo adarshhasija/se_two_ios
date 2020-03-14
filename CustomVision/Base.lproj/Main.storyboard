@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JUW-UG-VXo">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -128,7 +127,7 @@
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
-                                                    <color key="backgroundColor" systemColor="placeholderTextColor" red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="backgroundColor" systemColor="placeholderTextColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="5jH-gI-Ix7"/>
                                                         <constraint firstItem="LA6-8y-dbc" firstAttribute="leading" secondItem="Xrj-WP-QK0" secondAttribute="leading" constant="8" id="5qx-V0-ykl"/>
@@ -846,7 +845,7 @@
                                             </stackView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="lc7-uL-qS2">
                                                 <rect key="frame" x="71.5" y="1" width="30" height="28"/>
-                                                <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="30" id="kfw-g3-WW6"/>
                                                     <constraint firstAttribute="height" constant="30" id="yJb-Dx-63P"/>
@@ -857,7 +856,7 @@
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8tj-88-nHu">
                                                         <rect key="frame" x="0.0" y="1.5" width="40" height="28"/>
-                                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" priority="999" constant="40" id="D50-0k-v1t"/>
                                                             <constraint firstAttribute="height" priority="999" constant="40" id="Ifk-4B-rXL"/>
@@ -868,11 +867,11 @@
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="speaker.slash" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="SYk-k2-EuB">
                                                                 <rect key="frame" x="0.0" y="1" width="26.5" height="18.5"/>
-                                                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </imageView>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="eye.slash" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="qhE-2F-fIX">
                                                                 <rect key="frame" x="0.0" y="21" width="26.5" height="7.5"/>
-                                                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </imageView>
                                                         </subviews>
                                                     </stackView>
@@ -886,7 +885,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User status" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQs-To-UKX">
                                         <rect key="frame" x="49.5" y="35" width="74" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" systemColor="systemGrayColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -930,7 +929,7 @@
                                     </label>
                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wifi.slash" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Qah-8m-dI7">
                                         <rect key="frame" x="0.0" y="-2.5" width="280" height="1"/>
-                                        <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY" userLabel="Tap to Record Label">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="21.5"/>
@@ -1039,6 +1038,7 @@
                             <outletCollection property="gestureRecognizers" destination="YlR-ja-sdv" appends="YES" id="Qzo-TG-cFz"/>
                             <outletCollection property="gestureRecognizers" destination="fQ4-4T-aoI" appends="YES" id="U6C-b4-IkC"/>
                             <outletCollection property="gestureRecognizers" destination="v1O-KE-Sfj" appends="YES" id="rFu-4h-Qzf"/>
+                            <outletCollection property="gestureRecognizers" destination="YOU-Dh-wnH" appends="YES" id="nxW-fI-pxE"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Suno" id="2ZI-nq-DhT">
@@ -1123,6 +1123,11 @@
                         <action selector="userProfileStackViewLongPress:" destination="tNc-1S-FN5" id="6sg-fA-MNE"/>
                     </connections>
                 </pongPressGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="YOU-Dh-wnH">
+                    <connections>
+                        <action selector="swipeGesture:" destination="tNc-1S-FN5" id="2qx-uc-Nwk"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1111.875" y="-2795.0704225352115"/>
         </scene>
@@ -1417,7 +1422,7 @@
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="4tC-Bh-neO">
                                                                                 <rect key="frame" x="0.0" y="1.5" width="100" height="97.5"/>
-                                                                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="100" id="4VX-Dk-ssj"/>
                                                                                     <constraint firstAttribute="width" constant="100" id="6hv-17-a4I"/>
@@ -1428,11 +1433,11 @@
                                                                                 <subviews>
                                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="xVL-Jw-4sF">
                                                                                         <rect key="frame" x="0.0" y="1" width="55" height="48.5"/>
-                                                                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     </imageView>
                                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="COe-s0-nkr">
                                                                                         <rect key="frame" x="0.0" y="51" width="55" height="47.5"/>
-                                                                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     </imageView>
                                                                                 </subviews>
                                                                             </stackView>
@@ -1455,7 +1460,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uta-yb-a1m">
                                                         <rect key="frame" x="0.0" y="145" width="320" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" systemColor="systemPinkColor" red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ewT-od-cHD">
@@ -1506,6 +1511,106 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r3y-3H-H6a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2833" y="-2888"/>
+        </scene>
+        <!--Morse Code Editor View Controller-->
+        <scene sceneID="kaO-YT-H9J">
+            <objects>
+                <viewController storyboardIdentifier="MorseCodeEditorViewController" id="bbL-uY-60S" customClass="MorseCodeEditorViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Gfa-cJ-5yq"/>
+                        <viewControllerLayoutGuide type="bottom" id="lNj-gg-1Um"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="f8q-ly-aYW">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qUd-rF-vFv">
+                                <rect key="frame" x="66" y="253.5" width="188" height="61.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mmk-gV-sh5">
+                                        <rect key="frame" x="0.0" y="0.0" width="188" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ln-Yx-NwW">
+                                        <rect key="frame" x="0.0" y="20.5" width="188" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rfn-QH-Ysh">
+                                        <rect key="frame" x="0.0" y="41" width="188" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="qUd-rF-vFv" firstAttribute="centerX" secondItem="f8q-ly-aYW" secondAttribute="centerX" id="A3M-o7-Zuc"/>
+                            <constraint firstItem="qUd-rF-vFv" firstAttribute="leading" secondItem="f8q-ly-aYW" secondAttribute="leadingMargin" constant="50" id="LGv-Jw-JbU"/>
+                            <constraint firstItem="qUd-rF-vFv" firstAttribute="centerY" secondItem="f8q-ly-aYW" secondAttribute="centerY" id="Wyj-Ck-DbJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="qUd-rF-vFv" secondAttribute="trailing" constant="50" id="r3f-nB-6uy"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="1zm-jY-I0j" appends="YES" id="atr-ok-Uaj"/>
+                            <outletCollection property="gestureRecognizers" destination="rwk-ZV-AtE" appends="YES" id="D7Q-A0-uoO"/>
+                            <outletCollection property="gestureRecognizers" destination="teA-bk-fNo" appends="YES" id="yJb-db-XMK"/>
+                            <outletCollection property="gestureRecognizers" destination="c0r-mf-QaH" appends="YES" id="iHJ-Up-c8S"/>
+                            <outletCollection property="gestureRecognizers" destination="blP-fa-Ovv" appends="YES" id="fOa-IA-Qkk"/>
+                            <outletCollection property="gestureRecognizers" destination="B27-Wz-0Ly" appends="YES" id="4mi-bj-63H"/>
+                            <outletCollection property="gestureRecognizers" destination="7Dh-3M-BNs" appends="YES" id="tm3-Gy-e5C"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="englishTextLabel" destination="mmk-gV-sh5" id="Wd3-vi-ZxL"/>
+                        <outlet property="instructionsLabel" destination="Rfn-QH-Ysh" id="1P7-MK-hMc"/>
+                        <outlet property="mainStackVIew" destination="qUd-rF-vFv" id="S30-5h-8Ez"/>
+                        <outlet property="morseCodeTextLabel" destination="9Ln-Yx-NwW" id="Ye3-Je-Dcp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Omw-vJ-eUq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="1zm-jY-I0j">
+                    <connections>
+                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="umu-68-54T"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="c0r-mf-QaH">
+                    <connections>
+                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="hoZ-qI-ktD"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="up" id="blP-fa-Ovv">
+                    <connections>
+                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="NwW-X2-W1x"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <tapGestureRecognizer id="rwk-ZV-AtE">
+                    <connections>
+                        <action selector="tapGesture:" destination="bbL-uY-60S" id="hDT-75-YQI"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="teA-bk-fNo">
+                    <connections>
+                        <action selector="longPressGesture:" destination="bbL-uY-60S" id="Cly-R8-ld3"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <swipeGestureRecognizer direction="left" numberOfTouchesRequired="2" id="B27-Wz-0Ly">
+                    <connections>
+                        <action selector="swipeGestureDouble:" destination="bbL-uY-60S" id="nyK-vr-WpZ"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" numberOfTouchesRequired="2" id="7Dh-3M-BNs">
+                    <connections>
+                        <action selector="swipeGestureDouble:" destination="bbL-uY-60S" id="5EZ-Ej-OMs"/>
+                    </connections>
+                </swipeGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="3802" y="-2891"/>
         </scene>
     </scenes>
     <resources>

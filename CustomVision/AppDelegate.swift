@@ -1,16 +1,25 @@
 import UIKit
 import Firebase
 import WatchConnectivity
+import CoreHaptics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
+  var supportsHaptics : Bool = false
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
         -> Bool {
             FirebaseApp.configure()
+            
+            // Check if the device supports haptics.
+            if #available(iOS 13.0, *) {
+                self.supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
+            } else {
+                // Fallback on earlier versions
+            };
             
             if WCSession.isSupported() {
                 let session = WCSession.default

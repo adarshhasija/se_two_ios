@@ -13,11 +13,17 @@ import SystemConfiguration
 import CoreBluetooth
 import FirebaseAnalytics
 import WatchConnectivity
+import CoreHaptics
 
 public class WhiteSpeechViewController: UIViewController {
 
     // MARK: Properties
     let synth = AVSpeechSynthesizer()
+    var chHapticEngine : CHHapticEngine?
+    private var engineNeedsStart = true
+    lazy var supportsHaptics: Bool = {
+        return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
+    }()
     let networkManager = NetworkManager.sharedInstance
     var currentState: [State] = []
     var seconds = 60
@@ -143,6 +149,23 @@ public class WhiteSpeechViewController: UIViewController {
     
     @IBAction func tapGesture() {
         changeState(action: Action.Tap)
+        
+        // Play haptic here.
+     /*   do {
+            // Start the engine if necessary.
+            if engineNeedsStart {
+                try chHapticEngine?.start()
+                engineNeedsStart = false
+            }
+
+            // Create a haptic pattern player from normalized magnitude.
+            let hapticPlayer = try hapticForResult(success: true)
+
+            // Start player, fire and forget
+            try hapticPlayer?.start(atTime: CHHapticTimeImmediate)
+        } catch let error {
+            print("Haptic Playback Error: \(error)")
+        }   */
     }
     
     
@@ -159,6 +182,9 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if sender.direction == UISwipeGestureRecognizerDirection.left {
             changeState(action: Action.SwipeLeft)
+        }
+        else if sender.direction == UISwipeGestureRecognizerDirection.right {
+            changeState(action: Action.SwipeRight)
         }
     }
     
@@ -212,12 +238,16 @@ public class WhiteSpeechViewController: UIViewController {
             else {
                 let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
                 if se3UserType != nil {
+                    // All types of user
+                    //Shake the recordLabel to indidate the next action to the user
                     self.recordLabel?.transform = CGAffineTransform(translationX: 20, y: 0)
                     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                         self.recordLabel?.transform = CGAffineTransform.identity
                     }, completion: nil)
                 }
                 else {
+                    //User not set
+                    //Shake the user status label to indicate that the user should set their user settings
                     self.userStatusLabel?.transform = CGAffineTransform(translationX: 20, y: 0)
                     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                         self.userStatusLabel?.transform = CGAffineTransform.identity
@@ -225,8 +255,16 @@ public class WhiteSpeechViewController: UIViewController {
                 }
             }
         }
+        else if action == Action.SwipeRight && currentState.last == State.Idle {
+            let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+            if se3UserType == "_3" {
+                //Deaf-blind
+                textViewBottom?.text += "-"
+            }
+        }
         else if action == Action.LongPress && currentState.last == State.Idle {
-            Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
+            openMorseCodeEditor()
+          /*  Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
             let permission = checkAppleSpeechRecoginitionPermissions()
@@ -237,13 +275,10 @@ public class WhiteSpeechViewController: UIViewController {
                 //dialogOK(title: "Alert", message: "No internet connection")
                 animateNoInternetConnection()
             }
-       /*     else if AVAudioSession.sharedInstance().recordPermission() != AVAudioSession.RecordPermission.granted {
-                showErrorMessageFormPermission(permission: "mic")
-            }   */
             else {
                 currentState.append(State.Speaking)
                 enterStateSpeaking()
-            }
+            }   */
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
             changeState(action: Action.TypistFinishedTyping)
@@ -475,6 +510,9 @@ public class WhiteSpeechViewController: UIViewController {
         
         (view as? ThreeDTouchView)?.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         
+
+        createAndStartHapticEngine()
+        
         //currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.ControllerLoaded) //Push
         changeState(action: Action.AppOpened)
@@ -552,6 +590,55 @@ public class WhiteSpeechViewController: UIViewController {
             }
         }
         
+    }
+    
+    private func createAndStartHapticEngine() {
+        guard supportsHaptics else {
+            return
+        }
+
+        // Create and configure a haptic engine.
+        do {
+            chHapticEngine = try CHHapticEngine()
+        } catch let error {
+            fatalError("Engine Creation Error: \(error)")
+        }
+
+        // The stopped handler alerts engine stoppage.
+        chHapticEngine?.stoppedHandler = { reason in
+            print("Stop Handler: The engine stopped for reason: \(reason.rawValue)")
+            switch reason {
+            case .audioSessionInterrupt: print("Audio session interrupt")
+            case .applicationSuspended: print("Application suspended")
+            case .idleTimeout: print("Idle timeout")
+            case .notifyWhenFinished: print("Finished")
+            case .systemError: print("System error")
+            @unknown default:
+                print("Unknown error")
+            }
+            
+            // Indicate that the next time the app requires a haptic, the app must call engine.start().
+            self.engineNeedsStart = true
+        }
+
+        // The reset handler notifies the app that it must reload all its content.
+        // If necessary, it recreates all players and restarts the engine in response to a server restart.
+        chHapticEngine?.resetHandler = {
+            print("The engine reset --> Restarting now!")
+            
+            // Tell the rest of the app to start the engine the next time a haptic is necessary.
+            self.engineNeedsStart = true
+        }
+
+        // Start haptic engine to prepare for use.
+        do {
+            try chHapticEngine?.start()
+
+            // Indicate that the next time the app requires a haptic, the app doesn't need to call engine.start().
+            engineNeedsStart = false
+        } catch let error {
+            print("The engine failed to start with error: \(error)")
+        }
     }
     
     public func sessionReachabilityDidChange(_ session: WCSession) {
@@ -793,6 +880,18 @@ public class WhiteSpeechViewController: UIViewController {
         speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(speechViewController, animated: true)
+        }
+    }
+    
+    private func openMorseCodeEditor() {
+        //Open the chat log
+        guard let storyBoard : UIStoryboard = self.storyboard else {
+            return
+        }
+        let morseCodeEditorViewController = storyBoard.instantiateViewController(withIdentifier: "MorseCodeEditorViewController") as! MorseCodeEditorViewController
+        morseCodeEditorViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(morseCodeEditorViewController, animated: true)
         }
     }
     
@@ -1869,6 +1968,58 @@ public class WhiteSpeechViewController: UIViewController {
         })
     }
     
+    private func hapticForResult(success : Bool) throws -> CHHapticPatternPlayer? {
+        let volume = linearInterpolation(alpha: 1, min: 0.1, max: 0.4)
+        let decay: Float = linearInterpolation(alpha: 1, min: 0.0, max: 0.1)
+        let audioEvent = CHHapticEvent(eventType: .audioContinuous, parameters: [
+            CHHapticEventParameter(parameterID: .audioPitch, value: -0.15),
+            CHHapticEventParameter(parameterID: .audioVolume, value: volume),
+            CHHapticEventParameter(parameterID: .decayTime, value: decay),
+            CHHapticEventParameter(parameterID: .sustained, value: 0)
+            ], relativeTime: 0)
+
+        let sharpness : Float = success == true ? 1.0 : 0.1
+        let intensity : Float = 0.5
+        let hapticEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [
+            CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
+            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
+            ], relativeTime: 0)
+
+        let pattern = try CHHapticPattern(events: [/*audioEvent,*/ hapticEvent], parameters: [])
+        return try chHapticEngine?.makePlayer(with: pattern)
+    }
+    
+    private func hapticForMorseCode(isDash : Bool) throws -> CHHapticPatternPlayer? {
+        let volume = linearInterpolation(alpha: 1, min: 0.1, max: 0.4)
+        let decay: Float = linearInterpolation(alpha: 1, min: 0.0, max: 0.1)
+        let audioEvent = CHHapticEvent(eventType: .audioContinuous, parameters: [
+            CHHapticEventParameter(parameterID: .audioPitch, value: -0.15),
+            CHHapticEventParameter(parameterID: .audioVolume, value: volume),
+            CHHapticEventParameter(parameterID: .decayTime, value: decay),
+            CHHapticEventParameter(parameterID: .sustained, value: 0)
+            ], relativeTime: 0)
+
+        let sharpness : Float = 1.0
+        let intensity : Float = 0.5
+        let hapticDash = CHHapticEvent(eventType: .hapticTransient, parameters: [
+            CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
+            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
+        ], relativeTime: 0, duration: TimeInterval(1.0))
+        
+        let hapticDot = CHHapticEvent(eventType: .hapticTransient, parameters: [
+            CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
+            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
+        ], relativeTime: 0)
+        let hapticEvent = isDash == true ? hapticDash : hapticDot
+
+        let pattern = try CHHapticPattern(events: [/*audioEvent,*/ hapticEvent], parameters: [])
+        return try chHapticEngine?.makePlayer(with: pattern)
+    }
+    
+    private func linearInterpolation(alpha: Float, min: Float, max: Float) -> Float {
+        return min + alpha * (max - min)
+    }
+    
 }
 
 extension WhiteSpeechViewController : SFSpeechRecognizerDelegate {
@@ -2122,6 +2273,8 @@ extension WhiteSpeechViewController : AVSpeechSynthesizerDelegate {
 }
 
 
+
+
 ///Protocol
 protocol WhiteSpeechViewControllerProtocol {
     func touchBegan(withForce : CGFloat)
@@ -2133,9 +2286,20 @@ protocol WhiteSpeechViewControllerProtocol {
     
     //Coming back after setting user profile
     func userProfileOptionSet(se3UserType : String)
+    
+    //To get the morse code message back
+    func setMorseCodeMessage(input : String)
 }
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
+    func setMorseCodeMessage(input: String) {
+        if input.count > 0 {
+            textViewBottom?.text = input
+            self.dataChats.append(ChatListItem(text: input, origin: peerID.displayName, mode: "morse_code"))
+            self.chatLogBtn?.image = UIImage(systemName: "book.fill")
+        }
+    }
+    
     func userProfileOptionSet(se3UserType : String) {
         Analytics.logEvent("se3_user_profile_set", parameters: [
             "user_type": se3UserType
