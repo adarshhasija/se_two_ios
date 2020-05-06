@@ -225,10 +225,10 @@ public class MorseCodeEditorViewController : UIViewController {
                 "state" : "scrolling",
                 "is_reading" : self.isReading()
             ])  */
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
-            playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
+            MorseCodeUtils.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
-            if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
+            if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                 //Need to change the selected character of the English string
                 englishStringIndex -= 1
             /*    sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
@@ -236,7 +236,7 @@ public class MorseCodeEditorViewController : UIViewController {
                     "is_reading" : self.isReading()
                 ])  */
                 //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
-                if englishStringIndex > -1 && isEngCharSpace() {
+                if englishStringIndex > -1 && MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
                     let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
                     let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
                     englishString.replaceSubrange(start..<end, with: "␣")
@@ -247,7 +247,7 @@ public class MorseCodeEditorViewController : UIViewController {
                 
                 if englishStringIndex > -1 {
                     //Ensure that the index is within bounds
-                    setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
+                    MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
                 }
                 
             }
@@ -275,17 +275,17 @@ public class MorseCodeEditorViewController : UIViewController {
                 "isReading" : self.isReading()
             ])  */
             setInstructionLabelForMode(mainString: "Keep swiping right with 2 fingers to read all the characters", readingString: stopReadingString, writingString: keepTypingString)
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
-            playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
+            MorseCodeUtils.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
-            if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
+            if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
                 //Need to change the selected character of the English string
                 englishStringIndex += 1
                 if englishStringIndex >= englishString.count {
                     //WKInterfaceDevice.current().play(.failure)
                     return
                 }
-                if isEngCharSpace() {
+                if MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
                     let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
                     let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
                     englishString.replaceSubrange(start..<end, with: "␣")
@@ -297,7 +297,7 @@ public class MorseCodeEditorViewController : UIViewController {
                     "state" : "index_alpha_change",
                     "is_reading" : self.isReading()
                 ])  */
-                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
+                MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
             }
         }
     }
@@ -394,7 +394,7 @@ public class MorseCodeEditorViewController : UIViewController {
         }
         if isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
             setRecommendedActionsText()
             //WKInterfaceDevice.current().play(.failure)
             return
@@ -420,7 +420,7 @@ public class MorseCodeEditorViewController : UIViewController {
     
     //Sets the particular character to green to indicate selected
     //If the index is out of bounds, the entire string will come white. eg: when index = -1
-    func setSelectedCharInLabel(inputString : String, index : Int, label : UILabel, isMorseCode : Bool, color : UIColor) {
+  /*  func setSelectedCharInLabel(inputString : String, index : Int, label : UILabel, isMorseCode : Bool, color : UIColor) {
         let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
         
         //The replacement of space with visible space only applies to english strings
@@ -431,7 +431,7 @@ public class MorseCodeEditorViewController : UIViewController {
             attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 25), range: range)
         }
         label.attributedText = attributedString
-    }
+    }   */
     
     func userIsTyping(firstCharacter: String) {
         //Its the first character. Dont append. Overwrite what is there
@@ -525,7 +525,7 @@ public class MorseCodeEditorViewController : UIViewController {
         self.instructionsLabel.text = instructionString
     }
     
-    func playSelectedCharacterHaptic(inputString : String, inputIndex : Int) {
+  /*  func playSelectedCharacterHaptic(inputString : String, inputIndex : Int) {
         let index = inputString.index(inputString.startIndex, offsetBy: inputIndex)
         let char = String(morseCodeString[index])
         if char == "." {
@@ -537,10 +537,10 @@ public class MorseCodeEditorViewController : UIViewController {
         if char == "|" {
             //WKInterfaceDevice.current().play(.success)
         }
-    }
+    }   */
     
     //This function tells us if the previous char was a pipe. It is a sign to change the character in the English string
-    func isPrevMCCharPipe(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
+ /*   func isPrevMCCharPipe(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
         var retVal = false
         if isReverse {
             if currentIndex < input.count - 1 {
@@ -562,16 +562,16 @@ public class MorseCodeEditorViewController : UIViewController {
         }
         
         return retVal
-    }
+    }   */
     
-    func isEngCharSpace() -> Bool {
+  /*  func isEngCharSpace(englishString : String, englishStringIndex : Int) -> Bool {
         let index = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
         let char = String(englishString[index])
         if char == " " {
             return true
         }
         return false
-    }
+    }   */
 }
 
 
@@ -582,7 +582,7 @@ extension MorseCodeEditorViewController : AVSpeechSynthesizerDelegate {
         synth = nil
         morseCodeTextLabel?.isHidden = false
         changeEnteredTextSize(inputString: englishString, textSize: 16)
-        whiteSpeechViewControllerProtocol?.setMorseCodeMessage(input: englishString)
+        whiteSpeechViewControllerProtocol?.setMorseCodeMessage(englishInput: englishString, morseCodeInput: morseCodeString)
         self.navigationController?.popViewController(animated: true)
     }
     

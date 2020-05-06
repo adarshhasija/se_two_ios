@@ -17,6 +17,9 @@ enum Action :String{
     case SwipeUp //Open keyboard
     case SwipeLeft //Open chat log
     case SwipeRight //Morse code dash
+    case SwipeLeft2Finger
+    case SwipeRight2Finger
+    case TalkButtonTapped
     case BarButtonHelpTapped
     case LongPress //Start Multipeer session
     

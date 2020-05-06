@@ -12,6 +12,7 @@ import Foundation
 class ChatListItem {
     
     var text : String
+    var morseCodeText : String?
     var time : String
     var origin : String
     var mode : String?
@@ -26,6 +27,11 @@ class ChatListItem {
         dateFormatter.dateFormat = "hh:mm a"
         let date12Hour : String = dateFormatter.string(from: date)
         self.time = time ?? date12Hour
+    }
+    
+    convenience init(text: String, morseCodeText: String, origin: String, mode: String?) {
+        self.init(text : text, origin: origin, mode : mode)
+        self.morseCodeText = morseCodeText
     }
     
     convenience init(text: String, origin: String) {

@@ -37,6 +37,7 @@
 		31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */; };
 		31A67B81235CAC6600F506BD /* FAQRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B80235CAC6600F506BD /* FAQRowController.swift */; };
 		31A67B83235CB55800F506BD /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B82235CB55800F506BD /* FAQCell.swift */; };
+		31A855152422A63A0064B29C /* MorseCodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A855142422A63A0064B29C /* MorseCodeUtils.swift */; };
 		31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */; };
 		31B5A84723435F8300196E96 /* MorseCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84623435F8300196E96 /* MorseCodeCell.swift */; };
 		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
@@ -149,6 +150,7 @@
 		31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQInterfaceController.swift; sourceTree = "<group>"; };
 		31A67B80235CAC6600F506BD /* FAQRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRowController.swift; sourceTree = "<group>"; };
 		31A67B82235CB55800F506BD /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
+		31A855142422A63A0064B29C /* MorseCodeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeUtils.swift; sourceTree = "<group>"; };
 		31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryInterfaceController.swift; sourceTree = "<group>"; };
 		31B5A84623435F8300196E96 /* MorseCodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeCell.swift; sourceTree = "<group>"; };
 		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */,
 				31E5344423DEB20600F163B1 /* UserProfileOptionTableViewCell.swift */,
 				3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */,
+				31A855142422A63A0064B29C /* MorseCodeUtils.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */,
 				31862B7D225E11650058883D /* ChatListItem.swift in Sources */,
 				315A776823EDF03D00FC75E3 /* WatchAppViewController.swift in Sources */,
+				31A855152422A63A0064B29C /* MorseCodeUtils.swift in Sources */,
 				31862B7F226077950058883D /* EventOrigin.swift in Sources */,
 				3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */,
 				317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */,

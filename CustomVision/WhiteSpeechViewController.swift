@@ -38,6 +38,8 @@ public class WhiteSpeechViewController: UIViewController {
     var lastActionSpeaking = "Spoken by non-hearing-impaired"
     var userStatusInstructionLongPress = "Long press here to change"
     var userStatusMoreInfoTap = "Tap here for more info"
+    var englishStringIndex = -1
+    var morseCodeStringIndex = -1
     
     // MARK: Multipeer Connectivity Properties
     var peerID: MCPeerID!
@@ -60,8 +62,15 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet weak var helpBarButtonItem: UIBarButtonItem! //To make this visible again, in storyboard, set Enabled to true + set Tint to Default
     @IBOutlet var mainView : UIView?
     @IBOutlet var textViewTop : UITextView?
+    @IBOutlet weak var mainTextViewAndMorseCodeLabelStackView: UIStackView!
     @IBOutlet var textViewBottom : UITextView!
+    @IBOutlet weak var morseCodeLabel: UILabel!
+    @IBOutlet weak var englishMorseCodeTextLabel: UILabel!
+    @IBOutlet weak var timerStackView: UIStackView!
+    @IBOutlet weak var viewForTypeTalkStackView: UIView!
     @IBOutlet weak var composerStackView: UIStackView!
+    @IBOutlet weak var composerButtonsStackView: UIStackView!
+    
     
     // Bottom nav stack
     @IBOutlet weak var navStackView: UIStackView!
@@ -188,6 +197,28 @@ public class WhiteSpeechViewController: UIViewController {
         }
     }
     
+    
+    @IBAction func swipeGestureDouble(_ sender: UISwipeGestureRecognizer) {
+        if sender.direction == UISwipeGestureRecognizerDirection.left {
+            morseCodeStringIndex -= 1
+            changeState(action: Action.SwipeLeft2Finger)
+        }
+        else if sender.direction == UISwipeGestureRecognizerDirection.right {
+            morseCodeStringIndex += 1
+            changeState(action: Action.SwipeRight2Finger)
+        }
+    }
+    
+    
+    @IBAction func typeButtonTapped(_ sender: Any) {
+        changeState(action: Action.SwipeUp)
+    }
+    
+    
+    @IBAction func talkButtonTapped(_ sender: Any) {
+        changeState(action: Action.TalkButtonTapped)
+    }
+    
     // MARK: State Machine
     private func changeState(action : Action) {
         //All events logged without parameters are temporary. Will be removed once we analyze events better
@@ -264,7 +295,9 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if action == Action.LongPress && currentState.last == State.Idle {
             openMorseCodeEditor()
-          /*  Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
+        }
+        else if action == Action.TalkButtonTapped && currentState.last == State.Idle {
+            Analytics.logEvent("se3_speaking_not_connected", parameters: [:])
             UIApplication.shared.isIdleTimerDisabled = true //Prevent the app from going to sleep
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is speaking on iPhone. Please wait. Tell them to tap screen when done.")
             let permission = checkAppleSpeechRecoginitionPermissions()
@@ -278,7 +311,13 @@ public class WhiteSpeechViewController: UIViewController {
             else {
                 currentState.append(State.Speaking)
                 enterStateSpeaking()
-            }   */
+            }
+        }
+        else if action == Action.SwipeRight2Finger && currentState.last == State.Idle {
+            actionSwipeRightDouble()
+        }
+        else if action == Action.SwipeLeft2Finger && currentState.last == State.Idle {
+            actionSwipeLeftDouble()
         }
         else if action == Action.Tap && currentState.contains(State.Typing) {
             changeState(action: Action.TypistFinishedTyping)
@@ -592,6 +631,98 @@ public class WhiteSpeechViewController: UIViewController {
         
     }
     
+    private func actionSwipeLeftDouble() {
+        let morseCodeString = morseCodeLabel.text ?? ""
+        var englishString = englishMorseCodeTextLabel.text ?? ""
+        if morseCodeStringIndex < 0 {
+             /*  sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
+                   "state" : "index_less_0",
+                   "is_reading" : self.isReading()
+               ])  */
+               //WKInterfaceDevice.current().play(.failure)
+               
+               if morseCodeStringIndex < 0 {
+                   morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
+                   englishStringIndex = -1
+                   englishMorseCodeTextLabel.text = englishString
+               }
+               morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
+               return
+           }
+           
+        /*   sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
+               "state" : "scrolling",
+               "is_reading" : self.isReading()
+           ])  */
+           MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
+           MorseCodeUtils.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+           
+           if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
+               //Need to change the selected character of the English string
+               englishStringIndex -= 1
+           /*    sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
+                   "state" : "index_alpha_change",
+                   "is_reading" : self.isReading()
+               ])  */
+               //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
+               if englishStringIndex > -1 && MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
+                   let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+                   let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
+                   englishString.replaceSubrange(start..<end, with: "␣")
+               }
+               else {
+                   englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+               }
+               
+               if englishStringIndex > -1 {
+                   //Ensure that the index is within bounds
+                   MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color: UIColor.green)
+               }
+               
+           }
+    }
+    
+    private func actionSwipeRightDouble() {
+        let morseCodeString = morseCodeLabel.text ?? ""
+        var englishString = englishMorseCodeTextLabel.text ?? ""
+        if morseCodeStringIndex >= morseCodeString.count {
+          /*  sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
+                "state" : "index_greater_equal_0",
+                "is_reading" : self.isReading()
+            ])  */
+            morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
+            englishMorseCodeTextLabel.text = englishString
+            //WKInterfaceDevice.current().play(.success)
+            morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
+            englishStringIndex = englishString.count
+            return
+        }
+        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
+        MorseCodeUtils.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+        
+        if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
+            //Need to change the selected character of the English string
+            englishStringIndex += 1
+            if englishStringIndex >= englishString.count {
+                //WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            if MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
+                let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+                let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
+                englishString.replaceSubrange(start..<end, with: "␣")
+            }
+            else {
+                englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+            }
+          /*  sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
+                "state" : "index_alpha_change",
+                "is_reading" : self.isReading()
+            ])  */
+            MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color : UIColor.green)
+        }
+    }
+    
     private func createAndStartHapticEngine() {
         guard supportsHaptics else {
             return
@@ -822,7 +953,9 @@ public class WhiteSpeechViewController: UIViewController {
         self.disabledContextLabel?.isHidden = true
         self.recordLabel?.textColor = UIColor.darkGray
         self.bottomMiddleActionLabel?.text = ""
+        self.view.bringSubview(toFront: viewForTypeTalkStackView)
         
+        composerStackView?.isHidden = true //We do not want this at the start
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
         if se3UserType == "_1" {
             self.recordLabel?.text = speechToTextInstructionString
@@ -864,6 +997,8 @@ public class WhiteSpeechViewController: UIViewController {
                            completion: nil)
         }
         
+        self.morseCodeLabel?.text = ""
+        self.englishMorseCodeTextLabel?.text = ""
         self.textViewBottom?.text = ""
         
     }
@@ -915,7 +1050,7 @@ public class WhiteSpeechViewController: UIViewController {
     private func userStackViewStartAnimation() {
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
         
-        composerStackView?.isHidden = true
+        timerStackView?.isHidden = true
         textViewBottom?.isHidden = true
         navStackView?.isHidden = true
         
@@ -1118,7 +1253,7 @@ public class WhiteSpeechViewController: UIViewController {
                 
                 self.navStackView?.isHidden = false
                 self.textViewBottom?.isHidden = false
-                self.composerStackView?.isHidden = false
+                self.timerStackView?.isHidden = false
             })
         }
     }
@@ -1205,6 +1340,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     private func enterStateTyping() {
         //Close stack views
+        composerStackView?.isHidden = true
         bottomLeftStackView?.isHidden = true
         navStackView?.isHidden = true
         bottomMiddleActionLabel?.text = ""
@@ -1250,16 +1386,17 @@ public class WhiteSpeechViewController: UIViewController {
         textViewBottom?.isEditable = true
         textViewBottom?.becomeFirstResponder()
         
-        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: -40) // delta = -10
+        let stackViewTransform = self.timerStackView?.transform.translatedBy(x: 0, y: -40) // delta = -10
         let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: -85) // delta = -40
         UIView.animate(withDuration: 1.0) {
-            self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+            self.timerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
         }
     }
     
     private func exitStateTyping() {
         //Show stack views
+        if dataChats.count > 0 { composerStackView?.isHidden = false }
         navStackView?.isHidden = false
         bottomLeftStackView?.isHidden = false
         bottomMiddleStackView?.isHidden = false
@@ -1350,10 +1487,10 @@ public class WhiteSpeechViewController: UIViewController {
         }
         
         
-        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0, y: 40) //80
+        let stackViewTransform = self.timerStackView?.transform.translatedBy(x: 0, y: 40) //80
         let textViewBottomTransform = self.textViewBottom?.transform.translatedBy(x: 0, y: 85) //130
         UIView.animate(withDuration: 1.0) {
-            self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+            self.timerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
         }
     }
@@ -1403,6 +1540,7 @@ public class WhiteSpeechViewController: UIViewController {
             //recordButton?.setTitle("Stop recording", for: [])
             
             //Close/hide stack views
+            composerStackView?.isHidden = true
             navStackView?.isHidden = true
             bottomLeftStackView?.isHidden = true
             bottomMiddleActionLabel?.text = ""
@@ -1476,7 +1614,7 @@ public class WhiteSpeechViewController: UIViewController {
             recordLabel?.isHidden = false
             swipeUpLabel?.isHidden = true
             swipeLeftLabel?.isHidden = true
-            longPressLabel?.isHidden = true
+            //longPressLabel?.isHidden = true
         }
         else {
             //dialogOK(title: "Alert", message: "No internet connection")
@@ -1486,6 +1624,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     private func exitStateSpeaking() {
         //Show stack views
+        if dataChats.count > 0 { composerStackView?.isHidden = false }
         navStackView?.isHidden = false
         bottomLeftStackView?.isHidden = false
         //
@@ -2288,14 +2427,17 @@ protocol WhiteSpeechViewControllerProtocol {
     func userProfileOptionSet(se3UserType : String)
     
     //To get the morse code message back
-    func setMorseCodeMessage(input : String)
+    func setMorseCodeMessage(englishInput : String, morseCodeInput : String)
 }
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
-    func setMorseCodeMessage(input: String) {
-        if input.count > 0 {
-            textViewBottom?.text = input
-            self.dataChats.append(ChatListItem(text: input, origin: peerID.displayName, mode: "morse_code"))
+    func setMorseCodeMessage(englishInput: String, morseCodeInput : String) {
+        if englishInput.count > 0 && morseCodeInput.count > 0 {
+            englishMorseCodeTextLabel?.text = englishInput
+            englishMorseCodeTextLabel?.isHidden = false
+            morseCodeLabel?.text = morseCodeInput
+            morseCodeLabel?.isHidden = false
+            self.dataChats.append(ChatListItem(text: englishInput, morseCodeText: morseCodeInput, origin: peerID.displayName, mode: "morse_code"))
             self.chatLogBtn?.image = UIImage(systemName: "book.fill")
         }
     }
@@ -2351,11 +2493,11 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         var mutableNumberOfTransformations = numberOfTransformations
         while mutableNumberOfTransformations > 0 {
             let labelTransform = self.recordLabel?.transform.scaledBy(x: 1.005, y: 1.005)
-            let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0.0, y: 5.0)
+            let stackViewTransform = self.timerStackView?.transform.translatedBy(x: 0.0, y: 5.0)
             
             UIView.animate(withDuration: 0.5, animations: {
                 self.recordLabel?.transform = labelTransform ?? CGAffineTransform()
-                self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+                self.timerStackView?.transform = stackViewTransform ?? CGAffineTransform()
                 
             })
             
@@ -2367,10 +2509,10 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     
     func touchBegan(withForce: CGFloat) {
         let labelTransform = self.recordLabel?.transform.scaledBy(x: withForce > 0 ? 0.99 : 1.01, y: withForce > 0 ? 0.99 : 1.01)
-        let stackViewTransform = self.composerStackView?.transform.translatedBy(x: 0.0, y: -5*withForce)
+        let stackViewTransform = self.timerStackView?.transform.translatedBy(x: 0.0, y: -5*withForce)
         UIView.animate(withDuration: 0.5, animations: {
             self.recordLabel?.transform = labelTransform ?? CGAffineTransform()
-            self.composerStackView?.transform = stackViewTransform ?? CGAffineTransform()
+            self.timerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             //self.timerLabel?.alpha = 1
             
             if self.recordLabel != nil {
