@@ -100,7 +100,7 @@ public class MorseCodeEditorViewController : UIViewController {
                     morseCodeString += "|"
                     morseCodeTextLabel.text = morseCodeString
                     try? hapticManager?.hapticForResult(success: true) //successfully got a letter/number
-                    instructionsLabel.text = "Keep Typing\nor\nSwipe up again to play audio. Ensure your device is not on Silent Mode."
+                    instructionsLabel.text = "Keep Typing\nor\nSwipe up again to play audio and confirm. Ensure your device is not on Silent Mode."
                     while morseCode.mcTreeNode?.parent != nil {
                         morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                     }
