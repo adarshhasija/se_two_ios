@@ -9,9 +9,14 @@
 import Foundation
 import UIKit
 import AVFoundation
+import FirebaseAnalytics
 
 public class MorseCodeEditorViewController : UIViewController {
     
+    var hapticManager : HapticManager?
+    lazy var supportsHaptics: Bool = {
+        return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
+    }()
     var whiteSpeechViewControllerProtocol : WhiteSpeechViewControllerProtocol?
     
     var defaultInstructions = "Tap or Swipe Right to begin typing"
@@ -44,9 +49,9 @@ public class MorseCodeEditorViewController : UIViewController {
         }
         else if sender.direction == UISwipeGestureRecognizerDirection.up {
             if synth?.isSpeaking == true {
-              /*  sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                Analytics.logEvent("se3_morse_swipe_up", parameters: [
                     "state" : "is_speaking"
-                ])  */
+                ])
                 return
             }
             if morseCodeString.count > 0 {
@@ -61,14 +66,14 @@ public class MorseCodeEditorViewController : UIViewController {
                         updateMorseCodeForActions()
                     }
                     if isMath {
-                     /*   sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                        Analytics.logEvent("se3_morse_swipe_up", parameters: [
                             "state" : "speak_math"
-                        ])  */
+                        ])
                     }
                     else {
-                      /*  sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                        Analytics.logEvent("se3_morse_scroll_up", parameters: [
                             "state" : "speak"
-                        ])  */
+                        ])
                     }
                     synth = AVSpeechSynthesizer.init()
                     synth?.delegate = self
@@ -81,10 +86,10 @@ public class MorseCodeEditorViewController : UIViewController {
                 }
                 else if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
                     //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
-                 /*   sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                    Analytics.logEvent("se3_morse_swipe_up", parameters: [
                         "state" : "mc_2_alphanumeric",
                         "text" : letterOrNumber
-                    ])  */
+                    ])
                     if englishString.last == "␣" {
                         englishString.removeLast()
                         englishString += " "
@@ -94,16 +99,16 @@ public class MorseCodeEditorViewController : UIViewController {
                     englishTextLabel.isHidden = false
                     morseCodeString += "|"
                     morseCodeTextLabel.text = morseCodeString
-                    //WKInterfaceDevice.current().play(.success) //successfully got a letter/number
+                    try? hapticManager?.hapticForResult(success: true) //successfully got a letter/number
                     instructionsLabel.text = "Keep Typing\nor\nSwipe up again to play audio. Ensure your device is not on Silent Mode."
                     while morseCode.mcTreeNode?.parent != nil {
                         morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                     }
                 }
                 else if let action = morseCode.mcTreeNode?.action {
-                 /*   sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                    Analytics.logEvent("se3_morse_swipe_up", parameters: [
                         "state" : "action_"+action
-                    ])  */
+                    ])
                     if action == "TIME" {
                         let hh = (Calendar.current.component(.hour, from: Date()))
                         let mm = (Calendar.current.component(.minute, from: Date()))
@@ -126,11 +131,11 @@ public class MorseCodeEditorViewController : UIViewController {
                     updateMorseCodeForActions()
                 }
                 else {
-                 /*   sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                    Analytics.logEvent("se3_morse_swipe_up", parameters: [
                         "state" : "no_result"
-                    ])  */
+                    ])
                     //did not get a letter/number
-                    //WKInterfaceDevice.current().play(.failure)
+                    try? hapticManager?.hapticForResult(success: false)
                     let nearestMatches : [String] = morseCode.getNearestMatches(currentNode: morseCode.mcTreeNode)
                     var nearestMatchesString = ""
                     for match in nearestMatches {
@@ -141,34 +146,22 @@ public class MorseCodeEditorViewController : UIViewController {
             }
         }
         else if sender.direction == UISwipeGestureRecognizerDirection.left {
-            if isReading() == true {
-                /*sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
-                    "state" : "reading"
-                    ])*/
-                englishString = ""
-                englishTextLabel.text = ""
-                morseCodeString = ""
-                morseCodeTextLabel.text = ""
-                instructionsLabel.text = defaultInstructions
-                //WKInterfaceDevice.current().play(.success)
-                return
-            }
             if morseCodeString.count > 0 {
                 if morseCodeString.last != "|" {
                     //Should not be a character separator
-                  /*  sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
+                    Analytics.logEvent("se3_morse_swipe_left", parameters: [
                         "state" : "last_morse_code"
-                    ])  */
+                    ])
                     morseCodeString.removeLast()
                     morseCodeTextLabel.text = morseCodeString
                     isAlphabetReached(input: "b") //backspace
-                    //WKInterfaceDevice.current().play(.success)
+                    try? hapticManager?.hapticForResult(success: true)
                 }
                 else {
                     //If it is a normal letter/number, delete the last english character and corresponding morse code characters
-                 /*   sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
+                    Analytics.logEvent("se3_morse_swipe_left", parameters: [
                         "state" : "last_alphanumeric"
-                    ])  */
+                    ])
                     if let lastChar = englishString.last {
                         if let lastCharMorseCodeLength = (morseCode.alphabetToMCDictionary[String(lastChar)])?.count {
                             morseCodeString.removeLast(lastCharMorseCodeLength + 1) //+1 to include both the morse code part and the ending pipe "|"
@@ -182,15 +175,15 @@ public class MorseCodeEditorViewController : UIViewController {
                         englishString.append("␣")
                     }
                     englishTextLabel.text = englishString
-                    //WKInterfaceDevice.current().play(.success)
+                    try? hapticManager?.hapticForResult(success: true)
                 }
             }
             else {
                 print("nothing to delete")
-              /*  sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
+                Analytics.logEvent("se3_morse_swipe_left", parameters: [
                     "state" : "nothing_to_delete"
-                ])  */
-                //WKInterfaceDevice.current().play(.failure)
+                ])
+                try? hapticManager?.hapticForResult(success: false)
             }
             
             if morseCodeString.count == 0 && englishString.count == 0 {
@@ -205,11 +198,10 @@ public class MorseCodeEditorViewController : UIViewController {
             morseCodeStringIndex -= 1
             
             if morseCodeStringIndex < 0 {
-              /*  sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                    "state" : "index_less_0",
-                    "is_reading" : self.isReading()
-                ])  */
-                //WKInterfaceDevice.current().play(.failure)
+                Analytics.logEvent("se3_morse_dswipe_left", parameters: [
+                    "state" : "index_less_0"
+                ])
+                try? hapticManager?.hapticForResult(success: false)
                 setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
                 
                 if morseCodeStringIndex < 0 {
@@ -220,21 +212,19 @@ public class MorseCodeEditorViewController : UIViewController {
                 morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
                 return
             }
-            
-         /*   sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                "state" : "scrolling",
-                "is_reading" : self.isReading()
-            ])  */
+
+            Analytics.logEvent("se3_morse_dswipe_left", parameters: [
+                "state" : "scrolling"
+            ])
             MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
-            MorseCodeUtils.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                 //Need to change the selected character of the English string
                 englishStringIndex -= 1
-            /*    sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                    "state" : "index_alpha_change",
-                    "is_reading" : self.isReading()
-                ])  */
+                Analytics.logEvent("se3_morse_dswipe_left", parameters: [
+                    "state" : "index_alpha_change"
+                ])
                 //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
                 if englishStringIndex > -1 && MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
                     let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
@@ -257,32 +247,30 @@ public class MorseCodeEditorViewController : UIViewController {
             morseCodeStringIndex += 1
             
             if morseCodeStringIndex >= morseCodeString.count {
-              /*  sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                    "state" : "index_greater_equal_0",
-                    "is_reading" : self.isReading()
-                ])  */
+                Analytics.logEvent("se3_morse_dswipe_right", parameters: [
+                    "state" : "index_greater_equal_0"
+                ])
                 morseCodeTextLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
                 englishTextLabel.text = englishString
-                //WKInterfaceDevice.current().play(.success)
+                try? hapticManager?.hapticForResult(success: true)
                 setInstructionLabelForMode(mainString: "Swipe left with 2 fingers to scroll back", readingString: stopReadingString, writingString: keepTypingString)
                 morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
                 englishStringIndex = englishString.count
                 return
             }
             
-         /*   sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                "state" : "scrolling",
-                "isReading" : self.isReading()
-            ])  */
+            Analytics.logEvent("se3_morse_dswipe_right", parameters: [
+                "state" : "scrolling"
+            ])
             setInstructionLabelForMode(mainString: "Keep swiping right with 2 fingers to read all the characters", readingString: stopReadingString, writingString: keepTypingString)
             MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
-            MorseCodeUtils.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
                 //Need to change the selected character of the English string
                 englishStringIndex += 1
                 if englishStringIndex >= englishString.count {
-                    //WKInterfaceDevice.current().play(.failure)
+                    try? hapticManager?.hapticForResult(success: false)
                     return
                 }
                 if MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
@@ -293,10 +281,9 @@ public class MorseCodeEditorViewController : UIViewController {
                 else {
                     englishString = englishString.replacingOccurrences(of: "␣", with: " ")
                 }
-              /*  sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                    "state" : "index_alpha_change",
-                    "is_reading" : self.isReading()
-                ])  */
+                Analytics.logEvent("se3_morse_dswipe_right", parameters: [
+                    "state" : "index_alpha_change"
+                ])
                 MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
             }
         }
@@ -304,6 +291,9 @@ public class MorseCodeEditorViewController : UIViewController {
     
     
     public override func viewDidLoad() {
+        if supportsHaptics {
+            hapticManager = HapticManager()
+        }
         englishTextLabel?.text = ""
         morseCodeTextLabel?.text = ""
         instructionsLabel?.text = defaultInstructions
@@ -388,15 +378,12 @@ public class MorseCodeEditorViewController : UIViewController {
     }
     
     func morseCodeInput(input : String) {
-        if isReading() == true {
-            //We do not want the user to accidently delete all the text by tapping
-            return
-        }
         if isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
             MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
             setRecommendedActionsText()
             //WKInterfaceDevice.current().play(.failure)
+            try? hapticManager?.hapticForResult(success: false)
             return
         }
         englishStringIndex = -1
@@ -410,28 +397,17 @@ public class MorseCodeEditorViewController : UIViewController {
         isAlphabetReached(input: input)
         morseCodeTextLabel.text = morseCodeString
         englishTextLabel.text = englishString //This is to ensure that no characters are highlighted
+        morseCodeTextLabel.textColor = .none
+        englishTextLabel.textColor = .none
         if input == "." {
             //WKInterfaceDevice.current().play(.start)
+            try? hapticManager?.hapticForMorseCode(isDash: false)
         }
         else if input == "-" {
             //WKInterfaceDevice.current().play(.stop)
+            try? hapticManager?.hapticForMorseCode(isDash: true)
         }
     }
-    
-    //Sets the particular character to green to indicate selected
-    //If the index is out of bounds, the entire string will come white. eg: when index = -1
-  /*  func setSelectedCharInLabel(inputString : String, index : Int, label : UILabel, isMorseCode : Bool, color : UIColor) {
-        let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
-        
-        //The replacement of space with visible space only applies to english strings
-        let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
-        // here you change the character to green color
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
-        if isMorseCode {
-            attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 25), range: range)
-        }
-        label.attributedText = attributedString
-    }   */
     
     func userIsTyping(firstCharacter: String) {
         //Its the first character. Dont append. Overwrite what is there
@@ -439,10 +415,6 @@ public class MorseCodeEditorViewController : UIViewController {
         englishString = ""
         englishTextLabel.text = englishString
         isUserTyping = true
-    }
-    
-    func isReading() -> Bool {
-        return !isUserTyping && morseCodeTextLabel.text!.count > 0 && englishTextLabel.text!.count > 0
     }
     
     func isAlphabetReached(input: String) {
@@ -524,54 +496,6 @@ public class MorseCodeEditorViewController : UIViewController {
         }
         self.instructionsLabel.text = instructionString
     }
-    
-  /*  func playSelectedCharacterHaptic(inputString : String, inputIndex : Int) {
-        let index = inputString.index(inputString.startIndex, offsetBy: inputIndex)
-        let char = String(morseCodeString[index])
-        if char == "." {
-            //WKInterfaceDevice.current().play(.start)
-        }
-        if char == "-" {
-            //WKInterfaceDevice.current().play(.stop)
-        }
-        if char == "|" {
-            //WKInterfaceDevice.current().play(.success)
-        }
-    }   */
-    
-    //This function tells us if the previous char was a pipe. It is a sign to change the character in the English string
- /*   func isPrevMCCharPipe(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
-        var retVal = false
-        if isReverse {
-            if currentIndex < input.count - 1 {
-                //To ensure the next character down exists
-                let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
-                let char = String(morseCodeString[index])
-                let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex + 1)
-                let prevChar = String(morseCodeString[prevIndex])
-                retVal = char != "|" && prevChar == "|"
-            }
-        }
-        else if currentIndex > 0 {
-            //To ensure the previous character exists
-            let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
-            let char = String(morseCodeString[index])
-            let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex - 1)
-            let prevChar = String(morseCodeString[prevIndex])
-            retVal = char != "|" && prevChar == "|"
-        }
-        
-        return retVal
-    }   */
-    
-  /*  func isEngCharSpace(englishString : String, englishStringIndex : Int) -> Bool {
-        let index = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
-        let char = String(englishString[index])
-        if char == " " {
-            return true
-        }
-        return false
-    }   */
 }
 
 

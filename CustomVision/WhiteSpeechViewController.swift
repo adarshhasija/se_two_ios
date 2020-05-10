@@ -19,8 +19,7 @@ public class WhiteSpeechViewController: UIViewController {
 
     // MARK: Properties
     let synth = AVSpeechSynthesizer()
-    var chHapticEngine : CHHapticEngine?
-    private var engineNeedsStart = true
+    var hapticManager : HapticManager?
     lazy var supportsHaptics: Bool = {
         return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
     }()
@@ -32,6 +31,7 @@ public class WhiteSpeechViewController: UIViewController {
     private var dataChats: [ChatListItem] = []
     var speechToTextInstructionString = "Long press on screen to record speech"
     var typingInstructionString = "Swipe up to type"
+    var longPressMorseCodeInstructionString = "Long press to begin typing in morse code"
     var hiSIContextString = "This person cannot hear or speak. Please help them"
     var tapToRepeat = "Tap to repeat"
     var lastActionTypingDeaf = "Typed by hearing-impaired"
@@ -550,7 +550,10 @@ public class WhiteSpeechViewController: UIViewController {
         (view as? ThreeDTouchView)?.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         
 
-        createAndStartHapticEngine()
+        if supportsHaptics {
+           hapticManager = HapticManager()
+        }
+        //createAndStartHapticEngine()
         
         //currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.ControllerLoaded) //Push
@@ -615,6 +618,19 @@ public class WhiteSpeechViewController: UIViewController {
                 self.viRightImageView?.image = UIImage(systemName: "eye.slash")
             }
         }
+        else if se3UserType == "_3" {
+            //Deaf - blind
+            alphaChangeIsDeafBlind()
+            if #available(iOS 13.0, *) {
+                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
+                self.userLeftImageView?.image = UIImage(systemName: "person")
+                self.appIconButton?.image = UIImage(systemName: "app.fill")
+                self.userRightImageView?.image = UIImage(systemName: "person")
+                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
+                self.viRightImageView?.image = UIImage(systemName: "eye.slash")
+            }
+        }
         else {
             //Person has declared themselves not p-w-d. So other person is p-w-d
             alphaChangeNotHearingImpaired()
@@ -635,11 +651,10 @@ public class WhiteSpeechViewController: UIViewController {
         let morseCodeString = morseCodeLabel.text ?? ""
         var englishString = englishMorseCodeTextLabel.text ?? ""
         if morseCodeStringIndex < 0 {
-             /*  sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                   "state" : "index_less_0",
-                   "is_reading" : self.isReading()
-               ])  */
-               //WKInterfaceDevice.current().play(.failure)
+                Analytics.logEvent("se3_morse_scroll_left", parameters: [
+                    "state" : "index_less_0"
+                ])
+                try? hapticManager?.hapticForResult(success: false)
                
                if morseCodeStringIndex < 0 {
                    morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
@@ -655,15 +670,14 @@ public class WhiteSpeechViewController: UIViewController {
                "is_reading" : self.isReading()
            ])  */
            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
-           MorseCodeUtils.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+           hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
            
            if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                //Need to change the selected character of the English string
                englishStringIndex -= 1
-           /*    sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                   "state" : "index_alpha_change",
-                   "is_reading" : self.isReading()
-               ])  */
+                Analytics.logEvent("se3_morse_scroll_left", parameters: [
+                    "state" : "index_alpha_change"
+                ])
                //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
                if englishStringIndex > -1 && MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
                    let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
@@ -686,10 +700,9 @@ public class WhiteSpeechViewController: UIViewController {
         let morseCodeString = morseCodeLabel.text ?? ""
         var englishString = englishMorseCodeTextLabel.text ?? ""
         if morseCodeStringIndex >= morseCodeString.count {
-          /*  sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                "state" : "index_greater_equal_0",
-                "is_reading" : self.isReading()
-            ])  */
+            Analytics.logEvent("se3_morse_scroll_right", parameters: [
+                "state" : "index_greater_equal_0"
+            ])
             morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
             englishMorseCodeTextLabel.text = englishString
             //WKInterfaceDevice.current().play(.success)
@@ -698,7 +711,7 @@ public class WhiteSpeechViewController: UIViewController {
             return
         }
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
-        MorseCodeUtils.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+        hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
         
         if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
             //Need to change the selected character of the English string
@@ -715,60 +728,10 @@ public class WhiteSpeechViewController: UIViewController {
             else {
                 englishString = englishString.replacingOccurrences(of: "␣", with: " ")
             }
-          /*  sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                "state" : "index_alpha_change",
-                "is_reading" : self.isReading()
-            ])  */
+            Analytics.logEvent("se3_morse_scroll_right", parameters: [
+                "state" : "index_alpha_change"
+            ])
             MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color : UIColor.green)
-        }
-    }
-    
-    private func createAndStartHapticEngine() {
-        guard supportsHaptics else {
-            return
-        }
-
-        // Create and configure a haptic engine.
-        do {
-            chHapticEngine = try CHHapticEngine()
-        } catch let error {
-            fatalError("Engine Creation Error: \(error)")
-        }
-
-        // The stopped handler alerts engine stoppage.
-        chHapticEngine?.stoppedHandler = { reason in
-            print("Stop Handler: The engine stopped for reason: \(reason.rawValue)")
-            switch reason {
-            case .audioSessionInterrupt: print("Audio session interrupt")
-            case .applicationSuspended: print("Application suspended")
-            case .idleTimeout: print("Idle timeout")
-            case .notifyWhenFinished: print("Finished")
-            case .systemError: print("System error")
-            @unknown default:
-                print("Unknown error")
-            }
-            
-            // Indicate that the next time the app requires a haptic, the app must call engine.start().
-            self.engineNeedsStart = true
-        }
-
-        // The reset handler notifies the app that it must reload all its content.
-        // If necessary, it recreates all players and restarts the engine in response to a server restart.
-        chHapticEngine?.resetHandler = {
-            print("The engine reset --> Restarting now!")
-            
-            // Tell the rest of the app to start the engine the next time a haptic is necessary.
-            self.engineNeedsStart = true
-        }
-
-        // Start haptic engine to prepare for use.
-        do {
-            try chHapticEngine?.start()
-
-            // Indicate that the next time the app requires a haptic, the app doesn't need to call engine.start().
-            engineNeedsStart = false
-        } catch let error {
-            print("The engine failed to start with error: \(error)")
         }
     }
     
@@ -959,6 +922,12 @@ public class WhiteSpeechViewController: UIViewController {
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
         if se3UserType == "_1" {
             self.recordLabel?.text = speechToTextInstructionString
+        }
+        else if se3UserType == "_2" {
+            self.recordLabel?.text = typingInstructionString
+        }
+        else if se3UserType == "_3" {
+            self.recordLabel?.text = longPressMorseCodeInstructionString
         }
         else {
             self.recordLabel?.text = typingInstructionString
@@ -1772,6 +1741,15 @@ public class WhiteSpeechViewController: UIViewController {
         //self.viRightImageView?.alpha = 0.25
     }
     
+    //Main user has declared themselves Deaf Blind
+    //Therefore other user is normal
+    private func alphaChangeIsDeafBlind() {
+        self.hiLeftImageView?.alpha = 1
+        self.viLeftImageView?.alpha = 1
+        self.hiRightImageView?.alpha = 0.25
+        //self.viRightImageView?.alpha = 0.25
+    }
+    
     //Main user has declared themselves not hearing impaired
     //Therefore other user is HI
     private func alphaChangeNotHearingImpaired() {
@@ -2107,58 +2085,6 @@ public class WhiteSpeechViewController: UIViewController {
         })
     }
     
-    private func hapticForResult(success : Bool) throws -> CHHapticPatternPlayer? {
-        let volume = linearInterpolation(alpha: 1, min: 0.1, max: 0.4)
-        let decay: Float = linearInterpolation(alpha: 1, min: 0.0, max: 0.1)
-        let audioEvent = CHHapticEvent(eventType: .audioContinuous, parameters: [
-            CHHapticEventParameter(parameterID: .audioPitch, value: -0.15),
-            CHHapticEventParameter(parameterID: .audioVolume, value: volume),
-            CHHapticEventParameter(parameterID: .decayTime, value: decay),
-            CHHapticEventParameter(parameterID: .sustained, value: 0)
-            ], relativeTime: 0)
-
-        let sharpness : Float = success == true ? 1.0 : 0.1
-        let intensity : Float = 0.5
-        let hapticEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [
-            CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
-            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
-            ], relativeTime: 0)
-
-        let pattern = try CHHapticPattern(events: [/*audioEvent,*/ hapticEvent], parameters: [])
-        return try chHapticEngine?.makePlayer(with: pattern)
-    }
-    
-    private func hapticForMorseCode(isDash : Bool) throws -> CHHapticPatternPlayer? {
-        let volume = linearInterpolation(alpha: 1, min: 0.1, max: 0.4)
-        let decay: Float = linearInterpolation(alpha: 1, min: 0.0, max: 0.1)
-        let audioEvent = CHHapticEvent(eventType: .audioContinuous, parameters: [
-            CHHapticEventParameter(parameterID: .audioPitch, value: -0.15),
-            CHHapticEventParameter(parameterID: .audioVolume, value: volume),
-            CHHapticEventParameter(parameterID: .decayTime, value: decay),
-            CHHapticEventParameter(parameterID: .sustained, value: 0)
-            ], relativeTime: 0)
-
-        let sharpness : Float = 1.0
-        let intensity : Float = 0.5
-        let hapticDash = CHHapticEvent(eventType: .hapticTransient, parameters: [
-            CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
-            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
-        ], relativeTime: 0, duration: TimeInterval(1.0))
-        
-        let hapticDot = CHHapticEvent(eventType: .hapticTransient, parameters: [
-            CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
-            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
-        ], relativeTime: 0)
-        let hapticEvent = isDash == true ? hapticDash : hapticDot
-
-        let pattern = try CHHapticPattern(events: [/*audioEvent,*/ hapticEvent], parameters: [])
-        return try chHapticEngine?.makePlayer(with: pattern)
-    }
-    
-    private func linearInterpolation(alpha: Float, min: Float, max: Float) -> Float {
-        return min + alpha * (max - min)
-    }
-    
 }
 
 extension WhiteSpeechViewController : SFSpeechRecognizerDelegate {
@@ -2435,8 +2361,10 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         if englishInput.count > 0 && morseCodeInput.count > 0 {
             englishMorseCodeTextLabel?.text = englishInput
             englishMorseCodeTextLabel?.isHidden = false
+            englishStringIndex = -1
             morseCodeLabel?.text = morseCodeInput
             morseCodeLabel?.isHidden = false
+            morseCodeStringIndex = -1
             self.dataChats.append(ChatListItem(text: englishInput, morseCodeText: morseCodeInput, origin: peerID.displayName, mode: "morse_code"))
             self.chatLogBtn?.image = UIImage(systemName: "book.fill")
         }
@@ -2454,6 +2382,10 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         else if se3UserType == "_2" {
             alphaChangeIsHearingImpaired()
             recordLabel?.text = typingInstructionString
+        }
+        else if se3UserType == "_3" {
+            alphaChangeIsDeafBlind()
+            recordLabel?.text = longPressMorseCodeInstructionString
         }
         
         self.userProfileVerticalStackView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)

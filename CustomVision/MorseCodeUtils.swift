@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreHaptics
 
 class MorseCodeUtils {
     
@@ -90,18 +91,5 @@ class MorseCodeUtils {
         
         return retVal
     }
-    
-    static func playSelectedCharacterHaptic(inputString : String, inputIndex : Int) {
-        let index = inputString.index(inputString.startIndex, offsetBy: inputIndex)
-        let char = String(inputString[index])
-        if char == "." {
-            //WKInterfaceDevice.current().play(.start)
-        }
-        if char == "-" {
-            //WKInterfaceDevice.current().play(.stop)
-        }
-        if char == "|" {
-            //WKInterfaceDevice.current().play(.success)
-        }
-    }
+
 }

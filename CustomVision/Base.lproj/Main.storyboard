@@ -1753,12 +1753,12 @@
                         <action selector="longPressGesture:" destination="bbL-uY-60S" id="Cly-R8-ld3"/>
                     </connections>
                 </pongPressGestureRecognizer>
-                <swipeGestureRecognizer direction="left" numberOfTouchesRequired="2" id="B27-Wz-0Ly">
+                <swipeGestureRecognizer enabled="NO" direction="left" numberOfTouchesRequired="2" id="B27-Wz-0Ly">
                     <connections>
                         <action selector="swipeGestureDouble:" destination="bbL-uY-60S" id="nyK-vr-WpZ"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="right" numberOfTouchesRequired="2" id="7Dh-3M-BNs">
+                <swipeGestureRecognizer enabled="NO" direction="right" numberOfTouchesRequired="2" id="7Dh-3M-BNs">
                     <connections>
                         <action selector="swipeGestureDouble:" destination="bbL-uY-60S" id="5EZ-Ej-OMs"/>
                     </connections>
