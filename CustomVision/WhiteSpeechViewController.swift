@@ -23,6 +23,7 @@ public class WhiteSpeechViewController: UIViewController {
     lazy var supportsHaptics: Bool = {
         return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
     }()
+    var morseCode = MorseCode()
     let networkManager = NetworkManager.sharedInstance
     var currentState: [State] = []
     var seconds = 60
@@ -1426,6 +1427,13 @@ public class WhiteSpeechViewController: UIViewController {
                 return
             }
             sayThis(string: newText)
+            var morseCodeString = ""
+            for character in newText {
+                morseCodeString += morseCode.alphabetToMCDictionary[String(character.uppercased())] ?? ""
+                morseCodeString += "|"
+            }
+            englishMorseCodeTextLabel?.text = newText
+            morseCodeLabel?.text = morseCodeString
             self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName, mode: "typing"))
             
             if dataChats.count == 1 {
