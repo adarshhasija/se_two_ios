@@ -1679,22 +1679,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qUd-rF-vFv">
-                                <rect key="frame" x="66" y="253.5" width="188" height="61.5"/>
+                                <rect key="frame" x="66" y="232.5" width="188" height="103.5"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZe-De-X62">
+                                        <rect key="frame" x="0.0" y="0.0" width="188" height="42"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <state key="normal" title="Dictionary"/>
+                                        <connections>
+                                            <segue destination="HHA-Ce-gYY" kind="show" id="dC2-eD-ilr"/>
+                                        </connections>
+                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mmk-gV-sh5">
-                                        <rect key="frame" x="0.0" y="0.0" width="188" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="42" width="188" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ln-Yx-NwW">
-                                        <rect key="frame" x="0.0" y="20.5" width="188" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="62.5" width="188" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rfn-QH-Ysh">
-                                        <rect key="frame" x="0.0" y="41" width="188" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="83" width="188" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1765,6 +1773,62 @@
                 </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3802" y="-2891"/>
+        </scene>
+        <!--Dictionary Table View Controller-->
+        <scene sceneID="9Kg-uw-4ZJ">
+            <objects>
+                <tableViewController id="HHA-Ce-gYY" customClass="MCDictionaryTableViewController" customModule="Suno" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="fxB-mq-DBC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MCDictionaryCell" id="eUg-MF-Uq5" customClass="MCDiontionaryCell" customModule="Suno" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="320" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eUg-MF-Uq5" id="9Bc-dl-iQY">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1OV-xK-dKy">
+                                            <rect key="frame" x="20" y="1.5" width="93.5" height="41"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="English" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSx-BM-u7Q">
+                                                    <rect key="frame" x="0.0" y="0.0" width="93.5" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvl-u8-O93">
+                                                    <rect key="frame" x="0.0" y="20.5" width="93.5" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="1OV-xK-dKy" firstAttribute="leading" secondItem="9Bc-dl-iQY" secondAttribute="leading" constant="20" id="hkV-7F-gZL"/>
+                                        <constraint firstItem="1OV-xK-dKy" firstAttribute="centerY" secondItem="9Bc-dl-iQY" secondAttribute="centerY" id="s8x-og-2LD"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="englishLabel" destination="wSx-BM-u7Q" id="igu-bU-uFx"/>
+                                    <outlet property="morseCodeLabel" destination="lvl-u8-O93" id="AQg-so-6pp"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="HHA-Ce-gYY" id="J0O-KD-CAT"/>
+                            <outlet property="delegate" destination="HHA-Ce-gYY" id="qnJ-gA-YYD"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="JEV-QV-CHG"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bjv-2Y-szH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4744" y="-2896"/>
         </scene>
     </scenes>
     <resources>
