@@ -287,6 +287,12 @@ public class WhiteSpeechViewController: UIViewController {
                 }
             }
         }
+        else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
+            currentState.popLast()
+        }
+        else if action == Action.CancelledEditing && currentState.last == State.EditingMode {
+            currentState.popLast()
+        }
         else if action == Action.SwipeRight && currentState.last == State.Idle {
             let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
             if se3UserType == "_3" {
@@ -310,7 +316,8 @@ public class WhiteSpeechViewController: UIViewController {
                 animateNoInternetConnection()
             }
             else {
-                currentState.append(State.Speaking)
+                //currentState.append(State.Speaking)
+                currentState.append(State.EditingMode)
                 enterStateSpeaking()
             }
         }
@@ -349,7 +356,8 @@ public class WhiteSpeechViewController: UIViewController {
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
             sendStatusToWatch(beginningOfAction: true, success: true, text: "User is typing on iPhone. Please wait. Tell them to tap screen when done.")
-            currentState.append(State.Typing)
+            //currentState.append(State.Typing)
+            currentState.append(State.EditingMode)
             enterStateTyping()
         }
      /*   else if action == Action.LongPress && currentState.last == State.Idle {
@@ -919,7 +927,7 @@ public class WhiteSpeechViewController: UIViewController {
         self.bottomMiddleActionLabel?.text = ""
         self.view.bringSubview(toFront: viewForTypeTalkStackView)
         
-        composerStackView?.isHidden = true //We do not want this at the start
+        //composerStackView?.isHidden = true //We do not want this at the start
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
         if se3UserType == "_1" {
             self.recordLabel?.text = speechToTextInstructionString
@@ -1309,8 +1317,21 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func enterStateTyping() {
+        //Open new window for typing
+        guard let storyBoard : UIStoryboard = self.storyboard else {
+            return
+        }
+        let speechViewController = storyBoard.instantiateViewController(withIdentifier: "SpeechViewController") as! SpeechViewController
+        speechViewController.dataChats.removeAll()
+        speechViewController.dataChats.append(contentsOf: dataChats)
+        speechViewController.inputAction = Action.OpenedEditingModeForTyping
+        speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(speechViewController, animated: true)
+        }
+        
         //Close stack views
-        composerStackView?.isHidden = true
+     /*   composerStackView?.isHidden = true
         bottomLeftStackView?.isHidden = true
         navStackView?.isHidden = true
         bottomMiddleActionLabel?.text = ""
@@ -1361,7 +1382,7 @@ public class WhiteSpeechViewController: UIViewController {
         UIView.animate(withDuration: 1.0) {
             self.timerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
-        }
+        }   */
     }
     
     private func exitStateTyping() {
@@ -1427,11 +1448,7 @@ public class WhiteSpeechViewController: UIViewController {
                 return
             }
             sayThis(string: newText)
-            var morseCodeString = ""
-            for character in newText {
-                morseCodeString += morseCode.alphabetToMCDictionary[String(character.uppercased())] ?? ""
-                morseCodeString += "|"
-            }
+            var morseCodeString = convertEnglishToMC(englishString: newText)
             englishMorseCodeTextLabel?.text = newText
             morseCodeLabel?.text = morseCodeString
             self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName, mode: "typing"))
@@ -1510,6 +1527,21 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func enterStateSpeaking() {
+        //Open new window for typing
+        guard let storyBoard : UIStoryboard = self.storyboard else {
+            return
+        }
+        let speechViewController = storyBoard.instantiateViewController(withIdentifier: "SpeechViewController") as! SpeechViewController
+        speechViewController.dataChats.removeAll()
+        speechViewController.dataChats.append(contentsOf: dataChats)
+        speechViewController.inputAction = Action.OpenedEditingModeForSpeaking
+        speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(speechViewController, animated: true)
+        }
+        return
+        
+        
         if hasInternetConnection() {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration ONLY if not receiving
             //try! startRecording()
@@ -2093,6 +2125,29 @@ public class WhiteSpeechViewController: UIViewController {
         })
     }
     
+    //input method: typing/talking/morse_code
+    private func setEnglishAndMCLabels(english : String, morseCode: String, inputMethod : String) {
+        englishMorseCodeTextLabel?.text = english
+        englishMorseCodeTextLabel?.isHidden = false
+        englishStringIndex = -1
+        morseCodeLabel?.text = morseCode
+        morseCodeLabel?.isHidden = false
+        morseCodeStringIndex = -1
+        self.dataChats.append(ChatListItem(text: english, morseCodeText: morseCode, origin: peerID.displayName, mode: inputMethod))
+        self.chatLogBtn?.image = UIImage(systemName: "book.fill")
+    }
+    
+    private func convertEnglishToMC(englishString : String) -> String {
+        let english = englishString.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains).replacingOccurrences(of: " ", with: "␣")
+        var morseCodeString = ""
+        for character in english {
+            morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
+            morseCodeString += "|"
+        }
+        
+        return morseCodeString
+    }
+    
 }
 
 extension WhiteSpeechViewController : SFSpeechRecognizerDelegate {
@@ -2360,21 +2415,46 @@ protocol WhiteSpeechViewControllerProtocol {
     //Coming back after setting user profile
     func userProfileOptionSet(se3UserType : String)
     
+    //To get typing message back
+    func setTypedMessage(english : String)
+    
+    //To get spoken message back
+    func setSpokenMessage(english : String)
+    
     //To get the morse code message back
     func setMorseCodeMessage(englishInput : String, morseCodeInput : String)
 }
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
+    func setTypedMessage(english: String) {
+        if english.count > 0 {
+            let morseCodeString = convertEnglishToMC(englishString: english)
+            setEnglishAndMCLabels(english: english, morseCode: morseCodeString, inputMethod: "typing")
+            changeState(action: Action.CompletedEditing)
+        }
+        else {
+            changeState(action: Action.CancelledEditing)
+        }
+    }
+    
+    func setSpokenMessage(english: String) {
+        if english.count > 0 {
+            let morseCodeString = convertEnglishToMC(englishString: english)
+            setEnglishAndMCLabels(english: english, morseCode: morseCodeString, inputMethod: "talking")
+            changeState(action: Action.CompletedEditing)
+        }
+        else {
+            changeState(action: Action.CancelledEditing)
+        }
+    }
+    
     func setMorseCodeMessage(englishInput: String, morseCodeInput : String) {
         if englishInput.count > 0 && morseCodeInput.count > 0 {
-            englishMorseCodeTextLabel?.text = englishInput
-            englishMorseCodeTextLabel?.isHidden = false
-            englishStringIndex = -1
-            morseCodeLabel?.text = morseCodeInput
-            morseCodeLabel?.isHidden = false
-            morseCodeStringIndex = -1
-            self.dataChats.append(ChatListItem(text: englishInput, morseCodeText: morseCodeInput, origin: peerID.displayName, mode: "morse_code"))
-            self.chatLogBtn?.image = UIImage(systemName: "book.fill")
+            setEnglishAndMCLabels(english: englishInput, morseCode: morseCodeInput, inputMethod: "morse_code")
+            changeState(action: Action.CompletedEditing)
+        }
+        else {
+            changeState(action: Action.CancelledEditing)
         }
     }
     

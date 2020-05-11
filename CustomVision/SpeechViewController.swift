@@ -481,6 +481,7 @@ public class SpeechViewController: UIViewController {
                     return
                 }
                 self.sayThis(string: enteredText)
+                whiteSpeechViewControllerProtocol?.setTypedMessage(english: enteredText)
                 //sendResponseToWatch(text: enteredText)
             }
             else if currentState.last == State.Typing {
@@ -669,6 +670,7 @@ public class SpeechViewController: UIViewController {
             }
             
             if error != nil || isFinal {
+                self.whiteSpeechViewControllerProtocol?.setSpokenMessage(english: self.textViewBottom?.text ?? "")
                 self.audioEngine.stop()
                 inputNode.removeTap(onBus: 0)
                 
