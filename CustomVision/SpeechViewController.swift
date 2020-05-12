@@ -20,6 +20,7 @@ public class SpeechViewController: UIViewController {
     // MARK: Properties
     let synth = AVSpeechSynthesizer()
     var inputAction : Action? = nil //Action that is passed in from previous controller
+    var previousMessage : ChatListItem? = nil //The previous message that was said. To give context. Passed in from previous controller
     var se3UserType : String? //Used in chat log reading mode
     var whiteSpeechViewControllerProtocol : WhiteSpeechViewControllerProtocol?
     var speechViewControllerProtocol : SpeechViewControllerProtocol?
@@ -52,6 +53,7 @@ public class SpeechViewController: UIViewController {
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet var mainView : UIView?
     @IBOutlet var textViewTop : UITextView?
+    @IBOutlet weak var prevMessageButton: UIButton!
     @IBOutlet var textViewBottom : UITextView!
     @IBOutlet var recordButton : UIButton?
     @IBOutlet weak var longPressLabel: UILabel?
@@ -125,6 +127,14 @@ public class SpeechViewController: UIViewController {
     
     @IBAction func talkButtonTapped(_ sender: Any) {
         changeState(action: Action.Tap)
+    }
+    
+    
+    @IBAction func prevMessageBtnTapped(_ sender: Any) {
+        guard let message = previousMessage?.text else {
+            return
+        }
+        dialogOK(title: "", message: message)
     }
     
     
@@ -558,6 +568,10 @@ public class SpeechViewController: UIViewController {
                 self.helpBarButtonItem?.tintColor = .clear
             }
             changeState(action: inputAction!)
+        }
+        if previousMessage != nil {
+            prevMessageButton?.setTitle(previousMessage?.text, for: .normal)
+            prevMessageButton?.isHidden = false
         }
         
         // Disable the record buttons until authorization has been granted.

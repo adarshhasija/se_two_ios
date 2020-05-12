@@ -19,14 +19,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQ1-aS-4qY">
-                                <rect key="frame" x="16" y="518" width="288" height="30"/>
+                                <rect key="frame" x="16" y="485" width="288" height="63"/>
                                 <state key="normal" title="Start Recording!"/>
                                 <connections>
                                     <action selector="tapGesture" destination="1hE-gn-uSX" eventType="touchUpInside" id="Ag5-o2-vic"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Placeholder text here..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-Ff-2dL">
-                                <rect key="frame" x="16" y="61" width="288" height="446"/>
+                                <rect key="frame" x="16" y="94" width="288" height="380"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
@@ -507,15 +507,28 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N81-at-fQ6">
+                                <rect key="frame" x="35" y="50" width="250" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="qUq-Fb-g1X"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="prevMessageBtnTapped:" destination="1hE-gn-uSX" eventType="touchUpInside" id="caQ-hh-2KR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="gJX-l0-cct" firstAttribute="trailing" secondItem="hQ1-aS-4qY" secondAttribute="trailing" id="1ss-8A-AIQ"/>
                             <constraint firstItem="ZzH-q1-4Um" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="2bm-8s-XnY"/>
+                            <constraint firstItem="fxs-Ff-2dL" firstAttribute="top" secondItem="9Zo-hn-Ia8" secondAttribute="bottom" constant="50" id="2m8-ad-pg3"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="trailing" secondItem="lsg-M3-JgJ" secondAttribute="trailingMargin" id="2rt-Ck-67a"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leadingMargin" id="8JM-Ib-xMy"/>
                             <constraint firstItem="gJX-l0-cct" firstAttribute="leading" secondItem="hQ1-aS-4qY" secondAttribute="leading" id="8pe-Dj-YSk"/>
+                            <constraint firstItem="fxs-Ff-2dL" firstAttribute="top" secondItem="N81-at-fQ6" secondAttribute="bottom" constant="10" id="EM9-UC-Mjw"/>
                             <constraint firstItem="fxs-Ff-2dL" firstAttribute="trailing" secondItem="ZzH-q1-4Um" secondAttribute="trailing" id="GvD-AA-CRJ"/>
                             <constraint firstItem="pXC-11-TJX" firstAttribute="leading" secondItem="lsg-M3-JgJ" secondAttribute="leading" constant="10" id="HoA-Q0-v4h"/>
                             <constraint firstItem="gJX-l0-cct" firstAttribute="top" secondItem="ZzH-q1-4Um" secondAttribute="bottom" constant="56" id="L7J-Hd-679"/>
@@ -524,6 +537,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="ZzH-q1-4Um" secondAttribute="trailing" id="VVe-mo-GxX"/>
                             <constraint firstItem="hQ1-aS-4qY" firstAttribute="top" secondItem="fxs-Ff-2dL" secondAttribute="bottom" constant="11" id="Ywn-EE-NSB"/>
                             <constraint firstItem="gJX-l0-cct" firstAttribute="centerY" secondItem="lsg-M3-JgJ" secondAttribute="centerY" id="brO-KQ-et4"/>
+                            <constraint firstItem="N81-at-fQ6" firstAttribute="centerX" secondItem="lsg-M3-JgJ" secondAttribute="centerX" id="cP5-aH-ZoE"/>
                             <constraint firstItem="fxs-Ff-2dL" firstAttribute="leading" secondItem="ZzH-q1-4Um" secondAttribute="leading" id="eye-SH-hUl"/>
                             <constraint firstItem="ZzH-q1-4Um" firstAttribute="top" secondItem="9Zo-hn-Ia8" secondAttribute="bottom" constant="10" id="ez5-Wt-URe"/>
                             <constraint firstItem="ZzH-q1-4Um" firstAttribute="top" secondItem="lsg-M3-JgJ" secondAttribute="topMargin" constant="5" id="fyI-Aq-srK"/>
@@ -561,6 +575,7 @@
                         <outlet property="labelMainAction" destination="VzM-LT-YMV" id="mrd-Q2-0iK"/>
                         <outlet property="labelTopStatus" destination="sAD-KR-f8B" id="f4h-UP-na0"/>
                         <outlet property="longPressLabel" destination="5ex-gU-cqF" id="6hr-hR-SN6"/>
+                        <outlet property="prevMessageButton" destination="N81-at-fQ6" id="NYC-zv-Yvl"/>
                         <outlet property="recordButton" destination="hQ1-aS-4qY" id="5qX-pj-gox"/>
                         <outlet property="recordLabel" destination="Z2R-uD-B4J" id="jPy-vq-rXn"/>
                         <outlet property="speakingButton" destination="acx-cW-An0" id="QeB-GE-AVr"/>
@@ -1793,13 +1808,13 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1OV-xK-dKy">
                                             <rect key="frame" x="20" y="1.5" width="93.5" height="41"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="English" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSx-BM-u7Q">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSx-BM-u7Q">
                                                     <rect key="frame" x="0.0" y="0.0" width="93.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvl-u8-O93">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvl-u8-O93">
                                                     <rect key="frame" x="0.0" y="20.5" width="93.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1850,6 +1865,6 @@
         <image name="wifi.slash" catalog="system" width="64" height="56"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2ZQ-Pc-kt3"/>
+        <segue reference="dSE-Cb-JSO"/>
     </inferredMetricsTieBreakers>
 </document>

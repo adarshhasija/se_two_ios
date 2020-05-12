@@ -753,6 +753,12 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     override public func viewDidAppear(_ animated: Bool) {
+        
+        if currentState.last == State.EditingMode {
+            //This will be the case when we opened Typing or Speaking mode and pressed back. None of the delegates were called and the mode is still editing modes
+            changeState(action: Action.CancelledEditing)
+        }
+        
         textViewBottom?.delegate = self
         speechRecognizer.delegate = self
         
@@ -1325,6 +1331,7 @@ public class WhiteSpeechViewController: UIViewController {
         speechViewController.dataChats.removeAll()
         speechViewController.dataChats.append(contentsOf: dataChats)
         speechViewController.inputAction = Action.OpenedEditingModeForTyping
+        speechViewController.previousMessage = dataChats.last
         speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(speechViewController, animated: true)
@@ -1535,6 +1542,7 @@ public class WhiteSpeechViewController: UIViewController {
         speechViewController.dataChats.removeAll()
         speechViewController.dataChats.append(contentsOf: dataChats)
         speechViewController.inputAction = Action.OpenedEditingModeForSpeaking
+        speechViewController.previousMessage = dataChats.last
         speechViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(speechViewController, animated: true)
