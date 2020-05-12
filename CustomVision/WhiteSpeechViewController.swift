@@ -39,6 +39,7 @@ public class WhiteSpeechViewController: UIViewController {
     var lastActionSpeaking = "Spoken by non-hearing-impaired"
     var userStatusInstructionLongPress = "Long press here to change"
     var userStatusMoreInfoTap = "Tap here for more info"
+    var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     var englishStringIndex = -1
     var morseCodeStringIndex = -1
     
@@ -67,6 +68,7 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet var textViewBottom : UITextView!
     @IBOutlet weak var morseCodeLabel: UILabel!
     @IBOutlet weak var englishMorseCodeTextLabel: UILabel!
+    @IBOutlet weak var mcReadInstructionLabel: UILabel!
     @IBOutlet weak var timerStackView: UIStackView!
     @IBOutlet weak var viewForTypeTalkStackView: UIView!
     @IBOutlet weak var composerStackView: UIStackView!
@@ -264,8 +266,10 @@ public class WhiteSpeechViewController: UIViewController {
             openUserProfileOptions()
         }
         else if action == Action.Tap && currentState.last == State.Idle {
-            if textViewBottom.text.count > 0 {
-                sayThis(string: textViewBottom.text)
+            if englishMorseCodeTextLabel.text != nil {
+                if englishMorseCodeTextLabel.text!.count > 0 {
+                    sayThis(string: englishMorseCodeTextLabel.text!)
+                }
             }
             else {
                 let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
@@ -665,6 +669,7 @@ public class WhiteSpeechViewController: UIViewController {
                 ])
                 try? hapticManager?.hapticForResult(success: false)
                
+               mcReadInstructionLabel?.text = "Swipe right with 2 fingers to read morse code"
                if morseCodeStringIndex < 0 {
                    morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
                    englishStringIndex = -1
@@ -673,12 +678,12 @@ public class WhiteSpeechViewController: UIViewController {
                morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
                return
            }
-           
-        /*   sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-               "state" : "scrolling",
-               "is_reading" : self.isReading()
-           ])  */
-           MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
+
+            Analytics.logEvent("se3_morse_scroll_left", parameters: [
+                "state" : "scrolling"
+            ])
+           mcReadInstructionLabel?.text = "Swipe left with 2 fingers to go back"
+           MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.blue)
            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
            
            if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
@@ -699,7 +704,7 @@ public class WhiteSpeechViewController: UIViewController {
                
                if englishStringIndex > -1 {
                    //Ensure that the index is within bounds
-                   MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color: UIColor.green)
+                   MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color: UIColor.blue)
                }
                
            }
@@ -712,6 +717,7 @@ public class WhiteSpeechViewController: UIViewController {
             Analytics.logEvent("se3_morse_scroll_right", parameters: [
                 "state" : "index_greater_equal_0"
             ])
+            mcReadInstructionLabel?.text = "Swipe left with 2 fingers to go back"
             morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
             englishMorseCodeTextLabel.text = englishString
             //WKInterfaceDevice.current().play(.success)
@@ -719,7 +725,8 @@ public class WhiteSpeechViewController: UIViewController {
             englishStringIndex = englishString.count
             return
         }
-        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
+        mcReadInstructionLabel?.text = "Swipe right with 2 fingers to read morse code"
+        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.blue)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
         
         if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
@@ -740,7 +747,7 @@ public class WhiteSpeechViewController: UIViewController {
             Analytics.logEvent("se3_morse_scroll_right", parameters: [
                 "state" : "index_alpha_change"
             ])
-            MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color : UIColor.green)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color : UIColor.blue)
         }
     }
     
@@ -981,8 +988,9 @@ public class WhiteSpeechViewController: UIViewController {
                            completion: nil)
         }
         
-        self.morseCodeLabel?.text = ""
         self.englishMorseCodeTextLabel?.text = ""
+        self.morseCodeLabel?.text = ""
+        self.mcReadInstructionLabel?.isHidden = true
         self.textViewBottom?.text = ""
         
     }
@@ -2136,9 +2144,11 @@ public class WhiteSpeechViewController: UIViewController {
     //input method: typing/talking/morse_code
     private func setEnglishAndMCLabels(english : String, morseCode: String, inputMethod : String) {
         englishMorseCodeTextLabel?.text = english
+        englishMorseCodeTextLabel?.textColor = .none
         englishMorseCodeTextLabel?.isHidden = false
         englishStringIndex = -1
         morseCodeLabel?.text = morseCode
+        morseCodeLabel?.textColor = .none
         morseCodeLabel?.isHidden = false
         morseCodeStringIndex = -1
         self.dataChats.append(ChatListItem(text: english, morseCodeText: morseCode, origin: peerID.displayName, mode: inputMethod))
@@ -2148,12 +2158,39 @@ public class WhiteSpeechViewController: UIViewController {
     private func convertEnglishToMC(englishString : String) -> String {
         let english = englishString.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains).replacingOccurrences(of: " ", with: "␣")
         var morseCodeString = ""
+        var index = 0
+        indicesOfPipes.removeAll()
+        indicesOfPipes.append(0)
         for character in english {
-            morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
-            morseCodeString += "|"
+            var mcChar = morseCode.alphabetToMCDictionary[String(character)] ?? ""
+            mcChar += "|"
+            index += mcChar.count
+            indicesOfPipes.append(index)
+            morseCodeString += mcChar
         }
         
         return morseCodeString
+    }
+    
+    //last action: typing/talking/morse_code
+    private func setBackgroundColor(lastAction : String) {
+        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        if (se3UserType == nil || se3UserType == "_0" || se3UserType == "_2") && lastAction == "typing" {
+           //No user set/user is HI and action is typing. So owner did the typing
+            view.backgroundColor = UIColor.gray
+        }
+        else if se3UserType == "_3" && lastAction == "morse_code" {
+            //User is type deaf-blind and action was morse code. So owner did the typing.
+            view.backgroundColor = UIColor.gray
+        }
+        else {
+            //All others green
+            view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 0.2)
+        }
+     /*   else if se3UserType == "_1" {
+           // Device owner = normal. Typing = other user = green
+           view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 0.2)
+        }   */
     }
     
 }
@@ -2396,15 +2433,28 @@ extension WhiteSpeechViewController : AVSpeechSynthesizerDelegate {
     public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
         let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
         mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: characterRange)
-        let font = textViewBottom?.font
-        let alignment = textViewBottom.textAlignment
-        textViewBottom?.attributedText = mutableAttributedString //all attributes get ovverridden here. necessary to save it before hand
-        textViewBottom?.font = font
-        textViewBottom?.textAlignment = alignment
+        let font = englishMorseCodeTextLabel?.font
+        let alignment = englishMorseCodeTextLabel?.textAlignment
+        englishMorseCodeTextLabel?.attributedText = mutableAttributedString //all attributes get ovverridden here. necessary to save it before hand
+        englishMorseCodeTextLabel?.font = font
+        if alignment != nil { englishMorseCodeTextLabel?.textAlignment = alignment! }
+        
+        let mcLowerBound = indicesOfPipes[characterRange.lowerBound]
+        let mcUpperBound = indicesOfPipes[characterRange.upperBound]
+        let mcRange = NSRange(location: mcLowerBound, length: mcUpperBound - mcLowerBound)
+        let mutableAttributedStringMC = NSMutableAttributedString(string: morseCodeLabel.text ?? "")
+        mutableAttributedStringMC.addAttribute(.foregroundColor, value: UIColor.blue, range: mcRange)
+        let fontMC = morseCodeLabel?.font
+        let alignmentMC = morseCodeLabel?.textAlignment
+        morseCodeLabel?.attributedText = mutableAttributedStringMC //all attributes get ovverridden here. necessary to save it before hand
+        morseCodeLabel?.font = fontMC
+        if alignmentMC != nil { morseCodeLabel?.textAlignment = alignmentMC! }
+        
     }
     
     public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        textViewBottom?.text = utterance.speechString
+        englishMorseCodeTextLabel?.text = utterance.speechString
+        morseCodeLabel?.text = morseCodeLabel?.text
     }
 }
 
@@ -2438,6 +2488,8 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         if english.count > 0 {
             let morseCodeString = convertEnglishToMC(englishString: english)
             setEnglishAndMCLabels(english: english, morseCode: morseCodeString, inputMethod: "typing")
+            setBackgroundColor(lastAction: "typing")
+            mcReadInstructionLabel?.isHidden = false
             changeState(action: Action.CompletedEditing)
         }
         else {
@@ -2449,6 +2501,8 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         if english.count > 0 {
             let morseCodeString = convertEnglishToMC(englishString: english)
             setEnglishAndMCLabels(english: english, morseCode: morseCodeString, inputMethod: "talking")
+            setBackgroundColor(lastAction: "talking")
+            mcReadInstructionLabel?.isHidden = false
             changeState(action: Action.CompletedEditing)
         }
         else {
@@ -2459,6 +2513,8 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     func setMorseCodeMessage(englishInput: String, morseCodeInput : String) {
         if englishInput.count > 0 && morseCodeInput.count > 0 {
             setEnglishAndMCLabels(english: englishInput, morseCode: morseCodeInput, inputMethod: "morse_code")
+            setBackgroundColor(lastAction: "morse_code")
+            mcReadInstructionLabel?.isHidden = false
             changeState(action: Action.CompletedEditing)
         }
         else {
