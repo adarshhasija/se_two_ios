@@ -30,9 +30,10 @@ public class WhiteSpeechViewController: UIViewController {
     var timer = Timer()
     var isTimerRunning = false
     private var dataChats: [ChatListItem] = []
-    var speechToTextInstructionString = "Long press on screen to record speech"
-    var typingInstructionString = "Swipe up to type"
+    var speechToTextInstructionString = "Tap the talk button at the bottom to record speech"
+    var typingInstructionString = "Tap the type button below"
     var longPressMorseCodeInstructionString = "Long press to begin typing in morse code"
+    var composerButtonsUseInstructions = "Use the buttons below to reply"
     var hiSIContextString = "This person cannot hear or speak. Please help them"
     var tapToRepeat = "Tap to repeat"
     var lastActionTypingDeaf = "Typed by hearing-impaired"
@@ -2495,6 +2496,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
             setEnglishAndMCLabels(english: english, morseCode: morseCodeString, inputMethod: "typing")
             setBackgroundColor(lastAction: "typing")
             mcReadInstructionLabel?.isHidden = false
+            recordLabel?.text = composerButtonsUseInstructions
             changeState(action: Action.CompletedEditing)
         }
         else {
@@ -2508,6 +2510,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
             setEnglishAndMCLabels(english: english, morseCode: morseCodeString, inputMethod: "talking")
             setBackgroundColor(lastAction: "talking")
             mcReadInstructionLabel?.isHidden = false
+            recordLabel?.text = composerButtonsUseInstructions
             changeState(action: Action.CompletedEditing)
         }
         else {
@@ -2520,6 +2523,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
             setEnglishAndMCLabels(english: englishInput, morseCode: morseCodeInput, inputMethod: "morse_code")
             setBackgroundColor(lastAction: "morse_code")
             mcReadInstructionLabel?.isHidden = false
+            recordLabel?.text = composerButtonsUseInstructions
             changeState(action: Action.CompletedEditing)
         }
         else {
