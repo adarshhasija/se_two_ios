@@ -991,7 +991,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="k6u-OF-iHk">
-                                <rect key="frame" x="60" y="418" width="200" height="50"/>
+                                <rect key="frame" x="60" y="363" width="200" height="105"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to type morse code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCY-F6-qYh">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="0.0"/>
@@ -1090,6 +1090,39 @@
                                                 <integer key="value" value="10"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2nf-Vh-kvm">
+                                        <rect key="frame" x="0.0" y="55" width="200" height="50"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lk8-qU-HA4">
+                                                <rect key="frame" x="47" y="13" width="106.5" height="24"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYt-oy-tiz">
+                                                        <rect key="frame" x="0.0" y="0.0" width="106.5" height="24"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="1dX-Vc-EKJ"/>
+                                            <constraint firstItem="lk8-qU-HA4" firstAttribute="centerY" secondItem="2nf-Vh-kvm" secondAttribute="centerY" id="3QZ-Uf-e0B"/>
+                                            <constraint firstItem="lk8-qU-HA4" firstAttribute="centerX" secondItem="2nf-Vh-kvm" secondAttribute="centerX" id="6bG-Qa-qCo"/>
+                                            <constraint firstAttribute="width" constant="200" id="XKI-Lq-AsB"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="nzP-jH-TlL" appends="YES" id="Cs6-yc-yXK"/>
+                                        </connections>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -1296,6 +1329,11 @@
                 <tapGestureRecognizer id="X4C-GC-gbc">
                     <connections>
                         <action selector="talkButtonTapped:" destination="tNc-1S-FN5" id="TfO-Y4-WCU"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="nzP-jH-TlL">
+                    <connections>
+                        <action selector="mcButtonTapped:" destination="tNc-1S-FN5" id="juK-Q2-C6F"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

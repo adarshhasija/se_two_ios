@@ -222,6 +222,11 @@ public class WhiteSpeechViewController: UIViewController {
         changeState(action: Action.TalkButtonTapped)
     }
     
+    
+    @IBAction func mcButtonTapped(_ sender: Any) {
+        changeState(action: Action.LongPress)
+    }
+    
     // MARK: State Machine
     private func changeState(action : Action) {
         //All events logged without parameters are temporary. Will be removed once we analyze events better
