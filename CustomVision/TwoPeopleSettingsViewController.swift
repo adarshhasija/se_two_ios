@@ -23,6 +23,9 @@ public class TwoPeopleSettingsViewController : UIViewController {
     // _3 = Host is Deaf-blind. Guest can be not impaired or HI
     
     // Properties
+    lazy var supportsHaptics: Bool = {
+        return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
+    }()
     var inputUserProfileOption : String?
     var whiteSpeechViewControllerProtocol : WhiteSpeechViewControllerProtocol?
     var hiSwitchOnExplanationString = "Will type out messages and show the other person"
@@ -63,7 +66,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        pickerData.append(contentsOf: ["Hearing-impaired", "Not impaired", "Deaf-blind"])
+        pickerData.append(contentsOf: ["Hearing-impaired", "Deaf-blind"/*, "Not impaired"*/])
         hostPickerView.delegate = self
         hostPickerView.dataSource = self
         errorMessageLabel?.text = ""
@@ -82,7 +85,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
             hostPickerView?.selectRow(0, inComponent: 0, animated: false)
             //hostPickerView?.selectRow(1, inComponent: 1, animated: false)
         }
-        else if inputUserProfileOption == "_1" {
+    /*    else if inputUserProfileOption == "_1" {
             // _1 = normal
             hostHiImageView?.alpha = 0.25
             hostViImageView?.alpha = 0.25
@@ -92,7 +95,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
             guestRoleLabel?.text = HiWillTypeString
             hostPickerView?.selectRow(1, inComponent: 0, animated: false)
             //hostPickerView?.selectRow(0, inComponent: 1, animated: false)
-        }
+        }   */
         else if inputUserProfileOption == "_3" {
             // _3 = deaf-blind
             hostHiImageView?.alpha = 1
@@ -101,17 +104,41 @@ public class TwoPeopleSettingsViewController : UIViewController {
             guestViImageView?.alpha = 0.25
             hostRoleLabel?.text = deafBlindMorseCodeString
             guestRoleLabel?.text = noAilmentsWillTalkString
-            hostPickerView?.selectRow(2, inComponent: 0, animated: false)
+            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
             //hostPickerView?.selectRow(0, inComponent: 1, animated: false)
         }
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
         let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_2" :
-                       hostPickerView.selectedRow(inComponent: 0) == 2 ? "_3" :
+                       hostPickerView.selectedRow(inComponent: 0) == 1 ? "_3" :
                         "_1"
-        UserDefaults.standard.set(userType, forKey: "SE3_IOS_USER_TYPE")
-        whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: userType)
+        
+        if userType == "_3" && supportsHaptics == false {
+            dialogOK(title: "Error", message: "You cannot select deaf-blind as your device does not support our morse code functionality. Please select another option")
+        }
+        else {
+            UserDefaults.standard.set(userType, forKey: "SE3_IOS_USER_TYPE")
+            whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: userType)
+        }
+    }
+    
+    func dialogOK(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+                
+            }}))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -139,6 +166,7 @@ extension TwoPeopleSettingsViewController : UIPickerViewDataSource {
 extension TwoPeopleSettingsViewController : UIPickerViewDelegate {
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        errorMessageLabel?.isHidden = true
         if row == 0 {
             //Host = HI
             hostRoleLabel?.text = HiWillTypeString
@@ -150,22 +178,28 @@ extension TwoPeopleSettingsViewController : UIPickerViewDelegate {
             //hostPickerView.reloadComponent(1) //Open up options that were previously greyed out and disable other options
         }
         else if row == 1 {
+            //Host = Deaf-blind
+            if supportsHaptics == false {
+                errorMessageLabel?.text = "Only supported on iPhone 8 and later"
+                errorMessageLabel?.isHidden = false
+                return
+            }
+            
+            hostRoleLabel?.text = deafBlindMorseCodeString
+            hostHiImageView?.alpha = 1
+            hostViImageView?.alpha = 1
+            guestRoleLabel?.text = notDeafBlindWillTypeString //Outside the if statement as it is common for HI and normal guests if host is deaf-blind
+            guestHiImageView?.alpha = 0.25
+            guestViImageView?.alpha = 0.25
+            //pickerView.reloadComponent(1) //Open up options that were previously greyed out and disable other options
+        }
+        else if row == 2 {
             //Host = Normal
             hostRoleLabel?.text = noAilmentsWillTalkString
             hostHiImageView?.alpha = 0.25
             hostViImageView?.alpha = 0.25
             guestRoleLabel?.text = HiWillTypeString
             guestHiImageView?.alpha = 1
-            guestViImageView?.alpha = 0.25
-            //pickerView.reloadComponent(1) //Open up options that were previously greyed out and disable other options
-        }
-        else if row == 2 {
-            //Host = Deaf-blind
-            hostRoleLabel?.text = deafBlindMorseCodeString
-            hostHiImageView?.alpha = 1
-            hostViImageView?.alpha = 1
-            guestRoleLabel?.text = notDeafBlindWillTypeString //Outside the if statement as it is common for HI and normal guests if host is deaf-blind
-            guestHiImageView?.alpha = 0.25
             guestViImageView?.alpha = 0.25
             //pickerView.reloadComponent(1) //Open up options that were previously greyed out and disable other options
         }
