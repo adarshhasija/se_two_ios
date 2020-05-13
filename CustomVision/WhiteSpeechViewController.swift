@@ -78,19 +78,26 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet weak var disabledContextLabel: UILabel!
     
     //User profile view
-    @IBOutlet weak var userProfileVerticalStackView: UIStackView!
-    @IBOutlet weak var hiLeftImageView: UIImageView!
-    @IBOutlet weak var viLeftImageView: UIImageView!
-    @IBOutlet weak var userLeftImageView: UIImageView!
-    @IBOutlet weak var appIconButton: UIImageView!
-    @IBOutlet weak var userRightImageView: UIImageView!  
-    @IBOutlet weak var hiRightImageView: UIImageView!
-    @IBOutlet weak var viRightImageView: UIImageView!
+    @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var userAilmentLabel: UILabel!
     @IBOutlet weak var userStatusLabel: UILabel!
     ///
     
     // MARK: Interface Builder actions
     
+    
+    
+    @IBAction func userProfileTapped(_ sender: Any) {
+        guard let storyBoard : UIStoryboard = self.storyboard else {
+            return
+        }
+        let userProfileController = storyBoard.instantiateViewController(withIdentifier: "UserProfile") as! UserProfileTableViewController
+        userProfileController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(userProfileController, animated: true)
+        }
+    }
     
     @IBAction func helpBarButtonItemTapped(_ sender: Any) {
         changeState(action: Action.BarButtonHelpTapped)
@@ -103,7 +110,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func userProfileStackViewTapped(_ sender: Any) {
-        if currentState.last == State.Idle || currentState.last == State.UserProfileStackViewInstructions {
+        if currentState.last == State.Idle {
             changeState(action: Action.UserProfileButtonTapped)
         }
         else {
@@ -121,12 +128,6 @@ public class WhiteSpeechViewController: UIViewController {
         }
     }
     
-    
-    @IBAction func userProfileStackViewLongPress(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.began {
-           changeState(action: Action.UserProfileButtonLongPress)
-        }
-    }
     
     @IBAction func chatLogButtonTapped(_ sender: Any) {
         if dataChats.count > 0 {
@@ -186,24 +187,6 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if action == Action.UserProfileButtonTapped && currentState.last == State.Idle {
             Analytics.logEvent("se3_uprofile_tap", parameters: [:])
-            currentState.append(State.UserProfileStackViewInstructions)
-            userStackViewStartAnimation()
-        }
-        else if action == Action.UserProfileButtonTapped && currentState.last == State.UserProfileStackViewInstructions {
-            currentState.popLast()
-            userStackViewEndAnimation()
-        }
-        else if action == Action.UserProfileAnimationComplete && currentState.last == State.UserProfileStackViewInstructions {
-            currentState.popLast()
-            userStackViewEndAnimation()
-        }
-        else if (action == Action.Tap || action == Action.LongPress || action == Action.SwipeUp || action == Action.SwipeLeft) && currentState.last == State.UserProfileStackViewInstructions {
-            currentState.popLast()
-            userStackViewEndAnimation()
-        }
-        else if action == Action.UserProfileButtonLongPress && currentState.last == State.Idle {
-            Analytics.logEvent("se3_uprofile_long_press", parameters: [:])
-            openUserProfileOptions()
         }
         else if action == Action.Tap && currentState.last == State.Idle {
             if textViewBottom.text.count > 0 {
@@ -527,29 +510,6 @@ public class WhiteSpeechViewController: UIViewController {
             else {
                 self.userStatusLabel?.text = ""
             }
-            alphaChangeIsHearingImpaired()
-            if #available(iOS 13.0, *) {
-                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
-                self.userLeftImageView?.image = UIImage(systemName: "person")
-                self.appIconButton?.image = UIImage(systemName: "app.fill")
-                self.userRightImageView?.image = UIImage(systemName: "person")
-                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-            }
-        }
-        else {
-            //Person has declared themselves not p-w-d. So other person is p-w-d
-            alphaChangeNotHearingImpaired()
-            if #available(iOS 13.0, *) {
-                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
-                self.userLeftImageView?.image = UIImage(systemName: "person")
-                self.appIconButton?.image = UIImage(systemName: "app.fill")
-                self.userRightImageView?.image = UIImage(systemName: "person")
-                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-            }
         }
         
     }
@@ -714,16 +674,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     // MARK: State Machine Private Helpers
     private func enterStateControllerLoaded() {
-        if #available(iOS 13.0, *) {
-            //Reset everything
-            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-            self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
-            self.userLeftImageView?.image = UIImage(systemName: "person")
-            self.appIconButton?.image = UIImage(systemName: "app.fill")
-            self.userRightImageView?.image = UIImage(systemName: "person")
-            self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-        }
+        
         if #available(iOS 13.0, *) {
             self.view.backgroundColor = UIColor.systemBackground
         } else {
@@ -736,6 +687,7 @@ public class WhiteSpeechViewController: UIViewController {
         self.recordLabel?.textColor = UIColor.darkGray
         self.bottomMiddleActionLabel?.text = ""
         
+        loadImage()
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
         if se3UserType == "_1" {
             self.recordLabel?.text = speechToTextInstructionString
@@ -798,230 +750,6 @@ public class WhiteSpeechViewController: UIViewController {
     
     private func openAppleWatchAppInfoScreen() {
         performSegue(withIdentifier: "segueAppleWatch", sender: nil)
-    }
-    
-    private func openUserProfileOptions() {
-        guard let storyBoard : UIStoryboard = self.storyboard else {
-            return
-        }
-        let userProfileOptionsViewController = storyBoard.instantiateViewController(withIdentifier: "TwoPeopleProfileOptions") as! TwoPeopleSettingsViewController
-        userProfileOptionsViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        userProfileOptionsViewController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
-        self.present(userProfileOptionsViewController, animated: true, completion: nil)
-     /*   if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            navigationController.pushViewController(userProfileOptionsViewController, animated: true)
-        } */
-    }
-    
-    private func userStackViewStartAnimation() {
-        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        
-        composerStackView?.isHidden = true
-        textViewBottom?.isHidden = true
-        navStackView?.isHidden = true
-        
-        // START HERE
-        //Bring the entire portion down to the center of the screen
-        let stackViewTransform = self.userProfileVerticalStackView?.transform.translatedBy(x: 0, y: 150)
-        UIView.animate(withDuration: 1.0) {
-            self.userProfileVerticalStackView?.transform = stackViewTransform ?? CGAffineTransform()
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-            if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-            
-            //Highlight the left profile first
-            if #available(iOS 13.0, *) {
-                self.userLeftImageView?.image = UIImage(systemName: "person.fill")
-                self.appIconButton?.image = UIImage(systemName: "app")
-                self.userRightImageView?.image = UIImage(systemName: "person")
-            }
-            self.userLeftImageView?.transform = self.userLeftImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
-            self.userStatusLabel?.text = "This is the owner of the device"
-            
-            if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
-                //In this case, the user is deaf.
-                //Currently nil and "_0" are both considered deaf
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-                    // Highlight the HI icon on the left and declare them HI
-                    
-                    if self.currentState.last != State.UserProfileStackViewInstructions {
-                        self.userLeftImageView?.transform = self.userLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //This will still be large. Bring it back to normal
-                        return
-                    } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-
-                    if #available(iOS 13.0, *) {
-                        self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                        self.userLeftImageView?.image = UIImage(systemName: "person")
-                        self.appIconButton?.image = UIImage(systemName: "app")
-                        self.userRightImageView?.image = UIImage(systemName: "person")
-                        self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                    }
-                    self.userLeftImageView?.transform = self.userLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
-                    self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
-                    self.userStatusLabel?.text = "This person is hearing impaired\nThey will communicate by typing"
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                        //Hightlight icon for the person on the right
-                        
-                        if self.currentState.last != State.UserProfileStackViewInstructions {
-                            self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //This will still be large. Bring it back to normal
-                            return
-                        } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-
-                        if #available(iOS 13.0, *) {
-                            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                            self.userLeftImageView?.image = UIImage(systemName: "person")
-                            self.appIconButton?.image = UIImage(systemName: "app")
-                            self.userRightImageView?.image = UIImage(systemName: "person.fill")
-                            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                        }
-                        self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
-                        self.userRightImageView?.transform = self.userRightImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
-                        self.userStatusLabel?.text = "The person who device owner is talking to"
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                            //Highling the HI icon on the right and declare them not HI
-                            
-                            if self.currentState.last != State.UserProfileStackViewInstructions {
-                                self.userRightImageView?.transform = self.userRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //This will still be large. Bring it back to normal
-                                return
-                            } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-                            
-                            if #available(iOS 13.0, *) {
-                                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                                self.userLeftImageView?.image = UIImage(systemName: "person")
-                                self.appIconButton?.image = UIImage(systemName: "app")
-                                self.userRightImageView?.image = UIImage(systemName: "person")
-                                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                            }
-                            self.userRightImageView?.transform = self.userRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
-                            self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
-                            self.userStatusLabel?.text = "The person is not hearing-impaired\nThey will communicate by speaking into the device"
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                                //With all explanations done, trigger the end animation sequence
-                                
-                                self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //Necessary to do this before potentially returning
-                                
-                                if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-                                
-                                self.changeState(action: Action.UserProfileAnimationComplete)
-                            })
-                            
-                        })
-                        
-                    })
-                })
-            }
-            else if se3UserType == "_1" {
-                // This means the user on the left is not HI
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-                    // Hightlight the HI icon on the left, declare them NOT HI
-                    
-                    if self.currentState.last != State.UserProfileStackViewInstructions {
-                        self.userLeftImageView?.transform = self.userLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //This will still be large. Bring it back to normal
-                        return
-                    } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-                    
-                    if #available(iOS 13.0, *) {
-                        self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                        self.userLeftImageView?.image = UIImage(systemName: "person")
-                        self.appIconButton?.image = UIImage(systemName: "app")
-                        self.userRightImageView?.image = UIImage(systemName: "person")
-                        self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                    }
-                    self.userLeftImageView?.transform = self.userLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
-                    self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
-                    self.userStatusLabel?.text = "This person is not hearing impaired\nThey will communicate by speaking into the device"
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                        //Now highlight the person on the right
-                        
-                        if self.currentState.last != State.UserProfileStackViewInstructions {
-                            self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //This will still be large. Bring it back to normal
-                            return
-                        } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-                        
-                        if #available(iOS 13.0, *) {
-                            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                            self.userLeftImageView?.image = UIImage(systemName: "person")
-                            self.appIconButton?.image = UIImage(systemName: "app")
-                            self.userRightImageView?.image = UIImage(systemName: "person.fill")
-                            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                        }
-                        self.hiLeftImageView?.transform = self.hiLeftImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
-                        self.userRightImageView?.transform = self.userRightImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
-                        self.userStatusLabel?.text = "The person who device owner is talking to"
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                            // Highlight the HI icon on the right. Declare it as HI
-                            
-                            if self.currentState.last != State.UserProfileStackViewInstructions {
-                                self.userRightImageView?.transform = self.userRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //This will still be large. Bring it back to normal
-                                return
-                            } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-                            
-                            if #available(iOS 13.0, *) {
-                                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                                self.userLeftImageView?.image = UIImage(systemName: "person")
-                                self.appIconButton?.image = UIImage(systemName: "app")
-                                self.userRightImageView?.image = UIImage(systemName: "person")
-                                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                            }
-                            self.userRightImageView?.transform = self.userRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform()
-                            self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 2, y: 2) ?? CGAffineTransform()
-                            self.userStatusLabel?.text = "This person is hearing impaired\nThey will communicate by typing"
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-                                // All explanations done, trigger the end of animation flow
-                                
-                                self.hiRightImageView?.transform = self.hiRightImageView?.transform.scaledBy(x: 0.5, y: 0.5) ?? CGAffineTransform() //Necessary to do this before returning
-                                if self.currentState.last != State.UserProfileStackViewInstructions { return } //Need to check if user has cancelled the animation. As this is happening in a different thread, we will not know if the user has cancelled the animation. We do this check to avoid a situation when an animation still happens even though the user cancels it
-                                
-                                self.changeState(action: Action.UserProfileAnimationComplete)
-                            })
-                        })
-                    })
-                })
-            }
-        })
-        
-        // END HERE
-
-    }
-    
-    private func userStackViewEndAnimation() {
-        // START HERE
-        if #available(iOS 13.0, *) {
-            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-            self.userLeftImageView?.image = UIImage(systemName: "person")
-            self.appIconButton?.image = UIImage(systemName: "app.fill")
-            self.userRightImageView?.image = UIImage(systemName: "person")
-            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-        }
-        
-        
-        //Finish this before calling another thread. Can be moved if required
-        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        if se3UserType == nil {
-            // If it is a new install, set this value to 0 so that we dont keep prompting the user about this
-            UserDefaults.standard.set("_0", forKey: "SE3_IOS_USER_TYPE")
-        }
-        
-        let stackViewTransform = self.userProfileVerticalStackView?.transform.translatedBy(x: 0, y: -150)
-        UIView.animate(withDuration: 1.0) {
-            self.userProfileVerticalStackView?.transform = stackViewTransform ?? CGAffineTransform()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                self.userStatusLabel?.text = self.userStatusInstructionLongPress
-                
-                self.navStackView?.isHidden = false
-                self.textViewBottom?.isHidden = false
-                self.composerStackView?.isHidden = false
-            })
-        }
     }
     
     private func enterStateIdle() {
@@ -1120,29 +848,7 @@ public class WhiteSpeechViewController: UIViewController {
            // Device owner = normal. Typing = other user = green
            view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 0.2)
         }
-        
-        if #available(iOS 13.0, *) {
-            if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
-                // Deaf user
-                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                self.viLeftImageView?.image = UIImage(systemName: "eye.slash.fill")
-                self.userLeftImageView?.image = UIImage(systemName: "person.fill")
-                self.appIconButton?.image = UIImage(systemName: "app")
-                self.userRightImageView?.image = UIImage(systemName: "person")
-                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-            }
-            else if se3UserType == "_1" {
-                // Normal user
-                self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
-                self.userLeftImageView?.image = UIImage(systemName: "person")
-                self.appIconButton?.image = UIImage(systemName: "app")
-                self.userRightImageView?.image = UIImage(systemName: "person.fill")
-                self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                self.viRightImageView?.image = UIImage(systemName: "eye.slash.fill")
-            }
-        }
+       
         self.userStatusLabel?.text = "Hearing-impaired person typing"
         self.disabledContextLabel?.text = ""
         self.disabledContextLabel?.isHidden = true
@@ -1165,7 +871,6 @@ public class WhiteSpeechViewController: UIViewController {
         bottomLeftStackView?.isHidden = false
         bottomMiddleStackView?.isHidden = false
         //
-        exitStateTypingOrSpeaking()
         
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder()
@@ -1259,18 +964,6 @@ public class WhiteSpeechViewController: UIViewController {
         }
     }
     
-    private func exitStateTypingOrSpeaking() {
-        if #available(iOS 13.0, *) {
-            self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-            self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
-            self.userLeftImageView?.image = UIImage(systemName: "person")
-            self.appIconButton?.image = UIImage(systemName: "app.fill")
-            self.userRightImageView?.image = UIImage(systemName: "person")
-            self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-            self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-        }
-    }
-    
     private func enterStateReceivingFromWatch() {
         //When coming from the watch
         //Use this to update the UI instantaneously (otherwise, takes a little while)
@@ -1318,29 +1011,7 @@ public class WhiteSpeechViewController: UIViewController {
                // Device owner = gray
                view.backgroundColor = UIColor.gray
             }
-            if #available(iOS 13.0, *) {
-                
-                if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
-                    // Normal user
-                    self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash")
-                    self.viLeftImageView?.image = UIImage(systemName: "eye.slash")
-                    self.userLeftImageView?.image = UIImage(systemName: "person")
-                    self.appIconButton?.image = UIImage(systemName: "app")
-                    self.userRightImageView?.image = UIImage(systemName: "person.fill")
-                    self.hiRightImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                    self.viRightImageView?.image = UIImage(systemName: "eye.slash.fill")
-                }
-                else if se3UserType == "_1" {
-                    // Deaf user
-                    self.hiLeftImageView?.image = UIImage(systemName: "speaker.slash.fill")
-                    self.viLeftImageView?.image = UIImage(systemName: "eye.slash.fill")
-                    self.userLeftImageView?.image = UIImage(systemName: "person.fill")
-                    self.appIconButton?.image = UIImage(systemName: "app")
-                    self.userRightImageView?.image = UIImage(systemName: "person")
-                    self.hiRightImageView?.image = UIImage(systemName: "speaker.slash")
-                    self.viRightImageView?.image = UIImage(systemName: "eye.slash")
-                }
-            }
+
             self.userStatusLabel?.text = "Non hearing-impaired person speaking"
             disabledContextLabel?.isHidden = true
             disabledContextLabel?.text = ""
@@ -1390,7 +1061,6 @@ public class WhiteSpeechViewController: UIViewController {
         navStackView?.isHidden = false
         bottomLeftStackView?.isHidden = false
         //
-        exitStateTypingOrSpeaking()
         
         textViewBottom?.isEditable = false
         textViewBottom?.resignFirstResponder() //If keyboard is open for any reason, close it
@@ -1524,26 +1194,6 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     // MARK: General Private Helpers
-    
-    //Main user has declared themselves HI
-    //Therefore other user is normal
-    private func alphaChangeIsHearingImpaired() {
-        self.hiLeftImageView?.alpha = 1
-        //self.viLeftImageView?.alpha = 0.25
-        self.hiRightImageView?.alpha = 0.25
-        //self.viRightImageView?.alpha = 0.25
-    }
-    
-    //Main user has declared themselves not hearing impaired
-    //Therefore other user is HI
-    private func alphaChangeNotHearingImpaired() {
-        self.userStatusLabel?.text = ""
-        self.hiLeftImageView?.alpha = 0.25
-        //self.viLeftImageView?.alpha = 0.25
-        self.hiRightImageView?.alpha = 1
-        //self.viRightImageView?.alpha = 0.25
-    }
-    
     func hasInternetConnection() -> Bool {
         return networkManager.reachability?.connection == .wifi || networkManager.reachability?.connection == .cellular
       //  guard let reachability = SCNetworkReachabilityCreateWithName(nil, "www.google.com") else { return false }
@@ -1869,6 +1519,21 @@ public class WhiteSpeechViewController: UIViewController {
         })
     }
     
+    private func loadImage() {
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        if let dirPath          = paths.first
+        {
+            let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("se3_profile_pic.jpg")
+           let image    = UIImage(contentsOfFile: imageURL.path)
+           // Do whatever you want with the image
+            if image != nil {
+                userImageView?.image = image
+            }
+        }
+    }
+    
 }
 
 extension WhiteSpeechViewController : SFSpeechRecognizerDelegate {
@@ -2133,6 +1798,7 @@ protocol WhiteSpeechViewControllerProtocol {
     
     //Coming back after setting user profile
     func userProfileOptionSet(se3UserType : String)
+    func userProfilePicSet(image : UIImage?)
 }
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
@@ -2142,15 +1808,13 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         ])
         
         if se3UserType == "_1" {
-            alphaChangeNotHearingImpaired()
             recordLabel?.text = speechToTextInstructionString
         }
         else if se3UserType == "_2" {
-            alphaChangeIsHearingImpaired()
             recordLabel?.text = typingInstructionString
         }
         
-        self.userProfileVerticalStackView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+    /*    self.userProfileVerticalStackView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         UIView.animate(withDuration: 1.0,
                        delay: 0,
                        usingSpringWithDamping: 0.2,
@@ -2159,7 +1823,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
                        animations: { [weak self] in
                         self?.userProfileVerticalStackView.transform = .identity
             },
-                       completion: nil)
+                       completion: nil) */
         
         //If user profile has been changed, clear chat logs and reset. Otherwise it will lead to confusion
         if #available(iOS 13.0, *) {
@@ -2167,6 +1831,15 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
         }
         dataChats.removeAll()
         changeState(action: Action.ChatLogsCleared)
+    }
+    
+    func userProfilePicSet(image: UIImage?) {
+        if image != nil {
+            userImageView?.image = image
+        }
+        else {
+            userImageView?.image = UIImage(named: "se_person")
+        }
     }
     
     func chatLogsCleared() {

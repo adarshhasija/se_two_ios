@@ -22,84 +22,138 @@ public class UserProfileTableViewController : UITableViewController {
     }
     
     // Properties
-    var inputUserProfileOption : String?
+    let nameOfImage = "se3_profile_pic.jpg"
+    var isPicExists = false
     var whiteSpeechViewControllerProtocol : WhiteSpeechViewControllerProtocol?
-    var userProfileOptions : [UserProfile] = []
-    var selectedIndex : IndexPath?
+    
+    
+    @IBOutlet weak var profilePicImageView: UIImageView!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Choose One"
-        if inputUserProfileOption == nil {
-            navigationItem.hidesBackButton = true
-        }
+        self.title = "Your Profile"
         
-        
-        userProfileOptions.append(UserProfile(myAbilitiesDescription: "I can see, hear and speak", partnerAbilitiesDescription: "I will use this app to talk to someone who cannot hear and speak"))
-        
-        userProfileOptions.append(UserProfile(myAbilitiesDescription: "I cannot hear or speak", partnerAbilitiesDescription: "I will use this app to talk to someone who can hear and speak"))
-        
-        if inputUserProfileOption == "_1" {
-            selectedIndex = IndexPath(row: 0, section: 0)
-        }
-        else if inputUserProfileOption == "_2" {
-            selectedIndex = IndexPath(row: 1, section: 0)
-        }
+        loadImage()
     }
     
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.userProfileOptions.count
-    }
-    
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // create a new cell if needed or reuse an old one
-        let cell:UserProfileOptionTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "UserProfileOptionCell") as! UserProfileOptionTableViewCell!
-        
-        // set the text from the data model
-        cell.myAbiltiesDescriptionLabel?.text = self.userProfileOptions[indexPath.row].myAbilitiesDescription
-        cell.partnerAbilitiesDescriptionLabel?.text = self.userProfileOptions[indexPath.row].partnerAbilitiesDescription
-        
-        if selectedIndex == indexPath {
-            cell.accessoryType = .checkmark
-        }
-        else {
-            cell.accessoryType = .none
-        }
-        
-        return cell
-    }
-    
-    public override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        
-    }
-    
-    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) {
-            cell.accessoryType = .checkmark
-        }
-        navigationItem.hidesBackButton = false
-        
-        if selectedIndex != nil {
-            if let cell = tableView.cellForRow(at: selectedIndex!) {
-                cell.accessoryType = .none
+    private func loadImage() {
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        if let dirPath          = paths.first
+        {
+           let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(nameOfImage)
+           let image    = UIImage(contentsOfFile: imageURL.path)
+           // Do whatever you want with the image
+            if image != nil {
+                profilePicImageView.image = image
+                isPicExists = true
             }
         }
-        
-        selectedIndex = indexPath
+    }
+    
+    private func deleteImage() {
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        if let dirPath          = paths.first
+        {
+           let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(nameOfImage)
+           let fileManager = FileManager.default
+            do {
+                try fileManager.removeItem(at: imageURL)
+                profilePicImageView?.image = UIImage(named: "se_person")
+                whiteSpeechViewControllerProtocol?.userProfilePicSet(image: nil)
+                isPicExists = false
+            } catch {
+                print(error)
+            }
+        }
     }
     
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-        var type = ""
-        if selectedIndex?.row == 0 {
-            type = "_1"
-        }
-        else if selectedIndex?.row == 1 {
-            type = "_2"
-        }
-        UserDefaults.standard.set(type, forKey: "SE3_IOS_USER_TYPE")
         
-        whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: type)
+        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") ?? ""
+        whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: se3UserType)
+    }
+    
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 && indexPath.row == 0 {
+            let optionMenu = UIAlertController(title: nil, message: "Choose Option", preferredStyle: .actionSheet)
+            let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = .camera;
+                    imagePicker.allowsEditing = false
+                    self.present(imagePicker, animated: true, completion: nil)
+                }
+            }
+            let galleryAction = UIAlertAction(title: "Photo Library", style: .default) { _ in
+                if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = .photoLibrary;
+                    imagePicker.allowsEditing = true
+                    self.present(imagePicker, animated: true, completion: nil)
+                }
+            }
+            var deleteAction : UIAlertAction? = nil
+            if isPicExists {
+                deleteAction = UIAlertAction(title: "Remove Photo", style: .destructive) { _ in
+                    self.deleteImage()
+                }
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                print("Cancel")
+            }
+            optionMenu.addAction(cameraAction)
+            optionMenu.addAction(galleryAction)
+            if deleteAction != nil { optionMenu.addAction(deleteAction!) }
+            optionMenu.addAction(cancelAction)
+            self.present(optionMenu, animated: true, completion: nil)
+        }
+        else if indexPath.section == 2 && indexPath.row == 0 {
+            guard let storyBoard : UIStoryboard = self.storyboard else {
+                return
+            }
+            let userProfileOptionsViewController = storyBoard.instantiateViewController(withIdentifier: "TwoPeopleProfileOptions") as! TwoPeopleSettingsViewController
+               userProfileOptionsViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+               userProfileOptionsViewController.whiteSpeechViewControllerProtocol = whiteSpeechViewControllerProtocol
+               //self.present(userProfileOptionsViewController, animated: true, completion: nil)
+               if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                   navigationController.pushViewController(userProfileOptionsViewController, animated: true)
+               }
+        }
     }
 }
+
+extension UserProfileTableViewController : UIImagePickerControllerDelegate {
+    
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        profilePicImageView.image = image
+        dismiss(animated:true, completion: nil)
+        
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileName = nameOfImage
+        let fileURL = documentsDirectory.appendingPathComponent(fileName)
+        do {
+            try UIImageJPEGRepresentation(image, 1.0)!.write(to: fileURL)
+            print("Image Added Successfully")
+            isPicExists = true
+            whiteSpeechViewControllerProtocol?.userProfilePicSet(image: image)
+        } catch {
+            print(error)
+        }
+        
+    }
+}
+
+extension UserProfileTableViewController : UINavigationControllerDelegate {
+    
+    
+}
+
