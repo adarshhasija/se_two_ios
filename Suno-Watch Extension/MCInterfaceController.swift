@@ -281,8 +281,10 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
+        // This method is called when watch view controller is about to be visible to user.
+        //It is also triggered when the user has typed or said text. After that message is composed, this controller is called again
         super.willActivate()
+        WKInterfaceDevice.current().play(.success) //This is used to notify a deaf-blind user that the app is active
         self.crownSequencer.delegate = self
         self.crownSequencer.focus()
     }

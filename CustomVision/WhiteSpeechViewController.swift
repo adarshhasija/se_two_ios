@@ -215,16 +215,19 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func typeButtonTapped(_ sender: Any) {
+        Analytics.logEvent("se3_type_btn_tap", parameters: [:])
         changeState(action: Action.SwipeUp)
     }
     
     
     @IBAction func talkButtonTapped(_ sender: Any) {
+        Analytics.logEvent("se3_talk_btn_tap", parameters: [:])
         changeState(action: Action.TalkButtonTapped)
     }
     
     
     @IBAction func mcButtonTapped(_ sender: Any) {
+        Analytics.logEvent("se3_mc_btn_tap", parameters: [:])
         changeState(action: Action.LongPress)
     }
     
