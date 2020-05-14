@@ -174,6 +174,7 @@ public class UserProfileTableViewController : UITableViewController {
             alert.addTextField { (textField) in
                 textField.placeholder = "Your name"
                 textField.text = self.mName
+                textField.maxLength = 15
             }
 
             // 3. Grab the value from the text field, and print it when the user clicks OK.
