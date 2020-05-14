@@ -32,5 +32,4 @@ enum State :String{
     case ReceivingFromWatch
     
     case ChatsReadAndShareOnly
-    case UserProfileStackViewInstructions
 }
