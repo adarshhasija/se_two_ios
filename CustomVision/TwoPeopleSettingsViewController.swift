@@ -24,34 +24,16 @@ public class TwoPeopleSettingsViewController : UIViewController {
     // Properties
     var inputUserProfileOption : String?
     var whiteSpeechViewControllerProtocol : WhiteSpeechViewControllerProtocol?
+    var userProfileTableViewControllerProtocol : UserProfileTableViewControllerProtocol?
     var hiSwitchOnExplanationString = "Will type out messages and show the other person"
     var hiSwitchOffExplanationString = "Will speak and show the written text to the hearing-impaired person"
     var hiViString = "Use on Apple Watch.\niOS version for deaf and blind coming in a future update!"
-    var HiWillTypeString = "Hearing-impaired:\nWill type"
-    var noAilmentsWillTalkString = "Not impaired:\nWill talk"
+    var HiWillTypeString = "You will type"
+    var noAilmentsWillTalkString = "You can type or talk"
     var pickerData : [String] = []
     
-    @IBOutlet weak var mainStackView: UIStackView!
-    @IBOutlet weak var hostProfilePicAndNameStackView: UIStackView!
-    @IBOutlet weak var hostProfilePicAndDisabilityIconsStackView: UIStackView!
-    @IBOutlet weak var hostDisabilityIconsStackView: UIStackView!
-    @IBOutlet weak var hostHiImageView: UIImageView!
-    @IBOutlet weak var hostViImageView: UIImageView!
-    @IBOutlet weak var hostPersonImageView: UIImageView!
-    @IBOutlet weak var hostNameLabel: UILabel!
     @IBOutlet weak var hostRoleLabel: UILabel!
-    
-    @IBOutlet weak var guestProfileAndNameStackView: UIStackView!
-    @IBOutlet weak var guestProfilePicAndDisabilityIconsStackVIew: UIStackView!
-    @IBOutlet weak var guestPersonImageVIew: UIImageView!
-    @IBOutlet weak var guestDisabilityIconsStackView: UIStackView!
-    @IBOutlet weak var guestHiImageView: UIImageView!
-    @IBOutlet weak var guestViImageView: UIImageView!
-    @IBOutlet weak var guestNameLabel: UILabel!
-    @IBOutlet weak var guestRoleLabel: UILabel!
-    
     @IBOutlet weak var errorMessageLabel: UILabel! //only needed when we start with deaf-blind mode
-    
     @IBOutlet weak var hostPickerView: UIPickerView!
     
 
@@ -65,26 +47,17 @@ public class TwoPeopleSettingsViewController : UIViewController {
         hostPickerView.dataSource = self
         errorMessageLabel?.text = ""
         
-        //oneViImageView?.alpha = 0.25
-        //twoViImageView?.alpha = 0.25
-        
         if inputUserProfileOption == nil
             || inputUserProfileOption == "_0"
             || inputUserProfileOption == "_2" {
             //No input = deaf
             // _2 = Deaf
-            hostHiImageView?.alpha = 1
-            guestHiImageView?.alpha = 0.25
             hostRoleLabel?.text = HiWillTypeString
-            guestRoleLabel?.text = noAilmentsWillTalkString
             hostPickerView?.selectRow(0, inComponent: 0, animated: false)
         }
         else if inputUserProfileOption == "_1" {
             // _1 = normal
-            hostHiImageView?.alpha = 0.25
-            guestHiImageView?.alpha = 1
             hostRoleLabel?.text = noAilmentsWillTalkString
-            guestRoleLabel?.text = HiWillTypeString
             hostPickerView?.selectRow(1, inComponent: 0, animated: false)
         }
     }
@@ -93,6 +66,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
         let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_2" : "_1"
         UserDefaults.standard.set(userType, forKey: "SE3_IOS_USER_TYPE")
         whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: userType)
+        userProfileTableViewControllerProtocol?.setUserProfileType(type: userType)
     }
 }
 
@@ -122,15 +96,9 @@ extension TwoPeopleSettingsViewController : UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 0 && row == 0 {
             hostRoleLabel?.text = HiWillTypeString
-            guestRoleLabel?.text = noAilmentsWillTalkString
-            hostHiImageView?.alpha = 1
-            guestHiImageView?.alpha = 0.25
         }
         else if component == 0 && row == 1 {
             hostRoleLabel?.text = noAilmentsWillTalkString
-            guestRoleLabel?.text = HiWillTypeString
-            hostHiImageView?.alpha = 0.25
-            guestHiImageView?.alpha = 1
         }
     }
     

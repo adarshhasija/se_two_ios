@@ -94,6 +94,7 @@ public class WhiteSpeechViewController: UIViewController {
         }
         let userProfileController = storyBoard.instantiateViewController(withIdentifier: "UserProfile") as! UserProfileTableViewController
         userProfileController.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
+        userProfileController.peerIDName = peerID.displayName
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(userProfileController, animated: true)
         }
@@ -458,9 +459,6 @@ public class WhiteSpeechViewController: UIViewController {
         
         (view as? ThreeDTouchView)?.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
         
-        //currentState.append(State.SubscriptionNotPaid)
-        currentState.append(State.ControllerLoaded) //Push
-        changeState(action: Action.AppOpened)
         
         // Disable the record buttons until authorization has been granted.
         recordButton?.isEnabled = false
@@ -511,6 +509,11 @@ public class WhiteSpeechViewController: UIViewController {
                 self.userStatusLabel?.text = ""
             }
         }
+        
+        //currentState.append(State.SubscriptionNotPaid)
+        currentState.append(State.ControllerLoaded) //Push
+        changeState(action: Action.AppOpened)
+
         
     }
     
@@ -687,8 +690,11 @@ public class WhiteSpeechViewController: UIViewController {
         self.recordLabel?.textColor = UIColor.darkGray
         self.bottomMiddleActionLabel?.text = ""
         
-        loadImage()
+        loadImage(image: nil)
+        let se3UserName = UserDefaults.standard.string(forKey: "SE3_IOS_USER_NAME")
+        updateName(name: se3UserName)
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        updateAilment(ailment: se3UserType)
         if se3UserType == "_1" {
             self.recordLabel?.text = speechToTextInstructionString
         }
@@ -1519,18 +1525,48 @@ public class WhiteSpeechViewController: UIViewController {
         })
     }
     
-    private func loadImage() {
-        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
-        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
-        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
-        if let dirPath          = paths.first
-        {
-            let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("se3_profile_pic.jpg")
-           let image    = UIImage(contentsOfFile: imageURL.path)
-           // Do whatever you want with the image
-            if image != nil {
-                userImageView?.image = image
+    private func loadImage(image: UIImage?) {
+        if image != nil {
+            userImageView?.image = image
+        }
+        else {
+            let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+            let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+            let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+            if let dirPath          = paths.first
+            {
+                let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("se3_profile_pic.jpg")
+                let image    = UIImage(contentsOfFile: imageURL.path)
+                // Do whatever you want with the image
+                if image != nil {
+                    userImageView?.image = image
+                }
+                else {
+                    userImageView?.image = UIImage(named: "se_person")
+                }
             }
+        }
+        
+    }
+    
+    private func updateName(name: String?) {
+        if name != nil {
+            userNameLabel?.text = name
+        }
+        else {
+            userNameLabel?.text = peerID.displayName
+        }
+    }
+    
+    private func updateAilment(ailment: String?) {
+        if ailment == "_2" {
+            userAilmentLabel?.text = "Hearing-impaired"
+        }
+        else if ailment == "_3" {
+            userAilmentLabel?.text = "Deaf-blind"
+        }
+        else {
+            userAilmentLabel?.text = "No ailment"
         }
     }
     
@@ -1799,6 +1835,8 @@ protocol WhiteSpeechViewControllerProtocol {
     //Coming back after setting user profile
     func userProfileOptionSet(se3UserType : String)
     func userProfilePicSet(image : UIImage?)
+    func userProfileNameSet(name : String?)
+    func userProfileAilmentSet(ailment: String?)
 }
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
@@ -1834,12 +1872,15 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     }
     
     func userProfilePicSet(image: UIImage?) {
-        if image != nil {
-            userImageView?.image = image
-        }
-        else {
-            userImageView?.image = UIImage(named: "se_person")
-        }
+        loadImage(image: image)
+    }
+    
+    func userProfileAilmentSet(ailment: String?) {
+        updateAilment(ailment: ailment)
+    }
+    
+    func userProfileNameSet(name: String?) {
+        updateName(name: name)
     }
     
     func chatLogsCleared() {
