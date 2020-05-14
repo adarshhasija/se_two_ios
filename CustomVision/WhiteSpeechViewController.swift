@@ -486,30 +486,6 @@ public class WhiteSpeechViewController: UIViewController {
             session.activate()
         }
         
-        //UserDefaults.standard.removeObject(forKey: "SE3_IOS_USER_TYPE")
-        let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
-            //If none selected, Assuming person to be deaf
-            if se3UserType == nil {
-                //No selection made
-                self.userStatusLabel?.text = userStatusInstructionLongPress
-                self.userStatusLabel.transform = CGAffineTransform(translationX: 20, y: 0)
-                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
-                    self.userStatusLabel.transform = CGAffineTransform.identity
-                }, completion: nil)
-                
-                if se3UserType == nil {
-                    self.userStatusLabel?.text = userStatusMoreInfoTap
-                }
-                else {
-                    self.userStatusLabel?.text = ""
-                }
-            }
-            else {
-                self.userStatusLabel?.text = ""
-            }
-        }
-        
         //currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.ControllerLoaded) //Push
         changeState(action: Action.AppOpened)
@@ -691,6 +667,7 @@ public class WhiteSpeechViewController: UIViewController {
         self.bottomMiddleActionLabel?.text = ""
         
         loadImage(image: nil)
+        //UserDefaults.standard.removeObject(forKey: "SE3_IOS_USER_TYPE")
         let se3UserName = UserDefaults.standard.string(forKey: "SE3_IOS_USER_NAME")
         updateName(name: se3UserName)
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
@@ -846,7 +823,7 @@ public class WhiteSpeechViewController: UIViewController {
         //
         
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
+        if se3UserType == nil || se3UserType == "_2" {
            //Device owner = grey
             view.backgroundColor = UIColor.gray
         }
@@ -1009,7 +986,7 @@ public class WhiteSpeechViewController: UIViewController {
             //
             
             let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-            if se3UserType == nil || se3UserType == "_0" || se3UserType == "_2" {
+            if se3UserType == nil || se3UserType == "_2" {
                //Not device owner = green
                 view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 1)
             }

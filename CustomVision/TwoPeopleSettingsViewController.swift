@@ -17,9 +17,9 @@ public class TwoPeopleSettingsViewController : UIViewController {
     
     // User Type:
     // nil = No selection made
-    // _0 = No selection made by user. Automatic selection made by app. Eg: When user first installs and after we play loading animation
-    // _1 = Host is not HI or VI. Guest is HI
-    // _2 = Host is HI. Guest is not HI or VI
+    // _1 = Host is not HI or VI.
+    // _2 = Host is HI.
+    // _3 = Host is deaf-blind
     
     // Properties
     var inputUserProfileOption : String?
@@ -42,28 +42,31 @@ public class TwoPeopleSettingsViewController : UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        pickerData.append(contentsOf: ["Hearing-impaired", /*"Deaf-blind",*/ "Not impaired"])
+        pickerData.append(contentsOf: ["Deaf-blind","Hearing-impaired", /* "Not impaired"*/])
         hostPickerView.delegate = self
         hostPickerView.dataSource = self
         errorMessageLabel?.text = ""
         
         if inputUserProfileOption == nil
-            || inputUserProfileOption == "_0"
             || inputUserProfileOption == "_2" {
             //No input = deaf
             // _2 = Deaf
             hostRoleLabel?.text = HiWillTypeString
+            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
+        }
+        else if inputUserProfileOption == "_3" {
+            // _3 = deaf-blind
             hostPickerView?.selectRow(0, inComponent: 0, animated: false)
         }
         else if inputUserProfileOption == "_1" {
             // _1 = normal
-            hostRoleLabel?.text = noAilmentsWillTalkString
-            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
+            //hostRoleLabel?.text = noAilmentsWillTalkString
+            //hostPickerView?.selectRow(1, inComponent: 0, animated: false)
         }
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
-        let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_2" : "_1"
+        let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_3" : "_2"
         UserDefaults.standard.set(userType, forKey: "SE3_IOS_USER_TYPE")
         whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: userType)
         userProfileTableViewControllerProtocol?.setUserProfileType(type: userType)
