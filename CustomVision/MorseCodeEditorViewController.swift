@@ -42,6 +42,8 @@ public class MorseCodeEditorViewController : UIViewController {
         morseCodeInput(input: ".")
     }
     @IBAction func longPressGesture(_ sender: Any) {
+        try? hapticManager?.hapticForResult(success: true)
+        navigationController?.popViewController(animated: true)
     }
     @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
         if sender.direction == UISwipeGestureRecognizerDirection.right {
@@ -100,7 +102,7 @@ public class MorseCodeEditorViewController : UIViewController {
                     morseCodeString += "|"
                     morseCodeTextLabel.text = morseCodeString
                     try? hapticManager?.hapticForResult(success: true) //successfully got a letter/number
-                    instructionsLabel.text = "Keep Typing\nor\nSwipe up again to play audio and confirm. Ensure your device is not on Silent Mode."
+                    instructionsLabel.text = "Keep Typing\nor\nSwipe up again to complete"
                     while morseCode.mcTreeNode?.parent != nil {
                         morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                     }
