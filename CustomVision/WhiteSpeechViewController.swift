@@ -31,6 +31,7 @@ public class WhiteSpeechViewController: UIViewController {
     var isTimerRunning = false
     private var dataChats: [ChatListItem] = []
     var speechToTextInstructionString = "Tap the talk button to record speech"
+    var setupProfileInstructionString = "Tap the card above to setup your profile"
     var typingInstructionString = "Tap the type button to begin"
     var longPressMorseCodeInstructionString = "Long press to begin typing in morse code"
     var composerButtonsUseInstructions = "I need your help\nPlease read the message in bold\nUse the buttons below to reply"
@@ -39,8 +40,6 @@ public class WhiteSpeechViewController: UIViewController {
     var tapToRepeat = "Tap to repeat"
     var lastActionTypingDeaf = "Typed by hearing-impaired"
     var lastActionSpeaking = "Spoken by non-hearing-impaired"
-    var userStatusInstructionLongPress = "Long press here to change"
-    var userStatusMoreInfoTap = "Tap here for more info"
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     var englishStringIndex = -1
     var morseCodeStringIndex = -1
@@ -880,18 +879,7 @@ public class WhiteSpeechViewController: UIViewController {
         updateName(name: se3UserName)
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
         updateAilment(ailment: se3UserType)
-        if se3UserType == "_1" {
-            self.recordLabel?.text = speechToTextInstructionString
-        }
-        else if se3UserType == "_2" {
-            self.recordLabel?.text = typingInstructionString
-        }
-        else if se3UserType == "_3" {
-            self.recordLabel?.text = longPressMorseCodeInstructionString
-        }
-        else {
-            self.recordLabel?.text = typingInstructionString
-        }
+        updateInstructions(se3UserType: se3UserType)
 
      /*   let transform2 = self.recordLabel?.transform.scaledBy(x: 1.5, y: 1.5)
         UIView.animate(withDuration: 2.0) {
@@ -1117,14 +1105,6 @@ public class WhiteSpeechViewController: UIViewController {
         textViewBottom?.resignFirstResponder()
         if currentState.last == State.Typing {
             //Means nothing was actually entered
-            
-            //First deal with user status label
-            if UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE") != nil {
-                userStatusLabel?.text = ""
-            }
-            else {
-                userStatusLabel?.text = userStatusMoreInfoTap //user type not set. we need to prompt thems
-            }
             
             bottomMiddleActionLabel?.text = ""
             if dataChats.count > 0 {
@@ -1876,6 +1856,21 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else {
             userAilmentLabel?.text = "No ailment"
+        }
+    }
+    
+    private func updateInstructions(se3UserType: String?) {
+        if se3UserType == "_1" {
+            self.recordLabel?.text = speechToTextInstructionString
+        }
+        else if se3UserType == "_2" {
+            self.recordLabel?.text = typingInstructionString
+        }
+        else if se3UserType == "_3" {
+            self.recordLabel?.text = longPressMorseCodeInstructionString
+        }
+        else {
+            self.recordLabel?.text = setupProfileInstructionString
         }
     }
     
