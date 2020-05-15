@@ -876,17 +876,10 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User status" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQs-To-UKX">
-                                        <rect key="frame" x="88" y="73" width="74" height="17"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstItem="FQs-To-UKX" firstAttribute="centerX" secondItem="FMb-1i-n2P" secondAttribute="centerX" id="0z3-jX-kUc"/>
                                     <constraint firstAttribute="width" constant="250" id="9V0-jP-qfv"/>
                                     <constraint firstItem="Uki-XN-MOY" firstAttribute="centerY" secondItem="FMb-1i-n2P" secondAttribute="centerY" id="DDq-F3-Up4"/>
                                     <constraint firstAttribute="trailing" secondItem="qdm-QG-kZC" secondAttribute="trailing" constant="10" id="TVe-j7-rpV"/>
@@ -894,7 +887,6 @@
                                     <constraint firstItem="Uki-XN-MOY" firstAttribute="leading" secondItem="FMb-1i-n2P" secondAttribute="leading" constant="10" id="g25-Vz-1cb"/>
                                     <constraint firstAttribute="height" constant="100" id="isN-M4-hJ6"/>
                                     <constraint firstItem="qdm-QG-kZC" firstAttribute="leading" secondItem="FMb-1i-n2P" secondAttribute="leading" constant="110" id="yHv-Tq-9os"/>
-                                    <constraint firstAttribute="bottom" secondItem="FQs-To-UKX" secondAttribute="bottom" constant="10" id="zWB-li-85U"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -1271,7 +1263,6 @@
                         <outlet property="userAilmentLabel" destination="qfO-eN-kwi" id="HYs-vR-il4"/>
                         <outlet property="userImageView" destination="DB3-b2-Xtb" id="fz1-Ay-sMl"/>
                         <outlet property="userNameLabel" destination="Hub-Ju-jzm" id="7hX-sp-dBd"/>
-                        <outlet property="userStatusLabel" destination="FQs-To-UKX" id="Ycz-kc-GRy"/>
                         <segue destination="1zW-16-RpD" kind="show" identifier="segueHelpTopics" id="2ZQ-Pc-kt3"/>
                         <segue destination="Q2u-rg-DAP" kind="presentation" identifier="segueAppleWatch" id="C10-FR-N2D"/>
                     </connections>

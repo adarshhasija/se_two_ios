@@ -17,10 +17,9 @@ public class TwoPeopleSettingsViewController : UIViewController {
     
     // User Type:
     // nil = No selection made
-    // _0 = No selection made by user. Automatic selection made by app. Eg: When user first installs and after we play loading animation
-    // _1 = Host is not HI or VI. Guest is HI
-    // _2 = Host is HI. Guest is not HI or VI
-    // _3 = Host is Deaf-blind. Guest can be not impaired or HI
+    // _1 = Host is not HI or VI.
+    // _2 = Host is HI.
+    // _3 = Host is deaf-blind
     
     // Properties
     lazy var supportsHaptics: Bool = {
@@ -35,6 +34,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
     var HiWillTypeString = "You will type"
     var deafBlindMorseCodeString = "You will type in morse code"
     var noAilmentsWillTalkString = "You can type or talk"
+    var warningCoreHaptics = "Warning: You may not be able to feel the morse code vibrations on this device"
     var pickerData : [String] = []
     
     @IBOutlet weak var hostRoleLabel: UILabel!
@@ -47,39 +47,40 @@ public class TwoPeopleSettingsViewController : UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        pickerData.append(contentsOf: ["Hearing-impaired", "Deaf-blind"/*, "Not impaired"*/])
+        pickerData.append(contentsOf: ["Deaf-blind","Hearing-impaired", /* "Not impaired"*/])
         hostPickerView.delegate = self
         hostPickerView.dataSource = self
         errorMessageLabel?.text = ""
         
-        if inputUserProfileOption == nil
-            || inputUserProfileOption == "_0"
-            || inputUserProfileOption == "_2" {
+        if inputUserProfileOption == "_2" {
             //No input = deaf
             // _2 = Deaf
             hostRoleLabel?.text = HiWillTypeString
+            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
+        }
+        else if inputUserProfileOption == "_3" {
+            // _3 = deaf-blind
+            hostRoleLabel?.text = deafBlindMorseCodeString
             hostPickerView?.selectRow(0, inComponent: 0, animated: false)
-            //hostPickerView?.selectRow(1, inComponent: 1, animated: false)
+            errorMessageLabel?.text = warningCoreHaptics
+            errorMessageLabel?.isHidden = false
+        }
+        else {
+            //If no selection is made, assume its deaf-blind
+            hostRoleLabel?.text = deafBlindMorseCodeString
+            hostPickerView?.selectRow(0, inComponent: 0, animated: false)
+            errorMessageLabel?.text = warningCoreHaptics
+            errorMessageLabel?.isHidden = false
         }
     /*    else if inputUserProfileOption == "_1" {
             // _1 = normal
             hostRoleLabel?.text = noAilmentsWillTalkString
-            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
-            //hostPickerView?.selectRow(0, inComponent: 1, animated: false)
+            hostPickerView?.selectRow(2, inComponent: 0, animated: false)
         }   */
-        else if inputUserProfileOption == "_3" {
-            // _3 = deaf-blind
-            hostRoleLabel?.text = deafBlindMorseCodeString
-            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
-            //hostPickerView?.selectRow(0, inComponent: 1, animated: false)
-        }
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
-        let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_2" :
-                       hostPickerView.selectedRow(inComponent: 0) == 1 ? "_3" :
-                        "_1"
-        
+        let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_3" : "_2"
         UserDefaults.standard.set(userType, forKey: "SE3_IOS_USER_TYPE")
         whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: userType)
         userProfileTableViewControllerProtocol?.setUserProfileType(type: userType)
@@ -112,21 +113,24 @@ extension TwoPeopleSettingsViewController : UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         errorMessageLabel?.isHidden = true
         if row == 0 {
-            //Host = HI
-            hostRoleLabel?.text = HiWillTypeString
+            //Host = Deaf-blind
+            hostRoleLabel?.text = deafBlindMorseCodeString
+            if supportsHaptics == false {
+                errorMessageLabel?.text = warningCoreHaptics
+                errorMessageLabel?.isHidden = false
+            }
         }
         else if row == 1 {
-            //Host = Deaf-blind
-            if supportsHaptics == false {
-                errorMessageLabel?.text = "Warning: You may not be able to feel the morse code vibrations on this device"
-                errorMessageLabel?.isHidden = false
-                return
-            }
-            hostRoleLabel?.text = deafBlindMorseCodeString
+            //Host = HI
+            hostRoleLabel?.text = HiWillTypeString
+            errorMessageLabel?.text = ""
+            errorMessageLabel?.isHidden = true
         }
         else if row == 2 {
             //Host = Normal
             hostRoleLabel?.text = noAilmentsWillTalkString
+            errorMessageLabel?.text = ""
+            errorMessageLabel?.isHidden = true
         }
     }
     
