@@ -92,9 +92,13 @@ public class UserProfileTableViewController : UITableViewController {
             ailmentLabel?.text = "Deaf-blind"
             ailmentInstructionLabel?.text = "On the main screen, long press to open morse code. Type out your message in morse code. We will convert it to alphabets that your partner can read. Then can tap the Type button to reply. We will convert their message to morse code that you can read\n\nMorse code functionality is also available on our Apple Watch app"
         }
-        else {
+        else if type == "_1" {
             ailmentLabel?.text = "Not impaired"
             ailmentInstructionLabel?.text = "You do not have any ailment. You can type or speak a message. If you are communicating with a hearing-impaired person, just give them the phone so they can read it. If you are communicating with a deaf-blind person, we convert your message to morse code for them to read"
+        }
+        else {
+            ailmentLabel?.text = "Ailment not declared"
+            ailmentInstructionLabel?.text = "You must declare if you are deaf-blind or hearing-impaired and we will guide you accordingly"
         }
     }
     

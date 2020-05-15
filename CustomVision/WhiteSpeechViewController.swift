@@ -31,7 +31,7 @@ public class WhiteSpeechViewController: UIViewController {
     var isTimerRunning = false
     private var dataChats: [ChatListItem] = []
     var speechToTextInstructionString = "Tap the talk button to record speech"
-    var setupProfileInstructionString = "Tap the card above to setup your profile"
+    var setupInstructionString = "Please declare your ailment. Tap the card above"
     var typingInstructionString = "Tap the type button to begin"
     var longPressMorseCodeInstructionString = "Long press to begin typing in morse code"
     var composerButtonsUseInstructions = "I need your help\nPlease read the message in bold\nUse the buttons below to reply"
@@ -206,10 +206,12 @@ public class WhiteSpeechViewController: UIViewController {
     
     @IBAction func swipeGestureDouble(_ sender: UISwipeGestureRecognizer) {
         if sender.direction == UISwipeGestureRecognizerDirection.left {
+            Analytics.logEvent("se3_2f_left_swipe", parameters: [:])
             morseCodeStringIndex -= 1
             changeState(action: Action.SwipeLeft2Finger)
         }
         else if sender.direction == UISwipeGestureRecognizerDirection.right {
+            Analytics.logEvent("se3_2f_right_swipe", parameters: [:])
             morseCodeStringIndex += 1
             changeState(action: Action.SwipeRight2Finger)
         }
@@ -217,6 +219,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     
     @IBAction func tap2Fingers(_ sender: Any) {
+        Analytics.logEvent("se3_2f_tap", parameters: [:])
         morseCodeLabel?.isHidden = false
         mcReadInstructionLabel?.text = "Swipe right with 2 fingers to read morse code"
         mcReadInstructionLabel?.isHidden = false
@@ -267,36 +270,25 @@ public class WhiteSpeechViewController: UIViewController {
             Analytics.logEvent("se3_uprofile_tap", parameters: [:])
         }
         else if action == Action.Tap && currentState.last == State.Idle {
-            if englishMorseCodeTextLabel.text != nil {
-                if englishMorseCodeTextLabel.text!.count > 0 {
-                    sayThis(string: englishMorseCodeTextLabel.text!)
-                }
+            if englishMorseCodeTextLabel.text?.isEmpty == false {
+                sayThis(string: englishMorseCodeTextLabel.text!)
             }
             else {
-                let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-                if se3UserType != nil {
-                    // All types of user
-                    //Shake the recordLabel to indidate the next action to the user
-                    self.recordLabel?.transform = CGAffineTransform(translationX: 20, y: 0)
-                    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
-                        self.recordLabel?.transform = CGAffineTransform.identity
-                    }, completion: nil)
-                }
-                else {
-                    //User not set
-                    //Shake the user status label to indicate that the user should set their user settings
-                    self.userStatusLabel?.transform = CGAffineTransform(translationX: 20, y: 0)
-                    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
-                        self.userStatusLabel?.transform = CGAffineTransform.identity
-                    }, completion: nil)
-                }
+                //No text to highlight
+                //Shake the recordLabel to indidate the next action to the user
+                self.recordLabel?.transform = CGAffineTransform(translationX: 20, y: 0)
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                    self.recordLabel?.transform = CGAffineTransform.identity
+                }, completion: nil)
             }
         }
         else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
             currentState.popLast()
+            try? hapticManager?.hapticForResult(success: true)
         }
         else if action == Action.CancelledEditing && currentState.last == State.EditingMode {
             currentState.popLast()
+            try? hapticManager?.hapticForResult(success: false)
         }
         else if action == Action.SwipeRight && currentState.last == State.Idle {
             let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
@@ -865,10 +857,8 @@ public class WhiteSpeechViewController: UIViewController {
             // Fallback on earlier versions
             self.view.backgroundColor = UIColor.blue
         }
-        self.userStatusLabel?.text = ""
         self.disabledContextLabel?.textColor = UIColor.lightGray
         self.disabledContextLabel?.isHidden = true
-        self.recordLabel?.textColor = UIColor.darkGray
         self.bottomMiddleActionLabel?.text = ""
         //self.view.bringSubview(toFront: viewForTypeTalkStackView)
         
@@ -1796,13 +1786,15 @@ public class WhiteSpeechViewController: UIViewController {
     //last action: typing/talking/morse_code
     private func setBackgroundColor(lastAction : String) {
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        if (se3UserType == nil || se3UserType == "_0" || se3UserType == "_2") && lastAction == "typing" {
+        if (se3UserType == nil || se3UserType == "_2") && lastAction == "typing" {
            //No user set/user is HI and action is typing. So owner did the typing
             view.backgroundColor = UIColor.gray
+            view.backgroundColor?.withAlphaComponent(0.5)
         }
         else if se3UserType == "_3" && lastAction == "morse_code" {
             //User is type deaf-blind and action was morse code. So owner did the typing.
             view.backgroundColor = UIColor.gray
+            view.backgroundColor?.withAlphaComponent(0.5)
         }
         else {
             //All others green
@@ -1848,14 +1840,17 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func updateAilment(ailment: String?) {
-        if ailment == "_2" {
+        if ailment == "_1" {
+            userAilmentLabel?.text = "Not impaired"
+        }
+        else if ailment == "_2" {
             userAilmentLabel?.text = "Hearing-impaired"
         }
         else if ailment == "_3" {
             userAilmentLabel?.text = "Deaf-blind"
         }
         else {
-            userAilmentLabel?.text = "No ailment"
+            userAilmentLabel?.text = "No ailment mentioned"
         }
     }
     
@@ -1870,7 +1865,7 @@ public class WhiteSpeechViewController: UIViewController {
             self.recordLabel?.text = longPressMorseCodeInstructionString
         }
         else {
-            self.recordLabel?.text = setupProfileInstructionString
+            self.recordLabel?.text = setupInstructionString
         }
     }
     

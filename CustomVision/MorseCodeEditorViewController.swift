@@ -33,15 +33,18 @@ public class MorseCodeEditorViewController : UIViewController {
     var isUserTyping : Bool = false
     
     @IBOutlet weak var mainStackVIew: UIStackView!
+    @IBOutlet weak var dictionaryButton: UIButton!
     @IBOutlet weak var englishTextLabel: UILabel!
     @IBOutlet weak var morseCodeTextLabel: UILabel!
     @IBOutlet weak var instructionsLabel: UILabel!
+    @IBOutlet weak var exitInstructionLabel: UILabel!
     
     
     @IBAction func tapGesture(_ sender: Any) {
         morseCodeInput(input: ".")
     }
     @IBAction func longPressGesture(_ sender: Any) {
+        Analytics.logEvent("se3_morse_long_press", parameters: [:])
         try? hapticManager?.hapticForResult(success: true)
         navigationController?.popViewController(animated: true)
     }
@@ -81,9 +84,10 @@ public class MorseCodeEditorViewController : UIViewController {
                     synth?.delegate = self
                     let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
                     synth?.speak(speechUtterance)
-                    //instructionsLabel.setText("System is speaking the text...")
-                    instructionsLabel.text = ""
+                    exitInstructionLabel.isHidden = true
+                    instructionsLabel?.isHidden = true
                     morseCodeTextLabel?.isHidden = true
+                    dictionaryButton?.isHidden = true
                     changeEnteredTextSize(inputString: englishString, textSize: 40)
                 }
                 else if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
@@ -503,9 +507,21 @@ public class MorseCodeEditorViewController : UIViewController {
 
 extension MorseCodeEditorViewController : AVSpeechSynthesizerDelegate {
     
+    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
+        let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
+        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: characterRange)
+        let font = englishTextLabel?.font
+        let alignment = englishTextLabel?.textAlignment
+        englishTextLabel?.attributedText = mutableAttributedString //all attributes get ovverridden here. necessary to save it before hand
+        englishTextLabel?.font = font
+        if alignment != nil { englishTextLabel?.textAlignment = alignment! }
+    }
+    
     public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        //WKInterfaceDevice.current().play(.success)
+        //try? hapticManager?.hapticForResult(success: true) //done at the receiver end
+        englishTextLabel?.textColor = .none
         synth = nil
+        dictionaryButton?.isHidden = false
         morseCodeTextLabel?.isHidden = false
         changeEnteredTextSize(inputString: englishString, textSize: 16)
         whiteSpeechViewControllerProtocol?.setMorseCodeMessage(englishInput: englishString, morseCodeInput: morseCodeString)
@@ -513,9 +529,12 @@ extension MorseCodeEditorViewController : AVSpeechSynthesizerDelegate {
     }
     
     public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-        //WKInterfaceDevice.current().play(.failure)
+        try? hapticManager?.hapticForResult(success: false)
         synth = nil
+        dictionaryButton?.isHidden = false
         morseCodeTextLabel?.isHidden = false
+        instructionsLabel?.isHidden = false
+        exitInstructionLabel?.isHidden = false
         changeEnteredTextSize(inputString: englishString, textSize: 16)
         //self.navigationController?.popViewController(animated: true)
     }
