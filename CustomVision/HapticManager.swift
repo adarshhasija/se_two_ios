@@ -91,12 +91,13 @@ class HapticManager {
             CHHapticEventParameter(parameterID: .sustained, value: 0)
             ], relativeTime: 0)
 
-        let sharpness : Float = success == true ? 1.0 : 0.1
-        let intensity : Float = 0.5
+        let sharpness : Float = 0.5 //Success/failure haptics are more dull than morse code haptics
+        let intensity : Float = 1.0
+        let duration = success == true ? TimeInterval(0.5) : TimeInterval(1.0) //Success/failure haptics are more drawn out
         let hapticEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [
             CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
             CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
-            ], relativeTime: 0)
+            ], relativeTime: 0, duration: duration)
 
         let pattern = try CHHapticPattern(events: [/*audioEvent,*/ hapticEvent], parameters: [])
         return try chHapticEngine?.makePlayer(with: pattern)
@@ -113,19 +114,26 @@ class HapticManager {
             ], relativeTime: 0)
 
         let sharpness : Float = 1.0
-        let intensity : Float = 0.5
-        let hapticDash = CHHapticEvent(eventType: .hapticTransient, parameters: [
+        let intensity : Float = 1.0
+        //For dash, its 2 pings
+        let hapticDash1 = CHHapticEvent(eventType: .hapticTransient, parameters: [
             CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
             CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
-        ], relativeTime: 0, duration: TimeInterval(1.0))
+        ], relativeTime: 0)
+        let hapticDash2 = CHHapticEvent(eventType: .hapticTransient, parameters: [
+            CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
+            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
+        ], relativeTime: 0.5)
         
+        //For dot its a single ping
         let hapticDot = CHHapticEvent(eventType: .hapticTransient, parameters: [
             CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
             CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
         ], relativeTime: 0)
-        let hapticEvent = isDash == true ? hapticDash : hapticDot
+        
+        let hapticEvents = isDash == true ? [hapticDash1, hapticDash2] : [hapticDot]
 
-        let pattern = try CHHapticPattern(events: [/*audioEvent,*/ hapticEvent], parameters: [])
+        let pattern = try CHHapticPattern(events: hapticEvents, parameters: [])
         return try chHapticEngine?.makePlayer(with: pattern)
     }
     
