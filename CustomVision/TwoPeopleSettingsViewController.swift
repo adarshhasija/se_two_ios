@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseAnalytics
 
 public class TwoPeopleSettingsViewController : UIViewController {
     
@@ -81,6 +82,9 @@ public class TwoPeopleSettingsViewController : UIViewController {
     
     public override func viewWillDisappear(_ animated: Bool) {
         let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_3" : "_2"
+        Analytics.logEvent("se3_user_type", parameters: [
+            "type": userType
+        ])
         UserDefaults.standard.set(userType, forKey: "SE3_IOS_USER_TYPE")
         whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: userType)
         userProfileTableViewControllerProtocol?.setUserProfileType(type: userType)

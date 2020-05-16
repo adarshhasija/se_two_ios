@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseAnalytics
 
 public class UserProfileTableViewController : UITableViewController {
     
@@ -103,6 +104,9 @@ public class UserProfileTableViewController : UITableViewController {
     }
     
     private func updateName(name: String?) {
+        Analytics.logEvent("se3_user_name", parameters: [
+            "name": name
+        ])
         if name != nil {
             mName = name
             nameLabel?.text = mName
@@ -223,6 +227,7 @@ extension UserProfileTableViewController : UserProfileTableViewControllerProtoco
 extension UserProfileTableViewController : UIImagePickerControllerDelegate {
     
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        Analytics.logEvent("se3_user_image", parameters: [:])
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         profilePicImageView.image = image
         dismiss(animated:true, completion: nil)
