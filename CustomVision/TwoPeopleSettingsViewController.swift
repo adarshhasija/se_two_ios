@@ -48,7 +48,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        pickerData.append(contentsOf: ["Deaf-blind","Hearing-impaired", /* "Not impaired"*/])
+        pickerData.append(contentsOf: ["None selected", "Deaf-blind","Hearing-impaired", /* "Not impaired"*/])
         hostPickerView.delegate = self
         hostPickerView.dataSource = self
         errorMessageLabel?.text = ""
@@ -57,22 +57,21 @@ public class TwoPeopleSettingsViewController : UIViewController {
             //No input = deaf
             // _2 = Deaf
             hostRoleLabel?.text = HiWillTypeString
-            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
+            hostPickerView?.selectRow(2, inComponent: 0, animated: false)
             errorMessageLabel?.isHidden = false
         }
         else if inputUserProfileOption == "_3" {
             // _3 = deaf-blind
             hostRoleLabel?.text = deafBlindMorseCodeString
-            hostPickerView?.selectRow(0, inComponent: 0, animated: false)
+            hostPickerView?.selectRow(1, inComponent: 0, animated: false)
             errorMessageLabel?.text = warningCoreHaptics
             errorMessageLabel?.isHidden = supportsHaptics
         }
         else {
-            //If no selection is made, assume its deaf-blind
-            hostRoleLabel?.text = deafBlindMorseCodeString
+            //If no selection is made
+            hostRoleLabel?.text = ""
             hostPickerView?.selectRow(0, inComponent: 0, animated: false)
-            errorMessageLabel?.text = warningCoreHaptics
-            errorMessageLabel?.isHidden = supportsHaptics
+            errorMessageLabel?.isHidden = true
         }
     /*    else if inputUserProfileOption == "_1" {
             // _1 = normal
@@ -82,7 +81,7 @@ public class TwoPeopleSettingsViewController : UIViewController {
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
-        let userType = hostPickerView.selectedRow(inComponent: 0) == 0 ? "_3" : "_2"
+        let userType = hostPickerView.selectedRow(inComponent: 0) == 1 ? "_3" : "_2"
         Analytics.logEvent("se3_user_type", parameters: [
             "type": userType
         ])
@@ -108,6 +107,9 @@ extension TwoPeopleSettingsViewController : UIPickerViewDataSource {
         label.lineBreakMode = .byWordWrapping;
         label.numberOfLines = 0;
         label.text = pickerData[row]
+        if row == 0 {
+            label.textColor = .gray
+        }
         label.sizeToFit()
         return label;
     }
@@ -118,7 +120,7 @@ extension TwoPeopleSettingsViewController : UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         errorMessageLabel?.isHidden = true
         if row == 0 {
-            //Host = Deaf-blind
+            hostPickerView?.selectRow(1, inComponent: 0, animated: true)
             hostRoleLabel?.text = deafBlindMorseCodeString
             if supportsHaptics == false {
                 errorMessageLabel?.text = warningCoreHaptics
@@ -126,16 +128,23 @@ extension TwoPeopleSettingsViewController : UIPickerViewDelegate {
             }
         }
         else if row == 1 {
+            //Host = Deaf-blind
+            hostRoleLabel?.text = deafBlindMorseCodeString
+            if supportsHaptics == false {
+                errorMessageLabel?.text = warningCoreHaptics
+                errorMessageLabel?.isHidden = false
+            }
+        }
+        else if row == 2 {
             //Host = HI
             hostRoleLabel?.text = HiWillTypeString
             errorMessageLabel?.text = ""
             errorMessageLabel?.isHidden = true
-        }
-        else if row == 2 {
+            
             //Host = Normal
-            hostRoleLabel?.text = noAilmentsWillTalkString
-            errorMessageLabel?.text = ""
-            errorMessageLabel?.isHidden = true
+            //hostRoleLabel?.text = noAilmentsWillTalkString
+            //errorMessageLabel?.text = ""
+            //errorMessageLabel?.isHidden = true
         }
     }
     
