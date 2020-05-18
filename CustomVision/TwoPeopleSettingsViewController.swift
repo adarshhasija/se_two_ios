@@ -58,13 +58,14 @@ public class TwoPeopleSettingsViewController : UIViewController {
             // _2 = Deaf
             hostRoleLabel?.text = HiWillTypeString
             hostPickerView?.selectRow(1, inComponent: 0, animated: false)
+            errorMessageLabel?.isHidden = false
         }
         else if inputUserProfileOption == "_3" {
             // _3 = deaf-blind
             hostRoleLabel?.text = deafBlindMorseCodeString
             hostPickerView?.selectRow(0, inComponent: 0, animated: false)
             errorMessageLabel?.text = warningCoreHaptics
-            errorMessageLabel?.isHidden = false
+            errorMessageLabel?.isHidden = supportsHaptics
         }
         else {
             //If no selection is made, assume its deaf-blind

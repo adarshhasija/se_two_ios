@@ -223,7 +223,8 @@ public class WhiteSpeechViewController: UIViewController {
         morseCodeLabel?.isHidden = false
         mcReadInstructionLabel?.text = "Swipe right with 2 fingers to read morse code"
         mcReadInstructionLabel?.isHidden = false
-        try? hapticManager?.hapticForResult(success: true)
+        //try? hapticManager?.hapticForResult(success: true)
+        hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
     }
     
     
@@ -284,11 +285,13 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
             currentState.popLast()
-            try? hapticManager?.hapticForResult(success: true)
+            //try? hapticManager?.hapticForResult(success: true)
+            hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         }
         else if action == Action.CancelledEditing && currentState.last == State.EditingMode {
             currentState.popLast()
-            try? hapticManager?.hapticForResult(success: false)
+            //try? hapticManager?.hapticForResult(success: false)
+            hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
         }
         else if action == Action.SwipeRight && currentState.last == State.Idle {
             let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
@@ -600,7 +603,8 @@ public class WhiteSpeechViewController: UIViewController {
                 Analytics.logEvent("se3_morse_scroll_left", parameters: [
                     "state" : "index_less_0"
                 ])
-                try? hapticManager?.hapticForResult(success: false)
+                //try? hapticManager?.hapticForResult(success: false)
+                hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
                
                mcReadInstructionLabel?.text = "Swipe right with 2 fingers to read morse code"
                if morseCodeStringIndex < 0 {
@@ -1137,7 +1141,7 @@ public class WhiteSpeechViewController: UIViewController {
                 return
             }
             sayThis(string: newText)
-            var morseCodeString = convertEnglishToMC(englishString: newText)
+            let morseCodeString = convertEnglishToMC(englishString: newText)
             englishMorseCodeTextLabel?.text = newText
             morseCodeLabel?.text = morseCodeString
             self.dataChats.append(ChatListItem(text: newText, origin: peerID.displayName, mode: "typing"))

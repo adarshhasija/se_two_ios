@@ -11,6 +11,11 @@ import CoreHaptics
 
 class HapticManager {
     
+    let MC_DOT   = "MC_DOT"
+    let MC_DASH  = "MC_DASH"
+    let RESULT_SUCCESS  = "RESULT_SUCCESS"
+    let RESULT_FAILURE  = "RESULT_FAILURE"
+    
     var chHapticEngine : CHHapticEngine?
     private var engineNeedsStart = true
     
@@ -67,21 +72,44 @@ class HapticManager {
         let index = inputString.index(inputString.startIndex, offsetBy: inputIndex)
         let char = String(inputString[index])
         if char == "." {
-            //WKInterfaceDevice.current().play(.start)
-            try? hapticForMorseCode(isDash: false)
+            //try? hapticForMorseCode(isDash: false)
+            generateHaptic(code: MC_DOT)
         }
         if char == "-" {
-            //WKInterfaceDevice.current().play(.stop)
-            try? hapticForMorseCode(isDash: true)
+            //try? hapticForMorseCode(isDash: true)
+            generateHaptic(code: MC_DASH)
         }
         if char == "|" {
             //WKInterfaceDevice.current().play(.success)
-            try? hapticForResult(success: true)
+            generateHaptic(code: RESULT_SUCCESS)
         }
     }
     
+    func generateHaptic(code : String?) {
+        var hapticPlayer : CHHapticPatternPlayer? = nil
+        do {
+            if code == MC_DOT {
+                hapticPlayer = try hapticForMorseCode(isDash: false)
+            }
+            else if code == MC_DASH {
+                hapticPlayer = try hapticForMorseCode(isDash: true)
+            }
+            else if code == RESULT_SUCCESS {
+                hapticPlayer = try hapticForResult(success: true)
+            }
+            else if code == RESULT_FAILURE {
+                hapticPlayer = try hapticForResult(success: false)
+            }
+            
+            try hapticPlayer?.start(atTime: CHHapticTimeImmediate)
+        } catch let error {
+            print("Generate haptic error is: \(error)")
+        }
+        
+    }
     
-    func hapticForResult(success : Bool) throws -> CHHapticPatternPlayer? {
+    
+    private func hapticForResult(success : Bool) throws -> CHHapticPatternPlayer? {
         let volume = linearInterpolation(alpha: 1, min: 0.1, max: 0.4)
         let decay: Float = linearInterpolation(alpha: 1, min: 0.0, max: 0.1)
         let audioEvent = CHHapticEvent(eventType: .audioContinuous, parameters: [
@@ -103,7 +131,7 @@ class HapticManager {
         return try chHapticEngine?.makePlayer(with: pattern)
     }
     
-    func hapticForMorseCode(isDash : Bool) throws -> CHHapticPatternPlayer? {
+    private func hapticForMorseCode(isDash : Bool) throws -> CHHapticPatternPlayer? {
         let volume = linearInterpolation(alpha: 1, min: 0.1, max: 0.4)
         let decay: Float = linearInterpolation(alpha: 1, min: 0.0, max: 0.1)
         let audioEvent = CHHapticEvent(eventType: .audioContinuous, parameters: [

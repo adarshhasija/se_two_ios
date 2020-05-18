@@ -33,6 +33,7 @@ public class MorseCodeEditorViewController : UIViewController {
     var isUserTyping : Bool = false
     
     @IBOutlet weak var mainStackVIew: UIStackView!
+    @IBOutlet weak var warningLabel: UILabel!
     @IBOutlet weak var dictionaryButton: UIButton!
     @IBOutlet weak var englishTextLabel: UILabel!
     @IBOutlet weak var morseCodeTextLabel: UILabel!
@@ -45,7 +46,8 @@ public class MorseCodeEditorViewController : UIViewController {
     }
     @IBAction func longPressGesture(_ sender: Any) {
         Analytics.logEvent("se3_morse_long_press", parameters: [:])
-        try? hapticManager?.hapticForResult(success: true)
+        //try? hapticManager?.hapticForResult(success: true)
+        hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         navigationController?.popViewController(animated: true)
     }
     @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
@@ -105,7 +107,8 @@ public class MorseCodeEditorViewController : UIViewController {
                     englishTextLabel.isHidden = false
                     morseCodeString += "|"
                     morseCodeTextLabel.text = morseCodeString
-                    try? hapticManager?.hapticForResult(success: true) //successfully got a letter/number
+                    //try? hapticManager?.hapticForResult(success: true)
+                    hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS) //successfully got a letter/number
                     instructionsLabel.text = "Keep Typing\nor\nSwipe up again to complete"
                     while morseCode.mcTreeNode?.parent != nil {
                         morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
@@ -141,7 +144,8 @@ public class MorseCodeEditorViewController : UIViewController {
                         "state" : "no_result"
                     ])
                     //did not get a letter/number
-                    try? hapticManager?.hapticForResult(success: false)
+                    //try? hapticManager?.hapticForResult(success: false)
+                    hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
                     let nearestMatches : [String] = morseCode.getNearestMatches(currentNode: morseCode.mcTreeNode)
                     var nearestMatchesString = ""
                     for match in nearestMatches {
@@ -161,7 +165,8 @@ public class MorseCodeEditorViewController : UIViewController {
                     morseCodeString.removeLast()
                     morseCodeTextLabel.text = morseCodeString
                     isAlphabetReached(input: "b") //backspace
-                    try? hapticManager?.hapticForResult(success: true)
+                    //try? hapticManager?.hapticForResult(success: true)
+                    hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 }
                 else {
                     //If it is a normal letter/number, delete the last english character and corresponding morse code characters
@@ -181,7 +186,8 @@ public class MorseCodeEditorViewController : UIViewController {
                         englishString.append("␣")
                     }
                     englishTextLabel.text = englishString
-                    try? hapticManager?.hapticForResult(success: true)
+                    //try? hapticManager?.hapticForResult(success: true)
+                    hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 }
             }
             else {
@@ -189,7 +195,8 @@ public class MorseCodeEditorViewController : UIViewController {
                 Analytics.logEvent("se3_morse_swipe_left", parameters: [
                     "state" : "nothing_to_delete"
                 ])
-                try? hapticManager?.hapticForResult(success: false)
+                //try? hapticManager?.hapticForResult(success: false)
+                hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
             }
             
             if morseCodeString.count == 0 && englishString.count == 0 {
@@ -207,7 +214,8 @@ public class MorseCodeEditorViewController : UIViewController {
                 Analytics.logEvent("se3_morse_dswipe_left", parameters: [
                     "state" : "index_less_0"
                 ])
-                try? hapticManager?.hapticForResult(success: false)
+                //try? hapticManager?.hapticForResult(success: false)
+                hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
                 setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
                 
                 if morseCodeStringIndex < 0 {
@@ -258,7 +266,8 @@ public class MorseCodeEditorViewController : UIViewController {
                 ])
                 morseCodeTextLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
                 englishTextLabel.text = englishString
-                try? hapticManager?.hapticForResult(success: true)
+                //try? hapticManager?.hapticForResult(success: true)
+                hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 setInstructionLabelForMode(mainString: "Swipe left with 2 fingers to scroll back", readingString: stopReadingString, writingString: keepTypingString)
                 morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
                 englishStringIndex = englishString.count
@@ -276,7 +285,8 @@ public class MorseCodeEditorViewController : UIViewController {
                 //Need to change the selected character of the English string
                 englishStringIndex += 1
                 if englishStringIndex >= englishString.count {
-                    try? hapticManager?.hapticForResult(success: false)
+                    //try? hapticManager?.hapticForResult(success: false)
+                    hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
                     return
                 }
                 if MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
@@ -299,6 +309,9 @@ public class MorseCodeEditorViewController : UIViewController {
     public override func viewDidLoad() {
         if supportsHaptics {
             hapticManager = HapticManager()
+        }
+        else {
+            warningLabel?.isHidden = false
         }
         englishTextLabel?.text = ""
         morseCodeTextLabel?.text = ""
@@ -324,6 +337,7 @@ public class MorseCodeEditorViewController : UIViewController {
             morseCodeString += "|"
         }
         morseCodeTextLabel.text = morseCodeString
+        hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         morseCodeStringIndex = -1
         isUserTyping = false
         setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
@@ -388,8 +402,8 @@ public class MorseCodeEditorViewController : UIViewController {
             //Prevent the user from entering another character
             MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
             setRecommendedActionsText()
-            //WKInterfaceDevice.current().play(.failure)
-            try? hapticManager?.hapticForResult(success: false)
+            //try? hapticManager?.hapticForResult(success: false)
+            hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
             return
         }
         englishStringIndex = -1
@@ -406,12 +420,12 @@ public class MorseCodeEditorViewController : UIViewController {
         morseCodeTextLabel.textColor = .none
         englishTextLabel.textColor = .none
         if input == "." {
-            //WKInterfaceDevice.current().play(.start)
-            try? hapticManager?.hapticForMorseCode(isDash: false)
+            //try? hapticManager?.hapticForMorseCode(isDash: false)
+            hapticManager?.generateHaptic(code: hapticManager?.MC_DOT)
         }
         else if input == "-" {
-            //WKInterfaceDevice.current().play(.stop)
-            try? hapticManager?.hapticForMorseCode(isDash: true)
+            //try? hapticManager?.hapticForMorseCode(isDash: true)
+            hapticManager?.generateHaptic(code: hapticManager?.MC_DASH)
         }
     }
     
@@ -529,7 +543,8 @@ extension MorseCodeEditorViewController : AVSpeechSynthesizerDelegate {
     }
     
     public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-        try? hapticManager?.hapticForResult(success: false)
+        //try? hapticManager?.hapticForResult(success: false)
+        hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
         synth = nil
         dictionaryButton?.isHidden = false
         morseCodeTextLabel?.isHidden = false
