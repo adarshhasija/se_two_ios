@@ -173,6 +173,8 @@ public class UserProfileTableViewController : UITableViewController {
             optionMenu.addAction(galleryAction)
             if deleteAction != nil { optionMenu.addAction(deleteAction!) }
             optionMenu.addAction(cancelAction)
+            optionMenu.popoverPresentationController?.sourceView = profilePicImageView
+            optionMenu.popoverPresentationController?.sourceRect = profilePicImageView.frame
             self.present(optionMenu, animated: true, completion: nil)
         }
         else if indexPath.section == 2 && indexPath.row == 1 {
