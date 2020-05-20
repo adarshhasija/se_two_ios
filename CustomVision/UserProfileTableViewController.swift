@@ -43,10 +43,11 @@ public class UserProfileTableViewController : UITableViewController {
         self.title = "Your Profile"
         
         loadImage()
-        let userType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        updateAilmentLabels(type: userType)
         let userName = UserDefaults.standard.string(forKey: "SE3_IOS_USER_NAME")
         updateName(name: userName)
+        //let userType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+        //updateAilmentLabels(type: userType)
+        
     }
     
     private func loadImage() {
@@ -126,21 +127,12 @@ public class UserProfileTableViewController : UITableViewController {
         whiteSpeechViewControllerProtocol?.userProfileOptionSet(se3UserType: se3UserType)
     }
     
+    public override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 && indexPath.row == 0 {
-            guard let storyBoard : UIStoryboard = self.storyboard else {
-                return
-            }
-            let userProfileOptionsViewController = storyBoard.instantiateViewController(withIdentifier: "TwoPeopleProfileOptions") as! TwoPeopleSettingsViewController
-            userProfileOptionsViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-            userProfileOptionsViewController.whiteSpeechViewControllerProtocol = whiteSpeechViewControllerProtocol
-            userProfileOptionsViewController.userProfileTableViewControllerProtocol = self as UserProfileTableViewControllerProtocol
-            //self.present(userProfileOptionsViewController, animated: true, completion: nil)
-            if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-                navigationController.pushViewController(userProfileOptionsViewController, animated: true)
-            }
-        }
-        else if indexPath.section == 2 && indexPath.row == 0 {
             let optionMenu = UIAlertController(title: nil, message: "Choose Option", preferredStyle: .actionSheet)
             let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -177,7 +169,7 @@ public class UserProfileTableViewController : UITableViewController {
             optionMenu.popoverPresentationController?.sourceRect = profilePicImageView.frame
             self.present(optionMenu, animated: true, completion: nil)
         }
-        else if indexPath.section == 2 && indexPath.row == 1 {
+        else if indexPath.section == 1 && indexPath.row == 1 {
             let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
 
             //2. Add the text field. You can configure it however you need.
@@ -209,6 +201,20 @@ public class UserProfileTableViewController : UITableViewController {
             // 4. Present the alert.
             self.present(alert, animated: true, completion: nil)
         }
+        else if indexPath.section == 2 && indexPath.row == 0 {
+            guard let storyBoard : UIStoryboard = self.storyboard else {
+                return
+            }
+            let userProfileOptionsViewController = storyBoard.instantiateViewController(withIdentifier: "TwoPeopleProfileOptions") as! TwoPeopleSettingsViewController
+            userProfileOptionsViewController.inputUserProfileOption = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
+            userProfileOptionsViewController.whiteSpeechViewControllerProtocol = whiteSpeechViewControllerProtocol
+            userProfileOptionsViewController.userProfileTableViewControllerProtocol = self as UserProfileTableViewControllerProtocol
+            //self.present(userProfileOptionsViewController, animated: true, completion: nil)
+            if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                navigationController.pushViewController(userProfileOptionsViewController, animated: true)
+            }
+        }
+
         
     }
     
