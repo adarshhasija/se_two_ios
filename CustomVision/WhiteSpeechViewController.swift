@@ -34,7 +34,7 @@ public class WhiteSpeechViewController: UIViewController {
     var setupInstructionString = "Please declare your ailment. Tap the card above"
     var typingInstructionString = "Tap the type button to begin"
     var longPressMorseCodeInstructionString = "Long press to begin typing in morse code"
-    var composerButtonsUseInstructions = "I need your help\nPlease read the message in bold\nUse the buttons below to reply"
+    var composerButtonsUseInstructions = "I need your help\nPlease read the message in bold\nUse the button below to reply"
     var showMorseCodeInstruction = "Tap with 2 fingers to show morse code"
     var hiSIContextString = "This person cannot hear or speak. Please help them"
     var tapToRepeat = "Tap to repeat"
@@ -237,6 +237,34 @@ public class WhiteSpeechViewController: UIViewController {
     @IBAction func talkButtonTapped(_ sender: Any) {
         Analytics.logEvent("se3_talk_btn_tap", parameters: [:])
         changeState(action: Action.TalkButtonTapped)
+    }
+    
+    
+    @IBAction func centerBigButtunTapped(_ sender: Any) {
+        Analytics.logEvent("se3_center_btn_tap", parameters: [:])
+        let maxLength = 35
+        let alert = UIAlertController(title: englishMorseCodeTextLabel?.text, message: "Character limit for reply: " + String(maxLength), preferredStyle: .alert)
+
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.placeholder = "Your Reply"
+            textField.maxLength = maxLength
+        }
+
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            if textField?.text?.isEmpty == false {
+                self.setTypedMessage(english: textField!.text!)
+            }
+            //print("Text field: \(textField.text)")
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [weak alert] (_) in
+            alert?.dismiss(animated: true, completion: nil)
+        }))
+
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: nil)
     }
     
     
@@ -1792,12 +1820,7 @@ public class WhiteSpeechViewController: UIViewController {
     //last action: typing/talking/morse_code
     private func setBackgroundColor(lastAction : String) {
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
-        if (se3UserType == nil || se3UserType == "_2") && lastAction == "typing" {
-           //No user set/user is HI and action is typing. So owner did the typing
-            view.backgroundColor = UIColor.gray
-            view.backgroundColor?.withAlphaComponent(0.5)
-        }
-        else if se3UserType == "_3" && lastAction == "morse_code" {
+        if (se3UserType == nil || se3UserType == "_3") && lastAction == "morse_code" {
             //User is type deaf-blind and action was morse code. So owner did the typing.
             view.backgroundColor = UIColor.gray
             view.backgroundColor?.withAlphaComponent(0.5)
@@ -1806,10 +1829,6 @@ public class WhiteSpeechViewController: UIViewController {
             //All others green
             view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 0.2)
         }
-     /*   else if se3UserType == "_1" {
-           // Device owner = normal. Typing = other user = green
-           view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 0.2)
-        }   */
     }
 
     private func loadImage(image: UIImage?) {
@@ -1846,7 +1865,8 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func updateAilment(ailment: String?) {
-        if ailment == "_1" {
+        userAilmentLabel?.text = "Deaf-blind"
+      /*  if ailment == "_1" {
             userAilmentLabel?.text = "Not impaired"
         }
         else if ailment == "_2" {
@@ -1857,7 +1877,7 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else {
             userAilmentLabel?.text = "No ailment mentioned"
-        }
+        }   */
     }
     
     private func updateInstructions(se3UserType: String?) {

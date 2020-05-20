@@ -1721,8 +1721,7 @@ extension SpeechViewController : UITableViewDataSource {
         let cell : ConversationTableViewCell =
             (chatListItem.origin == EventOrigin.STATUS.rawValue) ?
                 tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCellStatus") as! ConversationTableViewCell :
-                ((chatListItem.mode == "typing" && se3UserType != "_1") || (chatListItem.mode == "talking" && se3UserType == "_1") ||
-                    (chatListItem.mode == "morse_code" && se3UserType == "_3")) ?
+                (chatListItem.mode == "morse_code") ?
                     tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCell") as! ConversationTableViewCell :
                 tableView.dequeueReusableCell(withIdentifier: "conversationTableViewCellGuest") as! ConversationTableViewCell
                 
