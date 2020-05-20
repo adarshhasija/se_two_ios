@@ -979,7 +979,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="k6u-OF-iHk">
-                                <rect key="frame" x="40" y="263" width="240" height="205"/>
+                                <rect key="frame" x="40" y="213" width="240" height="205"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to type morse code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCY-F6-qYh">
                                         <rect key="frame" x="26" y="0.0" width="188" height="0.0"/>
@@ -1176,10 +1176,10 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="rux-eZ-Lcm">
-                                <rect key="frame" x="36" y="518" width="248" height="30"/>
+                                <rect key="frame" x="36" y="497" width="248" height="51"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pI4-sX-dZk">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                        <rect key="frame" x="0.0" y="10.5" width="30" height="30"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppleWatch" translatesAutoresizingMaskIntoConstraints="NO" id="mAj-9K-jvF">
                                                 <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
@@ -1195,10 +1195,28 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hjq-Np-AnS">
-                                        <rect key="frame" x="72.5" y="6.5" width="103.5" height="17"/>
+                                        <rect key="frame" x="72.5" y="0.0" width="103.5" height="51"/>
                                         <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l3t-IM-SZS">
+                                                <rect key="frame" x="1.5" y="0.0" width="100" height="34"/>
+                                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="34" id="C5c-Np-l8c"/>
+                                                    <constraint firstAttribute="width" constant="100" id="q4g-NB-Cjt"/>
+                                                </constraints>
+                                                <state key="normal" title="Watch App"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="appleWatchButtonTapped:" destination="tNc-1S-FN5" eventType="touchUpInside" id="7dF-z6-swC"/>
+                                                </connections>
+                                            </button>
                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="PFh-Cj-TG0">
-                                                <rect key="frame" x="26.5" y="0.0" width="50" height="0.0"/>
+                                                <rect key="frame" x="26.5" y="34" width="50" height="0.0"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.slash" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="bNo-Pr-FHI">
                                                         <rect key="frame" x="0.0" y="-0.5" width="19" height="1.5"/>
@@ -1209,7 +1227,7 @@
                                                 </subviews>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last action user" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eme-dn-xdh">
-                                                <rect key="frame" x="0.0" y="0.0" width="103.5" height="17"/>
+                                                <rect key="frame" x="0.0" y="34" width="103.5" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -1217,7 +1235,7 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="book" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Crx-J5-gSE">
-                                        <rect key="frame" x="218" y="1.5" width="30" height="27"/>
+                                        <rect key="frame" x="218" y="12" width="30" height="27"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="VRg-3J-TpQ"/>
@@ -1233,7 +1251,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="k6u-OF-iHk" secondAttribute="bottom" constant="100" id="4Li-kv-n0J"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="k6u-OF-iHk" secondAttribute="bottom" constant="150" id="4Li-kv-n0J"/>
                             <constraint firstItem="k6u-OF-iHk" firstAttribute="centerX" secondItem="Rro-IL-Boh" secondAttribute="centerX" id="4Z7-o1-CKk"/>
                             <constraint firstItem="TTt-38-1LB" firstAttribute="leading" secondItem="Rro-IL-Boh" secondAttribute="leadingMargin" id="5cP-0L-6E0"/>
                             <constraint firstItem="mei-RG-Ydf" firstAttribute="top" secondItem="rux-eZ-Lcm" secondAttribute="bottom" constant="20" id="7Ed-8u-6aX"/>
@@ -1331,11 +1349,7 @@
                         <action selector="chatLogButtonTapped:" destination="tNc-1S-FN5" id="qEx-1r-ZsY"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="qB7-uq-fWY">
-                    <connections>
-                        <action selector="appleWatchButtonTapped:" destination="tNc-1S-FN5" id="cz7-CM-dyP"/>
-                    </connections>
-                </tapGestureRecognizer>
+                <tapGestureRecognizer id="qB7-uq-fWY"/>
                 <tapGestureRecognizer id="IKV-vv-qKG">
                     <connections>
                         <action selector="userProfileTapped:" destination="tNc-1S-FN5" id="xcr-VX-Q3F"/>
@@ -1569,13 +1583,13 @@
                                                     <rect key="frame" x="20" y="30" width="238" height="60"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAe-Sv-9eX">
-                                                            <rect key="frame" x="0.0" y="0.0" width="38" height="15.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="38" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Obtained from device" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XPH-Kt-oS5">
-                                                            <rect key="frame" x="0.0" y="15.5" width="122" height="14.5"/>
+                                                            <rect key="frame" x="0.0" y="17" width="122" height="13"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
