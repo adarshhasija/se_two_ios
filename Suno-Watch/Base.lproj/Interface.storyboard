@@ -10,7 +10,7 @@
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Suno" customModuleProvider="target">
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="SunoDayko" customModuleProvider="target">
                     <items>
                         <button width="1" alignment="left" title="New Message" id="XLI-c3-8H7">
                             <connections>
@@ -51,7 +51,7 @@
                                 <label alignment="left" hidden="YES" text="Label" numberOfLines="0" id="Bvs-FV-rgO"/>
                                 <label alignment="left" numberOfLines="0" id="3xj-WN-big"/>
                                 <label width="1" alignment="left" text="Instruction Label" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
-                                    <color key="textColor" red="0.23175169483291902" green="0.83495825639444188" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="textColor" red="0.23137254901960785" green="0.83495825639444188" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
                                 </label>
                             </items>

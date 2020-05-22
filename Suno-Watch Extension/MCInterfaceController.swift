@@ -229,12 +229,12 @@ class MCInterfaceController : WKInterfaceController {
                 session.sendMessage(message, replyHandler: nil, errorHandler: nil)
             }
             else {
-                setInstructionLabelForMode(mainString: "Update from phone failed:\niPhone is not reachable", readingString: "", writingString: "", isError: false)
+                setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone is not reachable", readingString: "", writingString: "", isError: false)
                 WKInterfaceDevice.current().play(.failure)
             }
         }
         else {
-            setInstructionLabelForMode(mainString: "Update from phone failed:\nPlease try again later", readingString: "", writingString: "", isError: false)
+            setInstructionLabelForMode(mainString: "Update from phone failed:\n\nPlease try again later", readingString: "", writingString: "", isError: false)
             WKInterfaceDevice.current().play(.failure)
         }
     }
@@ -701,6 +701,7 @@ extension MCInterfaceController {
         
         instructionsString += "\n" + "Swipe left to delete last character"
         instructionsLabel.setText(instructionsString)
+        self.instructionsLabel.setTextColor(UIColor.init(red: CGFloat(59/255), green: CGFloat(213/255), blue: 1.0, alpha: 1.0))
     }
 
     
@@ -716,14 +717,14 @@ extension MCInterfaceController {
     //2 strings for writing mode and reading mode
     func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String, isError: Bool?) {
         var instructionString = mainString
-        if !isUserTyping {
+        if !isUserTyping && readingString.isEmpty == false {
             instructionString += "\n\nOr\n\n" + readingString
         }
-        else {
+        else if writingString.isEmpty == false {
             instructionString += "\n\nOr\n\n" + writingString
         }
         self.instructionsLabel.setText(instructionString)
-        self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.init(red: 0.23, green: 0.83, blue: 1.0, alpha: 1.0))
+        self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.init(red: CGFloat(59/255), green: CGFloat(213/255), blue: 1.0, alpha: 1.0))
     }
     
     
@@ -821,19 +822,17 @@ extension MCInterfaceController {
     
     func receivedMessageFromPhone(message : [String : Any]) {
         if message["is_english_mc"] != nil {
-            guard let english = message["english"] as? String else {
-                setInstructionLabelForMode(mainString: "Update from phone failed:\nThere was no alphabets or morse code to share", readingString: "", writingString: "", isError: true)
+            let english = message["english"] as? String
+            let morseCode = message["morse_code"] as? String
+            if english?.isEmpty == true || morseCode?.isEmpty == true {
+                WKInterfaceDevice.current().play(.failure)
+                setInstructionLabelForMode(mainString: "Update from phone failed:\n\nThere were no alphabets or morse code to share", readingString: "", writingString: "", isError: true)
                 instructionsLabel?.setTextColor(.red)
-                WKInterfaceDevice.current().play(.failure)
                 return
             }
-            guard let morseCode = message["morse_code"] as? String else {
-                setInstructionLabelForMode(mainString: "Update from phone failed:\nThere was no alphabets or morse code to share", readingString: "", writingString: "", isError: true)
-                WKInterfaceDevice.current().play(.failure)
-                return
-            }
-            englishString = english
-            morseCodeString = morseCode
+            
+            englishString = english!
+            morseCodeString = morseCode!
             englishTextLabel?.setText(englishString)
             morseCodeTextLabel?.setText(morseCodeString)
             englishTextLabel?.setHidden(false)
@@ -843,6 +842,12 @@ extension MCInterfaceController {
             isUserTyping = false
             setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
             WKInterfaceDevice.current().play(.success)
+        }
+        else {
+            WKInterfaceDevice.current().play(.failure)
+            setInstructionLabelForMode(mainString: "Update from phone failed", readingString: "", writingString: "", isError: true)
+            instructionsLabel?.setTextColor(.red)
+            return
         }
     }
     

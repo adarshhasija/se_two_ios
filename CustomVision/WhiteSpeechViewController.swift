@@ -1716,7 +1716,7 @@ public class WhiteSpeechViewController: UIViewController {
         }
     }
     
-    func sendEnglishAndMCToWatch(english: String?, morseCode: String?) {
+    func sendEnglishAndMCToWatch(english: String, morseCode: String) {
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isWatchAppInstalled && session.isReachable {
@@ -1746,13 +1746,7 @@ public class WhiteSpeechViewController: UIViewController {
     func receivedRequestForEnglishAndMCFromWatch() {
         let englishString = englishMorseCodeTextLabel?.text
         let morseCodeString = morseCodeLabel?.text
-        if englishString?.isEmpty == false && morseCodeString?.isEmpty == false {
-            sendEnglishAndMCToWatch(english: englishString!, morseCode: morseCodeString!)
-        }
-        else {
-            //If null or empty
-            sendEnglishAndMCToWatch(english: nil, morseCode: nil)
-        }
+        sendEnglishAndMCToWatch(english: englishString != nil ? englishString! : "", morseCode: morseCodeString != nil ? morseCodeString! : "")
     }
     
     func didPeerCloseConnection(text: String) -> Bool {
