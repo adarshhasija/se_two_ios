@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon200" translatesAutoresizingMaskIntoConstraints="NO" id="FrD-vp-eXl">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon_200" translatesAutoresizingMaskIntoConstraints="NO" id="FrD-vp-eXl">
                                 <rect key="frame" x="151.5" y="297.5" width="72" height="72"/>
                             </imageView>
                         </subviews>
@@ -30,10 +30,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
     <resources>
-        <image name="AppIcon200" width="72" height="72"/>
+        <image name="AppIcon_200" width="72" height="72"/>
     </resources>
 </document>

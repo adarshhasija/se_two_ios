@@ -229,12 +229,12 @@ class MCInterfaceController : WKInterfaceController {
                 session.sendMessage(message, replyHandler: nil, errorHandler: nil)
             }
             else {
-                setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone is not reachable", readingString: "", writingString: "", isError: false)
+                setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone is not reachable", readingString: "", writingString: "", isError: true)
                 WKInterfaceDevice.current().play(.failure)
             }
         }
         else {
-            setInstructionLabelForMode(mainString: "Update from phone failed:\n\nPlease try again later", readingString: "", writingString: "", isError: false)
+            setInstructionLabelForMode(mainString: "Update from phone failed:\n\nPlease try again later", readingString: "", writingString: "", isError: true)
             WKInterfaceDevice.current().play(.failure)
         }
     }
