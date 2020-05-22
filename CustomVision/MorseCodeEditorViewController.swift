@@ -341,10 +341,11 @@ public class MorseCodeEditorViewController : UIViewController {
         morseCodeStringIndex = -1
         isUserTyping = false
         setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
-        //WKInterfaceDevice.current().play(.success)
         while morseCode.mcTreeNode?.parent != nil {
             morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
         }
+        //WKInterfaceDevice.current().play(.success)
+        whiteSpeechViewControllerProtocol?.setMorseCodeMessage(englishInput: englishString, morseCodeInput: morseCodeString)
     }
     
     //If there is a result, returns string of result

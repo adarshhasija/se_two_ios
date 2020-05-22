@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14868" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="V63-br-2PY">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="15705" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="V63-br-2PY">
     <device id="watch38"/>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14643"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="15501"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Suno_Watch" customModuleProvider="target">
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Suno" customModuleProvider="target">
                     <items>
                         <button width="1" alignment="left" title="New Message" id="XLI-c3-8H7">
                             <connections>
@@ -79,6 +79,11 @@
                                 <swipeGestureRecognizer direction="2" id="vAZ-9w-GqS">
                                     <connections>
                                         <action selector="leftSwipe:" destination="V63-br-2PY" id="4ee-gt-HEk"/>
+                                    </connections>
+                                </swipeGestureRecognizer>
+                                <swipeGestureRecognizer direction="8" id="8zQ-VA-914">
+                                    <connections>
+                                        <action selector="downSwipe:" destination="V63-br-2PY" id="8eP-fq-tiL"/>
                                     </connections>
                                 </swipeGestureRecognizer>
                             </gestureRecognizers>
@@ -204,8 +209,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="book.fill" catalog="system" width="64" height="50"/>
-        <image name="pencil" catalog="system" width="64" height="58"/>
+        <image name="book.fill" catalog="system" width="64" height="48"/>
+        <image name="pencil" catalog="system" width="64" height="56"/>
         <image name="person.fill" catalog="system" width="64" height="60"/>
     </resources>
 </document>

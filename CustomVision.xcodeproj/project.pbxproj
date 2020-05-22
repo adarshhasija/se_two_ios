@@ -15,6 +15,7 @@
 		315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */; };
 		315A776823EDF03D00FC75E3 /* WatchAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776723EDF03D00FC75E3 /* WatchAppViewController.swift */; };
 		316BA194246D78F000869C89 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316BA193246D78F000869C89 /* UITextField.swift */; };
+		3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172732C247662FC003538F8 /* SettingsTableViewController.swift */; };
 		317340A2246DB60C00F75B1B /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317340A1246DB60C00F75B1B /* Collection.swift */; };
 		317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */; };
 		3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */; };
@@ -30,7 +31,7 @@
 		317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C12217EC76C0081B38B /* InterfaceController.swift */; };
 		317D4C15217EC76C0081B38B /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */; };
 		317D4C17217EC76D0081B38B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 317D4C16217EC76D0081B38B /* Assets.xcassets */; };
-		317D4C1B217EC76D0081B38B /* Suno for Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 317D4C01217EC76A0081B38B /* Suno for Watch.app */; };
+		317D4C1B217EC76D0081B38B /* Suno.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 317D4C01217EC76A0081B38B /* Suno.app */; };
 		317D4C242188CCC50081B38B /* States.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C232188CCC50081B38B /* States.swift */; };
 		317D4C262188CCF00081B38B /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */; };
@@ -52,7 +53,6 @@
 		31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
 		31D97F9C23BA7936000CFCF2 /* SettingDBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */; };
 		31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */; };
-		31E5344523DEB20600F163B1 /* UserProfileOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E5344423DEB20600F163B1 /* UserProfileOptionTableViewCell.swift */; };
 		31EC882623467A600088051C /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
 		31EC882823467AD50088051C /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
@@ -118,7 +118,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				317D4C1B217EC76D0081B38B /* Suno for Watch.app in Embed Watch Content */,
+				317D4C1B217EC76D0081B38B /* Suno.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,13 +134,14 @@
 		315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoPeopleSettingsViewController.swift; sourceTree = "<group>"; };
 		315A776723EDF03D00FC75E3 /* WatchAppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchAppViewController.swift; sourceTree = "<group>"; };
 		316BA193246D78F000869C89 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
+		3172732C247662FC003538F8 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		317340A1246DB60C00F75B1B /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewController.swift; sourceTree = "<group>"; };
 		3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicViewController.swift; sourceTree = "<group>"; };
 		3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewCell.swift; sourceTree = "<group>"; };
 		31798DFC217B9E66008CF9C7 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		317D4C01217EC76A0081B38B /* Suno for Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Suno for Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		317D4C01217EC76A0081B38B /* Suno.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Suno.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		317D4C04217EC76A0081B38B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		317D4C06217EC76C0081B38B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		317D4C08217EC76C0081B38B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -167,7 +168,6 @@
 		31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCInterfaceController.swift; sourceTree = "<group>"; };
 		31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDBController.swift; sourceTree = "<group>"; };
 		31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewController.swift; sourceTree = "<group>"; };
-		31E5344423DEB20600F163B1 /* UserProfileOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileOptionTableViewCell.swift; sourceTree = "<group>"; };
 		31EC882523467A600088051C /* MorseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCode.swift; sourceTree = "<group>"; };
 		31EC882723467AD50088051C /* MCTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCTreeNode.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
@@ -340,7 +340,7 @@
 				31F57B50211A14D100777EA3 /* Suno-Mac.app */,
 				31F57B61211A14D300777EA3 /* MacAppTests.xctest */,
 				31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */,
-				317D4C01217EC76A0081B38B /* Suno for Watch.app */,
+				317D4C01217EC76A0081B38B /* Suno.app */,
 				317D4C0D217EC76C0081B38B /* Suno-Watch Extension.appex */,
 			);
 			name = Products;
@@ -371,7 +371,6 @@
 				31862B7E226077950058883D /* EventOrigin.swift */,
 				313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */,
 				31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */,
-				31E5344423DEB20600F163B1 /* UserProfileOptionTableViewCell.swift */,
 				3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */,
 				31A855142422A63A0064B29C /* MorseCodeUtils.swift */,
 				319D524D2466897400CBB1EB /* HapticManager.swift */,
@@ -379,6 +378,7 @@
 				31BC651C24697FDD00D5D801 /* MCDictionaryCell.swift */,
 				316BA193246D78F000869C89 /* UITextField.swift */,
 				317340A1246DB60C00F75B1B /* Collection.swift */,
+				3172732C247662FC003538F8 /* SettingsTableViewController.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -412,7 +412,7 @@
 			);
 			name = "Suno-Watch";
 			productName = "Suno-Watch";
-			productReference = 317D4C01217EC76A0081B38B /* Suno for Watch.app */;
+			productReference = 317D4C01217EC76A0081B38B /* Suno.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
 		317D4C0C217EC76C0081B38B /* Suno-Watch Extension */ = {
@@ -772,9 +772,9 @@
 				3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */,
 				316BA194246D78F000869C89 /* UITextField.swift in Sources */,
 				317340A2246DB60C00F75B1B /* Collection.swift in Sources */,
+				3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */,
 				317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */,
 				313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */,
-				31E5344523DEB20600F163B1 /* UserProfileOptionTableViewCell.swift in Sources */,
 				3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */,
 				3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */,
 				315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */,
@@ -863,7 +863,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
-				PRODUCT_NAME = "Suno for Watch";
+				PRODUCT_NAME = Suno;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
@@ -890,7 +890,7 @@
 				MARKETING_VERSION = 1.1.9;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
-				PRODUCT_NAME = "Suno for Watch";
+				PRODUCT_NAME = Suno;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
@@ -915,7 +915,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
+				PRODUCT_NAME = "Suno-Watch Extension";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
@@ -939,7 +939,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
+				PRODUCT_NAME = "Suno-Watch Extension";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
@@ -1212,7 +1212,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Suno;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1231,7 +1231,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Suno;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

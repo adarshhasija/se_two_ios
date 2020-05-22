@@ -80,10 +80,7 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet weak var navStackView: UIStackView!
     @IBOutlet weak var bottomLeftStackView: UIStackView!
     @IBOutlet weak var bottomMiddleStackView: UIStackView!
-    @IBOutlet weak var bottomMiddleDisabilityIconsStackView: UIStackView!
-    @IBOutlet weak var bottomMiddleSpeakerImageView: UIImageView!
-    @IBOutlet weak var bottomMiddleEyeImageView: UIImageView!
-    @IBOutlet weak var bottomMiddleActionLabel: UILabel!
+    @IBOutlet weak var bottomMiddleChevronUpImageView: UIImageView!
     @IBOutlet weak var chatLogBtn: UIImageView!
     //
     
@@ -123,12 +120,6 @@ public class WhiteSpeechViewController: UIViewController {
         changeState(action: Action.BarButtonHelpTapped)
     }
     
-    
-    @IBAction func appleWatchButtonTapped(_ sender: Any) {
-        changeState(action: Action.AppleWatchButtonTapped)
-    }
-    
-    
     @IBAction func userProfileStackViewTapped(_ sender: Any) {
         if currentState.last == State.Idle {
             changeState(action: Action.UserProfileButtonTapped)
@@ -146,6 +137,18 @@ public class WhiteSpeechViewController: UIViewController {
                 },
                            completion: nil)
         }
+    }
+    
+    @IBAction func settingsButtonTapped(_ sender: Any) {
+        changeState(action: Action.SettingsButtonTapped)
+    }
+    
+    
+    @IBAction func cameraButtonTapped(_ sender: Any) {
+        self.view.transform = CGAffineTransform(translationX: 0, y: -100)
+        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.5, options: UIView.AnimationOptions.curveEaseInOut, animations: ({
+            self.view.transform = .identity
+        }), completion: nil)
     }
     
     
@@ -292,8 +295,8 @@ public class WhiteSpeechViewController: UIViewController {
         else if action == Action.UserProfileChanged && currentState.last == State.Idle {
             enterStateControllerLoaded() //Clear chat logs and reset after user profile changed
         }
-        else if action == Action.AppleWatchButtonTapped && currentState.last == State.Idle {
-            openAppleWatchAppInfoScreen()
+        else if action == Action.SettingsButtonTapped && currentState.last == State.Idle {
+            openSettingsScreen()
         }
         else if action == Action.UserProfileButtonTapped && currentState.last == State.Idle {
             Analytics.logEvent("se3_uprofile_tap", parameters: [:])
@@ -611,11 +614,11 @@ public class WhiteSpeechViewController: UIViewController {
         cbCentralManager.delegate = self
         
         //Setup watch connectivity
-        if WCSession.isSupported() {
+     /*   if WCSession.isSupported() {
             let session = WCSession.default
             session.delegate = self
             session.activate()
-        }
+        }   */
         
         //currentState.append(State.SubscriptionNotPaid)
         currentState.append(State.ControllerLoaded) //Push
@@ -736,7 +739,7 @@ public class WhiteSpeechViewController: UIViewController {
         textViewBottom?.delegate = self
         speechRecognizer.delegate = self
         
-        SFSpeechRecognizer.requestAuthorization { authStatus in
+     /*   SFSpeechRecognizer.requestAuthorization { authStatus in
             /*
                 The callback may not be called on the main thread. Add an
                 operation to the main queue to update the record button's state.
@@ -761,7 +764,7 @@ public class WhiteSpeechViewController: UIViewController {
                         self.recordLabel?.text = "Speech recognition not yet authorized"
                 }
             }
-        }
+        }   */
         
     }
     
@@ -893,7 +896,6 @@ public class WhiteSpeechViewController: UIViewController {
         }
         self.disabledContextLabel?.textColor = UIColor.lightGray
         self.disabledContextLabel?.isHidden = true
-        self.bottomMiddleActionLabel?.text = ""
         //self.view.bringSubview(toFront: viewForTypeTalkStackView)
         
         //composerStackView?.isHidden = true //We do not want this at the start
@@ -972,8 +974,15 @@ public class WhiteSpeechViewController: UIViewController {
         }
     }
     
-    private func openAppleWatchAppInfoScreen() {
-        performSegue(withIdentifier: "segueAppleWatch", sender: nil)
+    private func openSettingsScreen() {
+        //performSegue(withIdentifier: "segueAppleWatch", sender: nil)
+        guard let storyBoard : UIStoryboard = self.storyboard else {
+            return
+        }
+        let settingsTableViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsTableViewController") as! SettingsTableViewController
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(settingsTableViewController, animated: true)
+        }
     }
     
     private func openUserProfileOptions() {
@@ -1088,7 +1097,6 @@ public class WhiteSpeechViewController: UIViewController {
      /*   composerStackView?.isHidden = true
         bottomLeftStackView?.isHidden = true
         navStackView?.isHidden = true
-        bottomMiddleActionLabel?.text = ""
         //
         
         let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
@@ -1130,13 +1138,11 @@ public class WhiteSpeechViewController: UIViewController {
         if currentState.last == State.Typing {
             //Means nothing was actually entered
             
-            bottomMiddleActionLabel?.text = ""
             if dataChats.count > 0 {
                 textViewBottom?.text = dataChats[dataChats.count - 1].text
                 if dataChats[dataChats.count - 1].mode == "typing" {
                     //If the last message was typed
                     recordLabel?.text = speechToTextInstructionString
-                    bottomMiddleActionLabel?.text = lastActionTypingDeaf
                     disabledContextLabel?.isHidden = false
                     disabledContextLabel?.text = hiSIContextString
                 }
@@ -1150,7 +1156,6 @@ public class WhiteSpeechViewController: UIViewController {
                         view.backgroundColor = UIColor.init(red: 0, green: 80, blue: 0, alpha: 1)
                     }
                     recordLabel?.text = typingInstructionString
-                    bottomMiddleActionLabel?.text = lastActionSpeaking
                 }
             }
             else {
@@ -1199,7 +1204,6 @@ public class WhiteSpeechViewController: UIViewController {
             recordLabel?.text = speechToTextInstructionString
             disabledContextLabel?.isHidden = false
             disabledContextLabel?.text = hiSIContextString
-            bottomMiddleActionLabel?.text = lastActionTypingDeaf
 
         }
         
@@ -1264,7 +1268,6 @@ public class WhiteSpeechViewController: UIViewController {
             composerStackView?.isHidden = true
             navStackView?.isHidden = true
             bottomLeftStackView?.isHidden = true
-            bottomMiddleActionLabel?.text = ""
             //
             
             let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
@@ -1355,14 +1358,12 @@ public class WhiteSpeechViewController: UIViewController {
                     disabledContextLabel?.text = hiSIContextString
                     textViewBottom?.text = dataChats[dataChats.count - 1].text
                     recordLabel?.text = speechToTextInstructionString
-                    bottomMiddleActionLabel?.text = lastActionTypingDeaf
                 }
                 else if dataChats.count > 0 && dataChats[dataChats.count - 1].mode == "talking" {
                     recordLabel?.text = typingInstructionString
                     disabledContextLabel?.isHidden = true
                     disabledContextLabel?.text = ""
                     textViewBottom?.text = dataChats[dataChats.count - 1].text
-                    bottomMiddleActionLabel?.text = lastActionSpeaking
                 }
                 else {
                     //There was no message before. THis was the first message
@@ -1379,13 +1380,11 @@ public class WhiteSpeechViewController: UIViewController {
                     disabledContextLabel?.isHidden = true
                     disabledContextLabel?.text = ""
                     textViewBottom?.text = ""
-                    bottomMiddleActionLabel?.text = ""
                 }
             }
             else {
                 userStatusLabel?.text = "Give the device to the other person"
                 recordLabel?.text = typingInstructionString //In this section we are guaranteed to have new text
-                bottomMiddleActionLabel?.text = lastActionSpeaking
                 guard let newText = textViewBottom?.text else {
                     return
                 }
@@ -1717,6 +1716,15 @@ public class WhiteSpeechViewController: UIViewController {
         }
     }
     
+    func sendEnglishAndMCToWatch(english: String?, morseCode: String?) {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            if session.isWatchAppInstalled && session.isReachable {
+                session.sendMessage(["is_english_mc": true, "english": english, "morse_code": morseCode], replyHandler: nil, errorHandler: nil)
+            }
+        }
+    }
+    
     func sendStatusToWatch(beginningOfAction: Bool, success: Bool, text: String) {
         if WCSession.isSupported() {
             let session = WCSession.default
@@ -1732,6 +1740,18 @@ public class WhiteSpeechViewController: UIViewController {
             if session.isReachable && session.isWatchAppInstalled {
                 session.sendMessage(["response": text], replyHandler: nil, errorHandler: nil)
             }
+        }
+    }
+    
+    func receivedRequestForEnglishAndMCFromWatch() {
+        let englishString = englishMorseCodeTextLabel?.text
+        let morseCodeString = morseCodeLabel?.text
+        if englishString?.isEmpty == false && morseCodeString?.isEmpty == false {
+            sendEnglishAndMCToWatch(english: englishString!, morseCode: morseCodeString!)
+        }
+        else {
+            //If null or empty
+            sendEnglishAndMCToWatch(english: nil, morseCode: nil)
         }
     }
     
@@ -2092,6 +2112,18 @@ extension WhiteSpeechViewController : WCSessionDelegate {
             }
             changeState(action: Action.ReceivedStatusFromWatch)
         }
+     /*   else if let requestMorseCode = message["request_morse_code"] as? Bool {
+            //User has opened the watch app and is requesting the current english and morse code on the phone
+            //This is because they prefer to read it on the watch
+            let allowiOSToWatch = UserDefaults.standard.string(forKey: "SE3_IOS_WATCH_SEND")
+            if allowiOSToWatch == nil || allowiOSToWatch == "_1" {
+                let englishString = englishMorseCodeTextLabel?.text
+                let morseCodeString = morseCodeLabel?.text
+                if englishString?.isEmpty == false && morseCodeString?.isEmpty == false {
+                    sendEnglishAndMCToWatch(english: englishString!, morseCode: morseCodeString!)
+                }
+            }
+        }   */
         else if let cancalledTyping = message["user_cancelled_typing"] as? String {
             response = cancalledTyping //Used only for analytics
             changeState(action: Action.ReceivedStatusFromWatch)

@@ -9,13 +9,16 @@
 import WatchKit
 import WatchConnectivity
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
+class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     
     /// MARK:- WCSessionDelegate
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         
     }
     
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        (visibleInterfaceController as? MCInterfaceController)?.receivedMessageFromPhone(message: message)
+    }
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.

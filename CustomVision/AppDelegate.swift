@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let session = WCSession.default
                 session.delegate = self
                 session.activate()
-            }
+            }   
             return true
     }
 
@@ -50,7 +50,13 @@ extension AppDelegate : WCSessionDelegate {
             {
             Analytics.logEvent(eventName, parameters: parameters)
         }
-        if let watchUserType = message["user_type"] as? String {
+        else if let requestMorseCode = message["request_morse_code"] as? Bool {
+            //User has opened the watch app and is requesting the current english and morse code on the phone
+            //This is because they prefer to read it on the watch
+            DispatchQueue.main.async {
+                //This is because topViewController must be accessed from the main threads
+                ((self.window?.rootViewController as? UINavigationController)?.topViewController as? WhiteSpeechViewController)?.receivedRequestForEnglishAndMCFromWatch()
+            }
             
         }
     }

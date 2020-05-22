@@ -1816,7 +1816,7 @@ extension SpeechViewController : UITableViewDelegate {
     
     
     func requestSpeechRecognitionPermission() {
-        SFSpeechRecognizer.requestAuthorization { authStatus in
+     /*   SFSpeechRecognizer.requestAuthorization { authStatus in
             /*
              The callback may not be called on the main thread. Add an
              operation to the main queue to update the record button's state.
@@ -1842,7 +1842,7 @@ extension SpeechViewController : UITableViewDelegate {
                     self.recordLabel?.text = "Speech recognition not yet authorized"
                 }
             }
-        }
+        }   */
     }
 }
 

@@ -215,6 +215,31 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     
+    @IBAction func downSwipe(_ sender: Any) {
+        sendAnalytics(eventName: "se3_watch_swipe_down", parameters: [:])
+        //let watchDelegate = WKExtension.shared().delegate as? ExtensionDelegate
+        //watchDelegate?.sendMessage()
+        //Making this call to see if there is any morse code to get from the iPhone app
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            if session.isReachable {
+                var message : [String : Any] = [:]
+                message["request_morse_code"] = true
+                // In your WatchKit extension, the value of this property is true when the paired iPhone is reachable via Bluetooth.
+                session.sendMessage(message, replyHandler: nil, errorHandler: nil)
+            }
+            else {
+                setInstructionLabelForMode(mainString: "Update from phone failed:\niPhone is not reachable", readingString: "", writingString: "", isError: false)
+                WKInterfaceDevice.current().play(.failure)
+            }
+        }
+        else {
+            setInstructionLabelForMode(mainString: "Update from phone failed:\nPlease try again later", readingString: "", writingString: "", isError: false)
+            WKInterfaceDevice.current().play(.failure)
+        }
+    }
+    
+    
     @IBAction func longPress(_ sender: Any) {
         sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
         openTalkTypeMode()
@@ -278,6 +303,13 @@ class MCInterfaceController : WKInterfaceController {
             }
             instructionsLabel.setText(defaultInstructions)
         }
+        
+        // Configure interface objects here.
+     /*   if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }   */
     }
     
     override func willActivate() {
@@ -309,7 +341,7 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
             instructionsLabel.setText(finalString)
         }
         else {
-            setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
+            setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
         }
         
         WKInterfaceDevice.current().play(.success)
@@ -328,7 +360,7 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
             instructionsLabel.setText(finalString)
         }
         else {
-            setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
+            setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
         }
         
         WKInterfaceDevice.current().play(.failure)
@@ -356,7 +388,7 @@ extension MCInterfaceController : WKCrownDelegate {
                 morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
                 englishTextLabel.setText(englishString)
                 WKInterfaceDevice.current().play(.success)
-                setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString)
+                setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString, isError: false)
                 morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
                 englishStringIndex = englishString.count
                 return
@@ -366,7 +398,7 @@ extension MCInterfaceController : WKCrownDelegate {
                 "state" : "scrolling",
                 "isReading" : self.isReading()
             ])
-            setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString)
+            setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString, isError: false)
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
@@ -403,7 +435,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     "is_reading" : self.isReading()
                 ])
                 WKInterfaceDevice.current().play(.failure)
-                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
+                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
                 
                 if morseCodeStringIndex < 0 {
                     morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
@@ -466,7 +498,7 @@ extension MCInterfaceController {
         morseCodeTextLabel.setText(morseCodeString)
         morseCodeStringIndex = -1
         isUserTyping = false
-        setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString)
+        setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
         WKInterfaceDevice.current().play(.success)
         while morseCode.mcTreeNode?.parent != nil {
             morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
@@ -682,7 +714,7 @@ extension MCInterfaceController {
     }
     
     //2 strings for writing mode and reading mode
-    func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String) {
+    func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String, isError: Bool?) {
         var instructionString = mainString
         if !isUserTyping {
             instructionString += "\n\nOr\n\n" + readingString
@@ -691,6 +723,7 @@ extension MCInterfaceController {
             instructionString += "\n\nOr\n\n" + writingString
         }
         self.instructionsLabel.setText(instructionString)
+        self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.init(red: 0.23, green: 0.83, blue: 1.0, alpha: 1.0))
     }
     
     
@@ -784,6 +817,33 @@ extension MCInterfaceController {
             }
             
         })
+    }
+    
+    func receivedMessageFromPhone(message : [String : Any]) {
+        if message["is_english_mc"] != nil {
+            guard let english = message["english"] as? String else {
+                setInstructionLabelForMode(mainString: "Update from phone failed:\nThere was no alphabets or morse code to share", readingString: "", writingString: "", isError: true)
+                instructionsLabel?.setTextColor(.red)
+                WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            guard let morseCode = message["morse_code"] as? String else {
+                setInstructionLabelForMode(mainString: "Update from phone failed:\nThere was no alphabets or morse code to share", readingString: "", writingString: "", isError: true)
+                WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            englishString = english
+            morseCodeString = morseCode
+            englishTextLabel?.setText(englishString)
+            morseCodeTextLabel?.setText(morseCodeString)
+            englishTextLabel?.setHidden(false)
+            morseCodeTextLabel?.setHidden(false)
+            englishStringIndex = -1
+            morseCodeStringIndex = -1
+            isUserTyping = false
+            setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
+            WKInterfaceDevice.current().play(.success)
+        }
     }
     
     
