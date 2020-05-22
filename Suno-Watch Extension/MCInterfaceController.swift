@@ -319,6 +319,7 @@ class MCInterfaceController : WKInterfaceController {
         WKInterfaceDevice.current().play(.success) //This is used to notify a deaf-blind user that the app is active
         self.crownSequencer.delegate = self
         self.crownSequencer.focus()
+        self.instructionsLabel?.setTextColor(UIColor.orange)
     }
     
     
@@ -701,7 +702,7 @@ extension MCInterfaceController {
         
         instructionsString += "\n" + "Swipe left to delete last character"
         instructionsLabel.setText(instructionsString)
-        self.instructionsLabel.setTextColor(UIColor.init(red: CGFloat(59/255), green: CGFloat(213/255), blue: 1.0, alpha: 1.0))
+        self.instructionsLabel.setTextColor(UIColor.orange)
     }
 
     
@@ -724,7 +725,7 @@ extension MCInterfaceController {
             instructionString += "\n\nOr\n\n" + writingString
         }
         self.instructionsLabel.setText(instructionString)
-        self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.init(red: CGFloat(59/255), green: CGFloat(213/255), blue: 1.0, alpha: 1.0))
+        self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.orange)
     }
     
     
