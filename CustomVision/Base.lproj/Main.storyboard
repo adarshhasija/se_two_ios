@@ -1384,7 +1384,7 @@
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="VeO-C7-Vme">
                     <connections>
-                        <action selector="cameraButtonTapped:" destination="tNc-1S-FN5" id="2Sh-Eh-KmT"/>
+                        <action selector="bottomMiddleButtonTapped:" destination="tNc-1S-FN5" id="2Sh-Eh-KmT"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -1431,6 +1431,45 @@
                                                 <constraint firstItem="4FU-Bf-47G" firstAttribute="leading" secondItem="h6X-Pb-3Sx" secondAttribute="leading" constant="20" id="nir-oW-GRK"/>
                                                 <constraint firstAttribute="trailing" secondItem="4FU-Bf-47G" secondAttribute="trailing" constant="20" id="vaB-Ll-HkV"/>
                                                 <constraint firstItem="4FU-Bf-47G" firstAttribute="top" secondItem="h6X-Pb-3Sx" secondAttribute="top" constant="20" id="ylt-sK-ksu"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Camera" id="UBN-mq-RXf">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rBk-x5-Dwh">
+                                        <rect key="frame" x="20" y="155" width="374" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rBk-x5-Dwh" id="MG7-tp-csa">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="DoM-RX-M2q">
+                                                    <rect key="frame" x="20" y="20" width="334" height="3.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Read signs on doors" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iN9-rk-XpU">
+                                                            <rect key="frame" x="0.0" y="0.0" width="334" height="0.0"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Eu-SC-gkD">
+                                                            <rect key="frame" x="0.0" y="3.5" width="334" height="0.0"/>
+                                                            <string key="text">If you need to read the sign on a door, or any other sign, up swipe on the main screen to open the camera. Point the camera at the door. We will show you the text. You can then play the audio or read the morse code</string>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="DoM-RX-M2q" secondAttribute="trailing" constant="20" id="AvE-qF-KOn"/>
+                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="centerY" secondItem="MG7-tp-csa" secondAttribute="centerY" id="aU1-zN-RAN"/>
+                                                <constraint firstAttribute="bottom" secondItem="DoM-RX-M2q" secondAttribute="bottom" constant="20" id="iR0-2A-Xfo"/>
+                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="leading" secondItem="MG7-tp-csa" secondAttribute="leading" constant="20" id="jFE-q9-kVY"/>
+                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="top" secondItem="MG7-tp-csa" secondAttribute="top" constant="20" id="lFb-Of-Oh6"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

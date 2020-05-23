@@ -147,9 +147,13 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     
-    @IBAction func cameraButtonTapped(_ sender: Any) {
+    @IBAction func bottomMiddleButtonTapped(_ sender: Any) {
+        self.view.transform = CGAffineTransform(translationX: 0, y: 100)
+        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.5, options: UIView.AnimationOptions.curveLinear, animations: ({
+            self.view.transform = .identity
+        }), completion: nil)
         self.view.transform = CGAffineTransform(translationX: 0, y: -100)
-        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.5, options: UIView.AnimationOptions.curveEaseInOut, animations: ({
+        UIView.animate(withDuration: 1.0, delay: 0.8, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.5, options: UIView.AnimationOptions.curveEaseOut, animations: ({
             self.view.transform = .identity
         }), completion: nil)
     }
@@ -1825,8 +1829,10 @@ public class WhiteSpeechViewController: UIViewController {
         morseCodeLabel?.textColor = .none
         morseCodeLabel?.isHidden = false
         morseCodeStringIndex = -1
-        self.dataChats.append(ChatListItem(text: english, morseCodeText: morseCode, origin: peerID.displayName, mode: inputMethod))
-        self.chatLogBtn?.image = UIImage(systemName: "book.fill")
+        if inputMethod != "camera" {
+            self.dataChats.append(ChatListItem(text: english, morseCodeText: morseCode, origin: peerID.displayName, mode: inputMethod))
+            self.chatLogBtn?.image = UIImage(systemName: "book.fill")
+        }
     }
     
     private func convertEnglishToMC(englishString : String) -> String {
@@ -2304,7 +2310,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
             cameraOriginImageView?.isHidden = false
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
             let morseCodeString = convertEnglishToMC(englishString: englishFiltered)
-            setEnglishAndMCLabels(english: englishFiltered, morseCode: morseCodeString, inputMethod: "morse_code") //Originally from device
+            setEnglishAndMCLabels(english: englishFiltered, morseCode: morseCodeString, inputMethod: "camera") //Originally from device
             morseCodeLabel?.isHidden = true
             setBackgroundColor(lastAction: "morse_code")
             morseCodeLabel?.isHidden = true

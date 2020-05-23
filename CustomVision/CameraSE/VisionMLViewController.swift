@@ -21,7 +21,7 @@ class VisionMLViewController: UIViewController {
     
     public var shortcutListItem: ShortcutListItem = ShortcutListItem(
         question: "What does this text say?",
-        messageOnOpen: "Point your camera at text\nWe will tell you what it is",
+        messageOnOpen: "Point your camera at the door\nWe will tell you what it is",
         activityType: "com.starsearth.three.tellSignIntent",
         isUsingFirebase: true,
         isTextDetection: true,
