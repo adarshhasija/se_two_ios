@@ -78,8 +78,9 @@ public class WhiteSpeechViewController: UIViewController {
     
     // Bottom nav stack
     @IBOutlet weak var navStackView: UIStackView!
-    @IBOutlet weak var bottomLeftStackView: UIStackView!
-    @IBOutlet weak var bottomMiddleStackView: UIStackView!
+    @IBOutlet weak var bottomLeftImageView: UIImageView!
+    @IBOutlet weak var bottomMiddleImageView: UIImageView!
+    
     @IBOutlet weak var bottomMiddleChevronUpImageView: UIImageView!
     @IBOutlet weak var chatLogBtn: UIImageView!
     //
@@ -1097,7 +1098,7 @@ public class WhiteSpeechViewController: UIViewController {
         
         //Close stack views
      /*   composerStackView?.isHidden = true
-        bottomLeftStackView?.isHidden = true
+        bottomLeftImageView?.isHidden = true
         navStackView?.isHidden = true
         //
         
@@ -1131,8 +1132,8 @@ public class WhiteSpeechViewController: UIViewController {
         //Show stack views
         if dataChats.count > 0 { composerStackView?.isHidden = false }
         navStackView?.isHidden = false
-        bottomLeftStackView?.isHidden = false
-        bottomMiddleStackView?.isHidden = false
+        bottomLeftImageView?.isHidden = false
+        bottomMiddleImageView?.isHidden = false
         //
         
         textViewBottom?.isEditable = false
@@ -1281,7 +1282,7 @@ public class WhiteSpeechViewController: UIViewController {
             //Close/hide stack views
             composerStackView?.isHidden = true
             navStackView?.isHidden = true
-            bottomLeftStackView?.isHidden = true
+            bottomLeftImageView?.isHidden = true
             //
             
             let se3UserType = UserDefaults.standard.string(forKey: "SE3_IOS_USER_TYPE")
@@ -1342,7 +1343,7 @@ public class WhiteSpeechViewController: UIViewController {
         //Show stack views
         if dataChats.count > 0 { composerStackView?.isHidden = false }
         navStackView?.isHidden = false
-        bottomLeftStackView?.isHidden = false
+        bottomLeftImageView?.isHidden = false
         //
         
         textViewBottom?.isEditable = false
@@ -2242,6 +2243,7 @@ protocol WhiteSpeechViewControllerProtocol {
 
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     func setTypedMessage(english: String) {
+        Analytics.logEvent("se3_ios_typing_ret", parameters: [:]) //returned from typing
         if english.count > 0 {
             cameraOriginImageView?.isHidden = true
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
@@ -2261,6 +2263,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     }
     
     func setSpokenMessage(english: String) {
+        Analytics.logEvent("se3_ios_speak_ret", parameters: [:]) //returned from speaking
         if english.count > 0 {
             cameraOriginImageView?.isHidden = true
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
@@ -2279,6 +2282,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     }
     
     func setMorseCodeMessage(englishInput: String, morseCodeInput : String) {
+        Analytics.logEvent("se3_ios_mc_ret", parameters: [:]) //returned from morse code
         if englishInput.count > 0 && morseCodeInput.count > 0 {
             cameraOriginImageView?.isHidden = true
             setEnglishAndMCLabels(english: englishInput, morseCode: morseCodeInput, inputMethod: "morse_code")
