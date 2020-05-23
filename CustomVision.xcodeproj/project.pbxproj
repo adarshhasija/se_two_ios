@@ -13,7 +13,6 @@
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
 		315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */; };
-		315A776823EDF03D00FC75E3 /* WatchAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776723EDF03D00FC75E3 /* WatchAppViewController.swift */; };
 		316BA194246D78F000869C89 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316BA193246D78F000869C89 /* UITextField.swift */; };
 		3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172732C247662FC003538F8 /* SettingsTableViewController.swift */; };
 		317340A2246DB60C00F75B1B /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317340A1246DB60C00F75B1B /* Collection.swift */; };
@@ -37,6 +36,12 @@
 		317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */; };
 		31862B7D225E11650058883D /* ChatListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7C225E11650058883D /* ChatListItem.swift */; };
 		31862B7F226077950058883D /* EventOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7E226077950058883D /* EventOrigin.swift */; };
+		3188A82F24789A080075B33E /* MainVision.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3188A82D24789A080075B33E /* MainVision.storyboard */; };
+		3188A83124789C2D0075B33E /* VisionMLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83024789C2D0075B33E /* VisionMLViewController.swift */; };
+		3188A83524789CFD0075B33E /* BubbleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83324789CFD0075B33E /* BubbleLayer.swift */; };
+		3188A83624789CFD0075B33E /* BubbleLabelLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */; };
+		3188A83824789FA00075B33E /* ShortcutListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83724789FA00075B33E /* ShortcutListItem.swift */; };
+		3188A83A2478A0EF0075B33E /* AdarshBlueBackpack.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */; };
 		319D524E2466897400CBB1EB /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319D524D2466897400CBB1EB /* HapticManager.swift */; };
 		31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */; };
 		31A67B81235CAC6600F506BD /* FAQRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B80235CAC6600F506BD /* FAQRowController.swift */; };
@@ -132,7 +137,6 @@
 		313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDTouchView.swift; sourceTree = "<group>"; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
 		315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoPeopleSettingsViewController.swift; sourceTree = "<group>"; };
-		315A776723EDF03D00FC75E3 /* WatchAppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchAppViewController.swift; sourceTree = "<group>"; };
 		316BA193246D78F000869C89 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3172732C247662FC003538F8 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		317340A1246DB60C00F75B1B /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
@@ -155,6 +159,12 @@
 		317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteSpeechViewController.swift; sourceTree = "<group>"; };
 		31862B7C225E11650058883D /* ChatListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListItem.swift; sourceTree = "<group>"; };
 		31862B7E226077950058883D /* EventOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrigin.swift; sourceTree = "<group>"; };
+		3188A82E24789A080075B33E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainVision.storyboard; sourceTree = "<group>"; };
+		3188A83024789C2D0075B33E /* VisionMLViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionMLViewController.swift; sourceTree = "<group>"; };
+		3188A83324789CFD0075B33E /* BubbleLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleLayer.swift; sourceTree = "<group>"; };
+		3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleLabelLayer.swift; sourceTree = "<group>"; };
+		3188A83724789FA00075B33E /* ShortcutListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutListItem.swift; sourceTree = "<group>"; };
+		3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = AdarshBlueBackpack.mlmodel; sourceTree = "<group>"; };
 		319D524D2466897400CBB1EB /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQInterfaceController.swift; sourceTree = "<group>"; };
 		31A67B80235CAC6600F506BD /* FAQRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRowController.swift; sourceTree = "<group>"; };
@@ -286,6 +296,18 @@
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
 		};
+		3188A83224789CB00075B33E /* CameraSE */ = {
+			isa = PBXGroup;
+			children = (
+				3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */,
+				3188A83724789FA00075B33E /* ShortcutListItem.swift */,
+				3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */,
+				3188A83324789CFD0075B33E /* BubbleLayer.swift */,
+				3188A83024789C2D0075B33E /* VisionMLViewController.swift */,
+			);
+			path = CameraSE;
+			sourceTree = "<group>";
+		};
 		31F57B51211A14D100777EA3 /* MacApp */ = {
 			isa = PBXGroup;
 			children = (
@@ -349,7 +371,8 @@
 		5EBF65101F0AA47700BCD353 /* CustomVision */ = {
 			isa = PBXGroup;
 			children = (
-				315A776723EDF03D00FC75E3 /* WatchAppViewController.swift */,
+				3188A83224789CB00075B33E /* CameraSE */,
+				3188A82D24789A080075B33E /* MainVision.storyboard */,
 				315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */,
 				317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */,
 				31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */,
@@ -625,6 +648,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3188A82F24789A080075B33E /* MainVision.storyboard in Resources */,
 				5EBF651C1F0AA47700BCD353 /* LaunchScreen.storyboard in Resources */,
 				31798E00217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */,
 				5EBF65191F0AA47700BCD353 /* Assets.xcassets in Resources */,
@@ -766,20 +790,24 @@
 				319D524E2466897400CBB1EB /* HapticManager.swift in Sources */,
 				31862B7D225E11650058883D /* ChatListItem.swift in Sources */,
 				31BC651E2469872D00D5D801 /* MorseCodeCell.swift in Sources */,
-				315A776823EDF03D00FC75E3 /* WatchAppViewController.swift in Sources */,
 				31A855152422A63A0064B29C /* MorseCodeUtils.swift in Sources */,
 				31862B7F226077950058883D /* EventOrigin.swift in Sources */,
 				3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */,
 				316BA194246D78F000869C89 /* UITextField.swift in Sources */,
 				317340A2246DB60C00F75B1B /* Collection.swift in Sources */,
 				3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */,
+				3188A83624789CFD0075B33E /* BubbleLabelLayer.swift in Sources */,
 				317972292156AAA1006495E3 /* HelpTopicsTableViewController.swift in Sources */,
 				313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */,
 				3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */,
 				3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */,
 				315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */,
 				5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */,
+				3188A83824789FA00075B33E /* ShortcutListItem.swift in Sources */,
 				31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */,
+				3188A83A2478A0EF0075B33E /* AdarshBlueBackpack.mlmodel in Sources */,
+				3188A83124789C2D0075B33E /* VisionMLViewController.swift in Sources */,
+				3188A83524789CFD0075B33E /* BubbleLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -815,6 +843,14 @@
 				317D4C04217EC76A0081B38B /* Base */,
 			);
 			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		3188A82D24789A080075B33E /* MainVision.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3188A82E24789A080075B33E /* Base */,
+			);
+			name = MainVision.storyboard;
 			sourceTree = "<group>";
 		};
 		31F57B58211A14D300777EA3 /* Main.storyboard */ = {

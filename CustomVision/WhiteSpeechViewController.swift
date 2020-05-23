@@ -386,10 +386,11 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if action == Action.SwipeUp && currentState.last == State.Idle {
             Analytics.logEvent("se3_typing_not_connected", parameters: [:])
-            sendStatusToWatch(beginningOfAction: true, success: true, text: "User is typing on iPhone. Please wait. Tell them to tap screen when done.")
+            //sendStatusToWatch(beginningOfAction: true, success: true, text: "User is typing on iPhone. Please wait. Tell them to tap screen when done.")
             //currentState.append(State.Typing)
-            currentState.append(State.EditingMode)
-            enterStateTyping()
+            //currentState.append(State.EditingMode)
+            //enterStateTyping()
+            openCameraForBlind()
         }
      /*   else if action == Action.LongPress && currentState.last == State.Idle {
             Analytics.logEvent("se3_long_press_not_connected", parameters: [:])
@@ -975,7 +976,6 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func openSettingsScreen() {
-        //performSegue(withIdentifier: "segueAppleWatch", sender: nil)
         guard let storyBoard : UIStoryboard = self.storyboard else {
             return
         }
@@ -1214,6 +1214,10 @@ public class WhiteSpeechViewController: UIViewController {
             self.timerStackView?.transform = stackViewTransform ?? CGAffineTransform()
             self.textViewBottom?.transform = textViewBottomTransform ?? CGAffineTransform()
         }
+    }
+    
+    private func openCameraForBlind() {
+        performSegue(withIdentifier: "SECamera", sender: nil)
     }
     
     private func enterStateReceivingFromWatch() {
