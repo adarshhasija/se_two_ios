@@ -299,6 +299,7 @@
 		3188A83224789CB00075B33E /* CameraSE */ = {
 			isa = PBXGroup;
 			children = (
+				3188A82D24789A080075B33E /* MainVision.storyboard */,
 				3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */,
 				3188A83724789FA00075B33E /* ShortcutListItem.swift */,
 				3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */,
@@ -372,7 +373,6 @@
 			isa = PBXGroup;
 			children = (
 				3188A83224789CB00075B33E /* CameraSE */,
-				3188A82D24789A080075B33E /* MainVision.storyboard */,
 				315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */,
 				317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */,
 				31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */,

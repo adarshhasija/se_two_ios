@@ -21,7 +21,7 @@ class VisionMLViewController: UIViewController {
     
     public var shortcutListItem: ShortcutListItem = ShortcutListItem(
         question: "What does this text say?",
-        messageOnOpen: "Is there some text in front of you? Point your camera at the text and we will tell you what text it is",
+        messageOnOpen: "Point your camera at text\nWe will tell you what it is",
         activityType: "com.starsearth.three.tellSignIntent",
         isUsingFirebase: true,
         isTextDetection: true,
@@ -141,6 +141,12 @@ class VisionMLViewController: UIViewController {
     previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     previewView.layer.addSublayer(previewLayer)
   }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if synth.isSpeaking {
+            synth.stopSpeaking(at: .immediate)
+        }
+    }
   
   override func viewDidAppear(_ animated: Bool) {
     //addSiriButton(to: stackView)
@@ -438,17 +444,21 @@ extension VisionMLViewController {
     }
     
     func addInstructionsTextLabel(to view: UIView) {
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 21))
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = NSTextAlignment.center
         label.backgroundColor = UIColor.black
         label.textColor = UIColor.white
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
         label.text = shortcutListItem.messageOnOpen
         self.view.addSubview(label)
         view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
         view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraintEqualToSystemSpacingAfter(view.leadingAnchor, multiplier: 1),
+            view.trailingAnchor.constraintEqualToSystemSpacingAfter(view.trailingAnchor, multiplier: 1)
+        ])
     }
     
     private func sayThis(string: String) {

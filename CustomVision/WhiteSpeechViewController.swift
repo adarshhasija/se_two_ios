@@ -1224,6 +1224,7 @@ public class WhiteSpeechViewController: UIViewController {
         if segue.identifier == "SECamera" {
             let visionMLViewController = segue.destination as? VisionMLViewController
             visionMLViewController?.delegate = self
+            hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         }
     }
     
