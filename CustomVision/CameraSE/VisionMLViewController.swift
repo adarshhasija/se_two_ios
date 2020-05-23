@@ -21,7 +21,7 @@ class VisionMLViewController: UIViewController {
     
     public var shortcutListItem: ShortcutListItem = ShortcutListItem(
         question: "What does this text say?",
-        messageOnOpen: "Point your camera at the text. Sign should be in English",
+        messageOnOpen: "Is there some text in front of you? Point your camera at the text and we will tell you what text it is",
         activityType: "com.starsearth.three.tellSignIntent",
         isUsingFirebase: true,
         isTextDetection: true,
@@ -29,6 +29,8 @@ class VisionMLViewController: UIViewController {
         isYesNo: false,
         textForYesNo: nil
     )
+    
+    var delegate : WhiteSpeechViewControllerProtocol? = nil
     
     private var lastFrame: CMSampleBuffer?
     
@@ -71,8 +73,9 @@ class VisionMLViewController: UIViewController {
       // Load the Custom Vision model.
       // To add a new model, drag it to the Xcode project browser making sure that the "Target Membership" is checked.
       // Then update the following line with the name of your new model.
-      let model = try VNCoreMLModel(for: AdarshBlueBackpack().model) //try VNCoreMLModel(for: Rupees().model)
-      let classificationRequest = VNCoreMLRequest(model: model, completionHandler: self.handleClassification)
+      //let model = try VNCoreMLModel(for: AdarshBlueBackpack().model) //try VNCoreMLModel(for: Rupees().model)
+      //let classificationRequest = VNCoreMLRequest(model: model, completionHandler: self.handleClassification)
+        let classificationRequest = VNRecognizeTextRequest(completionHandler: self.handleClassificationText)
       return [ classificationRequest ]
     } catch {
       fatalError("Can't load Vision ML model: \(error)")
@@ -113,6 +116,22 @@ class VisionMLViewController: UIViewController {
       }
     }
   }
+    
+  func handleClassificationText(request: VNRequest, error: Error?) {
+      if let results = request.results, !results.isEmpty {
+            if let requestResults = request.results as? [VNRecognizedTextObservation] {
+                var recognizedText = ""
+                for observation in requestResults {
+                    guard let candidiate = observation.topCandidates(1).first else { return }
+                      recognizedText += candidiate.string
+                    recognizedText += "\n"
+                }
+                delegate?.setTypedMessage(english: recognizedText)
+                self.dismiss(animated: true, completion: nil)
+                //self.bubbleLayer.string = recognizedText
+            }
+        }
+  }
   
   // MARK: Lifecycle
   
@@ -124,7 +143,8 @@ class VisionMLViewController: UIViewController {
   }
   
   override func viewDidAppear(_ animated: Bool) {
-    addSiriButton(to: stackView)
+    //addSiriButton(to: stackView)
+    addInstructionsTextLabel(to: stackView)
     bubbleLayer.opacity = 0.0
     bubbleLayer.position.x = self.view.frame.width / 2.0
     bubbleLayer.position.y = lowerView.frame.height / 2
@@ -415,6 +435,20 @@ extension VisionMLViewController {
         view.addSubview(button)
         view.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
         view.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
+    }
+    
+    func addInstructionsTextLabel(to view: UIView) {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = NSTextAlignment.center
+        label.backgroundColor = UIColor.black
+        label.textColor = UIColor.white
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.text = shortcutListItem.messageOnOpen
+        self.view.addSubview(label)
+        view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
+        view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
     }
     
     private func sayThis(string: String) {

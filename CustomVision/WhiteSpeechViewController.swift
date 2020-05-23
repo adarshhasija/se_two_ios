@@ -1220,6 +1220,13 @@ public class WhiteSpeechViewController: UIViewController {
         performSegue(withIdentifier: "SECamera", sender: nil)
     }
     
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SECamera" {
+            let visionMLViewController = segue.destination as? VisionMLViewController
+            visionMLViewController?.delegate = self
+        }
+    }
+    
     private func enterStateReceivingFromWatch() {
         //When coming from the watch
         //Use this to update the UI instantaneously (otherwise, takes a little while)
@@ -1909,7 +1916,10 @@ public class WhiteSpeechViewController: UIViewController {
             self.recordLabel?.text = longPressMorseCodeInstructionString
         }
         else {
-            self.recordLabel?.text = setupInstructionString
+            //self.recordLabel?.text = setupInstructionString
+            
+            //Assuming deaf-blind by default
+            self.recordLabel?.text = longPressMorseCodeInstructionString
         }
     }
     
