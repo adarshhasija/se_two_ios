@@ -927,6 +927,12 @@
                                         <rect key="frame" x="0.0" y="-2.5" width="374" height="1"/>
                                         <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You may not be able to feel morse code vibrations on this device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pvr-Hz-QiY">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFy-dY-UoY" userLabel="Tap to Record Label">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -1280,6 +1286,7 @@
                         <outlet property="composerStackView" destination="k6u-OF-iHk" id="1vE-Da-Mcy"/>
                         <outlet property="disabledContextLabel" destination="c4i-9M-6Li" id="oJ4-nO-mGD"/>
                         <outlet property="englishMorseCodeTextLabel" destination="hZ3-cq-gEq" id="11S-xX-jGq"/>
+                        <outlet property="errorCoreHapticsLabel" destination="pvr-Hz-QiY" id="H1w-oA-uwT"/>
                         <outlet property="helpBarButtonItem" destination="uef-Tw-mVX" id="gGF-SM-iOL"/>
                         <outlet property="longPressLabel" destination="pCY-F6-qYh" id="FYe-c6-v7u"/>
                         <outlet property="mainTextViewAndMorseCodeLabelStackView" destination="tee-MB-Gzl" id="Y3k-eU-RCh"/>
@@ -1900,13 +1907,13 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1OV-xK-dKy">
                                             <rect key="frame" x="20" y="1.5" width="93.5" height="41"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSx-BM-u7Q">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="English" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSx-BM-u7Q">
                                                     <rect key="frame" x="0.0" y="0.0" width="93.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvl-u8-O93">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvl-u8-O93">
                                                     <rect key="frame" x="0.0" y="20.5" width="93.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>

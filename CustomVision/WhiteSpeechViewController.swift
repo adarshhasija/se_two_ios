@@ -90,6 +90,7 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet var recordButton : UIButton?
     @IBOutlet weak var longPressLabel: UILabel?   
     @IBOutlet weak var noInternetImageView: UIImageView!
+    @IBOutlet weak var errorCoreHapticsLabel: UILabel!
     @IBOutlet weak var recordLabel: UILabel?
     @IBOutlet weak var timerLabel: UILabel?
     @IBOutlet weak var swipeUpLabel: UILabel!
@@ -252,6 +253,7 @@ public class WhiteSpeechViewController: UIViewController {
     
     @IBAction func centerBigButtunTapped(_ sender: Any) {
         Analytics.logEvent("se3_center_btn_tap", parameters: [:])
+        currentState.append(State.EditingMode)
         let maxLength = 35
         let alert = UIAlertController(title: englishMorseCodeTextLabel?.text, message: "Character limit for reply: " + String(maxLength), preferredStyle: .alert)
 
@@ -270,6 +272,7 @@ public class WhiteSpeechViewController: UIViewController {
             //print("Text field: \(textField.text)")
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [weak alert] (_) in
+            self.changeState(action: Action.CancelledEditing)
             alert?.dismiss(animated: true, completion: nil)
         }))
 
@@ -324,7 +327,12 @@ public class WhiteSpeechViewController: UIViewController {
         else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
             currentState.popLast()
             //try? hapticManager?.hapticForResult(success: true)
-            hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+            if supportsHaptics {
+                hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+            }
+            else {
+                AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+            }
         }
         else if action == Action.CancelledEditing && currentState.last == State.EditingMode {
             currentState.popLast()
@@ -339,6 +347,7 @@ public class WhiteSpeechViewController: UIViewController {
             }
         }
         else if action == Action.LongPress && currentState.last == State.Idle {
+            currentState.append(State.EditingMode)
             openMorseCodeEditor()
         }
         else if action == Action.TalkButtonTapped && currentState.last == State.Idle {
@@ -636,6 +645,9 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func actionSwipeLeftDouble() {
+        if supportsHaptics == false { errorCoreHapticsLabel?.isHidden = false }
+        else { errorCoreHapticsLabel?.isHidden = true }
+        
         let morseCodeString = morseCodeLabel.text ?? ""
         var englishString = englishMorseCodeTextLabel.text ?? ""
         if morseCodeStringIndex < 0 {
@@ -688,6 +700,8 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func actionSwipeRightDouble() {
+        if supportsHaptics == false { errorCoreHapticsLabel?.isHidden = false }
+        else { errorCoreHapticsLabel?.isHidden = true }
         let morseCodeString = morseCodeLabel.text ?? ""
         var englishString = englishMorseCodeTextLabel.text ?? ""
         if morseCodeStringIndex >= morseCodeString.count {
@@ -1224,6 +1238,7 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func openCameraForBlind() {
+        currentState.append(State.EditingMode)
         performSegue(withIdentifier: "SECamera", sender: nil)
     }
     
@@ -2250,6 +2265,7 @@ protocol WhiteSpeechViewControllerProtocol {
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     func setTypedMessage(english: String) {
         Analytics.logEvent("se3_ios_typing_ret", parameters: [:]) //returned from typing
+        errorCoreHapticsLabel?.isHidden = true
         if english.count > 0 {
             cameraOriginImageView?.isHidden = true
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
@@ -2270,6 +2286,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     
     func setSpokenMessage(english: String) {
         Analytics.logEvent("se3_ios_speak_ret", parameters: [:]) //returned from speaking
+        errorCoreHapticsLabel?.isHidden = true
         if english.count > 0 {
             cameraOriginImageView?.isHidden = true
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
@@ -2289,6 +2306,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     
     func setMorseCodeMessage(englishInput: String, morseCodeInput : String) {
         Analytics.logEvent("se3_ios_mc_ret", parameters: [:]) //returned from morse code
+        errorCoreHapticsLabel?.isHidden = true
         if englishInput.count > 0 && morseCodeInput.count > 0 {
             cameraOriginImageView?.isHidden = true
             setEnglishAndMCLabels(english: englishInput, morseCode: morseCodeInput, inputMethod: "morse_code")
@@ -2306,6 +2324,7 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     
     func setTextFromCamera(english: String) {
         Analytics.logEvent("se3_ios_camera_ret", parameters: [:]) //returned from camera
+        errorCoreHapticsLabel?.isHidden = true
         if english.count > 0 {
             cameraOriginImageView?.isHidden = false
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)

@@ -15,11 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             FirebaseApp.configure()
             
             // Check if the device supports haptics.
-            if #available(iOS 13.0, *) {
-                self.supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
-            } else {
-                // Fallback on earlier versions
-            };
+            self.supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
             
             if WCSession.isSupported() {
                 let session = WCSession.default
