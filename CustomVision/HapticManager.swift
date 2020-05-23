@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreHaptics
+import AVFoundation
 
 class HapticManager {
     
@@ -16,11 +17,15 @@ class HapticManager {
     let RESULT_SUCCESS  = "RESULT_SUCCESS"
     let RESULT_FAILURE  = "RESULT_FAILURE"
     
+    private let supportsHaptics : Bool
     var chHapticEngine : CHHapticEngine?
     private var engineNeedsStart = true
     
-    init() {
-        createAndStartHapticEngine()
+    init(supportsHaptics : Bool) {
+        self.supportsHaptics = supportsHaptics
+        if supportsHaptics {
+            createAndStartHapticEngine()
+        }
     }
     
     private func createAndStartHapticEngine() {
@@ -86,6 +91,13 @@ class HapticManager {
     }
     
     func generateHaptic(code : String?) {
+        if supportsHaptics == false {
+            if code == RESULT_SUCCESS {
+                AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+            }
+            return
+        }
+        
         var hapticPlayer : CHHapticPatternPlayer? = nil
         do {
             if code == MC_DOT {

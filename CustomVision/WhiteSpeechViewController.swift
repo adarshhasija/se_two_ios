@@ -327,12 +327,7 @@ public class WhiteSpeechViewController: UIViewController {
         else if action == Action.CompletedEditing && currentState.last == State.EditingMode {
             currentState.popLast()
             //try? hapticManager?.hapticForResult(success: true)
-            if supportsHaptics {
-                hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
-            }
-            else {
-                AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
-            }
+            hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         }
         else if action == Action.CancelledEditing && currentState.last == State.EditingMode {
             currentState.popLast()
@@ -606,9 +601,7 @@ public class WhiteSpeechViewController: UIViewController {
         
         (view as? ThreeDTouchView)?.whiteSpeechViewControllerProtocol = self as WhiteSpeechViewControllerProtocol
 
-        if supportsHaptics {
-           hapticManager = HapticManager()
-        }
+        hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         //createAndStartHapticEngine()
         
         // Disable the record buttons until authorization has been granted.

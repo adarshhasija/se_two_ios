@@ -307,12 +307,8 @@ public class MorseCodeEditorViewController : UIViewController {
     
     
     public override func viewDidLoad() {
-        if supportsHaptics {
-            hapticManager = HapticManager()
-        }
-        else {
-            warningLabel?.isHidden = false
-        }
+        hapticManager = HapticManager(supportsHaptics: supportsHaptics)
+        warningLabel?.isHidden = supportsHaptics
         englishTextLabel?.text = ""
         morseCodeTextLabel?.text = ""
         instructionsLabel?.text = defaultInstructions
