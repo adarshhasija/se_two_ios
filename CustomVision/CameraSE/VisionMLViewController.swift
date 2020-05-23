@@ -124,10 +124,12 @@ class VisionMLViewController: UIViewController {
                 for observation in requestResults {
                     guard let candidiate = observation.topCandidates(1).first else { return }
                       recognizedText += candidiate.string
-                    recognizedText += "\n"
+                    //recognizedText += "\n"
                 }
-                delegate?.setTypedMessage(english: recognizedText)
-                self.dismiss(animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.delegate?.setTextFromCamera(english: recognizedText)
+                    self.dismiss(animated: true, completion: nil)
+                }
                 //self.bubbleLayer.string = recognizedText
             }
         }

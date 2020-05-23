@@ -84,6 +84,8 @@ public class WhiteSpeechViewController: UIViewController {
     @IBOutlet weak var chatLogBtn: UIImageView!
     //
     
+    
+    @IBOutlet weak var cameraOriginImageView: UIImageView!
     @IBOutlet var recordButton : UIButton?
     @IBOutlet weak var longPressLabel: UILabel?   
     @IBOutlet weak var noInternetImageView: UIImageView!
@@ -2228,6 +2230,9 @@ protocol WhiteSpeechViewControllerProtocol {
     
     //To get the morse code message back
     func setMorseCodeMessage(englishInput : String, morseCodeInput : String)
+    
+    //To get text recognized by the camera
+    func setTextFromCamera(english : String)
 
     func userProfilePicSet(image : UIImage?)
     func userProfileNameSet(name : String?)
@@ -2238,8 +2243,10 @@ protocol WhiteSpeechViewControllerProtocol {
 extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     func setTypedMessage(english: String) {
         if english.count > 0 {
-            let morseCodeString = convertEnglishToMC(englishString: english)
-            setEnglishAndMCLabels(english: english, morseCode: morseCodeString, inputMethod: "typing")
+            cameraOriginImageView?.isHidden = true
+            let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
+            let morseCodeString = convertEnglishToMC(englishString: englishFiltered)
+            setEnglishAndMCLabels(english: englishFiltered, morseCode: morseCodeString, inputMethod: "typing")
             morseCodeLabel?.isHidden = true
             setBackgroundColor(lastAction: "typing")
             morseCodeLabel?.isHidden = true
@@ -2255,8 +2262,10 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     
     func setSpokenMessage(english: String) {
         if english.count > 0 {
-            let morseCodeString = convertEnglishToMC(englishString: english)
-            setEnglishAndMCLabels(english: english, morseCode: morseCodeString, inputMethod: "talking")
+            cameraOriginImageView?.isHidden = true
+            let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
+            let morseCodeString = convertEnglishToMC(englishString: englishFiltered)
+            setEnglishAndMCLabels(english: englishFiltered, morseCode: morseCodeString, inputMethod: "talking")
             setBackgroundColor(lastAction: "talking")
             morseCodeLabel?.isHidden = true
             recordLabel?.text = composerButtonsUseInstructions
@@ -2271,10 +2280,31 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     
     func setMorseCodeMessage(englishInput: String, morseCodeInput : String) {
         if englishInput.count > 0 && morseCodeInput.count > 0 {
+            cameraOriginImageView?.isHidden = true
             setEnglishAndMCLabels(english: englishInput, morseCode: morseCodeInput, inputMethod: "morse_code")
             setBackgroundColor(lastAction: "morse_code")
             morseCodeLabel?.isHidden = true
             recordLabel?.text = composerButtonsUseInstructions
+            mcReadInstructionLabel?.text = showMorseCodeInstruction
+            mcReadInstructionLabel?.isHidden = false
+            changeState(action: Action.CompletedEditing)
+        }
+        else {
+            changeState(action: Action.CancelledEditing)
+        }
+    }
+    
+    func setTextFromCamera(english: String) {
+        Analytics.logEvent("se3_ios_camera_ret", parameters: [:]) //returned from camera
+        if english.count > 0 {
+            cameraOriginImageView?.isHidden = false
+            let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
+            let morseCodeString = convertEnglishToMC(englishString: englishFiltered)
+            setEnglishAndMCLabels(english: englishFiltered, morseCode: morseCodeString, inputMethod: "morse_code") //Originally from device
+            morseCodeLabel?.isHidden = true
+            setBackgroundColor(lastAction: "morse_code")
+            morseCodeLabel?.isHidden = true
+            recordLabel?.text = ""
             mcReadInstructionLabel?.text = showMorseCodeInstruction
             mcReadInstructionLabel?.isHidden = false
             changeState(action: Action.CompletedEditing)
