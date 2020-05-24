@@ -1463,7 +1463,7 @@
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Eu-SC-gkD">
                                                             <rect key="frame" x="0.0" y="3.5" width="334" height="0.0"/>
-                                                            <string key="text">If you need to read the sign on a door, or any other sign, up swipe on the main screen to open the camera. Point the camera at the door. We will show you the text. You can then play the audio or read the morse code</string>
+                                                            <string key="text">If you need to read the sign on a door, or any other sign, up swipe on the main screen to open the camera. Point the camera at the door. We will get the text for you. You can then play the audio or read the morse code</string>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>

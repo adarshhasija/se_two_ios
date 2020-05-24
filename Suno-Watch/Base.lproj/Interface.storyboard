@@ -115,6 +115,7 @@
                         <variation key="default">
                             <mask key="items">
                                 <exclude reference="ZFq-an-dDt"/>
+                                <exclude reference="VUr-fI-NOR"/>
                             </mask>
                         </variation>
                     </menu>

@@ -290,7 +290,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         //UserDefaults.standard.removeObject(forKey: "SE3_WATCHOS_USER_TYPE")
-        let se3UserType = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
+      /*  let se3UserType = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
         if se3UserType == nil {
             pushController(withName: "SettingsDeafBlind", context: self)
         }
@@ -302,14 +302,9 @@ class MCInterfaceController : WKInterfaceController {
                 defaultInstructions = notDeafBlindInstructions
             }
             instructionsLabel.setText(defaultInstructions)
-        }
-        
-        // Configure interface objects here.
-     /*   if WCSession.isSupported() {
-            let session = WCSession.default
-            session.delegate = self
-            session.activate()
         }   */
+        instructionsLabel?.setText(deafBlindInstructions)
+        
     }
     
     override func willActivate() {
