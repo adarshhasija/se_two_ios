@@ -1231,7 +1231,7 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func openCameraForBlind() {
-        currentState.append(State.EditingMode)
+        //currentState.append(State.EditingMode)
         performSegue(withIdentifier: "SECamera", sender: nil)
     }
     
@@ -2329,10 +2329,6 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
             recordLabel?.text = ""
             mcReadInstructionLabel?.text = showMorseCodeInstruction
             mcReadInstructionLabel?.isHidden = false
-            changeState(action: Action.CompletedEditing)
-        }
-        else {
-            changeState(action: Action.CancelledEditing)
         }
     }
     
