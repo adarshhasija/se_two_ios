@@ -131,9 +131,9 @@ class HapticManager {
             CHHapticEventParameter(parameterID: .sustained, value: 0)
             ], relativeTime: 0)
 
-        let sharpness : Float = 0.5 //Success/failure haptics are more dull than morse code haptics
+        let sharpness : Float = success == true ? 0.5 : 1.0 //Success haptics is more dull. Failure haptic is more sharp
         let intensity : Float = 1.0
-        let duration = success == true ? TimeInterval(1.0) : TimeInterval(2.0) //Success/failure haptics are more drawn out
+        let duration = TimeInterval(2.0) //Success/failure haptics are more drawn out. Based on testing, 2 seconds can be identified as longer
         let hapticEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [
             CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
             CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
