@@ -124,25 +124,6 @@ public class WhiteSpeechViewController: UIViewController {
         changeState(action: Action.BarButtonHelpTapped)
     }
     
-    @IBAction func userProfileStackViewTapped(_ sender: Any) {
-        if currentState.last == State.Idle {
-            changeState(action: Action.UserProfileButtonTapped)
-        }
-        else {
-            //Cannot move away from this screen if we are in the middle of typing or speaking
-            self.recordLabel?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animate(withDuration: 1.0,
-                           delay: 0,
-                           usingSpringWithDamping: 0.2,
-                           initialSpringVelocity: 6.0,
-                           options: .allowUserInteraction,
-                           animations: { [weak self] in
-                            self?.recordLabel?.transform = .identity
-                },
-                           completion: nil)
-        }
-    }
-    
     @IBAction func settingsButtonTapped(_ sender: Any) {
         changeState(action: Action.SettingsButtonTapped)
     }
@@ -307,9 +288,6 @@ public class WhiteSpeechViewController: UIViewController {
         }
         else if action == Action.SettingsButtonTapped && currentState.last == State.Idle {
             openSettingsScreen()
-        }
-        else if action == Action.UserProfileButtonTapped && currentState.last == State.Idle {
-            Analytics.logEvent("se3_uprofile_tap", parameters: [:])
         }
         else if action == Action.Tap && currentState.last == State.Idle {
             if englishMorseCodeTextLabel.text?.isEmpty == false {

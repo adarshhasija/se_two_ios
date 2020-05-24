@@ -12,16 +12,6 @@ import FirebaseAnalytics
 
 public class UserProfileTableViewController : UITableViewController {
     
-    class UserProfile {
-        var myAbilitiesDescription: String
-        var partnerAbilitiesDescription: String
-        
-        init(myAbilitiesDescription: String, partnerAbilitiesDescription: String) {
-            self.myAbilitiesDescription = myAbilitiesDescription
-            self.partnerAbilitiesDescription = partnerAbilitiesDescription
-        }
-    }
-    
     // Properties
     let nameOfImage = "se3_profile_pic.jpg"
     var peerIDName: String!

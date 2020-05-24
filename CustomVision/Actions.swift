@@ -53,7 +53,6 @@ enum Action :String{
     
     case ChatLogsCleared
     case UserProfileChanged
-    case UserProfileButtonTapped
     case SettingsButtonTapped
     
     case UserProfileButtonLongPress
