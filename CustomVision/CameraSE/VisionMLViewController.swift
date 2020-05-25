@@ -152,13 +152,30 @@ class VisionMLViewController: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     //addSiriButton(to: stackView)
-    addInstructionsTextLabel(to: stackView)
+    
     bubbleLayer.opacity = 0.0
     bubbleLayer.position.x = self.view.frame.width / 2.0
     bubbleLayer.position.y = lowerView.frame.height / 2
     lowerView.layer.addSublayer(bubbleLayer)
     
     setupCamera()
+    
+    if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) ==  AVAuthorizationStatus.authorized {
+        // Already Authorized
+        addInstructionsTextLabel(text: shortcutListItem.messageOnOpen, to: stackView)
+    } else {
+        addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: stackView)
+      /*  AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted: Bool) -> Void in
+           if granted == true {
+               // User granted
+               self.setupCamera()
+                self.addInstructionsTextLabel(text: self.shortcutListItem.messageOnOpen, to: self.stackView)
+           } else {
+               // User rejected
+                self.addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: self.stackView)
+           }
+       })   */
+    }
   }
   
   override func viewDidLayoutSubviews() {
@@ -445,7 +462,7 @@ extension VisionMLViewController {
         view.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
     }
     
-    func addInstructionsTextLabel(to view: UIView) {
+    func addInstructionsTextLabel(text : String, to view: UIView) {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 21))
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = NSTextAlignment.center
@@ -453,7 +470,7 @@ extension VisionMLViewController {
         label.textColor = UIColor.white
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
-        label.text = shortcutListItem.messageOnOpen
+        label.text = text
         self.view.addSubview(label)
         view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
         view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true

@@ -2294,9 +2294,11 @@ extension WhiteSpeechViewController : WhiteSpeechViewControllerProtocol {
     }
     
     func setTextFromCamera(english: String) {
-        Analytics.logEvent("se3_ios_camera_ret", parameters: [:]) //returned from camera
+        Analytics.logEvent("se3_ios_cam_ret", parameters: [:]) //returned from camera
         errorCoreHapticsLabel?.isHidden = true
+        hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS) //This is just to notify the user that camera recognition is complete
         if english.count > 0 {
+            Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
             cameraOriginImageView?.isHidden = false
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
             let morseCodeString = convertEnglishToMC(englishString: englishFiltered)
