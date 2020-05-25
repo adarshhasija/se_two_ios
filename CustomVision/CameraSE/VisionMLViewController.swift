@@ -181,10 +181,19 @@ class VisionMLViewController: UIViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     previewLayer.frame = previewView.bounds;
+    //stackView.addTarget(self, action: #selector(tapGesture), forControlEvents: .TouchUpInside)
     
     sayThis(string: shortcutListItem.messageOnOpen)
   }
-
+  
+    
+    @IBAction func tapGesture(_ sender: Any) {
+        if synth.isSpeaking {
+            synth.stopSpeaking(at: .immediate)
+        }
+        sayThis(string: shortcutListItem.messageOnOpen)
+    }
+    
     
     override func viewDidDisappear(_ animated: Bool) {
         let device = AVCaptureDevice.default(for: AVMediaType.video)
