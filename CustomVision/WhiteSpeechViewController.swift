@@ -597,9 +597,9 @@ public class WhiteSpeechViewController: UIViewController {
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession.delegate = self
         
-        //Setup bluetooth check
-        cbCentralManager          = CBCentralManager()
-        cbCentralManager.delegate = self
+        //Setup bluetooth check. UNCOMMENT THIS LINES WHEN ADDING MULTIPEER AGAIN
+        //cbCentralManager          = CBCentralManager()
+        //cbCentralManager.delegate = self
         
         //Setup watch connectivity
      /*   if WCSession.isSupported() {

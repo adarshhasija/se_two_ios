@@ -22,16 +22,12 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>This is needed when connecting to other iOS devices</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>We will check if your Bluetooth is ON when you try to connect to a nearby device</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Need to access the camera to allow you to click a pic for your profile and to let you identify things around you</string>
+	<string>Need to access the camera to show you things around you and also to allow you to click a pic for your profile</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone permission is needed to hear what a person says</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Speech Recognition permission is needed to convert a person's speech into text you can read</string>
+	<string>Speech Recognition permission is needed to convert a person&apos;s speech into text you can read</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
