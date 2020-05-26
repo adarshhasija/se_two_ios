@@ -590,8 +590,8 @@ public class SpeechViewController: UIViewController {
         mcSession.delegate = self
         
         //Setup bluetooth check
-        cbCentralManager          = CBCentralManager()
-        cbCentralManager.delegate = self
+        //cbCentralManager          = CBCentralManager()
+        //cbCentralManager.delegate = self
         
         //Setup watch connectivity only if it is the main screen
         if inputAction == nil {
