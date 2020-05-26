@@ -165,7 +165,7 @@ class MCInterfaceController : WKInterfaceController {
             englishTextLabel.setText("")
             morseCodeString = ""
             morseCodeTextLabel.setText("")
-            instructionsLabel.setText(defaultInstructions)
+            instructionsLabel.setText(deafBlindInstructions)
             WKInterfaceDevice.current().play(.success)
             return
         }
@@ -210,7 +210,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
-            instructionsLabel.setText(defaultInstructions)
+            instructionsLabel.setText(deafBlindInstructions)
         }
     }
     
@@ -274,7 +274,7 @@ class MCInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
-        instructionsLabel.setText(defaultInstructions)
+        instructionsLabel.setText(deafBlindInstructions)
         if alphabetToMcDictionary.count < 1 {
             let morseCode : MorseCode = MorseCode()
             for morseCodeCell in morseCode.mcArray {

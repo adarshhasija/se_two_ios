@@ -157,25 +157,63 @@ class VisionMLViewController: UIViewController {
     bubbleLayer.position.x = self.view.frame.width / 2.0
     bubbleLayer.position.y = lowerView.frame.height / 2
     lowerView.layer.addSublayer(bubbleLayer)
+    //setupCamera()
     
-    setupCamera()
+    switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized: // The user has previously granted access to the camera.
+            //self.setupCaptureSession()
+            setupCamera()
+            addInstructionsTextLabel(text: shortcutListItem.messageOnOpen, to: stackView)
+            break
+        
+        case .notDetermined: // The user has not yet been asked for camera access.
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    DispatchQueue.main.async {
+                        self.setupCamera()
+                        self.addInstructionsTextLabel(text: self.shortcutListItem.messageOnOpen, to: self.stackView)
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        self.addInstructionsTextLabel(text: "You have not given camera permission\nYou need to go to the Settings app to do so", to: self.stackView)
+                    }
+                    
+                }
+            }
+        
+        case .denied: // The user has previously denied access. Therefore requestAccess does not work here. It only returns false
+            //UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!) //This opens the Settings app so user can turn the Camera permission ON again. However, we are not using this right now over doubts that Apple could reject the update in future
+            DispatchQueue.main.async {
+                self.addInstructionsTextLabel(text: "You have not given camera permission\nYou need to go to the Settings app to do so", to: self.stackView)
+            }
+            return
+
+        case .restricted: // The user can't grant access due to restrictions.
+            DispatchQueue.main.async {
+                self.addInstructionsTextLabel(text: "You cannot access the camera due to restrictions on your device", to: self.stackView)
+            }
+            return
+    }
     
-    if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) ==  AVAuthorizationStatus.authorized {
+   /* if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) ==  AVAuthorizationStatus.authorized {
         // Already Authorized
         addInstructionsTextLabel(text: shortcutListItem.messageOnOpen, to: stackView)
     } else {
-        addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: stackView)
-      /*  AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted: Bool) -> Void in
+        //addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: stackView)
+        AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted: Bool) -> Void in
            if granted == true {
+               print("*******YES**********")
                // User granted
-               self.setupCamera()
-                self.addInstructionsTextLabel(text: self.shortcutListItem.messageOnOpen, to: self.stackView)
+               //self.setupCamera()
+                //self.addInstructionsTextLabel(text: self.shortcutListItem.messageOnOpen, to: self.stackView)
            } else {
+               print("********NO***********")
                // User rejected
-                self.addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: self.stackView)
+                //self.addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: self.stackView)
            }
-       })   */
-    }
+       })
+    }   */
   }
   
   override func viewDidLayoutSubviews() {
