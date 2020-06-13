@@ -24,7 +24,7 @@ public class MCDictionaryTableViewController : UITableViewController {
             self.title = "Dictionary"
         }
         
-        let morseCode = MorseCode(type: typeToDisplay)
+        let morseCode = MorseCode(type: typeToDisplay, operatingSystem: "iOS")
         morseCodeArray.append(contentsOf: morseCode.mcArray)
     }
     

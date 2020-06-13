@@ -9,7 +9,7 @@
 import Foundation
 
 class MorseCode {
-    
+
     var mcTreeNode : MCTreeNode?
     var mcArray: [MorseCodeCell] = []
     var alphabetToMCDictionary : [String : String] = [:]
@@ -54,49 +54,31 @@ class MorseCode {
     ]   */
     
     init() {
-        mcArray.append(MorseCodeCell(english: "A", morseCode: ".-"))
-        mcArray.append(MorseCodeCell(english: "B", morseCode: "-..."))
-        mcArray.append(MorseCodeCell(english: "C", morseCode: "-.-."))
-        mcArray.append(MorseCodeCell(english: "D", morseCode: "-.."))
-        mcArray.append(MorseCodeCell(english: "E", morseCode: "."))
-        mcArray.append(MorseCodeCell(english: "F", morseCode: "..-."))
-        mcArray.append(MorseCodeCell(english: "G", morseCode: "--."))
-        mcArray.append(MorseCodeCell(english: "H", morseCode: "...."))
-        mcArray.append(MorseCodeCell(english: "I", morseCode: ".."))
-        mcArray.append(MorseCodeCell(english: "J", morseCode: ".---"))
-        mcArray.append(MorseCodeCell(english: "K", morseCode: "-.-"))
-        mcArray.append(MorseCodeCell(english: "L", morseCode: ".-.."))
-        mcArray.append(MorseCodeCell(english: "M", morseCode: "--"))
-        mcArray.append(MorseCodeCell(english: "N", morseCode: "-."))
-        mcArray.append(MorseCodeCell(english: "O", morseCode: "---"))
-        mcArray.append(MorseCodeCell(english: "P", morseCode: ".--."))
-        mcArray.append(MorseCodeCell(english: "Q", morseCode: "--.-"))
-        mcArray.append(MorseCodeCell(english: "R", morseCode: ".-."))
-        mcArray.append(MorseCodeCell(english: "S", morseCode: "..."))
-        mcArray.append(MorseCodeCell(english: "T", morseCode: "-"))
-        mcArray.append(MorseCodeCell(english: "U", morseCode: "..-"))
-        mcArray.append(MorseCodeCell(english: "V", morseCode: "...-"))
-        mcArray.append(MorseCodeCell(english: "W", morseCode: ".--"))
-        mcArray.append(MorseCodeCell(english: "X", morseCode: "-..-"))
-        mcArray.append(MorseCodeCell(english: "Y", morseCode: "-.--"))
-        mcArray.append(MorseCodeCell(english: "Z", morseCode: "--.."))
-        mcArray.append(MorseCodeCell(english: "1", morseCode: ".----"))
-        mcArray.append(MorseCodeCell(english: "2", morseCode: "..---"))
-        mcArray.append(MorseCodeCell(english: "3", morseCode: "...--"))
-        mcArray.append(MorseCodeCell(english: "4", morseCode: "....-"))
-        mcArray.append(MorseCodeCell(english: "5", morseCode: "....."))
-        mcArray.append(MorseCodeCell(english: "6", morseCode: "-...."))
-        mcArray.append(MorseCodeCell(english: "7", morseCode: "--..."))
-        mcArray.append(MorseCodeCell(english: "8", morseCode: "---.."))
-        mcArray.append(MorseCodeCell(english: "9", morseCode: "----."))
-        mcArray.append(MorseCodeCell(english: "0", morseCode: "-----"))
-        mcArray.append(MorseCodeCell(english: "Space (␣)", morseCode: ".......", displayChar: "␣"))
+        populate(type: nil, operatingSystem: "iOS")
+    }
+    
+    init(type: String?, operatingSystem: String) {
+        populate(type: type, operatingSystem: operatingSystem)
+    }
+    
+    func populate(type: String?, operatingSystem: String) {
+        if type == "actions" {
+            mcArray.append(contentsOf: populateActions(os: operatingSystem))
+        }
+        else if type == "morse_code" {
+            mcArray.append(contentsOf: populateMorseCodeAlphanumeric())
+        }
+        else {
+            mcArray.append(contentsOf: populateActions(os: operatingSystem))
+            mcArray.append(contentsOf: populateMorseCodeAlphanumeric())
+        }
+        
+        
         //mcArray.append(MorseCodeCell(english: ".", morseCode: ".-.-.-"))
         //mcArray.append(MorseCodeCell(english: "+", morseCode: ".-.-."))
         //mcArray.append(MorseCodeCell(english: "-", morseCode: "-....-"))
         //mcArray.append(MorseCodeCell(english: "/", morseCode: "-..-."))
-        mcArray.append(MorseCodeCell(english: "TIME", morseCode: "........"))
-        mcArray.append(MorseCodeCell(english: "DATE", morseCode: "........."))
+        
         
         for morseCodeCell in mcArray {
             if morseCodeCell.displayChar != nil {
@@ -112,6 +94,62 @@ class MorseCode {
     
     deinit {
         //destroyTree()
+    }
+    
+    func populateActions(os: String) -> [MorseCodeCell] {
+        var array : [MorseCodeCell] = []
+        array.append(MorseCodeCell(english: "TIME", morseCode: ".", type: "action"))
+        array.append(MorseCodeCell(english: "DATE", morseCode: "..", type: "action"))
+        if os == "iOS" {
+            array.append(MorseCodeCell(english: "CAMERA", morseCode: "...", type: "action"))
+        }
+        else if os == "watchOS" {
+            array.append(MorseCodeCell(english: "CHAT", morseCode: "...", type: "action"))
+        }
+        
+        return array
+    }
+    
+    func populateMorseCodeAlphanumeric() -> [MorseCodeCell] {
+        var array : [MorseCodeCell] = []
+        array.append(MorseCodeCell(english: "A", morseCode: ".-"))
+        array.append(MorseCodeCell(english: "B", morseCode: "-..."))
+        array.append(MorseCodeCell(english: "C", morseCode: "-.-."))
+        array.append(MorseCodeCell(english: "D", morseCode: "-.."))
+        array.append(MorseCodeCell(english: "E", morseCode: "."))
+        array.append(MorseCodeCell(english: "F", morseCode: "..-."))
+        array.append(MorseCodeCell(english: "G", morseCode: "--."))
+        array.append(MorseCodeCell(english: "H", morseCode: "...."))
+        array.append(MorseCodeCell(english: "I", morseCode: ".."))
+        array.append(MorseCodeCell(english: "J", morseCode: ".---"))
+        array.append(MorseCodeCell(english: "K", morseCode: "-.-"))
+        array.append(MorseCodeCell(english: "L", morseCode: ".-.."))
+        array.append(MorseCodeCell(english: "M", morseCode: "--"))
+        array.append(MorseCodeCell(english: "N", morseCode: "-."))
+        array.append(MorseCodeCell(english: "O", morseCode: "---"))
+        array.append(MorseCodeCell(english: "P", morseCode: ".--."))
+        array.append(MorseCodeCell(english: "Q", morseCode: "--.-"))
+        array.append(MorseCodeCell(english: "R", morseCode: ".-."))
+        array.append(MorseCodeCell(english: "S", morseCode: "..."))
+        array.append(MorseCodeCell(english: "T", morseCode: "-"))
+        array.append(MorseCodeCell(english: "U", morseCode: "..-"))
+        array.append(MorseCodeCell(english: "V", morseCode: "...-"))
+        array.append(MorseCodeCell(english: "W", morseCode: ".--"))
+        array.append(MorseCodeCell(english: "X", morseCode: "-..-"))
+        array.append(MorseCodeCell(english: "Y", morseCode: "-.--"))
+        array.append(MorseCodeCell(english: "Z", morseCode: "--.."))
+        array.append(MorseCodeCell(english: "1", morseCode: ".----"))
+        array.append(MorseCodeCell(english: "2", morseCode: "..---"))
+        array.append(MorseCodeCell(english: "3", morseCode: "...--"))
+        array.append(MorseCodeCell(english: "4", morseCode: "....-"))
+        array.append(MorseCodeCell(english: "5", morseCode: "....."))
+        array.append(MorseCodeCell(english: "6", morseCode: "-...."))
+        array.append(MorseCodeCell(english: "7", morseCode: "--..."))
+        array.append(MorseCodeCell(english: "8", morseCode: "---.."))
+        array.append(MorseCodeCell(english: "9", morseCode: "----."))
+        array.append(MorseCodeCell(english: "0", morseCode: "-----"))
+        array.append(MorseCodeCell(english: "Space (␣)", morseCode: ".......", displayChar: "␣"))
+        return array
     }
     
     func getNearestMatches(currentNode : MCTreeNode?) -> [String] {
@@ -158,6 +196,17 @@ class MorseCode {
         }
         if currentNode?.dashNode?.alphabet != nil {
             matches.append("Add a dash to get: " + currentNode!.dashNode!.alphabet!)
+        }
+        if currentNode?.dashNode?.action != nil {
+            matches.append("Add a dash to get: " + currentNode!.dashNode!.action!)
+        }
+        return matches
+    }
+    
+    func getNextActionMatches(currentNode : MCTreeNode?) -> [String] {
+        var matches : [String] = []
+        if currentNode?.dotNode?.action != nil {
+            matches.append("Add a dot to get: " + currentNode!.dotNode!.action!)
         }
         if currentNode?.dashNode?.action != nil {
             matches.append("Add a dash to get: " + currentNode!.dashNode!.action!)
@@ -215,16 +264,11 @@ class MorseCode {
                     node = node.dashNode!
                 }
                 
+                //a node can be both an action and a character
                 if i == (morseCode.count - 1) {
-                    if morseCodeCell.displayChar != nil {
-                        node.alphabet = morseCodeCell.displayChar
-                    }
-                    else if morseCodeCell.english.count > 1 {
-                        //Itd an action
+                    node.alphabet = morseCodeCell.displayChar != nil ? morseCodeCell.displayChar : morseCodeCell.english
+                    if node.action == nil && morseCodeCell.type == "action" {
                         node.action = morseCodeCell.english
-                    }
-                    else {
-                        node.alphabet = morseCodeCell.english
                     }
                 }
                 i+=1
