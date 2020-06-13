@@ -12,7 +12,7 @@ import UIKit
 public class MCDictionaryTableViewController : UITableViewController {
     
     var morseCodeArray : [MorseCodeCell] = []
-    var type : String? = nil
+    var typeToDisplay : String? = nil
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,7 @@ public class MCDictionaryTableViewController : UITableViewController {
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let morseCodeCell = morseCodeArray[indexPath.row]
-        var finalString = "To type this out you must "
+     /*   var finalString = "To type this out you must "
         for char in morseCodeCell.morseCode {
             if char == "." {
                 finalString += "tap"
@@ -51,7 +51,20 @@ public class MCDictionaryTableViewController : UITableViewController {
             
             finalString += ","
         }
-        finalString.removeLast() //Removes the last comma
+        finalString.removeLast() //Removes the last comma   */
+        var finalString = ""
+        if morseCodeCell.english == "TIME" {
+            finalString += "To get the time in morse code, you must tap once and swipe up"
+        }
+        else if morseCodeCell.english == "DATE" {
+            finalString += "To get the date in morse code, you must tap twice and swipe up"
+        }
+        else if morseCodeCell.english == "CAMERA" {
+            finalString += "To open the camera for camera related actions, you must tap three times and swipe up"
+        }
+        else {
+            finalString += "This is the morse code combination for the character " + morseCodeCell.english
+        }
         
         
         let alert = UIAlertController(title: morseCodeCell.english, message: finalString, preferredStyle: UIAlertControllerStyle.alert)

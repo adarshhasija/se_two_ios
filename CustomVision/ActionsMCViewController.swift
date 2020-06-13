@@ -26,6 +26,7 @@ class ActionsMCViewController : UIViewController {
     var synth : AVSpeechSynthesizer?
     var isUserTyping : Bool = false
     
+    var defaultInstructions = "Start typing code for an action\nTap screen to type a dot"
     var noMoreMatchesString = "No more matches found for this morse code"
     var scrollStart = "Swipe right with 2 fingers to read"
     var stopReadingString = "Swipe left once with 1 finger to stop reading and type"
@@ -54,13 +55,21 @@ class ActionsMCViewController : UIViewController {
         }
     }
     
+    @IBAction func rightBarButtonItemTapped(_ sender: Any) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let dictionaryViewController = storyBoard.instantiateViewController(withIdentifier: "UITableViewController-HHA-Ce-gYY") as! MCDictionaryTableViewController
+        self.navigationController?.pushViewController(dictionaryViewController, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dictionary", style: .plain, target: self, action: #selector(rightBarButtonItemTapped))
         
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel?.text = ""
         morseCodeLabel?.text = ""
-        instructionsLabel?.text = "Start typing morse code\nTap on the screen"
+        instructionsLabel?.text = defaultInstructions
     }
 }
 
@@ -219,6 +228,18 @@ extension ActionsMCViewController {
             isAlphabetReached(input: "b") //backspace
             //try? hapticManager?.hapticForResult(success: true)
             hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+        }
+        else {
+            print("nothing to delete")
+            Analytics.logEvent("se3_morse_swipe_left", parameters: [
+                "state" : "nothing_to_delete"
+            ])
+            //try? hapticManager?.hapticForResult(success: false)
+            hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
+        }
+        
+        if morseCodeString.count == 0 && englishString.count == 0 {
+            instructionsLabel.text = defaultInstructions
         }
     }
     
