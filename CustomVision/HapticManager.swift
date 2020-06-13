@@ -101,6 +101,11 @@ class HapticManager {
                 let pop = SystemSoundID(1520)
                 AudioServicesPlaySystemSound(pop)
             }
+            else if code == MC_DASH {
+                // 'Try Again' feedback (week boom then strong boom)
+                let tryAgain = SystemSoundID(1102)
+                AudioServicesPlaySystemSound(tryAgain)
+            }
             else if code == RESULT_SUCCESS {
                 AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
             }

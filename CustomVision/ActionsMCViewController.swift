@@ -34,7 +34,6 @@ class ActionsMCViewController : UIViewController {
     
     @IBOutlet weak var alphanumericLabel: UILabel!
     @IBOutlet weak var morseCodeLabel: UILabel!
-    @IBOutlet weak var errorCoreHapticsLabel: UILabel!
     
     @IBOutlet weak var instructionsImageView: UIImageView!
     @IBOutlet weak var instructionsLabel: UILabel!
@@ -76,7 +75,6 @@ class ActionsMCViewController : UIViewController {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel?.text = ""
         morseCodeLabel?.text = ""
-        errorCoreHapticsLabel?.text = ""
         instructionsLabel?.text = defaultInstructions
     }
 }
@@ -84,7 +82,15 @@ class ActionsMCViewController : UIViewController {
 ///All private helpers
 extension ActionsMCViewController {
     
+    func isReading() -> Bool {
+        return !isUserTyping && morseCodeString.count > 0 && englishString.count > 0
+    }
+    
     func morseCodeInput(input : String) {
+        if isReading() == true {
+            //We do not want the user to accidently delete all the text by tapping
+            return
+        }
         if isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
             MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeLabel, isMorseCode: true, color: UIColor.red)
@@ -208,6 +214,7 @@ extension ActionsMCViewController {
                 alphanumericLabel?.isHidden = false
                 englishStringIndex = -1
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+                isUserTyping = false
             }
             else if action == "DATE" {
                 let day = (Calendar.current.component(.day, from: Date()))
@@ -218,15 +225,29 @@ extension ActionsMCViewController {
                 alphanumericLabel?.isHidden = false
                 englishStringIndex = -1
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+                isUserTyping = false
             }
             else if action == "CAMERA" {
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+                isUserTyping = false
             }
             updateMorseCodeForActions()
         }
     }
     
     func swipeLeft() {
+        if isReading() == true {
+            Analytics.logEvent("se3_swipe_left", parameters: [
+                "state" : "reading"
+                ])
+            englishString = ""
+            alphanumericLabel?.text = ""
+            morseCodeString = ""
+            morseCodeLabel?.text = ""
+            instructionsLabel?.text = defaultInstructions
+            hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+            return
+        }
         if morseCodeString.count > 0 {
             Analytics.logEvent("se3_morse_swipe_left", parameters: [
                 "state" : "last_morse_code"
@@ -252,9 +273,6 @@ extension ActionsMCViewController {
     }
     
     func swipeLeft2Finger() {
-        if supportsHaptics == false { errorCoreHapticsLabel?.isHidden = false }
-        else { errorCoreHapticsLabel?.isHidden = true }
-        
         let morseCodeString = morseCodeLabel.text ?? ""
         var englishString = alphanumericLabel.text ?? ""
         morseCodeStringIndex -= 1
@@ -265,7 +283,7 @@ extension ActionsMCViewController {
                 //try? hapticManager?.hapticForResult(success: false)
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
                
-               instructionsLabel?.text = "Swipe right with 2 fingers to read morse code"
+               setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
                if morseCodeStringIndex < 0 {
                    morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
                    englishStringIndex = -1
@@ -308,8 +326,6 @@ extension ActionsMCViewController {
     }
     
     func swipeRight2Finger() {
-        if supportsHaptics == false { errorCoreHapticsLabel?.isHidden = false }
-        else { errorCoreHapticsLabel?.isHidden = true }
         let morseCodeString = morseCodeLabel.text ?? ""
         var englishString = alphanumericLabel.text ?? ""
         morseCodeStringIndex += 1
