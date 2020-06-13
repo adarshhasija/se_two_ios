@@ -168,18 +168,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qt8-0O-eKm">
-                                <rect key="frame" x="128" y="98" width="158" height="56.5"/>
+                                <rect key="frame" x="115.5" y="98" width="183.5" height="74.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JiI-2c-7y9">
-                                        <rect key="frame" x="26.5" y="0.0" width="105.5" height="20.5"/>
+                                        <rect key="frame" x="39" y="0.0" width="105.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFZ-fO-32D">
-                                        <rect key="frame" x="0.0" y="20.5" width="158" height="36"/>
+                                        <rect key="frame" x="12.5" y="20.5" width="158" height="36"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Core Haptics Unsupported" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qcm-ag-1xo">
+                                        <rect key="frame" x="0.0" y="56.5" width="183.5" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -198,7 +204,7 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ysR-ET-S0n">
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ysR-ET-S0n">
                                 <rect key="frame" x="156" y="794" width="102.5" height="82"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Actions List" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rm-pE-Fm9">
@@ -277,11 +283,14 @@
                             <outletCollection property="gestureRecognizers" destination="DpS-68-Lb5" appends="YES" id="3p7-yY-f8r"/>
                             <outletCollection property="gestureRecognizers" destination="soh-ao-S0f" appends="YES" id="XpP-Zg-6mJ"/>
                             <outletCollection property="gestureRecognizers" destination="jiX-cK-ys5" appends="YES" id="Qfu-us-gJk"/>
+                            <outletCollection property="gestureRecognizers" destination="tHO-nP-9g9" appends="YES" id="aFE-e7-hza"/>
+                            <outletCollection property="gestureRecognizers" destination="x0v-1d-n5n" appends="YES" id="gNq-Lq-4Sh"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="tcE-DQ-GBL"/>
                     <connections>
                         <outlet property="alphanumericLabel" destination="JiI-2c-7y9" id="aOW-Yi-dzt"/>
+                        <outlet property="errorCoreHapticsLabel" destination="qcm-ag-1xo" id="fhN-La-7Lr"/>
                         <outlet property="instructionsImageView" destination="LpY-Ps-g6k" id="vFi-sk-vNK"/>
                         <outlet property="instructionsLabel" destination="YO9-4V-IvZ" id="BUZ-Ae-GhR"/>
                         <outlet property="morseCodeLabel" destination="kFZ-fO-32D" id="Lsr-MV-wVg"/>
@@ -301,6 +310,16 @@
                 <swipeGestureRecognizer direction="left" id="jiX-cK-ys5">
                     <connections>
                         <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="F13-w7-IQW"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="left" numberOfTouchesRequired="2" id="tHO-nP-9g9">
+                    <connections>
+                        <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="KUh-rG-rgd"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" numberOfTouchesRequired="2" id="x0v-1d-n5n">
+                    <connections>
+                        <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="9Ms-QD-A6X"/>
                     </connections>
                 </swipeGestureRecognizer>
             </objects>

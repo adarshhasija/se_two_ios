@@ -34,7 +34,7 @@ class ActionsMCViewController : UIViewController {
     
     @IBOutlet weak var alphanumericLabel: UILabel!
     @IBOutlet weak var morseCodeLabel: UILabel!
-    
+    @IBOutlet weak var errorCoreHapticsLabel: UILabel!
     
     @IBOutlet weak var instructionsImageView: UIImageView!
     @IBOutlet weak var instructionsLabel: UILabel!
@@ -50,25 +50,33 @@ class ActionsMCViewController : UIViewController {
         if sender.direction == UISwipeGestureRecognizerDirection.up {
             swipeUp()
         }
-        else if sender.direction == UISwipeGestureRecognizerDirection.left {
+        else if sender.direction == UISwipeGestureRecognizerDirection.left  && sender.numberOfTouchesRequired == 1 {
             swipeLeft()
+        }
+        else if sender.direction == UISwipeGestureRecognizerDirection.left && sender.numberOfTouchesRequired == 2 {
+            swipeLeft2Finger()
+        }
+        else if sender.direction == UISwipeGestureRecognizerDirection.right && sender.numberOfTouchesRequired == 2 {
+            swipeRight2Finger()
         }
     }
     
     @IBAction func rightBarButtonItemTapped(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let dictionaryViewController = storyBoard.instantiateViewController(withIdentifier: "UITableViewController-HHA-Ce-gYY") as! MCDictionaryTableViewController
+        dictionaryViewController.typeToDisplay = "actions"
         self.navigationController?.pushViewController(dictionaryViewController, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dictionary", style: .plain, target: self, action: #selector(rightBarButtonItemTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Actions", style: .plain, target: self, action: #selector(rightBarButtonItemTapped))
         
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel?.text = ""
         morseCodeLabel?.text = ""
+        errorCoreHapticsLabel?.text = ""
         instructionsLabel?.text = defaultInstructions
     }
 }
@@ -240,6 +248,107 @@ extension ActionsMCViewController {
         
         if morseCodeString.count == 0 && englishString.count == 0 {
             instructionsLabel.text = defaultInstructions
+        }
+    }
+    
+    func swipeLeft2Finger() {
+        if supportsHaptics == false { errorCoreHapticsLabel?.isHidden = false }
+        else { errorCoreHapticsLabel?.isHidden = true }
+        
+        let morseCodeString = morseCodeLabel.text ?? ""
+        var englishString = alphanumericLabel.text ?? ""
+        morseCodeStringIndex -= 1
+        if morseCodeStringIndex < 0 {
+                Analytics.logEvent("se3_morse_scroll_left", parameters: [
+                    "state" : "index_less_0"
+                ])
+                //try? hapticManager?.hapticForResult(success: false)
+                hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
+               
+               instructionsLabel?.text = "Swipe right with 2 fingers to read morse code"
+               if morseCodeStringIndex < 0 {
+                   morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
+                   englishStringIndex = -1
+                   alphanumericLabel.text = englishString
+               }
+               morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
+               return
+           }
+
+            Analytics.logEvent("se3_morse_scroll_left", parameters: [
+                "state" : "scrolling"
+            ])
+           instructionsLabel?.text = "Swipe left with 2 fingers to go back"
+           MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
+           hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex) // TODO: Find out which call is the right call
+             //hapticManager?.generateHaptic(code: String(morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)]) == "." ? hapticManager?.MC_DOT : hapticManager?.MC_DASH)
+           
+           if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
+               //Need to change the selected character of the English string
+               englishStringIndex -= 1
+                Analytics.logEvent("se3_morse_scroll_left", parameters: [
+                    "state" : "index_alpha_change"
+                ])
+               //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
+               if englishStringIndex > -1 && MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
+                   let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+                   let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
+                   englishString.replaceSubrange(start..<end, with: "␣")
+               }
+               else {
+                   englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+               }
+               
+               if englishStringIndex > -1 {
+                   //Ensure that the index is within bounds
+                   MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color: UIColor.green)
+               }
+               
+           }
+    }
+    
+    func swipeRight2Finger() {
+        if supportsHaptics == false { errorCoreHapticsLabel?.isHidden = false }
+        else { errorCoreHapticsLabel?.isHidden = true }
+        let morseCodeString = morseCodeLabel.text ?? ""
+        var englishString = alphanumericLabel.text ?? ""
+        morseCodeStringIndex += 1
+        if morseCodeStringIndex >= morseCodeString.count {
+            Analytics.logEvent("se3_morse_scroll_right", parameters: [
+                "state" : "index_greater_equal_0"
+            ])
+            instructionsLabel?.text = "Swipe left with 2 fingers to go back"
+            morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
+            alphanumericLabel.text = englishString
+            //WKInterfaceDevice.current().play(.success)
+            morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
+            englishStringIndex = englishString.count
+            return
+        }
+        instructionsLabel?.text = "Swipe right with 2 fingers to read morse code"
+        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
+        hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)  // TODO: Still need to see which version is the right version
+        //hapticManager?.generateHaptic(code: String(morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)]) == "." ? hapticManager?.MC_DOT : hapticManager?.MC_DASH)
+        
+        if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
+            //Need to change the selected character of the English string
+            englishStringIndex += 1
+            if englishStringIndex >= englishString.count {
+                //WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            if MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
+                let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+                let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
+                englishString.replaceSubrange(start..<end, with: "␣")
+            }
+            else {
+                englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+            }
+            Analytics.logEvent("se3_morse_scroll_right", parameters: [
+                "state" : "index_alpha_change"
+            ])
+            MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
         }
     }
     

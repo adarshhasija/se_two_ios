@@ -17,9 +17,14 @@ public class MCDictionaryTableViewController : UITableViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Dictionary"
+        if typeToDisplay == "actions" {
+            self.title = "Actions"
+        }
+        else {
+            self.title = "Dictionary"
+        }
         
-        let morseCode = MorseCode()
+        let morseCode = MorseCode(type: typeToDisplay)
         morseCodeArray.append(contentsOf: morseCode.mcArray)
     }
     
