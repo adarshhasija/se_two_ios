@@ -59,10 +59,10 @@ public class MCDictionaryTableViewController : UITableViewController {
         finalString.removeLast() //Removes the last comma   */
         var finalString = ""
         if morseCodeCell.english == "TIME" {
-            finalString += "To get the time in morse code, you must tap once and swipe up"
+            finalString += "To get the time in morse code, you must tap once and swipe up. You will get the current time in 24 hour format"
         }
         else if morseCodeCell.english == "DATE" {
-            finalString += "To get the date in morse code, you must tap twice and swipe up"
+            finalString += "To get the date in morse code, you must tap twice and swipe up. You will get the date and the first 2 letters of the day of the week"
         }
         else if morseCodeCell.english == "CAMERA" {
             finalString += "To open the camera for camera related actions, you must tap three times and swipe up"

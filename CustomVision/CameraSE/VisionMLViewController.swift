@@ -31,6 +31,7 @@ class VisionMLViewController: UIViewController {
     )
     
     var delegate : WhiteSpeechViewControllerProtocol? = nil
+    var delegateActions : ActionsMCViewControllerProtocol? = nil
     
     private var lastFrame: CMSampleBuffer?
     
@@ -128,6 +129,7 @@ class VisionMLViewController: UIViewController {
                 }
                 DispatchQueue.main.async {
                     self.delegate?.setTextFromCamera(english: recognizedText)
+                    self.delegateActions?.setTextFromCamera(english: recognizedText)
                     self.dismiss(animated: true, completion: nil)
                 }
                 //self.bubbleLayer.string = recognizedText

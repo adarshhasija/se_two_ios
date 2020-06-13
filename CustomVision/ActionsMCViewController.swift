@@ -23,8 +23,9 @@ class ActionsMCViewController : UIViewController {
     var englishStringIndex = -1
     var morseCodeStringIndex = -1
     var morseCode = MorseCode()
-    var synth : AVSpeechSynthesizer?
+    var synth = AVSpeechSynthesizer()
     var isUserTyping : Bool = false
+    var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     
     var defaultInstructions = "Start typing code for an action\nTap screen to type a dot"
     var noMoreMatchesString = "No more matches found for this morse code"
@@ -88,6 +89,9 @@ extension ActionsMCViewController {
     
     func morseCodeInput(input : String) {
         if isReading() == true {
+            //isReading already checks that englishString and morseCodeString are present!
+            sayThis(string: englishString)
+            
             //We do not want the user to accidently delete all the text by tapping
             return
         }
@@ -193,7 +197,7 @@ extension ActionsMCViewController {
     }
     
     func swipeUp() {
-        if synth?.isSpeaking == true {
+        if synth.isSpeaking == true {
             Analytics.logEvent("se3_morse_swipe_up", parameters: [
                 "state" : "is_speaking"
             ])
@@ -215,6 +219,7 @@ extension ActionsMCViewController {
                 englishStringIndex = -1
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 isUserTyping = false
+                updateMorseCodeForActions()
             }
             else if action == "DATE" {
                 let day = (Calendar.current.component(.day, from: Date()))
@@ -226,12 +231,13 @@ extension ActionsMCViewController {
                 englishStringIndex = -1
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 isUserTyping = false
+                updateMorseCodeForActions()
             }
             else if action == "CAMERA" {
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 isUserTyping = false
+                openCamera()
             }
-            updateMorseCodeForActions()
         }
     }
     
@@ -298,8 +304,7 @@ extension ActionsMCViewController {
             ])
            instructionsLabel?.text = "Swipe left with 2 fingers to go back"
            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
-           hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex) // TODO: Find out which call is the right call
-             //hapticManager?.generateHaptic(code: String(morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)]) == "." ? hapticManager?.MC_DOT : hapticManager?.MC_DASH)
+           hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
            
            if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                //Need to change the selected character of the English string
@@ -343,8 +348,7 @@ extension ActionsMCViewController {
         }
         instructionsLabel?.text = "Swipe right with 2 fingers to read morse code"
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
-        hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)  // TODO: Still need to see which version is the right version
-        //hapticManager?.generateHaptic(code: String(morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)]) == "." ? hapticManager?.MC_DOT : hapticManager?.MC_DASH)
+        hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
         
         if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
             //Need to change the selected character of the English string
@@ -371,10 +375,11 @@ extension ActionsMCViewController {
     //Only used for TIME, DATE, Maths
     func updateMorseCodeForActions() {
         morseCodeString = ""
-        for character in englishString {
+      /*  for character in englishString {
             morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
             morseCodeString += "|"
-        }
+        }   */
+        morseCodeString = convertEnglishToMC(englishString: englishString)
         morseCodeLabel.text = morseCodeString
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         morseCodeStringIndex = -1
@@ -397,5 +402,129 @@ extension ActionsMCViewController {
             instructionString += "\n\nOr\n\n" + writingString
         }
         self.instructionsLabel.text = instructionString
+    }
+    
+    private func convertEnglishToMC(englishString : String) -> String {
+        let english = englishString.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains).replacingOccurrences(of: " ", with: "␣")
+        var morseCodeString = ""
+        var index = 0
+        indicesOfPipes.removeAll()
+        indicesOfPipes.append(0)
+        for character in english {
+            var mcChar = morseCode.alphabetToMCDictionary[String(character)] ?? ""
+            mcChar += "|"
+            index += mcChar.count
+            indicesOfPipes.append(index)
+            morseCodeString += mcChar
+        }
+        
+        return morseCodeString
+    }
+    
+    func showToast(message : String) {
+        
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 75, y: self.view.frame.size.height-100, width: 150, height: 60))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(1.0) //0.6
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center;
+        toastLabel.numberOfLines = 2
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+    
+    private func openCamera() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "MainVision", bundle:nil)
+        let visionMLViewController = storyBoard.instantiateViewController(withIdentifier: "VisionMLViewController") as! VisionMLViewController
+        visionMLViewController.delegateActions = self
+        hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+        self.navigationController?.present(visionMLViewController, animated: true, completion: nil)
+    }
+    
+    private func sayThis(string: String) {
+        let audioSession = AVAudioSession.sharedInstance()
+        do { try audioSession.setCategory(AVAudioSessionCategoryPlayback) }
+        catch { showToast(message: "Sorry, audio failed to play") }
+        do { try audioSession.setMode(AVAudioSessionModeDefault) }
+        catch { showToast(message: "Sorry, audio failed to play") }
+        
+        synth.delegate = self
+        let utterance = AVSpeechUtterance(string: string)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        if synth.isSpeaking {
+            synth.stopSpeaking(at: AVSpeechBoundary.immediate)
+            synth.speak(utterance)
+        }
+        if synth.isPaused {
+            synth.continueSpeaking()
+        }
+        else if !synth.isSpeaking {
+            synth.speak(utterance)
+        }
+    }
+}
+
+protocol ActionsMCViewControllerProtocol {
+    
+    //To get text recognized by the camera
+    func setTextFromCamera(english : String)
+}
+
+extension ActionsMCViewController : ActionsMCViewControllerProtocol {
+    
+    func setTextFromCamera(english: String) {
+        Analytics.logEvent("se3_ios_cam_ret", parameters: [:]) //returned from camera
+        hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS) //This is just to notify the user that camera recognition is complete
+        if english.count > 0 {
+            Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
+            let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
+            morseCodeString = convertEnglishToMC(englishString: englishFiltered)
+            morseCodeLabel?.text = morseCodeString
+            englishString = englishFiltered
+            alphanumericLabel?.text = englishString
+            englishStringIndex = -1
+            morseCodeStringIndex = -1
+            isUserTyping = false
+            setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
+        }
+    }
+}
+
+extension ActionsMCViewController : AVSpeechSynthesizerDelegate {
+    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
+        let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
+        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.green, range: characterRange)
+        let font = alphanumericLabel?.font
+        let alignment = alphanumericLabel?.textAlignment
+        alphanumericLabel?.attributedText = mutableAttributedString //all attributes get ovverridden here. necessary to save it before hand
+        alphanumericLabel?.font = font
+        if alignment != nil { alphanumericLabel?.textAlignment = alignment! }
+        
+        if morseCodeLabel?.isHidden == true {
+            return
+        }
+        let mcLowerBound = indicesOfPipes[safe: characterRange.lowerBound] ?? 0
+        let mcUpperBound = indicesOfPipes[safe: characterRange.upperBound] ?? indicesOfPipes.last ?? mcLowerBound
+        let mcRange = NSRange(location: mcLowerBound, length: mcUpperBound - mcLowerBound)
+        let mutableAttributedStringMC = NSMutableAttributedString(string: morseCodeLabel.text ?? "")
+        mutableAttributedStringMC.addAttribute(.foregroundColor, value: UIColor.green, range: mcRange)
+        let fontMC = morseCodeLabel?.font
+        let alignmentMC = morseCodeLabel?.textAlignment
+        morseCodeLabel?.attributedText = mutableAttributedStringMC //all attributes get ovverridden here. necessary to save it before hand
+        morseCodeLabel?.font = fontMC
+        if alignmentMC != nil { morseCodeLabel?.textAlignment = alignmentMC! }
+        
+    }
+    
+    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        alphanumericLabel?.textColor = .none
+        morseCodeLabel?.textColor = .none
     }
 }
