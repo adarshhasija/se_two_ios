@@ -28,7 +28,7 @@ class ActionsMCViewController : UIViewController {
     var isUserTyping : Bool = false
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     
-    var defaultInstructions = "Start typing code for an action\nTap screen to type a dot"
+    var defaultInstructions = "Start typing code for an action.\nTap screen to type a dot"
     var noMoreMatchesString = "No more matches found for this morse code"
     var scrollStart = "Swipe right with 2 fingers to read"
     var stopReadingString = "Swipe left once with 1 finger to stop reading and type"
@@ -39,11 +39,28 @@ class ActionsMCViewController : UIViewController {
     
     @IBOutlet weak var instructionsImageView: UIImageView!
     @IBOutlet weak var instructionsLabel: UILabel!
+    @IBOutlet weak var audioInstructionsLabel: UILabel!
     
     
-    
-    @IBAction func gestureTap(_ sender: Any) {
-        morseCodeInput(input: ".")
+    @IBAction func gestureTap(_ sender: UITapGestureRecognizer) {
+        if sender.numberOfTouches == 2 {
+            if morseCode.mcTreeNode?.action != nil {
+                sayThisInstruction(string: "Swipe up for " + morseCode.mcTreeNode!.action!) //In case a blind person wants audio again
+            }
+            else if englishString.isEmpty && morseCodeString.isEmpty {
+                //empty state. User has not typed anything
+                sayThisInstruction(string: defaultInstructions)
+            }
+            else if isReading() {
+                guard let instructionsText = instructionsLabel?.text else {
+                    return
+                }
+                sayThisInstruction(string: instructionsText)
+            }
+        }
+        else {
+            morseCodeInput(input: ".")
+        }
     }
     
     
@@ -85,6 +102,12 @@ class ActionsMCViewController : UIViewController {
         alphanumericLabel?.text = ""
         morseCodeLabel?.text = ""
         instructionsLabel?.text = defaultInstructions
+        audioInstructionsLabel?.text = "For blind users:\nTap with 2 fingers to hear audio of current instruction"
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        //Notify a deaf-blind user that the app is open
+        hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
     }
 }
 
@@ -185,6 +208,8 @@ extension ActionsMCViewController {
         var recommendations = ""
         if morseCode.mcTreeNode?.action != nil {
             recommendations += "Swipe up for\n" + morseCode.mcTreeNode!.action! + "\n"
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+                "Swipe up for " + morseCode.mcTreeNode!.action!);  // actual text
         }
         let nextCharMatches = morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
         for nextMatch in nextCharMatches {
@@ -466,6 +491,28 @@ extension ActionsMCViewController {
             if session.isWatchAppInstalled && session.isReachable {
                 session.sendMessage(["is_english_mc": true, "english": english, "morse_code": morseCode], replyHandler: nil, errorHandler: nil)
             }
+        }
+    }
+    
+    private func sayThisInstruction(string: String) {
+        let audioSession = AVAudioSession.sharedInstance()
+        do { try audioSession.setCategory(AVAudioSessionCategoryPlayback) }
+        catch { showToast(message: "Sorry, audio failed to play") }
+        do { try audioSession.setMode(AVAudioSessionModeDefault) }
+        catch { showToast(message: "Sorry, audio failed to play") }
+        
+        synth.delegate = nil
+        let utterance = AVSpeechUtterance(string: string)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        if synth.isSpeaking {
+            synth.stopSpeaking(at: AVSpeechBoundary.immediate)
+            synth.speak(utterance)
+        }
+        if synth.isPaused {
+            synth.continueSpeaking()
+        }
+        else if !synth.isSpeaking {
+            synth.speak(utterance)
         }
     }
     
