@@ -11,6 +11,7 @@ import UIKit
 import AudioToolbox.AudioServices
 import AVFoundation
 import FirebaseAnalytics
+import WatchConnectivity
 
 class ActionsMCViewController : UIViewController {
     
@@ -68,10 +69,17 @@ class ActionsMCViewController : UIViewController {
         self.navigationController?.pushViewController(dictionaryViewController, animated: true)
     }
     
+    @IBAction func leftBarButtonItemTapped(_ sender: Any) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let settingsViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsTableViewController") as! SettingsTableViewController
+        self.navigationController?.present(settingsViewController, animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Actions", style: .plain, target: self, action: #selector(rightBarButtonItemTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(leftBarButtonItemTapped))
         
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel?.text = ""
@@ -446,6 +454,19 @@ extension ActionsMCViewController {
         visionMLViewController.delegateActions = self
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         self.navigationController?.present(visionMLViewController, animated: true, completion: nil)
+    }
+    
+    func receivedRequestForEnglishAndMCFromWatch() {
+        sendEnglishAndMCToWatch(english: englishString, morseCode: morseCodeString)
+    }
+    
+    func sendEnglishAndMCToWatch(english: String, morseCode: String) {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            if session.isWatchAppInstalled && session.isReachable {
+                session.sendMessage(["is_english_mc": true, "english": english, "morse_code": morseCode], replyHandler: nil, errorHandler: nil)
+            }
+        }
     }
     
     private func sayThis(string: String) {
