@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="u55-8B-Zwa">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Morse Code Editor View Controller-->
+        <scene sceneID="kaO-YT-H9J">
+            <objects>
+                <viewController storyboardIdentifier="MorseCodeEditorViewController" id="bbL-uY-60S" customClass="MorseCodeEditorViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Gfa-cJ-5yq"/>
+                        <viewControllerLayoutGuide type="bottom" id="lNj-gg-1Um"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="f8q-ly-aYW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qUd-rF-vFv">
+                                <rect key="frame" x="70" y="357" width="274" height="182.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You may not be able to feel morse code vibrations on this device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sf-9V-a8N">
+                                        <rect key="frame" x="0.0" y="0.0" width="274" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZe-De-X62">
+                                        <rect key="frame" x="0.0" y="41" width="274" height="42"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <state key="normal" title="Dictionary"/>
+                                        <connections>
+                                            <segue destination="pv4-uh-xpD" kind="show" id="dC2-eD-ilr"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mmk-gV-sh5">
+                                        <rect key="frame" x="0.0" y="88" width="274" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ln-Yx-NwW">
+                                        <rect key="frame" x="0.0" y="113.5" width="274" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rfn-QH-Ysh">
+                                        <rect key="frame" x="0.0" y="139" width="274" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to exit morse code typing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2pa-KS-dMq">
+                                        <rect key="frame" x="0.0" y="164.5" width="274" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="qUd-rF-vFv" firstAttribute="centerX" secondItem="f8q-ly-aYW" secondAttribute="centerX" id="A3M-o7-Zuc"/>
+                            <constraint firstItem="qUd-rF-vFv" firstAttribute="leading" secondItem="f8q-ly-aYW" secondAttribute="leadingMargin" constant="50" id="LGv-Jw-JbU"/>
+                            <constraint firstItem="qUd-rF-vFv" firstAttribute="centerY" secondItem="f8q-ly-aYW" secondAttribute="centerY" id="Wyj-Ck-DbJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="qUd-rF-vFv" secondAttribute="trailing" constant="50" id="r3f-nB-6uy"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="1zm-jY-I0j" appends="YES" id="atr-ok-Uaj"/>
+                            <outletCollection property="gestureRecognizers" destination="rwk-ZV-AtE" appends="YES" id="D7Q-A0-uoO"/>
+                            <outletCollection property="gestureRecognizers" destination="teA-bk-fNo" appends="YES" id="yJb-db-XMK"/>
+                            <outletCollection property="gestureRecognizers" destination="c0r-mf-QaH" appends="YES" id="iHJ-Up-c8S"/>
+                            <outletCollection property="gestureRecognizers" destination="blP-fa-Ovv" appends="YES" id="fOa-IA-Qkk"/>
+                            <outletCollection property="gestureRecognizers" destination="B27-Wz-0Ly" appends="YES" id="4mi-bj-63H"/>
+                            <outletCollection property="gestureRecognizers" destination="7Dh-3M-BNs" appends="YES" id="tm3-Gy-e5C"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="dictionaryButton" destination="KZe-De-X62" id="Ijq-Mp-chh"/>
+                        <outlet property="englishTextLabel" destination="mmk-gV-sh5" id="Wd3-vi-ZxL"/>
+                        <outlet property="exitInstructionLabel" destination="2pa-KS-dMq" id="Xe7-gH-VmR"/>
+                        <outlet property="instructionsLabel" destination="Rfn-QH-Ysh" id="1P7-MK-hMc"/>
+                        <outlet property="mainStackVIew" destination="qUd-rF-vFv" id="S30-5h-8Ez"/>
+                        <outlet property="morseCodeTextLabel" destination="9Ln-Yx-NwW" id="Ye3-Je-Dcp"/>
+                        <outlet property="warningLabel" destination="4sf-9V-a8N" id="BaX-Ef-FRT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Omw-vJ-eUq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="1zm-jY-I0j">
+                    <connections>
+                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="umu-68-54T"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="c0r-mf-QaH">
+                    <connections>
+                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="hoZ-qI-ktD"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="up" id="blP-fa-Ovv">
+                    <connections>
+                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="NwW-X2-W1x"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <tapGestureRecognizer id="rwk-ZV-AtE">
+                    <connections>
+                        <action selector="tapGesture:" destination="bbL-uY-60S" id="hDT-75-YQI"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="teA-bk-fNo">
+                    <connections>
+                        <action selector="longPressGesture:" destination="bbL-uY-60S" id="Cly-R8-ld3"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <swipeGestureRecognizer enabled="NO" direction="left" numberOfTouchesRequired="2" id="B27-Wz-0Ly">
+                    <connections>
+                        <action selector="swipeGestureDouble:" destination="bbL-uY-60S" id="nyK-vr-WpZ"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer enabled="NO" direction="right" numberOfTouchesRequired="2" id="7Dh-3M-BNs">
+                    <connections>
+                        <action selector="swipeGestureDouble:" destination="bbL-uY-60S" id="5EZ-Ej-OMs"/>
+                    </connections>
+                </swipeGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="4711.594202898551" y="-2891.5178571428569"/>
+        </scene>
+        <!--UITableViewController-HHA-Ce-gYY-->
+        <scene sceneID="c5R-KM-icm">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="UITableViewController-HHA-Ce-gYY" id="pv4-uh-xpD" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ShE-E6-DRY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5653.6231884057979" y="-2896.2053571428569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="6Q8-QP-cKj">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="u55-8B-Zwa" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Bvv-YK-tIk">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ayT-RZ-t8z" kind="relationship" relationship="rootViewController" id="6Ik-44-Lbi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="R6c-VB-1Sx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2789.8550724637685" y="-2893.5267857142858"/>
+        </scene>
+        <!--ActionsMC View Controller-->
+        <scene sceneID="sUq-sy-fSQ">
+            <objects>
+                <viewController id="ayT-RZ-t8z" customClass="ActionsMCViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HSm-UX-eB7"/>
+                        <viewControllerLayoutGuide type="bottom" id="5RC-vY-IjW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EgB-zm-HjI">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qt8-0O-eKm">
+                                <rect key="frame" x="128" y="98" width="158" height="56.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JiI-2c-7y9">
+                                        <rect key="frame" x="26.5" y="0.0" width="105.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFZ-fO-32D">
+                                        <rect key="frame" x="0.0" y="20.5" width="158" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nIE-aO-URL">
+                                <rect key="frame" x="87" y="348" width="240" height="158"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LpY-Ps-g6k">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Instructions Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YO9-4V-IvZ">
+                                        <rect key="frame" x="24.5" y="128" width="191" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="nIE-aO-URL" firstAttribute="centerY" secondItem="EgB-zm-HjI" secondAttribute="centerY" id="0Fj-fD-jDZ"/>
+                            <constraint firstItem="Qt8-0O-eKm" firstAttribute="top" secondItem="HSm-UX-eB7" secondAttribute="bottom" constant="10" id="BTM-Kz-26n"/>
+                            <constraint firstItem="nIE-aO-URL" firstAttribute="centerX" secondItem="EgB-zm-HjI" secondAttribute="centerX" id="Peq-Wh-q6K"/>
+                            <constraint firstItem="Qt8-0O-eKm" firstAttribute="centerX" secondItem="EgB-zm-HjI" secondAttribute="centerX" id="T5X-bm-sDi"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="DpS-68-Lb5" appends="YES" id="3p7-yY-f8r"/>
+                            <outletCollection property="gestureRecognizers" destination="soh-ao-S0f" appends="YES" id="XpP-Zg-6mJ"/>
+                            <outletCollection property="gestureRecognizers" destination="jiX-cK-ys5" appends="YES" id="Qfu-us-gJk"/>
+                        </connections>
+                    </view>
+                    <navigationItem key="navigationItem" id="tcE-DQ-GBL"/>
+                    <connections>
+                        <outlet property="alphanumericLabel" destination="JiI-2c-7y9" id="aOW-Yi-dzt"/>
+                        <outlet property="instructionsImageView" destination="LpY-Ps-g6k" id="vFi-sk-vNK"/>
+                        <outlet property="instructionsLabel" destination="YO9-4V-IvZ" id="BUZ-Ae-GhR"/>
+                        <outlet property="morseCodeLabel" destination="kFZ-fO-32D" id="Lsr-MV-wVg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0ap-Hz-g6M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="DpS-68-Lb5">
+                    <connections>
+                        <action selector="gestureTap:" destination="ayT-RZ-t8z" id="GfW-YQ-DYj"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <swipeGestureRecognizer direction="up" id="soh-ao-S0f">
+                    <connections>
+                        <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="N48-kd-Ejk"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="jiX-cK-ys5">
+                    <connections>
+                        <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="F13-w7-IQW"/>
+                    </connections>
+                </swipeGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="3719" y="-2893"/>
+        </scene>
+    </scenes>
+</document>

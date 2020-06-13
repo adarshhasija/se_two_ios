@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JUW-UG-VXo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JUW-UG-VXo">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1610,13 +1610,13 @@
                                                     <rect key="frame" x="20" y="30" width="324" height="60"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAe-Sv-9eX">
-                                                            <rect key="frame" x="0.0" y="0.0" width="38" height="17"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="38" height="15.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Obtained from device" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XPH-Kt-oS5">
-                                                            <rect key="frame" x="0.0" y="17" width="122" height="13"/>
+                                                            <rect key="frame" x="0.0" y="15.5" width="122" height="14.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1654,13 +1654,13 @@
                                                     <rect key="frame" x="20" y="20" width="303" height="160"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="No Ailment Mentioned" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CXt-hB-YQn">
-                                                            <rect key="frame" x="0.0" y="0.0" width="303" height="131"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="303" height="21.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Please select your ailment and we can guide you on how to use this app" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5k-Z6-Iij">
-                                                            <rect key="frame" x="0.0" y="131" width="303" height="29"/>
+                                                            <rect key="frame" x="0.0" y="21.5" width="303" height="138.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1769,135 +1769,12 @@
             </objects>
             <point key="canvasLocation" x="2833" y="-2888"/>
         </scene>
-        <!--Morse Code Editor View Controller-->
-        <scene sceneID="kaO-YT-H9J">
-            <objects>
-                <viewController storyboardIdentifier="MorseCodeEditorViewController" id="bbL-uY-60S" customClass="MorseCodeEditorViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Gfa-cJ-5yq"/>
-                        <viewControllerLayoutGuide type="bottom" id="lNj-gg-1Um"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="f8q-ly-aYW">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qUd-rF-vFv">
-                                <rect key="frame" x="70" y="357" width="274" height="182.5"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You may not be able to feel morse code vibrations on this device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sf-9V-a8N">
-                                        <rect key="frame" x="0.0" y="0.0" width="274" height="36"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZe-De-X62">
-                                        <rect key="frame" x="0.0" y="41" width="274" height="42"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <state key="normal" title="Dictionary"/>
-                                        <connections>
-                                            <segue destination="HHA-Ce-gYY" kind="show" id="dC2-eD-ilr"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mmk-gV-sh5">
-                                        <rect key="frame" x="0.0" y="88" width="274" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ln-Yx-NwW">
-                                        <rect key="frame" x="0.0" y="113.5" width="274" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rfn-QH-Ysh">
-                                        <rect key="frame" x="0.0" y="139" width="274" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to exit morse code typing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2pa-KS-dMq">
-                                        <rect key="frame" x="0.0" y="164.5" width="274" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <color key="textColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstItem="qUd-rF-vFv" firstAttribute="centerX" secondItem="f8q-ly-aYW" secondAttribute="centerX" id="A3M-o7-Zuc"/>
-                            <constraint firstItem="qUd-rF-vFv" firstAttribute="leading" secondItem="f8q-ly-aYW" secondAttribute="leadingMargin" constant="50" id="LGv-Jw-JbU"/>
-                            <constraint firstItem="qUd-rF-vFv" firstAttribute="centerY" secondItem="f8q-ly-aYW" secondAttribute="centerY" id="Wyj-Ck-DbJ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="qUd-rF-vFv" secondAttribute="trailing" constant="50" id="r3f-nB-6uy"/>
-                        </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="1zm-jY-I0j" appends="YES" id="atr-ok-Uaj"/>
-                            <outletCollection property="gestureRecognizers" destination="rwk-ZV-AtE" appends="YES" id="D7Q-A0-uoO"/>
-                            <outletCollection property="gestureRecognizers" destination="teA-bk-fNo" appends="YES" id="yJb-db-XMK"/>
-                            <outletCollection property="gestureRecognizers" destination="c0r-mf-QaH" appends="YES" id="iHJ-Up-c8S"/>
-                            <outletCollection property="gestureRecognizers" destination="blP-fa-Ovv" appends="YES" id="fOa-IA-Qkk"/>
-                            <outletCollection property="gestureRecognizers" destination="B27-Wz-0Ly" appends="YES" id="4mi-bj-63H"/>
-                            <outletCollection property="gestureRecognizers" destination="7Dh-3M-BNs" appends="YES" id="tm3-Gy-e5C"/>
-                        </connections>
-                    </view>
-                    <connections>
-                        <outlet property="dictionaryButton" destination="KZe-De-X62" id="Ijq-Mp-chh"/>
-                        <outlet property="englishTextLabel" destination="mmk-gV-sh5" id="Wd3-vi-ZxL"/>
-                        <outlet property="exitInstructionLabel" destination="2pa-KS-dMq" id="Xe7-gH-VmR"/>
-                        <outlet property="instructionsLabel" destination="Rfn-QH-Ysh" id="1P7-MK-hMc"/>
-                        <outlet property="mainStackVIew" destination="qUd-rF-vFv" id="S30-5h-8Ez"/>
-                        <outlet property="morseCodeTextLabel" destination="9Ln-Yx-NwW" id="Ye3-Je-Dcp"/>
-                        <outlet property="warningLabel" destination="4sf-9V-a8N" id="BaX-Ef-FRT"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Omw-vJ-eUq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="1zm-jY-I0j">
-                    <connections>
-                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="umu-68-54T"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="left" id="c0r-mf-QaH">
-                    <connections>
-                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="hoZ-qI-ktD"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="up" id="blP-fa-Ovv">
-                    <connections>
-                        <action selector="swipeGesture:" destination="bbL-uY-60S" id="NwW-X2-W1x"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <tapGestureRecognizer id="rwk-ZV-AtE">
-                    <connections>
-                        <action selector="tapGesture:" destination="bbL-uY-60S" id="hDT-75-YQI"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="teA-bk-fNo">
-                    <connections>
-                        <action selector="longPressGesture:" destination="bbL-uY-60S" id="Cly-R8-ld3"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <swipeGestureRecognizer enabled="NO" direction="left" numberOfTouchesRequired="2" id="B27-Wz-0Ly">
-                    <connections>
-                        <action selector="swipeGestureDouble:" destination="bbL-uY-60S" id="nyK-vr-WpZ"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer enabled="NO" direction="right" numberOfTouchesRequired="2" id="7Dh-3M-BNs">
-                    <connections>
-                        <action selector="swipeGestureDouble:" destination="bbL-uY-60S" id="5EZ-Ej-OMs"/>
-                    </connections>
-                </swipeGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="3802" y="-2891"/>
-        </scene>
         <!--Dictionary Table View Controller-->
         <scene sceneID="9Kg-uw-4ZJ">
             <objects>
-                <tableViewController id="HHA-Ce-gYY" customClass="MCDictionaryTableViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="UITableViewController-HHA-Ce-gYY" id="HHA-Ce-gYY" customClass="MCDictionaryTableViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="fxB-mq-DBC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
@@ -1911,13 +1788,13 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1OV-xK-dKy">
                                             <rect key="frame" x="20" y="1.5" width="93.5" height="41"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSx-BM-u7Q">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="English" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSx-BM-u7Q">
                                                     <rect key="frame" x="0.0" y="0.0" width="93.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvl-u8-O93">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvl-u8-O93">
                                                     <rect key="frame" x="0.0" y="20.5" width="93.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1948,20 +1825,28 @@
             </objects>
             <point key="canvasLocation" x="4744" y="-2896"/>
         </scene>
+        <!--MorseCodeEditorViewController-->
+        <scene sceneID="vMJ-T6-y3e">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="MorseCodeEditorViewController" storyboardName="MorseCode" referencedIdentifier="MorseCodeEditorViewController" id="nlo-Iu-5gw" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cUq-6E-NKS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3802" y="-2891"/>
+        </scene>
     </scenes>
-    <resources>
-        <image name="SpeakerIcon" width="170.66667175292969" height="170.66667175292969"/>
-        <image name="book" catalog="system" width="64" height="50"/>
-        <image name="camera" catalog="system" width="64" height="48"/>
-        <image name="camera.fill" catalog="system" width="64" height="48"/>
-        <image name="chevron.up" catalog="system" width="64" height="36"/>
-        <image name="gear" catalog="system" width="64" height="58"/>
-        <image name="keyboard" catalog="system" width="64" height="34"/>
-        <image name="mic.fill" catalog="system" width="54" height="64"/>
-        <image name="se_person" width="48" height="48"/>
-        <image name="wifi.slash" catalog="system" width="64" height="56"/>
-    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="2ZQ-Pc-kt3"/>
     </inferredMetricsTieBreakers>
+    <resources>
+        <image name="SpeakerIcon" width="170.66667175292969" height="170.66667175292969"/>
+        <image name="book" catalog="system" width="128" height="101"/>
+        <image name="camera" catalog="system" width="128" height="96"/>
+        <image name="camera.fill" catalog="system" width="128" height="96"/>
+        <image name="chevron.up" catalog="system" width="128" height="72"/>
+        <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="keyboard" catalog="system" width="128" height="70"/>
+        <image name="mic.fill" catalog="system" width="108" height="128"/>
+        <image name="se_person" width="48" height="48"/>
+        <image name="wifi.slash" catalog="system" width="128" height="113"/>
+    </resources>
 </document>

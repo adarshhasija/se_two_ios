@@ -12,6 +12,7 @@ import UIKit
 public class MCDictionaryTableViewController : UITableViewController {
     
     var morseCodeArray : [MorseCodeCell] = []
+    var type : String? = nil
     
     public override func viewDidLoad() {
         super.viewDidLoad()

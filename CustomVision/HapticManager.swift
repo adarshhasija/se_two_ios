@@ -92,7 +92,16 @@ class HapticManager {
     
     func generateHaptic(code : String?) {
         if supportsHaptics == false {
-            if code == RESULT_SUCCESS {
+            if code == MC_DOT {
+                // 'Peek' feedback (weak boom)
+                //let peek = SystemSoundID(1519)
+                //AudioServicesPlaySystemSound(peek)
+                
+                // 'Pop' feedback (strong boom)
+                let pop = SystemSoundID(1520)
+                AudioServicesPlaySystemSound(pop)
+            }
+            else if code == RESULT_SUCCESS {
                 AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
             }
             return
