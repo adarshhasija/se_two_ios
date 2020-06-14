@@ -20,6 +20,13 @@ class MCDictionaryInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
+        let dictionary = context as? NSDictionary
+        if dictionary != nil {
+            if let type = dictionary!["type"] as? String {
+                morseCode = MorseCode(type: type, operatingSystem: "watchOS")
+            }
+        }
+        
         morseCodeDictionaryTable.setNumberOfRows(morseCode.mcArray.count, withRowType: "MorseCodeRow")
 
         for (index, morseCode) in morseCode.mcArray.enumerated() {

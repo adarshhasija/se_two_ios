@@ -104,7 +104,7 @@ class MorseCode {
             array.append(MorseCodeCell(english: "CAMERA", morseCode: "...", type: "action"))
         }
         else if os == "watchOS" {
-            array.append(MorseCodeCell(english: "CHAT", morseCode: "...", type: "action"))
+            array.append(MorseCodeCell(english: "CHAT", morseCode: "....", type: "action"))
         }
         
         return array

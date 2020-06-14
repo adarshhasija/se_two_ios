@@ -31,6 +31,7 @@ class MCInterfaceController : WKInterfaceController {
     var crownRotationalDelta = 0.0
     var morseCode = MorseCode()
     var synth : AVSpeechSynthesizer?
+    var mode : String? //If mode = chat, we show MC dictionary. Else we show Actions list
     
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
@@ -256,7 +257,10 @@ class MCInterfaceController : WKInterfaceController {
     
     @IBAction func tappedDictionary() {
         sendAnalytics(eventName: "se3_watch_dictionary_tap", parameters: [:])
-        pushController(withName: "Dictionary", context: nil)
+        let params = [
+            "type" : "morse_code"
+        ]
+        pushController(withName: "Dictionary", context: params)
     }
     
     
@@ -271,12 +275,20 @@ class MCInterfaceController : WKInterfaceController {
         pushController(withName: "SettingsDeafBlind", context: self)
     }
     
+    @IBAction func tappedActionsDictionary() {
+        sendAnalytics(eventName: "se3_watch_actions_tap", parameters: [:])
+        let params = [
+            "type" : "actions"
+        ]
+        pushController(withName: "Dictionary", context: params)
+    }
+    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
         instructionsLabel.setText(deafBlindInstructions)
         if alphabetToMcDictionary.count < 1 {
-            let morseCode : MorseCode = MorseCode()
+            let morseCode : MorseCode = MorseCode(type: "morse_code", operatingSystem: "watchOS")
             for morseCodeCell in morseCode.mcArray {
                 if morseCodeCell.morseCode == "......." {
                     //space
@@ -305,6 +317,17 @@ class MCInterfaceController : WKInterfaceController {
         }   */
         instructionsLabel?.setText(deafBlindInstructions)
         
+        if mode == "chat" {
+            if let talkTypeImage = UIImage(systemName: "pencil") {
+                addMenuItem(with: talkTypeImage, title: "Talk/Type", action: #selector(tappedTalkType))
+            }
+            if let bookImage = UIImage(systemName: "book.fill") {
+                addMenuItem(with: bookImage, title: "Morse Code Dictionary", action: #selector(tappedDictionary))
+            }
+        }
+        else {
+            addMenuItem(with: WKMenuItemIcon.info, title: "Actions", action: #selector(tappedActionsDictionary))
+        }
     }
     
     override func willActivate() {
