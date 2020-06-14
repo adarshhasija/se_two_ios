@@ -80,7 +80,7 @@ class ActionsMCViewController : UIViewController {
     }
     
     @IBAction func rightBarButtonItemTapped(_ sender: Any) {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Dictionary", bundle:nil)
         let dictionaryViewController = storyBoard.instantiateViewController(withIdentifier: "UITableViewController-HHA-Ce-gYY") as! MCDictionaryTableViewController
         dictionaryViewController.typeToDisplay = "actions"
         self.navigationController?.pushViewController(dictionaryViewController, animated: true)

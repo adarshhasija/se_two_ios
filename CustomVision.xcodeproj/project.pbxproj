@@ -13,6 +13,8 @@
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
 		3142C8A02495F32E00B1257B /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3142C89F2495F32E00B1257B /* Settings.storyboard */; };
+		3142C8A52496384D00B1257B /* Dictionary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3142C8A42496384D00B1257B /* Dictionary.storyboard */; };
+		3142C8A72496390700B1257B /* MCDictionaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */; };
 		315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */; };
 		316BA194246D78F000869C89 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316BA193246D78F000869C89 /* UITextField.swift */; };
 		3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172732C247662FC003538F8 /* SettingsTableViewController.swift */; };
@@ -140,6 +142,8 @@
 		313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDTouchView.swift; sourceTree = "<group>"; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
 		3142C89F2495F32E00B1257B /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		3142C8A42496384D00B1257B /* Dictionary.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dictionary.storyboard; sourceTree = "<group>"; };
+		3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryDetailViewController.swift; sourceTree = "<group>"; };
 		315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoPeopleSettingsViewController.swift; sourceTree = "<group>"; };
 		316BA193246D78F000869C89 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3172732C247662FC003538F8 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -271,6 +275,17 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		3142C8A12496373100B1257B /* Dictionary */ = {
+			isa = PBXGroup;
+			children = (
+				3142C8A42496384D00B1257B /* Dictionary.storyboard */,
+				31BC65182469324100D5D801 /* MCDictionaryTableViewController.swift */,
+				31BC651C24697FDD00D5D801 /* MCDictionaryCell.swift */,
+				3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */,
+			);
+			path = Dictionary;
+			sourceTree = "<group>";
+		};
 		3179722E21578148006495E3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -387,6 +402,7 @@
 		5EBF65101F0AA47700BCD353 /* CustomVision */ = {
 			isa = PBXGroup;
 			children = (
+				3142C8A12496373100B1257B /* Dictionary */,
 				3142C89E2495F32100B1257B /* Settings */,
 				3188A83224789CB00075B33E /* CameraSE */,
 				315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */,
@@ -414,8 +430,6 @@
 				3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */,
 				31A855142422A63A0064B29C /* MorseCodeUtils.swift */,
 				319D524D2466897400CBB1EB /* HapticManager.swift */,
-				31BC65182469324100D5D801 /* MCDictionaryTableViewController.swift */,
-				31BC651C24697FDD00D5D801 /* MCDictionaryCell.swift */,
 				316BA193246D78F000869C89 /* UITextField.swift */,
 				317340A1246DB60C00F75B1B /* Collection.swift */,
 				31829CBA2493B671003C6153 /* ActionsMCViewController.swift */,
@@ -667,6 +681,7 @@
 			files = (
 				3188A82F24789A080075B33E /* MainVision.storyboard in Resources */,
 				5EBF651C1F0AA47700BCD353 /* LaunchScreen.storyboard in Resources */,
+				3142C8A52496384D00B1257B /* Dictionary.storyboard in Resources */,
 				31798E00217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */,
 				5EBF65191F0AA47700BCD353 /* Assets.xcassets in Resources */,
 				31829CBD2493B737003C6153 /* MorseCode.storyboard in Resources */,
@@ -810,6 +825,7 @@
 				319D524E2466897400CBB1EB /* HapticManager.swift in Sources */,
 				31829CBB2493B671003C6153 /* ActionsMCViewController.swift in Sources */,
 				31862B7D225E11650058883D /* ChatListItem.swift in Sources */,
+				3142C8A72496390700B1257B /* MCDictionaryDetailViewController.swift in Sources */,
 				31BC651E2469872D00D5D801 /* MorseCodeCell.swift in Sources */,
 				31862B7F226077950058883D /* EventOrigin.swift in Sources */,
 				3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */,
