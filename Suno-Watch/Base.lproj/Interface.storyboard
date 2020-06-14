@@ -182,6 +182,36 @@
             </objects>
             <point key="canvasLocation" x="428" y="741"/>
         </scene>
+        <!--DictionaryDetail-->
+        <scene sceneID="2iw-vT-hFk">
+            <objects>
+                <controller identifier="DictionaryDetail" id="j83-Wl-M0b" customClass="MCDictionaryDetailController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <label alignment="left" text="Title" textAlignment="left" numberOfLines="0" id="f4I-sr-Aqe">
+                            <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
+                        </label>
+                        <label alignment="left" text="About" textAlignment="left" numberOfLines="0" id="Vc2-ch-KFA"/>
+                        <label alignment="left" text="Visually-impaired Users" textAlignment="left" numberOfLines="0" id="fhK-qM-T4x">
+                            <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
+                        </label>
+                        <label alignment="left" text="visually impaired instructions" textAlignment="left" numberOfLines="0" id="8Er-yB-K14"/>
+                        <label alignment="left" text="Deaf-blind users" textAlignment="left" numberOfLines="0" id="0fA-xI-P1u">
+                            <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
+                        </label>
+                        <label alignment="left" text="Deaf-blind instructions" textAlignment="left" numberOfLines="0" id="PT8-N6-lI9"/>
+                    </items>
+                    <connections>
+                        <outlet property="aboutLabel" destination="Vc2-ch-KFA" id="2TE-hV-4n0"/>
+                        <outlet property="blindInstructionsLabel" destination="8Er-yB-K14" id="lGi-UY-xIt"/>
+                        <outlet property="blindLabel" destination="fhK-qM-T4x" id="cIl-Qd-CZe"/>
+                        <outlet property="deafBlindInstructionsLabel" destination="PT8-N6-lI9" id="5ke-SR-EQy"/>
+                        <outlet property="deafBlindLabel" destination="0fA-xI-P1u" id="cA0-CL-u0e"/>
+                        <outlet property="titleLabel" destination="f4I-sr-Aqe" id="oVS-Ge-zlx"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="756" y="741"/>
+        </scene>
         <!--FAQs-->
         <scene sceneID="5L1-bC-Dkf">
             <objects>

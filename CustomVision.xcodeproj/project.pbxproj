@@ -15,6 +15,7 @@
 		3142C8A02495F32E00B1257B /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3142C89F2495F32E00B1257B /* Settings.storyboard */; };
 		3142C8A52496384D00B1257B /* Dictionary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3142C8A42496384D00B1257B /* Dictionary.storyboard */; };
 		3142C8A72496390700B1257B /* MCDictionaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */; };
+		3142C8A92496694500B1257B /* MCDictionaryDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8A82496694500B1257B /* MCDictionaryDetailController.swift */; };
 		315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */; };
 		316BA194246D78F000869C89 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316BA193246D78F000869C89 /* UITextField.swift */; };
 		3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172732C247662FC003538F8 /* SettingsTableViewController.swift */; };
@@ -144,6 +145,7 @@
 		3142C89F2495F32E00B1257B /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		3142C8A42496384D00B1257B /* Dictionary.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dictionary.storyboard; sourceTree = "<group>"; };
 		3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryDetailViewController.swift; sourceTree = "<group>"; };
+		3142C8A82496694500B1257B /* MCDictionaryDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryDetailController.swift; sourceTree = "<group>"; };
 		315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoPeopleSettingsViewController.swift; sourceTree = "<group>"; };
 		316BA193246D78F000869C89 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3172732C247662FC003538F8 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 				31A67B80235CAC6600F506BD /* FAQRowController.swift */,
 				31A67B82235CB55800F506BD /* FAQCell.swift */,
 				31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */,
+				3142C8A82496694500B1257B /* MCDictionaryDetailController.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 				31A67B81235CAC6600F506BD /* FAQRowController.swift in Sources */,
 				31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */,
 				31EC882823467AD50088051C /* MCTreeNode.swift in Sources */,
+				3142C8A92496694500B1257B /* MCDictionaryDetailController.swift in Sources */,
 				31EC882623467A600088051C /* MorseCode.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
 				310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */,

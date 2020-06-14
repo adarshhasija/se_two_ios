@@ -45,22 +45,32 @@ class MCDictionaryInterfaceController : WKInterfaceController {
             "screen" : "mc_dictionary",
             "question" : morseCodeCell.english.prefix(100)
         ])
-        var finalString = ""
-        for char in morseCodeCell.morseCode {
-            if char == "." {
-                finalString += "tap"
-            }
-            else if char == "-" {
-                finalString += "swipe right"
-            }
-            
-            finalString += ","
-        }
-        finalString.removeLast() //Removes the last comma
         
-        presentAlert(withTitle: "", message: "To type this out you must " + finalString, preferredStyle: .alert, actions: [
-        WKAlertAction(title: "OK", style: .default) {}
-        ])
+        if morseCodeCell.type == "action" {
+            let params = [
+                "action" : morseCodeCell.english
+            ]
+            pushController(withName: "DictionaryDetail", context: params)
+        }
+        else {
+            var finalString = ""
+            for char in morseCodeCell.morseCode {
+                if char == "." {
+                    finalString += "tap"
+                }
+                else if char == "-" {
+                    finalString += "swipe right"
+                }
+                
+                finalString += ","
+            }
+            finalString.removeLast() //Removes the last comma
+            
+            presentAlert(withTitle: "", message: "To type this out you must " + finalString, preferredStyle: .alert, actions: [
+                WKAlertAction(title: "OK", style: .default) {}
+            ])
+        }
+        
     }
     
 }
