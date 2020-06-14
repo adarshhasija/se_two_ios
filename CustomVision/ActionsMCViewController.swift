@@ -28,7 +28,7 @@ class ActionsMCViewController : UIViewController {
     var isUserTyping : Bool = false
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     
-    var defaultInstructions = "Start typing code for an action.\nTap screen to type a dot"
+    var defaultInstructions = "Tap screen to type a dot.\nTap Actions button to see actions"
     var noMoreMatchesString = "No more matches found for this morse code"
     var scrollStart = "Swipe right with 2 fingers to read"
     var stopReadingString = "Swipe left once with 1 finger to stop reading and type"
@@ -101,6 +101,7 @@ class ActionsMCViewController : UIViewController {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel?.text = ""
         morseCodeLabel?.text = ""
+        instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
         instructionsLabel?.text = defaultInstructions
         audioInstructionsLabel?.text = "For blind users:\nTap with 2 fingers to hear audio of current instruction"
     }
@@ -137,10 +138,13 @@ extension ActionsMCViewController {
         englishStringIndex = -1
         morseCodeStringIndex = -1
         if isUserTyping == false {
+            //animate first character
             userHasBegunTyping(firstCharacter: input)
         }
         else {
             morseCodeString += input
+            //animate instructions
+            animateInstructions()
         }
         isAlphabetReached(input: input)
         morseCodeLabel.text = morseCodeString
@@ -194,18 +198,19 @@ extension ActionsMCViewController {
         englishString = ""
         alphanumericLabel.text = englishString
         isUserTyping = true
-        
-        //morseCodeLabel.font = morseCodeLabel.font.withSize(100)
-        let transform = morseCodeLabel?.transform.scaledBy(x: 20, y: 20)
+        animateLabelEnlarge(label: self.morseCodeLabel)
+    }
+    
+    func animateLabelEnlarge(label : UILabel?) {
+        let transform = label?.transform.scaledBy(x: 20, y: 20)
         UIView.animate(withDuration: 1.0) {
-            self.morseCodeLabel?.transform = transform ?? CGAffineTransform()
+            label?.transform = transform ?? CGAffineTransform()
             
-            let transform2 = self.morseCodeLabel?.transform.scaledBy(x: 1/20, y: 1/20)
+            let transform2 = label?.transform.scaledBy(x: 1/20, y: 1/20)
             UIView.animate(withDuration: 1.0) {
-                self.morseCodeLabel?.transform = transform2 ?? CGAffineTransform()
+                label?.transform = transform2 ?? CGAffineTransform()
             }
         }
-        
     }
     
     //We only want to show suggestions for actions
@@ -219,9 +224,13 @@ extension ActionsMCViewController {
         
         var recommendations = ""
         if morseCode.mcTreeNode?.action != nil {
+            instructionsImageView?.image = UIImage(systemName: "chevron.up")
             recommendations += "Swipe up for\n" + morseCode.mcTreeNode!.action! + "\n"
             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
                 "Swipe up for " + morseCode.mcTreeNode!.action!);  // actual text
+        }
+        else {
+            instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
         }
         let nextCharMatches = morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
         for nextMatch in nextCharMatches {
@@ -239,6 +248,18 @@ extension ActionsMCViewController {
         
         instructionsString += "\n" + "Swipe left to delete last character"
         instructionsLabel.text = instructionsString
+    }
+    
+    func animateInstructions() {
+        UIView.animate(withDuration: 1.0) {
+            self.instructionsImageView.alpha = 0.0
+            self.instructionsLabel.alpha = 0.0
+            
+            UIView.animate(withDuration: 2.0) {
+                self.instructionsImageView.alpha = 1.0
+                self.instructionsLabel.alpha = 1.0
+            }
+        }
     }
     
     func swipeUp() {
@@ -265,6 +286,7 @@ extension ActionsMCViewController {
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 isUserTyping = false
                 updateMorseCodeForActions()
+                animateLabelEnlarge(label: self.alphanumericLabel)
             }
             else if action == "DATE" {
                 let day = (Calendar.current.component(.day, from: Date()))
@@ -277,6 +299,7 @@ extension ActionsMCViewController {
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 isUserTyping = false
                 updateMorseCodeForActions()
+                animateLabelEnlarge(label: self.alphanumericLabel)
             }
             else if action == "CAMERA" {
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
@@ -296,6 +319,7 @@ extension ActionsMCViewController {
             morseCodeString = ""
             morseCodeLabel?.text = ""
             instructionsLabel?.text = defaultInstructions
+            instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
             hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
             return
         }
@@ -336,6 +360,7 @@ extension ActionsMCViewController {
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
                
                setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
+               instructionsImageView?.image = UIImage(systemName: "hand.point.right")
                if morseCodeStringIndex < 0 {
                    morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
                    englishStringIndex = -1
@@ -385,6 +410,7 @@ extension ActionsMCViewController {
                 "state" : "index_greater_equal_0"
             ])
             instructionsLabel?.text = "Swipe left with 2 fingers to go back"
+            instructionsImageView?.image = UIImage(systemName: "hand.point.left")
             morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
             alphanumericLabel.text = englishString
             //WKInterfaceDevice.current().play(.success)
@@ -431,6 +457,7 @@ extension ActionsMCViewController {
         morseCodeStringIndex = -1
         isUserTyping = false
         setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
+        instructionsImageView?.image = UIImage(systemName: "hand.point.right")
         while morseCode.mcTreeNode?.parent != nil {
             morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
         }
@@ -574,6 +601,7 @@ extension ActionsMCViewController : ActionsMCViewControllerProtocol {
             morseCodeStringIndex = -1
             isUserTyping = false
             setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
+            instructionsImageView?.image = UIImage(systemName: "hand.point.right")
         }
     }
 }
