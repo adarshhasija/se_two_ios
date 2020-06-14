@@ -194,6 +194,18 @@ extension ActionsMCViewController {
         englishString = ""
         alphanumericLabel.text = englishString
         isUserTyping = true
+        
+        //morseCodeLabel.font = morseCodeLabel.font.withSize(100)
+        let transform = morseCodeLabel?.transform.scaledBy(x: 20, y: 20)
+        UIView.animate(withDuration: 1.0) {
+            self.morseCodeLabel?.transform = transform ?? CGAffineTransform()
+            
+            let transform2 = self.morseCodeLabel?.transform.scaledBy(x: 1/20, y: 1/20)
+            UIView.animate(withDuration: 1.0) {
+                self.morseCodeLabel?.transform = transform2 ?? CGAffineTransform()
+            }
+        }
+        
     }
     
     //We only want to show suggestions for actions
@@ -308,6 +320,7 @@ extension ActionsMCViewController {
         
         if morseCodeString.count == 0 && englishString.count == 0 {
             instructionsLabel.text = defaultInstructions
+            isUserTyping = false
         }
     }
     
