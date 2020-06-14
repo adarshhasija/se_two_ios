@@ -36,7 +36,7 @@ class MCDictionaryDetailController : WKInterfaceController {
                     deafBlindInstructionsLabel.setText("After getting the result, swipe right with 2 fingers to read the morse code. We will communicate it through vibrations\n\nDot(.) : 1 vibration\nDash(-) : 2 vibration")
                 }
                 else {
-                    aboutLabel.setText("In chat mode, you can chat with someone sitting next to you using this app. You can type out a message in morse code and we will convert it to English so you can show it to your partner. They can reply in English and we will convert it to morse code for you")
+                    aboutLabel.setText("To get chat mode, you must tap 4 times and swipe up. In chat mode, you can chat with someone sitting next to you using this app. You can type out a message in morse code and we will convert it to English so you can show it to your partner. They can reply in English and we will convert it to morse code for you")
                     blindLabel.setHidden(true)
                     blindInstructionsLabel.setHidden(true)
                     deafBlindLabel.setHidden(true)

@@ -41,10 +41,10 @@
             </objects>
             <point key="canvasLocation" x="34" y="32"/>
         </scene>
-        <!--Interface Controller-->
+        <!--MCInterfaceController-->
         <scene sceneID="4pt-F2-1TS">
             <objects>
-                <controller fullBounds="YES" id="V63-br-2PY" customClass="MCInterfaceController" customModule="Suno_Watch_Extension">
+                <controller identifier="MCInterfaceController" fullBounds="YES" id="V63-br-2PY" customClass="MCInterfaceController" customModule="Suno_Watch_Extension">
                     <items>
                         <group width="1" height="154" alignment="left" layout="vertical" id="dXO-f8-Ixc">
                             <items>

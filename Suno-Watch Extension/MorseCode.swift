@@ -57,6 +57,10 @@ class MorseCode {
         populate(type: nil, operatingSystem: "iOS")
     }
     
+    init(operatingSystem: String) {
+        populate(type: nil, operatingSystem: operatingSystem)
+    }
+    
     init(type: String?, operatingSystem: String) {
         populate(type: type, operatingSystem: operatingSystem)
     }
@@ -191,14 +195,8 @@ class MorseCode {
         if currentNode?.dotNode?.alphabet != nil {
             matches.append("Add a dot to get: " + currentNode!.dotNode!.alphabet!)
         }
-        if currentNode?.dotNode?.action != nil {
-            matches.append("Add a dot to get: " + currentNode!.dotNode!.action!)
-        }
         if currentNode?.dashNode?.alphabet != nil {
             matches.append("Add a dash to get: " + currentNode!.dashNode!.alphabet!)
-        }
-        if currentNode?.dashNode?.action != nil {
-            matches.append("Add a dash to get: " + currentNode!.dashNode!.action!)
         }
         return matches
     }

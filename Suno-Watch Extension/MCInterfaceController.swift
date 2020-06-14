@@ -13,7 +13,7 @@ import WatchConnectivity
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstructions = "Tap to start typing"
+    var defaultInstructions = "Tap screen to type a dot.\n\nForce press to see actions"
     var deafBlindInstructions = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for more options"
     var notDeafBlindInstructions = "Long press to talk or type out a message\n\nOr\n\nForce press for more options"
     var dcScrollStart = "Rotate the digital crown to read"
@@ -64,7 +64,8 @@ class MCInterfaceController : WKInterfaceController {
             ])
             return
         }
-        if morseCodeString.count > 0 {
+        
+        if mode == "chat" && morseCodeString.count > 0 {
             if morseCodeString.last == "|" {
                 
                 let mathResult = performMathCalculation(inputString: englishString) //NSExpression(format:englishString).expressionValue(with: nil, context: nil) as? Int //This wont work if the string also contains alphabets
@@ -115,31 +116,6 @@ class MCInterfaceController : WKInterfaceController {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
             }
-            else if let action = morseCode.mcTreeNode?.action {
-                sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
-                    "state" : "action_"+action
-                ])
-                if action == "TIME" {
-                    let hh = (Calendar.current.component(.hour, from: Date()))
-                    let mm = (Calendar.current.component(.minute, from: Date()))
-                    let hourString = hh < 10 ? "0" + String(hh) : String(hh)
-                    let minString = mm < 10 ? "0" + String(mm) : String(mm)
-                    englishString = hourString + minString
-                    englishTextLabel?.setText(englishString)
-                    englishTextLabel?.setHidden(false)
-                    englishStringIndex = -1
-                }
-                else if action == "DATE" {
-                    let day = (Calendar.current.component(.day, from: Date()))
-                    let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
-                    let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
-                    englishString = String(day) + weekdayString.prefix(2).uppercased()
-                    englishTextLabel?.setText(englishString)
-                    englishTextLabel?.setHidden(false)
-                    englishStringIndex = -1
-                }
-                updateMorseCodeForActions()
-            }
             else {
                 sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                     "state" : "no_result"
@@ -154,6 +130,47 @@ class MCInterfaceController : WKInterfaceController {
                 instructionsLabel.setText(nearestMatchesString)
             }
         }
+        else if let action = morseCode.mcTreeNode?.action {
+            sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+                "state" : "action_"+action
+            ])
+            if action == "TIME" {
+                let hh = (Calendar.current.component(.hour, from: Date()))
+                let mm = (Calendar.current.component(.minute, from: Date()))
+                let hourString = hh < 10 ? "0" + String(hh) : String(hh)
+                let minString = mm < 10 ? "0" + String(mm) : String(mm)
+                englishString = hourString + minString
+                englishTextLabel?.setText(englishString)
+                englishTextLabel?.setHidden(false)
+                englishStringIndex = -1
+                updateMorseCodeForActions()
+            }
+            else if action == "DATE" {
+                let day = (Calendar.current.component(.day, from: Date()))
+                let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
+                let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
+                englishString = String(day) + weekdayString.prefix(2).uppercased()
+                englishTextLabel?.setText(englishString)
+                englishTextLabel?.setHidden(false)
+                englishStringIndex = -1
+                updateMorseCodeForActions()
+            }
+            else if action == "CHAT" {
+                while morseCode.mcTreeNode?.parent != nil {
+                    //Reset the tree
+                    morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
+                }
+                englishString = ""
+                englishTextLabel.setText("")
+                morseCodeString = ""
+                morseCodeTextLabel.setText("")
+                instructionsLabel.setText(mode == "chat" ? deafBlindInstructions : defaultInstructions)
+                let params = [
+                    "mode" : "chat"
+                ]
+                pushController(withName: "MCInterfaceController", context: params)
+            }
+        }
     }
     
     
@@ -166,7 +183,7 @@ class MCInterfaceController : WKInterfaceController {
             englishTextLabel.setText("")
             morseCodeString = ""
             morseCodeTextLabel.setText("")
-            instructionsLabel.setText(deafBlindInstructions)
+            instructionsLabel.setText(mode == "chat" ? deafBlindInstructions : defaultInstructions)
             WKInterfaceDevice.current().play(.success)
             return
         }
@@ -211,7 +228,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
-            instructionsLabel.setText(deafBlindInstructions)
+            instructionsLabel.setText(mode == "chat" ? deafBlindInstructions : defaultInstructions)
         }
     }
     
@@ -286,9 +303,14 @@ class MCInterfaceController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         WKInterfaceDevice.current().play(.success) //successfully launched app
-        instructionsLabel.setText(deafBlindInstructions)
+        let dictionary = context as? NSDictionary
+        if dictionary != nil {
+            mode = dictionary!["mode"] as? String
+        }
+        instructionsLabel.setText(mode == "chat" ? deafBlindInstructions : defaultInstructions)
         if alphabetToMcDictionary.count < 1 {
-            let morseCode : MorseCode = MorseCode(type: "morse_code", operatingSystem: "watchOS")
+            //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
+            morseCode = MorseCode(operatingSystem: "watchOS")
             for morseCodeCell in morseCode.mcArray {
                 if morseCodeCell.morseCode == "......." {
                     //space
@@ -315,7 +337,6 @@ class MCInterfaceController : WKInterfaceController {
             }
             instructionsLabel.setText(defaultInstructions)
         }   */
-        instructionsLabel?.setText(deafBlindInstructions)
         
         if mode == "chat" {
             if let talkTypeImage = UIImage(systemName: "pencil") {
@@ -337,7 +358,7 @@ class MCInterfaceController : WKInterfaceController {
         WKInterfaceDevice.current().play(.success) //This is used to notify a deaf-blind user that the app is active
         self.crownSequencer.delegate = self
         self.crownSequencer.focus()
-        self.instructionsLabel?.setTextColor(UIColor.orange)
+        self.instructionsLabel?.setTextColor(UIColor.gray)
     }
     
     
@@ -365,6 +386,7 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
         
         WKInterfaceDevice.current().play(.success)
         synth = nil
+        englishTextLabel?.setTextColor(.none)
         morseCodeTextLabel?.setHidden(false)
         changeEnteredTextSize(inputString: englishString, textSize: 16)
     }
@@ -384,6 +406,7 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
         
         WKInterfaceDevice.current().play(.failure)
         synth = nil
+        englishTextLabel?.setTextColor(.none)
         morseCodeTextLabel?.setHidden(false)
         changeEnteredTextSize(inputString: englishString, textSize: 16)
     }
@@ -697,14 +720,14 @@ extension MCInterfaceController {
         var recommendations = ""
         if morseCode.mcTreeNode?.alphabet != nil || morseCode.mcTreeNode?.action != nil {
             //welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
-            if morseCode.mcTreeNode?.alphabet != nil {
+            if mode == "chat" && morseCode.mcTreeNode?.alphabet != nil {
                 recommendations += "Swipe up to set: " + morseCode.mcTreeNode!.alphabet! + "\n"
             }
             else if morseCode.mcTreeNode?.action != nil {
                 recommendations += "Swipe up to get: " + morseCode.mcTreeNode!.action! + "\n"
             }
         }
-        let nextCharMatches = morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode)
+        let nextCharMatches = mode == "chat" ? morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode) : morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
         for nextMatch in nextCharMatches {
             recommendations += "\n" + nextMatch
         }
@@ -720,7 +743,7 @@ extension MCInterfaceController {
         
         instructionsString += "\n" + "Swipe left to delete last character"
         instructionsLabel.setText(instructionsString)
-        self.instructionsLabel.setTextColor(UIColor.orange)
+        self.instructionsLabel.setTextColor(UIColor.gray)
     }
 
     
@@ -743,13 +766,21 @@ extension MCInterfaceController {
             instructionString += "\n\nOr\n\n" + writingString
         }
         self.instructionsLabel.setText(instructionString)
-        self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.orange)
+        self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.gray)
     }
     
     
     func morseCodeInput(input : String) {
         if isReading() == true {
             //We do not want the user to accidently delete all the text by tapping
+            synth = AVSpeechSynthesizer.init()
+            synth?.delegate = self
+            let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: englishString)
+            synth?.speak(speechUtterance)
+            //instructionsLabel.setText("System is speaking the text...")
+            instructionsLabel.setText("")
+            morseCodeTextLabel?.setHidden(true)
+            changeEnteredTextSize(inputString: englishString, textSize: 40)
             return
         }
         if isNoMoreMatchesAfterThis() == true {
