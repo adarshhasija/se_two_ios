@@ -17,7 +17,7 @@ class SettingsTableViewController : UITableViewController {
     @IBOutlet weak var sendToWatchExplanationLabel: UILabel!
     
     @IBAction func rightBarButtonItemTapped(_ sender: Any) {
-        
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {

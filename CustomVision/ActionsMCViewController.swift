@@ -88,7 +88,7 @@ class ActionsMCViewController : UIViewController {
     
     @IBAction func leftBarButtonItemTapped(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Settings", bundle:nil)
-        let settingsController = storyBoard.instantiateViewController(withIdentifier: "SettingsTableViewController") as! SettingsTableViewController
+        let settingsController = storyBoard.instantiateViewController(withIdentifier: "SettingsNavigationController") as! UINavigationController
         self.navigationController?.present(settingsController, animated: true, completion: nil)
     }
     

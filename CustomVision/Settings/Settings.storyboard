@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -10,7 +11,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="SettingsTableViewController" id="Djh-SX-uHS" customClass="SettingsTableViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="VnS-Fo-lAs">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection headerTitle="Apple Watch App" id="6H0-0Y-mom">
@@ -96,6 +97,7 @@
                             <outlet property="delegate" destination="Djh-SX-uHS" id="gLv-64-Nee"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="7wf-Vm-FOh"/>
                     <connections>
                         <outlet property="isAppInstalledLabel" destination="qDr-fz-PeS" id="Mlr-vl-kUF"/>
                         <outlet property="sendToWatchExplanationLabel" destination="dVC-ZC-KfM" id="ltH-hP-5Bo"/>
@@ -103,7 +105,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBT-7U-EeI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1991" y="-4274"/>
+            <point key="canvasLocation" x="2900" y="-4274.3303571428569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="4cM-VN-7DE">
+            <objects>
+                <navigationController storyboardIdentifier="SettingsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="YLZ-ae-j3X" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RCL-AT-yoq">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Djh-SX-uHS" kind="relationship" relationship="rootViewController" id="Kc4-2Z-wzl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GCk-66-pqH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1989.8550724637682" y="-4274.3303571428569"/>
         </scene>
     </scenes>
 </document>
