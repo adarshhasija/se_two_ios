@@ -87,9 +87,9 @@ class ActionsMCViewController : UIViewController {
     }
     
     @IBAction func leftBarButtonItemTapped(_ sender: Any) {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let settingsViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsTableViewController") as! SettingsTableViewController
-        self.navigationController?.present(settingsViewController, animated: true, completion: nil)
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Settings", bundle:nil)
+        let settingsController = storyBoard.instantiateViewController(withIdentifier: "SettingsTableViewController") as! SettingsTableViewController
+        self.navigationController?.present(settingsController, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {

@@ -13,11 +13,15 @@ import FirebaseAnalytics
 
 class SettingsTableViewController : UITableViewController {
     
-    
     @IBOutlet weak var isAppInstalledLabel: UILabel!
     @IBOutlet weak var sendToWatchExplanationLabel: UILabel!
     
+    @IBAction func rightBarButtonItemTapped(_ sender: Any) {
+        
+    }
+    
     override func viewDidLoad() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(rightBarButtonItemTapped))
         setupSectionSendToWatch()
     }
     
@@ -33,7 +37,7 @@ class SettingsTableViewController : UITableViewController {
         }
         else {
             isAppInstalledLabel?.text = "Apple Watch app not installed"
-            sendToWatchExplanationLabel?.text = "The Apple Watch app also allows a deaf-blind person to communicate using morse code. You can also send morse code from your iPhone app to your Watch app and read it there\n\nIf you have installed the Watch app, ensure your Watch is switched ON and is close to your phone"
+            sendToWatchExplanationLabel?.text = "We offer these features on our Apple Watch app as well. Additionally, you can also send morse code from your iPhone app to your Watch app and read it there\n\nIf you have installed the Watch app, ensure your Watch is switched ON and is close to your phone"
         }
     }
     

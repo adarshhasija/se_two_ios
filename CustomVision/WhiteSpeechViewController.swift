@@ -968,9 +968,8 @@ public class WhiteSpeechViewController: UIViewController {
     }
     
     private func openSettingsScreen() {
-        guard let storyBoard : UIStoryboard = self.storyboard else {
-            return
-        }
+        //guard let storyBoard : UIStoryboard = self.storyboard else { return }
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Settings", bundle:nil)
         let settingsTableViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsTableViewController") as! SettingsTableViewController
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             navigationController.pushViewController(settingsTableViewController, animated: true)

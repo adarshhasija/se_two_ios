@@ -1397,106 +1397,6 @@
             </objects>
             <point key="canvasLocation" x="1111.875" y="-2795.0704225352115"/>
         </scene>
-        <!--Settings Table View Controller-->
-        <scene sceneID="fdp-Af-2QW">
-            <objects>
-                <tableViewController storyboardIdentifier="SettingsTableViewController" id="Djh-SX-uHS" customClass="SettingsTableViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="VnS-Fo-lAs">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <sections>
-                            <tableViewSection headerTitle="Apple Watch App" id="6H0-0Y-mom">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="w6X-Hs-vTt">
-                                        <rect key="frame" x="20" y="55.5" width="374" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w6X-Hs-vTt" id="h6X-Pb-3Sx">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="4FU-Bf-47G">
-                                                    <rect key="frame" x="20" y="20" width="334" height="3.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Is Watch app installed?" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qDr-fz-PeS">
-                                                            <rect key="frame" x="0.0" y="0.0" width="334" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send to Watch explanation" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVC-ZC-KfM">
-                                                            <rect key="frame" x="0.0" y="3.5" width="334" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="4FU-Bf-47G" secondAttribute="bottom" constant="20" id="6Ed-cF-3pu"/>
-                                                <constraint firstItem="4FU-Bf-47G" firstAttribute="centerY" secondItem="h6X-Pb-3Sx" secondAttribute="centerY" id="KVa-Sb-gSe"/>
-                                                <constraint firstItem="4FU-Bf-47G" firstAttribute="leading" secondItem="h6X-Pb-3Sx" secondAttribute="leading" constant="20" id="nir-oW-GRK"/>
-                                                <constraint firstAttribute="trailing" secondItem="4FU-Bf-47G" secondAttribute="trailing" constant="20" id="vaB-Ll-HkV"/>
-                                                <constraint firstItem="4FU-Bf-47G" firstAttribute="top" secondItem="h6X-Pb-3Sx" secondAttribute="top" constant="20" id="ylt-sK-ksu"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="Camera" id="UBN-mq-RXf">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rBk-x5-Dwh">
-                                        <rect key="frame" x="20" y="155" width="374" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rBk-x5-Dwh" id="MG7-tp-csa">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="DoM-RX-M2q">
-                                                    <rect key="frame" x="20" y="20" width="334" height="3.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Read signs on doors" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iN9-rk-XpU">
-                                                            <rect key="frame" x="0.0" y="0.0" width="334" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Eu-SC-gkD">
-                                                            <rect key="frame" x="0.0" y="3.5" width="334" height="0.0"/>
-                                                            <string key="text">If you need to read the sign on a door, or any other sign, up swipe on the main screen to open the camera. Point the camera at the door. We will get the text for you. You can then play the audio or read the morse code</string>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="DoM-RX-M2q" secondAttribute="trailing" constant="20" id="AvE-qF-KOn"/>
-                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="centerY" secondItem="MG7-tp-csa" secondAttribute="centerY" id="aU1-zN-RAN"/>
-                                                <constraint firstAttribute="bottom" secondItem="DoM-RX-M2q" secondAttribute="bottom" constant="20" id="iR0-2A-Xfo"/>
-                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="leading" secondItem="MG7-tp-csa" secondAttribute="leading" constant="20" id="jFE-q9-kVY"/>
-                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="top" secondItem="MG7-tp-csa" secondAttribute="top" constant="20" id="lFb-Of-Oh6"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
-                        <connections>
-                            <outlet property="dataSource" destination="Djh-SX-uHS" id="NuV-ej-7wA"/>
-                            <outlet property="delegate" destination="Djh-SX-uHS" id="gLv-64-Nee"/>
-                        </connections>
-                    </tableView>
-                    <connections>
-                        <outlet property="isAppInstalledLabel" destination="qDr-fz-PeS" id="Mlr-vl-kUF"/>
-                        <outlet property="sendToWatchExplanationLabel" destination="dVC-ZC-KfM" id="ltH-hP-5Bo"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SBT-7U-EeI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1991" y="-4274"/>
-        </scene>
         <!--MainVision-->
         <scene sceneID="oNw-wG-Kuh">
             <objects>
@@ -1610,13 +1510,13 @@
                                                     <rect key="frame" x="20" y="30" width="324" height="60"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAe-Sv-9eX">
-                                                            <rect key="frame" x="0.0" y="0.0" width="38" height="15.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="38" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Obtained from device" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XPH-Kt-oS5">
-                                                            <rect key="frame" x="0.0" y="15.5" width="122" height="14.5"/>
+                                                            <rect key="frame" x="0.0" y="17" width="122" height="13"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1654,13 +1554,13 @@
                                                     <rect key="frame" x="20" y="20" width="303" height="160"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="No Ailment Mentioned" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CXt-hB-YQn">
-                                                            <rect key="frame" x="0.0" y="0.0" width="303" height="21.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="303" height="131"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Please select your ailment and we can guide you on how to use this app" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5k-Z6-Iij">
-                                                            <rect key="frame" x="0.0" y="21.5" width="303" height="138.5"/>
+                                                            <rect key="frame" x="0.0" y="131" width="303" height="29"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
