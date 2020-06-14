@@ -374,8 +374,10 @@ extension ActionsMCViewController {
                 "state" : "scrolling"
             ])
            instructionsLabel?.text = "Swipe left with 2 fingers to go back"
+        instructionsImageView?.image = UIImage(systemName: "hand.point.left")
            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+           animateInstructions()
            
            if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                //Need to change the selected character of the English string
@@ -421,6 +423,7 @@ extension ActionsMCViewController {
         instructionsLabel?.text = "Swipe right with 2 fingers to read morse code"
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+        animateInstructions()
         
         if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
             //Need to change the selected character of the English string
