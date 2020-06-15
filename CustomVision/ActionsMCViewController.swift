@@ -19,8 +19,8 @@ class ActionsMCViewController : UIViewController {
     lazy var supportsHaptics: Bool = {
         return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
     }()
-    var morseCodeString : String = ""
-    var englishString : String = ""
+    //var morseCodeString : String = ""
+    //var englishString : String = ""
     var englishStringIndex = -1
     var morseCodeStringIndex = -1
     var morseCode = MorseCode()
@@ -44,10 +44,12 @@ class ActionsMCViewController : UIViewController {
     
     @IBAction func gestureTap(_ sender: UITapGestureRecognizer) {
         if sender.numberOfTouches == 2 {
+            let alphanumericString = alphanumericLabel?.text ?? ""
+            let morseCodeString = morseCodeLabel?.text ?? ""
             if morseCode.mcTreeNode?.action != nil {
                 sayThisInstruction(string: "Swipe up for " + morseCode.mcTreeNode!.action!) //In case a blind person wants audio again
             }
-            else if englishString.isEmpty && morseCodeString.isEmpty {
+            else if alphanumericString.isEmpty && morseCodeString.isEmpty {
                 //empty state. User has not typed anything
                 sayThisInstruction(string: defaultInstructions)
             }
@@ -116,13 +118,17 @@ class ActionsMCViewController : UIViewController {
 extension ActionsMCViewController {
     
     func isReading() -> Bool {
-        return !isUserTyping && morseCodeString.count > 0 && englishString.count > 0
+        let alphanumericString = alphanumericLabel?.text ?? ""
+        let morseCodeString = morseCodeLabel?.text ?? ""
+        return !isUserTyping && morseCodeString.count > 0 && alphanumericString.count > 0
     }
     
     func morseCodeInput(input : String) {
+        let alphanumericString = alphanumericLabel?.text ?? ""
+        var morseCodeString = morseCodeLabel?.text ?? ""
         if isReading() == true {
             //isReading already checks that englishString and morseCodeString are present!
-            sayThis(string: englishString)
+            sayThis(string: alphanumericString)
             
             //We do not want the user to accidently delete all the text by tapping
             return
@@ -139,16 +145,17 @@ extension ActionsMCViewController {
         morseCodeStringIndex = -1
         if isUserTyping == false {
             //animate first character
+            morseCodeLabel?.text = input
             userHasBegunTyping(firstCharacter: input)
         }
         else {
             morseCodeString += input
+            morseCodeLabel?.text = morseCodeString
             //animate instructions
             animateInstructions()
         }
         isAlphabetReached(input: input)
-        morseCodeLabel.text = morseCodeString
-        alphanumericLabel.text = englishString //This is to ensure that no characters are highlighted
+        alphanumericLabel.text = alphanumericString //This is to ensure that no characters are highlighted
         morseCodeLabel.textColor = .none
         alphanumericLabel.textColor = .none
         if input == "." {
@@ -194,9 +201,9 @@ extension ActionsMCViewController {
     
     func userHasBegunTyping(firstCharacter: String) {
         //Its the first character. Dont append. Overwrite what is there
-        morseCodeString = firstCharacter
-        englishString = ""
-        alphanumericLabel.text = englishString
+        //morseCodeString = firstCharacter
+        //englishString = ""
+        alphanumericLabel.text = ""
         isUserTyping = true
         animateLabelEnlarge(label: self.morseCodeLabel)
     }
@@ -279,26 +286,26 @@ extension ActionsMCViewController {
                 let mm = (Calendar.current.component(.minute, from: Date()))
                 let hourString = hh < 10 ? "0" + String(hh) : String(hh)
                 let minString = mm < 10 ? "0" + String(mm) : String(mm)
-                englishString = hourString + minString
-                alphanumericLabel?.text = englishString
+                let alphanumericString = hourString + minString
+                alphanumericLabel?.text = alphanumericString
                 alphanumericLabel?.isHidden = false
                 englishStringIndex = -1
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 isUserTyping = false
-                updateMorseCodeForActions()
+                updateMorseCodeForActions(alphanumericString: alphanumericString)
                 animateLabelEnlarge(label: self.alphanumericLabel)
             }
             else if action == "DATE" {
                 let day = (Calendar.current.component(.day, from: Date()))
                 let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
                 let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
-                englishString = String(day) + weekdayString.prefix(2).uppercased()
-                alphanumericLabel?.text = englishString
+                let alphanumericString = String(day) + weekdayString.prefix(2).uppercased()
+                alphanumericLabel?.text = alphanumericString
                 alphanumericLabel?.isHidden = false
                 englishStringIndex = -1
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 isUserTyping = false
-                updateMorseCodeForActions()
+                updateMorseCodeForActions(alphanumericString: alphanumericString)
                 animateLabelEnlarge(label: self.alphanumericLabel)
             }
             else if action == "CAMERA" {
@@ -310,13 +317,16 @@ extension ActionsMCViewController {
     }
     
     func swipeLeft() {
+        let alphanumericString = alphanumericLabel?.text ?? ""
+        var morseCodeString = morseCodeLabel?.text ?? ""
         if isReading() == true {
             Analytics.logEvent("se3_swipe_left", parameters: [
                 "state" : "reading"
                 ])
-            englishString = ""
+            while morseCode.mcTreeNode?.parent != nil {
+                morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
+            }
             alphanumericLabel?.text = ""
-            morseCodeString = ""
             morseCodeLabel?.text = ""
             instructionsLabel?.text = defaultInstructions
             instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
@@ -342,15 +352,15 @@ extension ActionsMCViewController {
             hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
         }
         
-        if morseCodeString.count == 0 && englishString.count == 0 {
+        if morseCodeString.count == 0 && alphanumericString.count == 0 {
             instructionsLabel.text = defaultInstructions
             isUserTyping = false
         }
     }
     
     func swipeLeft2Finger() {
-        let morseCodeString = morseCodeLabel.text ?? ""
-        var englishString = alphanumericLabel.text ?? ""
+        var alphanumericString = alphanumericLabel?.text ?? ""
+        let morseCodeString = morseCodeLabel?.text ?? ""
         morseCodeStringIndex -= 1
         if morseCodeStringIndex < 0 {
                 Analytics.logEvent("se3_morse_scroll_left", parameters: [
@@ -364,7 +374,7 @@ extension ActionsMCViewController {
                if morseCodeStringIndex < 0 {
                    morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
                    englishStringIndex = -1
-                   alphanumericLabel.text = englishString
+                   alphanumericLabel.text = alphanumericString
                }
                morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
                return
@@ -386,26 +396,26 @@ extension ActionsMCViewController {
                     "state" : "index_alpha_change"
                 ])
                //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
-               if englishStringIndex > -1 && MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
-                   let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
-                   let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
-                   englishString.replaceSubrange(start..<end, with: "␣")
+               if englishStringIndex > -1 && MorseCodeUtils.isEngCharSpace(englishString: alphanumericString, englishStringIndex: englishStringIndex) {
+                   let start = alphanumericString.index(alphanumericString.startIndex, offsetBy: englishStringIndex)
+                   let end = alphanumericString.index(alphanumericString.startIndex, offsetBy: englishStringIndex + 1)
+                   alphanumericString.replaceSubrange(start..<end, with: "␣")
                }
                else {
-                   englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+                   alphanumericString = alphanumericString.replacingOccurrences(of: "␣", with: " ")
                }
                
                if englishStringIndex > -1 {
                    //Ensure that the index is within bounds
-                   MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color: UIColor.green)
+                   MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color: UIColor.green)
                }
                
            }
     }
     
     func swipeRight2Finger() {
-        let morseCodeString = morseCodeLabel.text ?? ""
-        var englishString = alphanumericLabel.text ?? ""
+        var alphanumericString = alphanumericLabel?.text ?? ""
+        let morseCodeString = morseCodeLabel?.text ?? ""
         morseCodeStringIndex += 1
         if morseCodeStringIndex >= morseCodeString.count {
             Analytics.logEvent("se3_morse_scroll_right", parameters: [
@@ -414,10 +424,10 @@ extension ActionsMCViewController {
             instructionsLabel?.text = "Swipe left with 2 fingers to go back"
             instructionsImageView?.image = UIImage(systemName: "hand.point.left")
             morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
-            alphanumericLabel.text = englishString
+            alphanumericLabel.text = alphanumericString
             //WKInterfaceDevice.current().play(.success)
             morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
-            englishStringIndex = englishString.count
+            englishStringIndex = alphanumericString.count
             return
         }
         instructionsLabel?.text = "Swipe right with 2 fingers to read morse code"
@@ -428,33 +438,33 @@ extension ActionsMCViewController {
         if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
             //Need to change the selected character of the English string
             englishStringIndex += 1
-            if englishStringIndex >= englishString.count {
+            if englishStringIndex >= alphanumericString.count {
                 //WKInterfaceDevice.current().play(.failure)
                 return
             }
-            if MorseCodeUtils.isEngCharSpace(englishString: englishString, englishStringIndex: englishStringIndex) {
-                let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
-                let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
-                englishString.replaceSubrange(start..<end, with: "␣")
+            if MorseCodeUtils.isEngCharSpace(englishString: alphanumericString, englishStringIndex: englishStringIndex) {
+                let start = alphanumericString.index(alphanumericString.startIndex, offsetBy: englishStringIndex)
+                let end = alphanumericString.index(alphanumericString.startIndex, offsetBy: englishStringIndex + 1)
+                alphanumericString.replaceSubrange(start..<end, with: "␣")
             }
             else {
-                englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+                alphanumericString = alphanumericString.replacingOccurrences(of: "␣", with: " ")
             }
             Analytics.logEvent("se3_morse_scroll_right", parameters: [
                 "state" : "index_alpha_change"
             ])
-            MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
         }
     }
     
     //Only used for TIME, DATE, Maths
-    func updateMorseCodeForActions() {
-        morseCodeString = ""
+    func updateMorseCodeForActions(alphanumericString: String) {
+        //morseCodeString = ""
       /*  for character in englishString {
             morseCodeString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
             morseCodeString += "|"
         }   */
-        morseCodeString = convertEnglishToMC(englishString: englishString)
+        let morseCodeString = convertEnglishToMC(englishString: alphanumericString)
         morseCodeLabel.text = morseCodeString
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         morseCodeStringIndex = -1
@@ -525,7 +535,9 @@ extension ActionsMCViewController {
     }
     
     func receivedRequestForEnglishAndMCFromWatch() {
-        sendEnglishAndMCToWatch(english: englishString, morseCode: morseCodeString)
+        let alphanumericString = alphanumericLabel?.text ?? ""
+        let morseCodeString = morseCodeLabel?.text ?? ""
+        sendEnglishAndMCToWatch(english: alphanumericString, morseCode: morseCodeString)
     }
     
     func sendEnglishAndMCToWatch(english: String, morseCode: String) {
@@ -596,10 +608,8 @@ extension ActionsMCViewController : ActionsMCViewControllerProtocol {
         if english.count > 0 {
             Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
-            morseCodeString = convertEnglishToMC(englishString: englishFiltered)
-            morseCodeLabel?.text = morseCodeString
-            englishString = englishFiltered
-            alphanumericLabel?.text = englishString
+            morseCodeLabel?.text = convertEnglishToMC(englishString: englishFiltered)
+            alphanumericLabel?.text = englishFiltered
             englishStringIndex = -1
             morseCodeStringIndex = -1
             isUserTyping = false
