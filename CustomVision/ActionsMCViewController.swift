@@ -34,7 +34,7 @@ class ActionsMCViewController : UIViewController {
     
     @IBOutlet weak var alphanumericLabel: UILabel!
     @IBOutlet weak var morseCodeLabel: UILabel!
-    
+    @IBOutlet weak var blindUsersTapInstruction: UILabel!
     @IBOutlet weak var instructionsImageView: UIImageView!
     @IBOutlet weak var instructionsLabel: UILabel!
     @IBOutlet weak var audioInstructionsLabel: UILabel!
@@ -44,7 +44,10 @@ class ActionsMCViewController : UIViewController {
         if sender.numberOfTouches == 2 {
             let alphanumericString = alphanumericLabel?.text ?? ""
             let morseCodeString = morseCodeLabel?.text ?? ""
-            if morseCode.mcTreeNode?.action != nil {
+            if blindUsersTapInstruction?.isHidden == false {
+                sayThisInstruction(string: "Tap screen for audio")
+            }
+            else if morseCode.mcTreeNode?.action != nil {
                 sayThisInstruction(string: "Swipe up for " + morseCode.mcTreeNode!.action!) //In case a blind person wants audio again
             }
             else if alphanumericString.isEmpty && morseCodeString.isEmpty {
@@ -103,6 +106,7 @@ class ActionsMCViewController : UIViewController {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel?.text = ""
         morseCodeLabel?.text = ""
+        blindUsersTapInstruction?.text = "Visually-Impaired Users:\nTap screen to hear audio"
         instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
         instructionsLabel?.text = defaultInstructions
         audioInstructionsLabel?.text = "For blind users:\nTap with 2 fingers to hear audio of current instruction"
@@ -358,6 +362,7 @@ extension ActionsMCViewController {
             }
             alphanumericLabel?.text = ""
             morseCodeLabel?.text = ""
+            blindUsersTapInstruction?.isHidden = true
             instructionsLabel?.text = defaultInstructions
             instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
             hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
@@ -579,6 +584,7 @@ extension ActionsMCViewController {
         }
     }
     
+    //We do not set the delegate. This ensures that alphanumeric and morse code text are not replaced when the delegate methods are called
     private func sayThisInstruction(string: String) {
         let audioSession = AVAudioSession.sharedInstance()
         do { try audioSession.setCategory(AVAudioSessionCategoryPlayback) }
@@ -638,8 +644,9 @@ extension ActionsMCViewController : ActionsMCViewControllerProtocol {
         if english.count > 0 {
             Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
-            morseCodeLabel?.text = convertEnglishToMC(englishString: englishFiltered)
             alphanumericLabel?.text = englishFiltered
+            morseCodeLabel?.text = convertEnglishToMC(englishString: englishFiltered)
+            blindUsersTapInstruction?.isHidden = false
             englishStringIndex = -1
             morseCodeStringIndex = -1
             isUserTyping = false

@@ -182,6 +182,12 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blind Users tap instruction" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o8a-Yv-hgv">
+                                        <rect key="frame" x="91.5" y="56.5" width="171" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="kFZ-fO-32D" firstAttribute="leading" secondItem="Qt8-0O-eKm" secondAttribute="leading" id="I1Y-uf-dsu"/>
@@ -245,6 +251,7 @@
                     <connections>
                         <outlet property="alphanumericLabel" destination="JiI-2c-7y9" id="aOW-Yi-dzt"/>
                         <outlet property="audioInstructionsLabel" destination="7d3-0Y-3PR" id="Qnw-XX-VXU"/>
+                        <outlet property="blindUsersTapInstruction" destination="o8a-Yv-hgv" id="L6J-DU-pni"/>
                         <outlet property="instructionsImageView" destination="LpY-Ps-g6k" id="vFi-sk-vNK"/>
                         <outlet property="instructionsLabel" destination="YO9-4V-IvZ" id="BUZ-Ae-GhR"/>
                         <outlet property="morseCodeLabel" destination="kFZ-fO-32D" id="Lsr-MV-wVg"/>
