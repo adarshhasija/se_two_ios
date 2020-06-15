@@ -168,21 +168,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qt8-0O-eKm">
-                                <rect key="frame" x="128" y="98" width="158" height="56.5"/>
+                                <rect key="frame" x="30" y="98" width="354" height="56.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JiI-2c-7y9">
-                                        <rect key="frame" x="26.5" y="0.0" width="105.5" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JiI-2c-7y9">
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFZ-fO-32D">
-                                        <rect key="frame" x="0.0" y="20.5" width="158" height="36"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFZ-fO-32D">
+                                        <rect key="frame" x="0.0" y="20.5" width="354" height="36"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="kFZ-fO-32D" firstAttribute="leading" secondItem="Qt8-0O-eKm" secondAttribute="leading" id="I1Y-uf-dsu"/>
+                                    <constraint firstAttribute="trailing" secondItem="kFZ-fO-32D" secondAttribute="trailing" id="KBg-Sr-3uH"/>
+                                    <constraint firstAttribute="trailing" secondItem="JiI-2c-7y9" secondAttribute="trailing" id="dmF-Im-iK2"/>
+                                    <constraint firstItem="JiI-2c-7y9" firstAttribute="leading" secondItem="Qt8-0O-eKm" secondAttribute="leading" id="x1S-TQ-A5h"/>
+                                </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nIE-aO-URL">
                                 <rect key="frame" x="30" y="416" width="354" height="64"/>
@@ -220,9 +226,11 @@
                             <constraint firstItem="Qt8-0O-eKm" firstAttribute="top" secondItem="HSm-UX-eB7" secondAttribute="bottom" constant="10" id="BTM-Kz-26n"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7d3-0Y-3PR" secondAttribute="trailing" constant="10" id="H9U-f0-JCP"/>
                             <constraint firstItem="nIE-aO-URL" firstAttribute="leading" secondItem="EgB-zm-HjI" secondAttribute="leadingMargin" constant="10" id="I49-oK-dac"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Qt8-0O-eKm" secondAttribute="trailing" constant="10" id="IrJ-1W-oNB"/>
                             <constraint firstItem="nIE-aO-URL" firstAttribute="centerX" secondItem="EgB-zm-HjI" secondAttribute="centerX" id="Peq-Wh-q6K"/>
                             <constraint firstItem="Qt8-0O-eKm" firstAttribute="centerX" secondItem="EgB-zm-HjI" secondAttribute="centerX" id="T5X-bm-sDi"/>
                             <constraint firstItem="7d3-0Y-3PR" firstAttribute="centerX" secondItem="EgB-zm-HjI" secondAttribute="centerX" id="UJl-EK-T5T"/>
+                            <constraint firstItem="Qt8-0O-eKm" firstAttribute="leading" secondItem="EgB-zm-HjI" secondAttribute="leadingMargin" constant="10" id="nlS-09-jNq"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="DpS-68-Lb5" appends="YES" id="3p7-yY-f8r"/>

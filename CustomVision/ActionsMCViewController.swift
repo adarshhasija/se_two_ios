@@ -80,6 +80,7 @@ class ActionsMCViewController : UIViewController {
     }
     
     @IBAction func rightBarButtonItemTapped(_ sender: Any) {
+        Analytics.logEvent("se3_ios_right_bar_btn", parameters: [:])
         let storyBoard : UIStoryboard = UIStoryboard(name: "Dictionary", bundle:nil)
         let dictionaryViewController = storyBoard.instantiateViewController(withIdentifier: "UITableViewController-HHA-Ce-gYY") as! MCDictionaryTableViewController
         dictionaryViewController.typeToDisplay = "actions"
@@ -87,6 +88,7 @@ class ActionsMCViewController : UIViewController {
     }
     
     @IBAction func leftBarButtonItemTapped(_ sender: Any) {
+        Analytics.logEvent("se3_ios_left_bar_btn", parameters: [:])
         let storyBoard : UIStoryboard = UIStoryboard(name: "Settings", bundle:nil)
         let settingsController = storyBoard.instantiateViewController(withIdentifier: "SettingsNavigationController") as! UINavigationController
         self.navigationController?.present(settingsController, animated: true, completion: nil)
@@ -299,14 +301,14 @@ extension ActionsMCViewController {
     
     func swipeUp() {
         if synth.isSpeaking == true {
-            Analytics.logEvent("se3_morse_swipe_up", parameters: [
+            Analytics.logEvent("se3_ios_swipe_up", parameters: [
                 "state" : "is_speaking"
             ])
             return
         }
         
         if let action = morseCode.mcTreeNode?.action {
-            Analytics.logEvent("se3_morse_swipe_up", parameters: [
+            Analytics.logEvent("se3_ios_swipe_up", parameters: [
                 "state" : "action_"+action
             ])
             if action == "TIME" {
@@ -362,7 +364,7 @@ extension ActionsMCViewController {
             return
         }
         if morseCodeString.count > 0 {
-            Analytics.logEvent("se3_morse_swipe_left", parameters: [
+            Analytics.logEvent("se3_ios_swipe_left", parameters: [
                 "state" : "last_morse_code"
             ])
             morseCodeString.removeLast()
@@ -373,7 +375,7 @@ extension ActionsMCViewController {
         }
         else {
             print("nothing to delete")
-            Analytics.logEvent("se3_morse_swipe_left", parameters: [
+            Analytics.logEvent("se3_ios_swipe_left", parameters: [
                 "state" : "nothing_to_delete"
             ])
             //try? hapticManager?.hapticForResult(success: false)
@@ -391,7 +393,7 @@ extension ActionsMCViewController {
         let morseCodeString = morseCodeLabel?.text ?? ""
         morseCodeStringIndex -= 1
         if morseCodeStringIndex < 0 {
-                Analytics.logEvent("se3_morse_scroll_left", parameters: [
+                Analytics.logEvent("se3_ios_2f_swipe_left", parameters: [
                     "state" : "index_less_0"
                 ])
                 //try? hapticManager?.hapticForResult(success: false)
@@ -408,7 +410,7 @@ extension ActionsMCViewController {
                return
            }
 
-            Analytics.logEvent("se3_morse_scroll_left", parameters: [
+            Analytics.logEvent("se3_ios_2f_swipe_left", parameters: [
                 "state" : "scrolling"
             ])
            instructionsLabel?.text = "Swipe left with 2 fingers to go back"
@@ -420,7 +422,7 @@ extension ActionsMCViewController {
            if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                //Need to change the selected character of the English string
                englishStringIndex -= 1
-                Analytics.logEvent("se3_morse_scroll_left", parameters: [
+                Analytics.logEvent("se3_ios_2f_swipe_left", parameters: [
                     "state" : "index_alpha_change"
                 ])
                //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
@@ -446,7 +448,7 @@ extension ActionsMCViewController {
         let morseCodeString = morseCodeLabel?.text ?? ""
         morseCodeStringIndex += 1
         if morseCodeStringIndex >= morseCodeString.count {
-            Analytics.logEvent("se3_morse_scroll_right", parameters: [
+            Analytics.logEvent("se3_ios_2f_swipe_right", parameters: [
                 "state" : "index_greater_equal_0"
             ])
             instructionsLabel?.text = "Swipe left with 2 fingers to go back"
@@ -478,7 +480,7 @@ extension ActionsMCViewController {
             else {
                 alphanumericString = alphanumericString.replacingOccurrences(of: "␣", with: " ")
             }
-            Analytics.logEvent("se3_morse_scroll_right", parameters: [
+            Analytics.logEvent("se3_ios_2f_swipe_right", parameters: [
                 "state" : "index_alpha_change"
             ])
             MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
