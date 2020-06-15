@@ -46,14 +46,12 @@ class MCDictionaryInterfaceController : WKInterfaceController {
             "question" : morseCodeCell.english.prefix(100)
         ])
         
+        var params : [String:Any] = [:]
         if morseCodeCell.type == "action" {
-            let params = [
-                "action" : morseCodeCell.english
-            ]
-            pushController(withName: "DictionaryDetail", context: params)
+            params["action"] = morseCodeCell.english
         }
         else {
-            var finalString = ""
+          /*  var finalString = ""
             for char in morseCodeCell.morseCode {
                 if char == "." {
                     finalString += "tap"
@@ -68,8 +66,10 @@ class MCDictionaryInterfaceController : WKInterfaceController {
             
             presentAlert(withTitle: "", message: "To type this out you must " + finalString, preferredStyle: .alert, actions: [
                 WKAlertAction(title: "OK", style: .default) {}
-            ])
+            ])  */
+            params["object"] = morseCodeCell
         }
+        pushController(withName: "DictionaryDetail", context: params)
         
     }
     

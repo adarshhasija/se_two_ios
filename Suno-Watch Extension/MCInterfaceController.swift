@@ -14,7 +14,7 @@ import WatchConnectivity
 class MCInterfaceController : WKInterfaceController {
     
     var defaultInstructions = "Tap screen to type a dot.\n\nForce press to see actions"
-    var deafBlindInstructions = "Tap or Swipe Right to begin typing morse code\n\nOr\n\nForce press for more options"
+    var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Swipe Right to begin typing morse code"
     var notDeafBlindInstructions = "Long press to talk or type out a message\n\nOr\n\nForce press for more options"
     var dcScrollStart = "Rotate the digital crown to read"
     var stopReadingString = "Swipe left once to stop reading and type"
@@ -155,7 +155,7 @@ class MCInterfaceController : WKInterfaceController {
                 englishStringIndex = -1
                 updateMorseCodeForActions()
             }
-            else if action == "CHAT" {
+            else if action == "1-to-1" {
                 while morseCode.mcTreeNode?.parent != nil {
                     //Reset the tree
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
@@ -164,7 +164,7 @@ class MCInterfaceController : WKInterfaceController {
                 englishTextLabel.setText("")
                 morseCodeString = ""
                 morseCodeTextLabel.setText("")
-                instructionsLabel.setText(mode == "chat" ? deafBlindInstructions : defaultInstructions)
+                instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
                 let params = [
                     "mode" : "chat"
                 ]
@@ -183,7 +183,7 @@ class MCInterfaceController : WKInterfaceController {
             englishTextLabel.setText("")
             morseCodeString = ""
             morseCodeTextLabel.setText("")
-            instructionsLabel.setText(mode == "chat" ? deafBlindInstructions : defaultInstructions)
+            instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
             WKInterfaceDevice.current().play(.success)
             return
         }
@@ -228,7 +228,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
-            instructionsLabel.setText(mode == "chat" ? deafBlindInstructions : defaultInstructions)
+            instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
         }
     }
     
@@ -307,7 +307,7 @@ class MCInterfaceController : WKInterfaceController {
         if dictionary != nil {
             mode = dictionary!["mode"] as? String
         }
-        instructionsLabel.setText(mode == "chat" ? deafBlindInstructions : defaultInstructions)
+        instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
         if alphabetToMcDictionary.count < 1 {
             //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
             morseCode = MorseCode(operatingSystem: "watchOS")
@@ -915,7 +915,7 @@ extension MCInterfaceController : MCInterfaceControllerProtocol {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [
                 "is_deaf_blind": true
             ])
-            defaultInstructions = deafBlindInstructions
+            defaultInstructions = f2fInstructions
         }
         else if se3UserType == "_1" {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [

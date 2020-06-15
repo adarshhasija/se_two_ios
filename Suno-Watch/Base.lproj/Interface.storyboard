@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="V63-br-2PY">
     <device id="watch38"/>
     <dependencies>
-        <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
     </dependencies>
@@ -191,14 +190,14 @@
                             <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
                         </label>
                         <label alignment="left" text="About" textAlignment="left" numberOfLines="0" id="Vc2-ch-KFA"/>
-                        <label alignment="left" text="Visually-impaired Users" textAlignment="left" numberOfLines="0" id="fhK-qM-T4x">
+                        <label alignment="left" hidden="YES" text="Visually-impaired Users" textAlignment="left" numberOfLines="0" id="fhK-qM-T4x">
                             <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
                         </label>
-                        <label alignment="left" text="visually impaired instructions" textAlignment="left" numberOfLines="0" id="8Er-yB-K14"/>
-                        <label alignment="left" text="Deaf-blind users" textAlignment="left" numberOfLines="0" id="0fA-xI-P1u">
+                        <label alignment="left" hidden="YES" text="visually impaired instructions" textAlignment="left" numberOfLines="0" id="8Er-yB-K14"/>
+                        <label alignment="left" hidden="YES" text="Deaf-blind users" textAlignment="left" numberOfLines="0" id="0fA-xI-P1u">
                             <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
                         </label>
-                        <label alignment="left" text="Deaf-blind instructions" textAlignment="left" numberOfLines="0" id="PT8-N6-lI9"/>
+                        <label alignment="left" hidden="YES" text="Deaf-blind instructions" textAlignment="left" numberOfLines="0" id="PT8-N6-lI9"/>
                     </items>
                     <connections>
                         <outlet property="aboutLabel" destination="Vc2-ch-KFA" id="2TE-hV-4n0"/>
