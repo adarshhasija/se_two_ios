@@ -19,8 +19,6 @@ class ActionsMCViewController : UIViewController {
     lazy var supportsHaptics: Bool = {
         return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
     }()
-    //var morseCodeString : String = ""
-    //var englishString : String = ""
     var englishStringIndex = -1
     var morseCodeStringIndex = -1
     var morseCode = MorseCode()
@@ -220,6 +218,35 @@ extension ActionsMCViewController {
         }
     }
     
+    //Not in use at the moment
+    func animateInstructionsImage(direction : String) {
+        var transform : CGAffineTransform? = nil
+        var transform2 : CGAffineTransform? = nil
+        if direction == "up" {
+            transform = instructionsImageView?.transform.translatedBy(x: 0, y: -10)
+            transform2 = instructionsImageView?.transform.translatedBy(x: 0, y: 10)
+        }
+        else if direction == "left" {
+            transform = instructionsImageView?.transform.translatedBy(x: -50, y: 0)
+            transform2 = instructionsImageView?.transform.translatedBy(x: 50, y: 0)
+        }
+        else if direction == "right" {
+            transform = instructionsImageView?.transform.translatedBy(x: 50, y: 0)
+            transform2 = instructionsImageView?.transform.translatedBy(x: -50, y: 0)
+        }
+        
+        UIView.animate(withDuration: 1.0, animations: {
+            self.instructionsImageView?.transform = transform ?? CGAffineTransform()
+        }, completion: { _ in
+            UIView.animate(withDuration: 1.0, animations: {
+                self.instructionsImageView?.center.y -= 10
+                self.instructionsImageView?.transform = transform2 ?? CGAffineTransform()
+            }, completion: { _ in
+                self.instructionsImageView?.center.y += 10
+            })
+        })
+    }
+    
     //We only want to show suggestions for actions
     func setRecommendedActionsText() {
         var instructionsString = ""
@@ -235,6 +262,7 @@ extension ActionsMCViewController {
             recommendations += "Swipe up for\n" + morseCode.mcTreeNode!.action! + "\n"
             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
                 "Swipe up for " + morseCode.mcTreeNode!.action!);  // actual text
+            //animateInstructionsImage(direction: "up")
         }
         else {
             instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
