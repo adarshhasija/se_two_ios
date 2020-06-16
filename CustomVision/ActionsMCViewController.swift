@@ -85,9 +85,21 @@ class ActionsMCViewController : UIViewController {
     @IBAction func rightBarButtonItemTapped(_ sender: Any) {
         Analytics.logEvent("se3_ios_right_bar_btn", parameters: [:])
         let storyBoard : UIStoryboard = UIStoryboard(name: "Dictionary", bundle:nil)
-        let dictionaryViewController = storyBoard.instantiateViewController(withIdentifier: "UITableViewController-HHA-Ce-gYY") as! MCDictionaryTableViewController
-        dictionaryViewController.typeToDisplay = "actions"
-        self.navigationController?.pushViewController(dictionaryViewController, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let dictionaryNavController = storyBoard.instantiateViewController(withIdentifier: "DictionaryNavigationController") as! UINavigationController
+            (dictionaryNavController.topViewController as? MCDictionaryTableViewController)?.typeToDisplay = "actions"
+            dictionaryNavController.modalPresentationStyle = .popover
+            let popover : UIPopoverPresentationController? = dictionaryNavController.popoverPresentationController
+            popover?.barButtonItem = sender as? UIBarButtonItem
+            present(dictionaryNavController, animated: true, completion: nil)
+        }
+        else {
+            let dictionaryViewController = storyBoard.instantiateViewController(withIdentifier: "UITableViewController-HHA-Ce-gYY") as! MCDictionaryTableViewController
+            dictionaryViewController.typeToDisplay = "actions"
+            self.navigationController?.pushViewController(dictionaryViewController, animated: true)
+        }
+        
+        
     }
     
     @IBAction func leftBarButtonItemTapped(_ sender: Any) {
