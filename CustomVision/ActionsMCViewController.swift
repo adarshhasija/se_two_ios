@@ -109,7 +109,7 @@ class ActionsMCViewController : UIViewController {
         blindUsersTapInstruction?.text = "Visually-Impaired Users:\nTap screen to hear audio"
         instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
         instructionsLabel?.text = defaultInstructions
-        audioInstructionsLabel?.text = "For blind users:\nTap with 2 fingers to hear audio of current instruction"
+        audioInstructionsLabel?.text = "Visually-Impaired Users:\nTap with 2 fingers to hear current instruction"
     }
     
     override func viewDidAppear(_ animated: Bool) {
