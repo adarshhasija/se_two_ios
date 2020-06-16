@@ -120,6 +120,7 @@ class ActionsMCViewController : UIViewController {
         morseCodeLabel?.text = ""
         blindUsersTapInstruction?.text = "Visually-Impaired Users:\nTap screen to hear audio"
         instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
+        animateImageEnlarge(image: instructionsImageView)
         instructionsLabel?.text = defaultInstructions
         audioInstructionsLabel?.text = "Visually-Impaired Users:\nTap with 2 fingers to hear current instruction"
     }
@@ -236,8 +237,21 @@ extension ActionsMCViewController {
         }
     }
     
+    func animateImageEnlarge(image: UIImageView) {
+        let scale : CGFloat = 10.0
+        let transform = image.transform.scaledBy(x: scale, y: scale)
+        UIView.animate(withDuration: 1.0) {
+            image.transform = transform
+            
+            let transform2 = image.transform.scaledBy(x: 1/scale, y: 1/scale)
+            UIView.animate(withDuration: 1.0) {
+                image.transform = transform2
+            }
+        }
+    }
+    
     //Not in use at the moment
-    func animateInstructionsImage(direction : String) {
+    func animateInstructionsImageMove(direction : String) {
         var transform : CGAffineTransform? = nil
         var transform2 : CGAffineTransform? = nil
         if direction == "up" {
@@ -280,7 +294,7 @@ extension ActionsMCViewController {
             recommendations += "Swipe up for\n" + morseCode.mcTreeNode!.action! + "\n"
             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
                 "Swipe up for " + morseCode.mcTreeNode!.action!);  // actual text
-            //animateInstructionsImage(direction: "up")
+            //animateInstructionsImageMove(direction: "up")
         }
         else {
             instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
