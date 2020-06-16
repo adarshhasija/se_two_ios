@@ -13,7 +13,7 @@ import WatchConnectivity
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstructions = "Tap screen to type a dot.\n\nForce press to see actions"
+    var defaultInstructions = "Tap screen to type a dot"
     var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Swipe Right to begin typing morse code"
     var notDeafBlindInstructions = "Long press to talk or type out a message\n\nOr\n\nForce press for more options"
     var dcScrollStart = "Rotate the digital crown to read"
@@ -33,6 +33,7 @@ class MCInterfaceController : WKInterfaceController {
     var synth : AVSpeechSynthesizer?
     var mode : String? //If mode = chat, we show MC dictionary. Else we show Actions list
     
+    @IBOutlet weak var mainImage: WKInterfaceImage!
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
     @IBOutlet weak var instructionsLabel: WKInterfaceLabel!
@@ -160,6 +161,7 @@ class MCInterfaceController : WKInterfaceController {
                     //Reset the tree
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
+                mainImage.setHidden(false)
                 englishString = ""
                 englishTextLabel.setText("")
                 morseCodeString = ""
@@ -179,6 +181,7 @@ class MCInterfaceController : WKInterfaceController {
             sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
                 "state" : "reading"
                 ])
+            mainImage.setHidden(mode == "chat" ? true : false)
             englishString = ""
             englishTextLabel.setText("")
             morseCodeString = ""
@@ -228,6 +231,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
+            mainImage.setHidden(mode == "chat" ? true : false)
             instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
         }
     }
@@ -339,6 +343,7 @@ class MCInterfaceController : WKInterfaceController {
         }   */
         
         if mode == "chat" {
+            mainImage.setHidden(true)
             if let talkTypeImage = UIImage(systemName: "pencil") {
                 addMenuItem(with: talkTypeImage, title: "Talk/Type", action: #selector(tappedTalkType))
             }
@@ -347,6 +352,7 @@ class MCInterfaceController : WKInterfaceController {
             }
         }
         else {
+            mainImage.setHidden(false)
             addMenuItem(with: WKMenuItemIcon.info, title: "Actions", action: #selector(tappedActionsDictionary))
         }
     }
@@ -769,7 +775,6 @@ extension MCInterfaceController {
         self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.gray)
     }
     
-    
     func morseCodeInput(input : String) {
         if isReading() == true {
             //We do not want the user to accidently delete all the text by tapping
@@ -799,6 +804,7 @@ extension MCInterfaceController {
             morseCodeString += input
         }
         isAlphabetReached(input: input)
+        mainImage.setHidden(true)
         morseCodeTextLabel.setText(morseCodeString)
         englishTextLabel.setText(englishString) //This is to ensure that no characters are highlighted
         if input == "." {

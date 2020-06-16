@@ -49,6 +49,9 @@
                             <items>
                                 <label alignment="left" hidden="YES" text="Label" numberOfLines="0" id="Bvs-FV-rgO"/>
                                 <label alignment="left" numberOfLines="0" id="3xj-WN-big"/>
+                                <imageView width="75" height="75" alignment="center" hidden="YES" image="dot.square" catalog="system" id="L9T-BG-efi">
+                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </imageView>
                                 <label width="1" alignment="left" text="Instruction Label" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
                                     <color key="textColor" red="0.23137254901960785" green="0.83495825639444188" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
@@ -123,6 +126,7 @@
                     <connections>
                         <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
                         <outlet property="instructionsLabel" destination="Reo-fp-Kjf" id="05H-kS-0jN"/>
+                        <outlet property="mainImage" destination="L9T-BG-efi" id="0PH-ca-K4x"/>
                         <outlet property="morseCodeTextLabel" destination="3xj-WN-big" id="FdQ-gP-QKf"/>
                     </connections>
                 </controller>
@@ -242,6 +246,7 @@
     </scenes>
     <resources>
         <image name="book.fill" catalog="system" width="128" height="99"/>
+        <image name="dot.square" catalog="system" width="128" height="114"/>
         <image name="pencil" catalog="system" width="128" height="112"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
     </resources>
