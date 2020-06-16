@@ -32,6 +32,10 @@ class ActionsMCViewController : UIViewController {
     var stopReadingString = "Swipe left once with 1 finger to stop reading and type"
     var keepTypingString = "Keep typing"
     
+    
+    @IBOutlet var left2FingerGesture: UISwipeGestureRecognizer!
+    @IBOutlet var right2FingerGesture: UISwipeGestureRecognizer!
+    
     @IBOutlet weak var alphanumericLabel: UILabel!
     @IBOutlet weak var morseCodeLabel: UILabel!
     @IBOutlet weak var blindUsersTapInstruction: UILabel!
@@ -68,17 +72,19 @@ class ActionsMCViewController : UIViewController {
     
     
     @IBAction func gestureSwipe(_ sender: UISwipeGestureRecognizer) {
-        if sender.direction == UISwipeGestureRecognizerDirection.up {
-            swipeUp()
-        }
-        else if sender.direction == UISwipeGestureRecognizerDirection.left  && sender.numberOfTouchesRequired == 1 {
-            swipeLeft()
-        }
-        else if sender.direction == UISwipeGestureRecognizerDirection.left && sender.numberOfTouchesRequired == 2 {
-            swipeLeft2Finger()
-        }
-        else if sender.direction == UISwipeGestureRecognizerDirection.right && sender.numberOfTouchesRequired == 2 {
-            swipeRight2Finger()
+        if sender.state == .recognized {
+            if sender.direction == UISwipeGestureRecognizerDirection.up {
+                swipeUp()
+            }
+            else if sender.direction == UISwipeGestureRecognizerDirection.left  && sender.numberOfTouchesRequired == 1 {
+                swipeLeft()
+            }
+            else if sender.direction == UISwipeGestureRecognizerDirection.left && sender.numberOfTouchesRequired == 2 {
+                swipeLeft2Finger()
+            }
+            else if sender.direction == UISwipeGestureRecognizerDirection.right && sender.numberOfTouchesRequired == 2 {
+                swipeRight2Finger()
+            }
         }
     }
     
@@ -123,6 +129,10 @@ class ActionsMCViewController : UIViewController {
         animateImageEnlarge(image: instructionsImageView)
         instructionsLabel?.text = defaultInstructions
         audioInstructionsLabel?.text = "Visually-Impaired Users:\nTap with 2 fingers to hear current instruction"
+        
+        //This has to be set here. If it is set in IB, the app crashes
+        left2FingerGesture.numberOfTouchesRequired = 2
+        right2FingerGesture.numberOfTouchesRequired = 2
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -896,6 +896,7 @@ extension MCInterfaceController {
             englishStringIndex = -1
             morseCodeStringIndex = -1
             isUserTyping = false
+            mainImage?.setHidden(true)
             setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
             WKInterfaceDevice.current().play(.success)
         }

@@ -254,7 +254,9 @@
                         <outlet property="blindUsersTapInstruction" destination="o8a-Yv-hgv" id="L6J-DU-pni"/>
                         <outlet property="instructionsImageView" destination="LpY-Ps-g6k" id="vFi-sk-vNK"/>
                         <outlet property="instructionsLabel" destination="YO9-4V-IvZ" id="BUZ-Ae-GhR"/>
+                        <outlet property="left2FingerGesture" destination="tHO-nP-9g9" id="cAI-LD-xfy"/>
                         <outlet property="morseCodeLabel" destination="kFZ-fO-32D" id="Lsr-MV-wVg"/>
+                        <outlet property="right2FingerGesture" destination="x0v-1d-n5n" id="Xtf-DU-tRW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ap-Hz-g6M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -273,12 +275,12 @@
                         <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="F13-w7-IQW"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="left" numberOfTouchesRequired="2" id="tHO-nP-9g9">
+                <swipeGestureRecognizer direction="left" id="tHO-nP-9g9">
                     <connections>
                         <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="KUh-rG-rgd"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="right" numberOfTouchesRequired="2" id="x0v-1d-n5n">
+                <swipeGestureRecognizer direction="right" id="x0v-1d-n5n">
                     <connections>
                         <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="9Ms-QD-A6X"/>
                     </connections>
