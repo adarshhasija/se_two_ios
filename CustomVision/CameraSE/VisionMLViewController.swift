@@ -223,7 +223,7 @@ class VisionMLViewController: UIViewController {
     previewLayer.frame = previewView.bounds;
     //stackView.addTarget(self, action: #selector(tapGesture), forControlEvents: .TouchUpInside)
     
-    sayThis(string: shortcutListItem.messageOnOpen)
+    //sayThis(string: shortcutListItem.messageOnOpen) //We do not need this. It automatically speaks once when voiceover is ON as we have set the accessibility label
   }
   
     
@@ -527,6 +527,7 @@ extension VisionMLViewController {
             view.leadingAnchor.constraintEqualToSystemSpacingAfter(view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraintEqualToSystemSpacingAfter(view.trailingAnchor, multiplier: 1)
         ])
+        self.view.accessibilityLabel = text
     }
     
     private func sayThis(string: String) {

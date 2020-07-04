@@ -15,6 +15,11 @@ extension UIView {
     
     open override func accessibilityScroll(_ direction: UIAccessibilityScrollDirection) -> Bool {
         ((self.window?.rootViewController as? UINavigationController)?.topViewController as? ActionsMCViewController)?.gestureSwipe(direction)
+        if direction == .up {
+            //scroll up = swipe down
+            (self.window?.rootViewController?.presentedViewController as? VisionMLViewController)?.dismiss(animated: true, completion: nil)
+        }
+        
         return true
     }
 }
