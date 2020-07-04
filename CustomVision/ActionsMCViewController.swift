@@ -26,7 +26,7 @@ class ActionsMCViewController : UIViewController {
     var isUserTyping : Bool = false
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     
-    var defaultInstructions = "Tap screen to type a dot.\nTap Actions button to see actions"
+    var defaultInstructions = "Tap screen to type a dot"
     var noMoreMatchesString = "No more matches found for this morse code"
     var scrollStart = "Swipe right with 2 fingers to read"
     var stopReadingString = "Swipe left once to stop reading and type"
@@ -38,34 +38,12 @@ class ActionsMCViewController : UIViewController {
     
     @IBOutlet weak var alphanumericLabel: UILabel!
     @IBOutlet weak var morseCodeLabel: UILabel!
-    @IBOutlet weak var blindUsersTapInstruction: UILabel!
     @IBOutlet weak var instructionsImageView: UIImageView!
     @IBOutlet weak var instructionsLabel: UILabel!
-    @IBOutlet weak var audioInstructionsLabel: UILabel!
     
     
     @IBAction func gestureTap(_ sender: UITapGestureRecognizer) {
-        if sender.numberOfTouches == 2 {
-            let alphanumericString = alphanumericLabel?.text ?? ""
-            let morseCodeString = morseCodeLabel?.text ?? ""
-            if blindUsersTapInstruction?.isHidden == false {
-                sayThisInstruction(string: "Tap screen for audio")
-            }
-            else if morseCode.mcTreeNode?.action != nil {
-                sayThisInstruction(string: "Swipe up for " + morseCode.mcTreeNode!.action!) //In case a blind person wants audio again
-            }
-            else if alphanumericString.isEmpty && morseCodeString.isEmpty {
-                //empty state. User has not typed anything
-                sayThisInstruction(string: defaultInstructions)
-            }
-            else if isReading() {
-                guard let instructionsText = instructionsLabel?.text else {
-                    return
-                }
-                sayThisInstruction(string: instructionsText)
-            }
-        }
-        else {
+        if sender.numberOfTouches == 1 {
             morseCodeInput(input: ".")
         }
     }
@@ -141,19 +119,17 @@ class ActionsMCViewController : UIViewController {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Actions", style: .plain, target: self, action: #selector(rightBarButtonItemTapped))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(leftBarButtonItemTapped))
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(leftBarButtonItemTapped))
         
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel?.text = ""
         morseCodeLabel?.text = ""
-        blindUsersTapInstruction?.text = "Visually-Impaired Users:\nTap screen to hear audio"
         instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
         animateImageEnlarge(image: instructionsImageView)
         instructionsLabel?.text = defaultInstructions
         view.accessibilityLabel = defaultInstructions
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
         defaultInstructions);
-        audioInstructionsLabel?.text = "Visually-Impaired Users:\nTap with 2 fingers to hear current instruction"
         
         //This has to be set here. If it is set in IB, the app crashes
         left2FingerGesture.numberOfTouchesRequired = 2
@@ -427,7 +403,6 @@ extension ActionsMCViewController {
             }
             alphanumericLabel?.text = ""
             morseCodeLabel?.text = ""
-            blindUsersTapInstruction?.isHidden = true
             instructionsLabel?.text = defaultInstructions
             view.accessibilityLabel = defaultInstructions
             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
@@ -733,7 +708,6 @@ extension ActionsMCViewController : ActionsMCViewControllerProtocol {
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
             alphanumericLabel?.text = englishFiltered
             morseCodeLabel?.text = convertEnglishToMC(englishString: englishFiltered)
-            blindUsersTapInstruction?.isHidden = false
             englishStringIndex = -1
             morseCodeStringIndex = -1
             isUserTyping = false
