@@ -9,6 +9,7 @@
 import Foundation
 import CoreHaptics
 import AVFoundation
+import UIKit
 
 class HapticManager {
     
@@ -122,9 +123,13 @@ class HapticManager {
             }
             else if code == RESULT_SUCCESS {
                 hapticPlayer = try hapticForResult(success: true)
+                //let generator = UINotificationFeedbackGenerator()
+                //generator.notificationOccurred(.success)
             }
             else if code == RESULT_FAILURE {
                 hapticPlayer = try hapticForResult(success: false)
+                //let generator = UINotificationFeedbackGenerator()
+                //generator.notificationOccurred(.error)
             }
             
             try hapticPlayer?.start(atTime: CHHapticTimeImmediate)

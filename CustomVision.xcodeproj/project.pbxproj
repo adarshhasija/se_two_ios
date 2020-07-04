@@ -17,6 +17,7 @@
 		3142C8A72496390700B1257B /* MCDictionaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */; };
 		3142C8A92496694500B1257B /* MCDictionaryDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8A82496694500B1257B /* MCDictionaryDetailController.swift */; };
 		315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */; };
+		3163718624B09026006E4F4E /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3163718524B09026006E4F4E /* UIView.swift */; };
 		316BA194246D78F000869C89 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316BA193246D78F000869C89 /* UITextField.swift */; };
 		3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172732C247662FC003538F8 /* SettingsTableViewController.swift */; };
 		317340A2246DB60C00F75B1B /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317340A1246DB60C00F75B1B /* Collection.swift */; };
@@ -147,6 +148,7 @@
 		3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryDetailViewController.swift; sourceTree = "<group>"; };
 		3142C8A82496694500B1257B /* MCDictionaryDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryDetailController.swift; sourceTree = "<group>"; };
 		315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoPeopleSettingsViewController.swift; sourceTree = "<group>"; };
+		3163718524B09026006E4F4E /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		316BA193246D78F000869C89 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3172732C247662FC003538F8 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		317340A1246DB60C00F75B1B /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 				316BA193246D78F000869C89 /* UITextField.swift */,
 				317340A1246DB60C00F75B1B /* Collection.swift */,
 				31829CBA2493B671003C6153 /* ActionsMCViewController.swift */,
+				3163718524B09026006E4F4E /* UIView.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -824,6 +827,7 @@
 				31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */,
 				317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */,
 				31BC65192469324100D5D801 /* MCDictionaryTableViewController.swift in Sources */,
+				3163718624B09026006E4F4E /* UIView.swift in Sources */,
 				317D4C242188CCC50081B38B /* States.swift in Sources */,
 				31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */,
 				319D524E2466897400CBB1EB /* HapticManager.swift in Sources */,

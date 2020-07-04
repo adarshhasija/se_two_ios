@@ -223,6 +223,9 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <bool key="isElement" value="YES"/>
+                        </accessibility>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="nIE-aO-URL" firstAttribute="centerY" secondItem="EgB-zm-HjI" secondAttribute="centerY" id="0Fj-fD-jDZ"/>

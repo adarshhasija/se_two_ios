@@ -71,20 +71,42 @@ class ActionsMCViewController : UIViewController {
     }
     
     
-    @IBAction func gestureSwipe(_ sender: UISwipeGestureRecognizer) {
-        if sender.state == .recognized {
-            if sender.direction == UISwipeGestureRecognizerDirection.up {
-                swipeUp()
+    @IBAction func gestureSwipe(_ sender: Any?) {
+        var direction : String?
+        if (sender as? UISwipeGestureRecognizer)?.state == .recognized {
+            if (sender as! UISwipeGestureRecognizer).direction == UISwipeGestureRecognizerDirection.up {
+                direction = "up"
             }
-            else if sender.direction == UISwipeGestureRecognizerDirection.left  && sender.numberOfTouchesRequired == 1 {
-                swipeLeft()
+            else if (sender as! UISwipeGestureRecognizer).direction == UISwipeGestureRecognizerDirection.left  && (sender as! UISwipeGestureRecognizer).numberOfTouchesRequired == 1 {
+                direction = "left"
             }
-            else if sender.direction == UISwipeGestureRecognizerDirection.left && sender.numberOfTouchesRequired == 2 {
-                swipeLeft2Finger()
+            else if (sender as! UISwipeGestureRecognizer).direction == UISwipeGestureRecognizerDirection.left && (sender as! UISwipeGestureRecognizer).numberOfTouchesRequired == 2 {
+                direction = "left_2_finger"
             }
-            else if sender.direction == UISwipeGestureRecognizerDirection.right && sender.numberOfTouchesRequired == 2 {
-                swipeRight2Finger()
+            else if (sender as! UISwipeGestureRecognizer).direction == UISwipeGestureRecognizerDirection.right && (sender as! UISwipeGestureRecognizer).numberOfTouchesRequired == 2 {
+                direction = "right_2_finger"
             }
+        }
+        else if (sender is UIAccessibilityScrollDirection) {
+            if (sender as! UIAccessibilityScrollDirection) == UIAccessibilityScrollDirection.down {
+                direction = "up" //scroll down means swipe up
+            }
+            else if (sender as! UIAccessibilityScrollDirection) == UIAccessibilityScrollDirection.left {
+                direction = "left" 
+            }
+        }
+        
+        if direction == "up" {
+            swipeUp()
+        }
+        else if direction == "left" {
+            swipeLeft()
+        }
+        else if direction == "left_2_finger" {
+            swipeLeft2Finger()
+        }
+        else if direction == "right_2_finger" {
+            swipeRight2Finger()
         }
     }
     
@@ -128,6 +150,9 @@ class ActionsMCViewController : UIViewController {
         instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
         animateImageEnlarge(image: instructionsImageView)
         instructionsLabel?.text = defaultInstructions
+        view.accessibilityLabel = defaultInstructions
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        defaultInstructions);
         audioInstructionsLabel?.text = "Visually-Impaired Users:\nTap with 2 fingers to hear current instruction"
         
         //This has to be set here. If it is set in IB, the app crashes
@@ -139,6 +164,7 @@ class ActionsMCViewController : UIViewController {
         //Notify a deaf-blind user that the app is open
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
     }
+    
 }
 
 ///All private helpers
@@ -325,6 +351,9 @@ extension ActionsMCViewController {
         
         instructionsString += "\n" + "Swipe left to delete last character"
         instructionsLabel.text = instructionsString
+        view.accessibilityLabel = instructionsString
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        instructionsString);
     }
     
     func animateInstructions() {
@@ -400,6 +429,9 @@ extension ActionsMCViewController {
             morseCodeLabel?.text = ""
             blindUsersTapInstruction?.isHidden = true
             instructionsLabel?.text = defaultInstructions
+            view.accessibilityLabel = defaultInstructions
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+            defaultInstructions);
             instructionsImageView?.image = UIImage(systemName: "largecircle.fill.circle")
             hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
             return
@@ -425,6 +457,9 @@ extension ActionsMCViewController {
         
         if morseCodeString.count == 0 && alphanumericString.count == 0 {
             instructionsLabel.text = defaultInstructions
+            view.accessibilityLabel = defaultInstructions
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+            defaultInstructions);
             isUserTyping = false
         }
     }
@@ -454,7 +489,11 @@ extension ActionsMCViewController {
             Analytics.logEvent("se3_ios_2f_swipe_left", parameters: [
                 "state" : "scrolling"
             ])
-           instructionsLabel?.text = "Swipe left with 2 fingers to go back"
+           let str = "Swipe left with 2 fingers to go back"
+           instructionsLabel?.text = str
+        view.accessibilityLabel = str
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        str);
         instructionsImageView?.image = UIImage(systemName: "hand.point.left")
            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
@@ -492,7 +531,11 @@ extension ActionsMCViewController {
             Analytics.logEvent("se3_ios_2f_swipe_right", parameters: [
                 "state" : "index_greater_equal_0"
             ])
-            instructionsLabel?.text = "Swipe left with 2 fingers to go back"
+            let str = "Swipe left with 2 fingers to go back"
+            instructionsLabel?.text = str
+            view.accessibilityLabel = str
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+            str);
             instructionsImageView?.image = UIImage(systemName: "hand.point.left")
             morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
             alphanumericLabel.text = alphanumericString
@@ -501,7 +544,11 @@ extension ActionsMCViewController {
             englishStringIndex = alphanumericString.count
             return
         }
-        instructionsLabel?.text = "Swipe right with 2 fingers to read morse code"
+        let str = "Swipe right with 2 fingers to read morse code"
+        instructionsLabel?.text = str
+        view.accessibilityLabel = str
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        str);
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
         animateInstructions()
@@ -559,6 +606,9 @@ extension ActionsMCViewController {
             instructionString += "\n\nOr\n\n" + writingString
         }
         self.instructionsLabel.text = instructionString
+        self.view.accessibilityLabel = instructionString
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        instructionString);
     }
     
     private func convertEnglishToMC(englishString : String) -> String {
