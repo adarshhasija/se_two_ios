@@ -29,7 +29,7 @@ class ActionsMCViewController : UIViewController {
     var defaultInstructions = "Tap screen to type a dot.\nTap Actions button to see actions"
     var noMoreMatchesString = "No more matches found for this morse code"
     var scrollStart = "Swipe right with 2 fingers to read"
-    var stopReadingString = "Swipe left once with 1 finger to stop reading and type"
+    var stopReadingString = "Swipe left once to stop reading and type"
     var keepTypingString = "Keep typing"
     
     
@@ -92,7 +92,7 @@ class ActionsMCViewController : UIViewController {
                 direction = "up" //scroll down means swipe up
             }
             else if (sender as! UIAccessibilityScrollDirection) == UIAccessibilityScrollDirection.left {
-                direction = "left" 
+                direction = "left"
             }
         }
         
@@ -606,9 +606,10 @@ extension ActionsMCViewController {
             instructionString += "\n\nOr\n\n" + writingString
         }
         self.instructionsLabel.text = instructionString
-        self.view.accessibilityLabel = instructionString
+        let fullString = (alphanumericLabel.text ?? "") + "\n\n" + instructionString // \n\n is to get VoiceOver to pause before saying the instructions
+        self.view.accessibilityLabel = fullString
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-        instructionString);
+        fullString);
     }
     
     private func convertEnglishToMC(englishString : String) -> String {
