@@ -238,7 +238,9 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func downSwipe(_ sender: Any) {
-        //Not using this functionality right now
+        //Swipe down to get text from the iPhone. We designed this in case user cannot read morse code on an older iPhone and wanted to transfer it to the watch.
+        //Not using this functionality right now. We found a way to play haptics on older iPhones (6, 6S) using system vibrations
+        
       /*  sendAnalytics(eventName: "se3_watch_swipe_down", parameters: [:])
         //let watchDelegate = WKExtension.shared().delegate as? ExtensionDelegate
         //watchDelegate?.sendMessage()
