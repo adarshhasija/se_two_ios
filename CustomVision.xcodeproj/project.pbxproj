@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		22D2C163A464B8AA5B31A8D1 /* Pods_Suno.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */; };
 		310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */; };
+		310D955024B1C0BF00936A27 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310D954F24B1C0BF00936A27 /* UIFont.swift */; };
 		3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */; };
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
@@ -140,6 +141,7 @@
 /* Begin PBXFileReference section */
 		00A518D03A10503E18B775E7 /* Pods-Suno.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno/Pods-Suno.release.xcconfig"; sourceTree = "<group>"; };
 		310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryRowController.swift; sourceTree = "<group>"; };
+		310D954F24B1C0BF00936A27 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeEditorViewController.swift; sourceTree = "<group>"; };
 		313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDTouchView.swift; sourceTree = "<group>"; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 				317340A1246DB60C00F75B1B /* Collection.swift */,
 				31829CBA2493B671003C6153 /* ActionsMCViewController.swift */,
 				3163718524B09026006E4F4E /* UIView.swift */,
+				310D954F24B1C0BF00936A27 /* UIFont.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -825,6 +828,7 @@
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */,
 				31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */,
+				310D955024B1C0BF00936A27 /* UIFont.swift in Sources */,
 				317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */,
 				31BC65192469324100D5D801 /* MCDictionaryTableViewController.swift in Sources */,
 				3163718624B09026006E4F4E /* UIView.swift in Sources */,
@@ -935,11 +939,11 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				MARKETING_VERSION = 1.1.10;
+				MARKETING_VERSION = 1.1.11;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
@@ -963,11 +967,11 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				MARKETING_VERSION = 1.1.10;
+				MARKETING_VERSION = 1.1.11;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
 				PRODUCT_NAME = SunoDayko;
@@ -1285,12 +1289,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.10;
+				MARKETING_VERSION = 1.1.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
 				PRODUCT_NAME = SunoDayko;
 				SWIFT_VERSION = 4.0;
@@ -1304,12 +1308,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.10;
+				MARKETING_VERSION = 1.1.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
 				PRODUCT_NAME = SunoDayko;
 				SWIFT_VERSION = 4.0;
