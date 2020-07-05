@@ -531,6 +531,11 @@ extension VisionMLViewController {
         self.view.accessibilityLabel = text
     }
     
+    func addButtonForSettings(to view: UIView) {
+        //let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)!
+        //UIApplication.shared.open(settingsUrl)
+    }
+    
     private func sayThis(string: String) {
         let utterance = AVSpeechUtterance(string: string)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
