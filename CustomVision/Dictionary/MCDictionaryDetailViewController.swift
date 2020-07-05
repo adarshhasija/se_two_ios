@@ -25,6 +25,14 @@ class MCDictionaryDetailViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Ignoring the settings in storyboard for font. Setting them here
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .body).bold() //Not doing it in storyboard as we cannot add BOLD to textStyle. Overriding storyboard for the titles here
+        aboutLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        blindLabel.font = UIFont.preferredFont(forTextStyle: .body).bold()
+        blindInstructionsLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        deafBlindLabel.font = UIFont.preferredFont(forTextStyle: .body).bold()
+        deafBlindInstructionsLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        
         titleLabel.text = morseCodeCell?.english
         if morseCodeCell?.english == "TIME" {
             aboutLabel.text = "To get the time in morse code, you must tap once and swipe up. You will get the current time in 24 hour format\n" // newline added to create space before next section
