@@ -238,7 +238,8 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func downSwipe(_ sender: Any) {
-        sendAnalytics(eventName: "se3_watch_swipe_down", parameters: [:])
+        //Not using this functionality right now
+      /*  sendAnalytics(eventName: "se3_watch_swipe_down", parameters: [:])
         //let watchDelegate = WKExtension.shared().delegate as? ExtensionDelegate
         //watchDelegate?.sendMessage()
         //Making this call to see if there is any morse code to get from the iPhone app
@@ -258,7 +259,7 @@ class MCInterfaceController : WKInterfaceController {
         else {
             setInstructionLabelForMode(mainString: "Update from phone failed:\n\nPlease try again later", readingString: "", writingString: "", isError: true)
             WKInterfaceDevice.current().play(.failure)
-        }
+        }   */
     }
     
     
@@ -428,7 +429,14 @@ extension MCInterfaceController : WKCrownDelegate {
             morseCodeStringIndex += 1
             crownRotationalDelta = 0.0
             
-            if morseCodeStringIndex >= morseCodeString.count {
+            if morseCodeString.isEmpty {
+                //There is no morse code to scroll through. Simply play a failure haptic
+                //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
+                morseCodeStringIndex = -1 //To override the increment made above
+                WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            else if morseCodeStringIndex >= morseCodeString.count {
                 sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
                     "state" : "index_greater_equal_0",
                     "is_reading" : self.isReading()
@@ -477,7 +485,14 @@ extension MCInterfaceController : WKCrownDelegate {
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
             
-            if morseCodeStringIndex < 0 {
+            if morseCodeString.isEmpty {
+                //There is no morse code to scroll through. Simply play a failure haptic
+                //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
+                morseCodeStringIndex = -1 //To override the decrement made aboves
+                WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            else if morseCodeStringIndex < 0 {
                 sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
                     "state" : "index_less_0",
                     "is_reading" : self.isReading()
