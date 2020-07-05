@@ -517,9 +517,10 @@ extension VisionMLViewController {
         label.textAlignment = NSTextAlignment.center
         label.backgroundColor = UIColor.black
         label.textColor = UIColor.white
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.text = text
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         self.view.addSubview(label)
         view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
         view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
