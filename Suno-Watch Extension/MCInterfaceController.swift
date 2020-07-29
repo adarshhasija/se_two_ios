@@ -32,6 +32,9 @@ class MCInterfaceController : WKInterfaceController {
     var morseCode = MorseCode()
     var synth : AVSpeechSynthesizer?
     var mode : String? //If mode = chat, we show MC dictionary. Else we show Actions list
+    var isAutoPlayOn : Bool = false
+    var startTimeNanos : UInt64 = 0 //Used to calculate speed of crown rotation
+    var isScreenActive = true
     
     @IBOutlet weak var mainImage: WKInterfaceImage!
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
@@ -51,6 +54,10 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func upSwipe(_ sender: Any) {
+        if isAutoPlayOn == true {
+            //Swipe up cannot interrupt Autoplay
+            return
+        }
         //This is not needed. In reading mode user can swipe up as many times as he likes to repeat the audio
       /*  if isReading() == true {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
@@ -177,6 +184,11 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func leftSwipe(_ sender: Any) {
+        if isAutoPlayOn == true {
+            isAutoPlayOn = false //All reformatting will be done in autoplay timer
+            WKInterfaceDevice.current().play(.success) //A haptic to indicate that the left swipe has been registered
+            return
+        }
         if isReading() == true {
             sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
                 "state" : "reading"
@@ -368,12 +380,14 @@ class MCInterfaceController : WKInterfaceController {
         self.crownSequencer.delegate = self
         self.crownSequencer.focus()
         self.instructionsLabel?.setTextColor(UIColor.gray)
+        isScreenActive = true
     }
     
     
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
+        isScreenActive = false
         //morseCode.destroyTree()
     }
 }
@@ -424,69 +438,19 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
 extension MCInterfaceController : WKCrownDelegate {
     
     func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
+        if isAutoPlayOn == true {
+            //No processing while autoplay is ON
+            return
+        }
         crownRotationalDelta  += rotationalDelta
+        if startTimeNanos == 0 {
+            //We do not want this reset on every degree of rotation
+            startTimeNanos = DispatchTime.now().uptimeNanoseconds
+        }
+        
         
         if crownRotationalDelta < -expectedMoveDelta {
             //downward scroll
-            morseCodeStringIndex += 1
-            crownRotationalDelta = 0.0
-            
-            if morseCodeString.isEmpty {
-                //There is no morse code to scroll through. Simply play a failure haptic
-                //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
-                morseCodeStringIndex = -1 //To override the increment made above
-                WKInterfaceDevice.current().play(.failure)
-                return
-            }
-            else if morseCodeStringIndex >= morseCodeString.count {
-                sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                    "state" : "index_greater_equal_0",
-                    "is_reading" : self.isReading()
-                ])
-                morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
-                englishTextLabel.setText(englishString)
-                WKInterfaceDevice.current().play(.success)
-                setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString, isError: false)
-                morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
-                englishStringIndex = englishString.count
-                return
-            }
-            
-            sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                "state" : "scrolling",
-                "isReading" : self.isReading()
-            ])
-            setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString, isError: false)
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
-            playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
-            
-            if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
-                //Need to change the selected character of the English string
-                englishStringIndex += 1
-                if englishStringIndex >= englishString.count {
-                    WKInterfaceDevice.current().play(.failure)
-                    return
-                }
-                if isEngCharSpace() {
-                    let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
-                    let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
-                    englishString.replaceSubrange(start..<end, with: "␣")
-                }
-                else {
-                    englishString = englishString.replacingOccurrences(of: "␣", with: " ")
-                }
-                sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                    "state" : "index_alpha_change",
-                    "is_reading" : self.isReading()
-                ])
-                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
-            }
-        }
-        else if crownRotationalDelta > expectedMoveDelta {
-            //upward scroll
-            morseCodeStringIndex -= 1
-            crownRotationalDelta = 0.0
-            
             if morseCodeString.isEmpty {
                 //There is no morse code to scroll through. Simply play a failure haptic
                 //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
@@ -494,58 +458,49 @@ extension MCInterfaceController : WKCrownDelegate {
                 WKInterfaceDevice.current().play(.failure)
                 return
             }
-            else if morseCodeStringIndex < 0 {
-                sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                    "state" : "index_less_0",
-                    "is_reading" : self.isReading()
-                ])
+            
+            morseCodeStringIndex += 1
+            crownRotationalDelta = 0.0
+            let endTime = DispatchTime.now()
+            let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
+            if diffNanos <= 700000000 {
+                sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
+                englishStringIndex = -1 //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
+                morseCodeStringIndex = 0
+                WKInterfaceDevice.current().play(.success)
+                morseCodeAutoPlay()
+            }
+            else {
+                digitalCrownRotated(direction: "down")
+            }
+            startTimeNanos = 0
+        }
+        else if crownRotationalDelta > expectedMoveDelta {
+            //upward scroll
+            if morseCodeString.isEmpty {
+                //There is no morse code to scroll through. Simply play a failure haptic
+                //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
+                morseCodeStringIndex = -1 //To override the decrement made aboves
                 WKInterfaceDevice.current().play(.failure)
-                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
-                
-                if morseCodeStringIndex < 0 {
-                    morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
-                    englishStringIndex = -1
-                    englishTextLabel.setText(englishString)
-                }
-                morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
                 return
             }
             
-            sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                "state" : "scrolling",
-                "is_reading" : self.isReading()
-            ])
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
-            playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
-            
-            if isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
-                //Need to change the selected character of the English string
-                englishStringIndex -= 1
-                sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                    "state" : "index_alpha_change",
-                    "is_reading" : self.isReading()
-                ])
-                //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
-                if englishStringIndex > -1 && isEngCharSpace() {
-                    let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
-                    let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
-                    englishString.replaceSubrange(start..<end, with: "␣")
-                }
-                else {
-                    englishString = englishString.replacingOccurrences(of: "␣", with: " ")
-                }
-                
-                if englishStringIndex > -1 {
-                    //Ensure that the index is within bounds
-                    setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
-                }
-                
+            morseCodeStringIndex -= 1
+            crownRotationalDelta = 0.0
+            let endTime = DispatchTime.now()
+            let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
+            if diffNanos <= 700000000 {
+                sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
+                englishStringIndex = -1 //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
+                morseCodeStringIndex = 0
+                WKInterfaceDevice.current().play(.success)
+                morseCodeAutoPlay()
             }
-            
-            
+            else {
+                digitalCrownRotated(direction: "up")
+            }
+            startTimeNanos = 0
         }
-            
-        
     }
     
 }
@@ -635,15 +590,19 @@ extension MCInterfaceController {
             WKInterfaceDevice.current().play(.start)
         }
         if char == "-" {
-            WKInterfaceDevice.current().play(.stop)
+            //WKInterfaceDevice.current().play(.stop) //2 taps
+            WKInterfaceDevice.current().play(.retry) //single longer haptic
         }
         if char == "|" {
             WKInterfaceDevice.current().play(.success)
         }
     }
 
-    //This function tells us if the previous char was a pipe. It is a sign to change the character in the English string
-    func isPrevMCCharPipe(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
+    //This function tells us if the previous char was a pipe or space.
+    //Pipe = manual reading
+    //Space = Autoplay. We do not play pipes in autoplay
+    //It is a sign to change the character in the English string
+    func isPrevMCCharPipeOrSpace(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
         var retVal = false
         if isReverse {
             if currentIndex < input.count - 1 {
@@ -652,7 +611,7 @@ extension MCInterfaceController {
                 let char = String(morseCodeString[index])
                 let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex + 1)
                 let prevChar = String(morseCodeString[prevIndex])
-                retVal = char != "|" && prevChar == "|"
+                retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
             }
         }
         else if currentIndex > 0 {
@@ -661,7 +620,7 @@ extension MCInterfaceController {
             let char = String(morseCodeString[index])
             let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex - 1)
             let prevChar = String(morseCodeString[prevIndex])
-            retVal = char != "|" && prevChar == "|"
+            retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
         }
         
         return retVal
@@ -783,16 +742,20 @@ extension MCInterfaceController {
     func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String, isError: Bool?) {
         var instructionString = mainString
         if !isUserTyping && readingString.isEmpty == false {
-            instructionString += "\n\nOr\n\n" + readingString
+            instructionString += "\nOr\n" + readingString
         }
         else if writingString.isEmpty == false {
-            instructionString += "\n\nOr\n\n" + writingString
+            instructionString += "\nOr\n" + writingString
         }
         self.instructionsLabel.setText(instructionString)
         self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.gray)
     }
     
     func morseCodeInput(input : String) {
+        if isAutoPlayOn == true {
+            //A tap does not interrupt autoplay
+            return
+        }
         if isReading() == true {
             //We do not want the user to accidently delete all the text by tapping
             synth = AVSpeechSynthesizer.init()
@@ -925,7 +888,132 @@ extension MCInterfaceController {
         }
     }
     
+    func morseCodeAutoPlay() {
+        isAutoPlayOn = true
+        englishTextLabel.setText(englishString) //Resetting the string colors at the start of autoplay
+        morseCodeString = morseCodeString.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
+        morseCodeTextLabel.setText(morseCodeString)
+        instructionsLabel?.setText("Autoplaying morse code...\nSwipe left to stop")
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            if self.isScreenActive == true {
+                //In case the watch screen goes off, we pause
+                //Resume when the user turns the watch screen ON again
+                self.digitalCrownRotated(direction: "down")
+                self.morseCodeStringIndex += 1
+            }
+
+            if self.morseCodeStringIndex > self.morseCodeString.count || self.isAutoPlayOn == false {
+                timer.invalidate()
+                self.isAutoPlayOn = false
+                self.morseCodeString = self.morseCodeString.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
+                self.englishTextLabel.setText(self.englishString)
+                self.morseCodeTextLabel.setText(self.morseCodeString)
+                self.morseCodeStringIndex = -1
+                self.englishStringIndex = -1
+                self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
+            }
+        }
+    }
     
+    func digitalCrownRotated(direction : String) {
+        if direction == "down" {
+            if morseCodeStringIndex >= morseCodeString.count {
+                sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
+                    "state" : "index_greater_equal_0",
+                    "is_reading" : self.isReading()
+                ])
+                morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
+                englishTextLabel.setText(englishString)
+                WKInterfaceDevice.current().play(.success)
+                setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
+                englishStringIndex = englishString.count
+                return
+            }
+            
+            sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
+                "state" : "scrolling",
+                "isReading" : self.isReading()
+            ])
+            if isAutoPlayOn == false {
+                setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString, isError: false)
+            }
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
+            playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+            
+            if isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
+                //Need to change the selected character of the English string
+                englishStringIndex += 1
+                if englishStringIndex >= englishString.count {
+                    WKInterfaceDevice.current().play(.failure)
+                    return
+                }
+                if isEngCharSpace() {
+                    let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+                    let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
+                    englishString.replaceSubrange(start..<end, with: "␣")
+                }
+                else {
+                    englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+                }
+                sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
+                    "state" : "index_alpha_change",
+                    "is_reading" : self.isReading()
+                ])
+                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
+            }
+        }
+        else if direction == "up" {
+            if morseCodeStringIndex < 0 {
+                sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
+                    "state" : "index_less_0",
+                    "is_reading" : self.isReading()
+                ])
+                WKInterfaceDevice.current().play(.failure)
+                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                
+                if morseCodeStringIndex < 0 {
+                    morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
+                    englishStringIndex = -1
+                    englishTextLabel.setText(englishString)
+                }
+                morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
+                return
+            }
+            
+            sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
+                "state" : "scrolling",
+                "is_reading" : self.isReading()
+            ])
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
+            playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+            
+            if isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
+                //Need to change the selected character of the English string
+                englishStringIndex -= 1
+                sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
+                    "state" : "index_alpha_change",
+                    "is_reading" : self.isReading()
+                ])
+                //FIrst check that the index is within bounds. Else isEngCharSpace() will crash
+                if englishStringIndex > -1 && isEngCharSpace() {
+                    let start = englishString.index(englishString.startIndex, offsetBy: englishStringIndex)
+                    let end = englishString.index(englishString.startIndex, offsetBy: englishStringIndex + 1)
+                    englishString.replaceSubrange(start..<end, with: "␣")
+                }
+                else {
+                    englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+                }
+                
+                if englishStringIndex > -1 {
+                    //Ensure that the index is within bounds
+                    setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
+                }
+                
+            }
+        }
+    }
 }
 
 ///Protocol
