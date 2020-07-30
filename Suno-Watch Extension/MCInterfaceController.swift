@@ -14,8 +14,8 @@ import WatchConnectivity
 class MCInterfaceController : WKInterfaceController {
     
     var defaultInstructions = "Tap screen to type a dot"
-    var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Swipe Right to begin typing morse code"
-    var notDeafBlindInstructions = "Long press to talk or type out a message\n\nOr\n\nForce press for more options"
+    var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Lightly long press to begin typing morse code"
+    var notDeafBlindInstructions = "Rotate the crown upwards quickly to talk or type out a message\nOr\nForce press for more options"
     var dcScrollStart = "Rotate the digital crown to read"
     var stopReadingString = "Swipe left once to stop reading and type"
     var keepTypingString = "Keep typing"
@@ -35,6 +35,7 @@ class MCInterfaceController : WKInterfaceController {
     var isAutoPlayOn : Bool = false
     var startTimeNanos : UInt64 = 0 //Used to calculate speed of crown rotation
     var isScreenActive = true
+    var quickScrollTimeThreshold = 700000000 //If the digital crown is scrolled 30 degrees within this many nano seconds, we go into autoscroll
     
     @IBOutlet weak var mainImage: WKInterfaceImage!
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
@@ -48,8 +49,8 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     @IBAction func rightSwipe(_ sender: Any) {
-        sendAnalytics(eventName: "se3_watch_swipe_right", parameters: [:])
-        morseCodeInput(input: "-")
+        //sendAnalytics(eventName: "se3_watch_swipe_right", parameters: [:])
+        //morseCodeInput(input: "-")
     }
     
     
@@ -276,10 +277,14 @@ class MCInterfaceController : WKInterfaceController {
         }   */
     }
     
-    
-    @IBAction func longPress(_ sender: Any) {
-        sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
-        openTalkTypeMode()
+    //Original minDuration = 0.5
+    @IBAction func longPress(_ sender: WKLongPressGestureRecognizer) {
+        if sender.state == .ended {
+            sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
+            //openTalkTypeMode()
+            morseCodeInput(input: "-") //Shorten minDuration for morse code typing
+        }
+        
     }
     
     @IBAction func tappedFAQs() {
@@ -397,7 +402,7 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         var finalString = ""
         if isUserTyping == true {
-            finalString.append("Lightly long press to reply by talking")
+            finalString.append("Rotate the digital crown upwards quickly to reply by talking")
             if typingSuggestions.count > 0 {
                 finalString += " or typing"
             }
@@ -417,7 +422,7 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
         var finalString = ""
         if isUserTyping == true {
-            finalString.append("Lightly long press to reply by talking")
+            finalString.append("Rotate the digital crown upwards quickly to reply by talking")
             if typingSuggestions.count > 0 {
                 finalString += " or typing"
             }
@@ -463,7 +468,7 @@ extension MCInterfaceController : WKCrownDelegate {
             crownRotationalDelta = 0.0
             let endTime = DispatchTime.now()
             let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
-            if diffNanos <= 700000000 {
+            if diffNanos <= quickScrollTimeThreshold {
                 sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
                 englishStringIndex = -1 //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
                 morseCodeStringIndex = 0
@@ -477,26 +482,24 @@ extension MCInterfaceController : WKCrownDelegate {
         }
         else if crownRotationalDelta > expectedMoveDelta {
             //upward scroll
-            if morseCodeString.isEmpty {
-                //There is no morse code to scroll through. Simply play a failure haptic
-                //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
-                morseCodeStringIndex = -1 //To override the decrement made aboves
-                WKInterfaceDevice.current().play(.failure)
-                return
-            }
+         
             
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
             let endTime = DispatchTime.now()
             let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
-            if diffNanos <= 700000000 {
-                sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
-                englishStringIndex = -1 //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
-                morseCodeStringIndex = 0
-                WKInterfaceDevice.current().play(.success)
-                morseCodeAutoPlay()
+            if diffNanos <= quickScrollTimeThreshold {
+                sendAnalytics(eventName: "se3_watch_reply", parameters: [:])
+                openTalkTypeMode()
             }
             else {
+                 if morseCodeString.isEmpty {
+                     //There is no morse code to scroll through. Simply play a failure haptic
+                     //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
+                     morseCodeStringIndex = -1 //To override the decrement made aboves
+                     WKInterfaceDevice.current().play(.failure)
+                     return
+                 }
                 digitalCrownRotated(direction: "up")
             }
             startTimeNanos = 0
