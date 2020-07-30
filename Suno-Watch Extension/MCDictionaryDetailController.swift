@@ -30,7 +30,7 @@ class MCDictionaryDetailController : WKInterfaceController {
                     blindInstructionsLabel.setText("After getting the result, tap the screen to play audio")
                     blindInstructionsLabel.setHidden(false)
                     deafBlindLabel.setHidden(false)
-                    deafBlindInstructionsLabel.setText("After getting the result, swipe right with 2 fingers to read the morse code. We will communicate it through vibrations\n\nDot(.) : 1 vibration\nDash(-) : 2 vibration")
+                    deafBlindInstructionsLabel.setText("After getting the result, rotate the digital crown down slowly to read the morse code. We will communicate it through vibrations\n\nIf you are comfortable with morse code, you can also rotate the Digital Crown down quickly to initiate autoplay. This will play the entire morse code in one go\n\nDot(.) : 1 vibration\nDash(-) : 1 long vibration")
                     deafBlindInstructionsLabel.setHidden(false)
 
                 }
@@ -40,7 +40,7 @@ class MCDictionaryDetailController : WKInterfaceController {
                     blindInstructionsLabel.setText("After getting the result, tap the screen to play audio")
                     blindInstructionsLabel.setHidden(false)
                     deafBlindLabel.setHidden(false)
-                    deafBlindInstructionsLabel.setText("After getting the result, swipe right with 2 fingers to read the morse code. We will communicate it through vibrations\n\nDot(.) : 1 vibration\nDash(-) : 2 vibration")
+                    deafBlindInstructionsLabel.setText("After getting the result, rotate the digital crown down slowly to read the morse code. We will communicate it through vibrations\n\nIf you are comfortable with morse code, you can also rotate the Digital Crown down quickly to initiate autoplay. This will play the entire morse code in one go\n\nDot(.) : 1 vibration\nDash(-) : 1 long vibration")
                     deafBlindInstructionsLabel.setHidden(false)
                 }
                 else if action == "1-to-1" {

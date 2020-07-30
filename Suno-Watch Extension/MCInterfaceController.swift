@@ -35,7 +35,7 @@ class MCInterfaceController : WKInterfaceController {
     var isAutoPlayOn : Bool = false
     var startTimeNanos : UInt64 = 0 //Used to calculate speed of crown rotation
     var isScreenActive = true
-    var quickScrollTimeThreshold = 700000000 //If the digital crown is scrolled 30 degrees within this many nano seconds, we go into autoscroll
+    var quickScrollTimeThreshold = 700000000 //If the digital crown is scrolled 30 degrees within this many nano seconds, we go into autoplay
     
     @IBOutlet weak var mainImage: WKInterfaceImage!
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
