@@ -16,8 +16,8 @@ class MCInterfaceController : WKInterfaceController {
     var defaultInstructions = "Tap screen to type a dot"
     var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Lightly long press to begin typing morse code"
     var notDeafBlindInstructions = "Rotate the crown upwards quickly to talk or type out a message\nOr\nForce press for more options"
-    var dcScrollStart = "Rotate the digital crown to read"
-    var stopReadingString = "Swipe left once to stop reading and type"
+    var dcScrollStart = "Rotate the digital crown down to read morse code"
+    var stopReadingString = "Swipe left once to stop reading and type morse code"
     var keepTypingString = "Keep typing"
     var noMoreMatchesString = "No more matches found for this morse code"
     var typingSuggestions : [String ] = ["Hi", "Yes", "No"]
@@ -726,7 +726,7 @@ extension MCInterfaceController {
             instructionsString.insert(contentsOf: noMoreMatchesString + "\n", at: instructionsString.startIndex)
         }
         
-        instructionsString += "\n" + "Swipe left to delete last character"
+        //instructionsString += "\n" + "Swipe left to delete last character"
         instructionsLabel.setText(instructionsString)
         self.instructionsLabel.setTextColor(UIColor.gray)
     }
@@ -745,10 +745,10 @@ extension MCInterfaceController {
     func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String, isError: Bool?) {
         var instructionString = mainString
         if !isUserTyping && readingString.isEmpty == false {
-            instructionString += "\nOr\n" + readingString
+            //instructionString += "\nOr\n" + readingString
         }
         else if writingString.isEmpty == false {
-            instructionString += "\nOr\n" + writingString
+            //instructionString += "\nOr\n" + writingString
         }
         self.instructionsLabel.setText(instructionString)
         self.instructionsLabel.setTextColor(isError == true ? UIColor.red : UIColor.gray)
@@ -794,7 +794,7 @@ extension MCInterfaceController {
             WKInterfaceDevice.current().play(.start)
         }
         else if input == "-" {
-            WKInterfaceDevice.current().play(.stop)
+            WKInterfaceDevice.current().play(.retry) //single longer haptic
             //WKInterfaceDevice.current().play(.start)
             //let ms = 1000
             //usleep(useconds_t(750 * ms)) //will sleep for 50 milliseconds
@@ -914,7 +914,8 @@ extension MCInterfaceController {
                 self.morseCodeTextLabel.setText(self.morseCodeString)
                 self.morseCodeStringIndex = -1
                 self.englishStringIndex = -1
-                self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
+                //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
+                self.instructionsLabel?.setText(self.stopReadingString)
             }
         }
     }
@@ -929,7 +930,8 @@ extension MCInterfaceController {
                 morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
                 englishTextLabel.setText(englishString)
                 WKInterfaceDevice.current().play(.success)
-                setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                //setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                instructionsLabel?.setText(stopReadingString)
                 morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
                 englishStringIndex = englishString.count
                 return
