@@ -45,6 +45,6 @@ class MCDictionaryDetailViewController : UIViewController {
         }
         
         blindInstructionsLabel.text = "After getting the result, tap the screen to play audio\n"
-        deafBlindInstructionsLabel.text = "After getting the result, swipe right with 2 fingers to read the morse code. We will communicate it through vibrations\n\nDot(.) : 1 vibration\nDash(-) : 2 vibration"
+        deafBlindInstructionsLabel.text = "After getting the result, swipe right with 2 fingers to read the morse code. We will communicate it through vibrations\n\nIf you are comfortable with morse code, you can autoplay the entire morse text text. Quickly swipe right with 2 fingers a few times to activate autoplay mode\n\nDot(.) : 1 vibration\nDash(-) : 1 longer vibration"
     }
 }

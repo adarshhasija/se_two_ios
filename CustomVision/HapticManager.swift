@@ -174,7 +174,13 @@ class HapticManager {
 
         let sharpness : Float = 1.0
         let intensity : Float = 1.0
-        //For dash, its 2 pings
+        //For dash, a longer ping
+        let duration = TimeInterval(0.5)
+        let hapticDash = CHHapticEvent(eventType: .hapticTransient, parameters: [
+            CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
+            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
+        ], relativeTime: 0, duration: duration)
+     /*   //For dash, its 2 pings
         let hapticDash1 = CHHapticEvent(eventType: .hapticTransient, parameters: [
             CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
             CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
@@ -182,7 +188,7 @@ class HapticManager {
         let hapticDash2 = CHHapticEvent(eventType: .hapticTransient, parameters: [
             CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
             CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
-        ], relativeTime: 0.5)
+        ], relativeTime: 0.5)   */
         
         //For dot its a single ping
         let hapticDot = CHHapticEvent(eventType: .hapticTransient, parameters: [
@@ -190,7 +196,7 @@ class HapticManager {
             CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
         ], relativeTime: 0)
         
-        let hapticEvents = isDash == true ? [hapticDash1, hapticDash2] : [hapticDot]
+        let hapticEvents = isDash == true ? [/*hapticDash1, hapticDash2*/hapticDash] : [hapticDot]
 
         let pattern = try CHHapticPattern(events: hapticEvents, parameters: [])
         return try chHapticEngine?.makePlayer(with: pattern)

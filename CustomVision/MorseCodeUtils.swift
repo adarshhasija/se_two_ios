@@ -67,8 +67,11 @@ class MorseCodeUtils {
         return false
     }
     
-    //This function tells us if the previous char was a pipe. It is a sign to change the character in the English string
-    static func isPrevMCCharPipe(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
+    //This function tells us if the previous char was a pipe or space.
+    //In normal scrolling mode we use pipes
+    //In Autoplay we use space, as we do not want to play haptic for end of character
+    //It is a sign to change the character in the English string
+    static func isPrevMCCharPipeOrSpace(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
         var retVal = false
         if isReverse {
             if currentIndex < input.count - 1 {
@@ -77,7 +80,7 @@ class MorseCodeUtils {
                 let char = String(input[index])
                 let prevIndex = input.index(input.startIndex, offsetBy: currentIndex + 1)
                 let prevChar = String(input[prevIndex])
-                retVal = char != "|" && prevChar == "|"
+                retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
             }
         }
         else if currentIndex > 0 {
@@ -86,7 +89,7 @@ class MorseCodeUtils {
             let char = String(input[index])
             let prevIndex = input.index(input.startIndex, offsetBy: currentIndex - 1)
             let prevChar = String(input[prevIndex])
-            retVal = char != "|" && prevChar == "|"
+            retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
         }
         
         return retVal

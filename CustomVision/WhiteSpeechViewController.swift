@@ -646,7 +646,7 @@ public class WhiteSpeechViewController: UIViewController {
            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex) // TODO: Find out which call is the right call
              //hapticManager?.generateHaptic(code: String(morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)]) == "." ? hapticManager?.MC_DOT : hapticManager?.MC_DASH)
            
-           if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
+           if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                //Need to change the selected character of the English string
                englishStringIndex -= 1
                 Analytics.logEvent("se3_morse_scroll_left", parameters: [
@@ -692,7 +692,7 @@ public class WhiteSpeechViewController: UIViewController {
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)  // TODO: Still need to see which version is the right version
         //hapticManager?.generateHaptic(code: String(morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)]) == "." ? hapticManager?.MC_DOT : hapticManager?.MC_DASH)
         
-        if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
+        if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
             //Need to change the selected character of the English string
             englishStringIndex += 1
             if englishStringIndex >= englishString.count {

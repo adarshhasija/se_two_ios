@@ -25,6 +25,9 @@ class ActionsMCViewController : UIViewController {
     var synth = AVSpeechSynthesizer()
     var isUserTyping : Bool = false
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
+    var startTimeNanos : UInt64 = 0 //Used to calculate speed of crown rotation
+    var quickSwipeTimeThreshold = 1000000000 //If two 2-finger swipes happen within this many nano seconds, we go into autoplay
+    var isAutoPlayOn : Bool = false
     
     var defaultInstructions = "Tap screen to type a dot"
     var noMoreMatchesString = "No more matches found for this morse code"
@@ -43,6 +46,14 @@ class ActionsMCViewController : UIViewController {
     
     
     @IBAction func gestureTap(_ sender: UITapGestureRecognizer) {
+        if isAutoPlayOn == true {
+            //Animate instructions to indicate interruption is not allowed
+            instructionsLabel.transform = CGAffineTransform(translationX: 20, y: 0)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                self.instructionsLabel.transform = CGAffineTransform.identity
+            }, completion: nil)
+            return
+        }
         if sender.numberOfTouches == 1 {
             morseCodeInput(input: ".")
         }
@@ -62,7 +73,21 @@ class ActionsMCViewController : UIViewController {
                 direction = "left_2_finger"
             }
             else if (sender as! UISwipeGestureRecognizer).direction == UISwipeGestureRecognizerDirection.right && (sender as! UISwipeGestureRecognizer).numberOfTouchesRequired == 2 {
-                direction = "right_2_finger"
+                if startTimeNanos == 0 {
+                    startTimeNanos = DispatchTime.now().uptimeNanoseconds
+                    direction = "right_2_finger"
+                }
+                else {
+                    let endTime = DispatchTime.now()
+                    let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
+                    if diffNanos <= quickSwipeTimeThreshold {
+                        direction = "right_2_finger_quick_swipe"
+                    }
+                    else {
+                        direction = "right_2_finger"
+                    }
+                    startTimeNanos = 0
+                }
             }
         }
         else if (sender is UIAccessibilityScrollDirection) {
@@ -74,18 +99,41 @@ class ActionsMCViewController : UIViewController {
             }
         }
         
-        if direction == "up" {
-            swipeUp()
+        if isAutoPlayOn == true {
+            if direction == "left" {
+                swipeLeft()
+            }
+            else {
+                //Animate instructions to indicate interruption is not allowed
+                instructionsLabel.transform = CGAffineTransform(translationX: 20, y: 0)
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                    self.instructionsLabel.transform = CGAffineTransform.identity
+                }, completion: nil)
+            }
         }
-        else if direction == "left" {
-            swipeLeft()
+        else {
+            //Autoplay = FALSE
+            if direction == "up" {
+                swipeUp()
+            }
+            else if direction == "left" {
+                swipeLeft()
+            }
+            else if direction == "left_2_finger" {
+                swipeLeft2Finger()
+            }
+            else if direction == "right_2_finger" {
+                swipeRight2Finger()
+            }
+            else if direction == "right_2_finger_quick_swipe" {
+                Analytics.logEvent("se3_ios_autoplay", parameters: [:])
+                hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+                englishStringIndex = -1
+                morseCodeStringIndex = -1
+                morseCodeAutoPlay()
+            }
         }
-        else if direction == "left_2_finger" {
-            swipeLeft2Finger()
-        }
-        else if direction == "right_2_finger" {
-            swipeRight2Finger()
-        }
+        
     }
     
     @IBAction func rightBarButtonItemTapped(_ sender: Any) {
@@ -392,6 +440,11 @@ extension ActionsMCViewController {
     }
     
     func swipeLeft() {
+        if isAutoPlayOn == true {
+            isAutoPlayOn = false //All reformatting will be done in autoplay timer
+            hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS) //A haptic to indicate that the left swipe has been registered
+            return
+        }
         let alphanumericString = alphanumericLabel?.text ?? ""
         var morseCodeString = morseCodeLabel?.text ?? ""
         if isReading() == true {
@@ -450,7 +503,7 @@ extension ActionsMCViewController {
                 //try? hapticManager?.hapticForResult(success: false)
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
                
-               setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
+               setInstructionLabel(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
                instructionsImageView?.image = UIImage(systemName: "hand.point.right")
                if morseCodeStringIndex < 0 {
                    morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
@@ -474,7 +527,7 @@ extension ActionsMCViewController {
            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
            animateInstructions()
            
-           if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
+           if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                //Need to change the selected character of the English string
                englishStringIndex -= 1
                 Analytics.logEvent("se3_ios_2f_swipe_left", parameters: [
@@ -498,7 +551,7 @@ extension ActionsMCViewController {
            }
     }
     
-    func swipeRight2Finger() {
+    func swipeRight2Finger() -> Bool {
         var alphanumericString = alphanumericLabel?.text ?? ""
         let morseCodeString = morseCodeLabel?.text ?? ""
         morseCodeStringIndex += 1
@@ -517,23 +570,25 @@ extension ActionsMCViewController {
             //WKInterfaceDevice.current().play(.success)
             morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
             englishStringIndex = alphanumericString.count
-            return
+            return false
         }
-        let str = "Swipe right with 2 fingers to read morse code"
-        instructionsLabel?.text = str
-        view.accessibilityLabel = str
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-        str);
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
-        animateInstructions()
+        if isAutoPlayOn == false {
+            let str = "Swipe right with 2 fingers to read morse code"
+            instructionsLabel?.text = str
+            view.accessibilityLabel = str
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+                str);
+            animateInstructions()
+        }
         
-        if MorseCodeUtils.isPrevMCCharPipe(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
+        if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
             //Need to change the selected character of the English string
             englishStringIndex += 1
             if englishStringIndex >= alphanumericString.count {
                 //WKInterfaceDevice.current().play(.failure)
-                return
+                return false
             }
             if MorseCodeUtils.isEngCharSpace(englishString: alphanumericString, englishStringIndex: englishStringIndex) {
                 let start = alphanumericString.index(alphanumericString.startIndex, offsetBy: englishStringIndex)
@@ -547,6 +602,34 @@ extension ActionsMCViewController {
                 "state" : "index_alpha_change"
             ])
             MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
+        }
+        return true
+    }
+    
+    func morseCodeAutoPlay() {
+        isAutoPlayOn = true
+        alphanumericLabel?.textColor = .none //Resetting the string colors at the start of autoplay
+        let morseCodeString = morseCodeLabel?.text
+        morseCodeLabel?.text = morseCodeString?.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
+        morseCodeLabel?.textColor = .none
+        instructionsImageView?.image = nil
+        instructionsLabel?.text = "Autoplaying morse code...\nSwipe left to stop"
+                
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            let result = self.swipeRight2Finger()
+
+            if result == false || self.isAutoPlayOn == false {
+                timer.invalidate()
+                self.isAutoPlayOn = false
+                let morseCodeString = self.morseCodeLabel.text ?? ""
+                self.morseCodeLabel?.text = morseCodeString.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
+                self.alphanumericLabel?.textColor = .none
+                self.morseCodeLabel?.textColor = .none
+                self.morseCodeStringIndex = -1
+                self.englishStringIndex = -1
+                self.instructionsImageView?.image = UIImage(systemName: "hand.point.right")
+                self.setInstructionLabel(mainString: self.scrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString)
+            }
         }
     }
     
@@ -562,7 +645,7 @@ extension ActionsMCViewController {
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         morseCodeStringIndex = -1
         isUserTyping = false
-        setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
+        setInstructionLabel(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
         instructionsImageView?.image = UIImage(systemName: "hand.point.right")
         while morseCode.mcTreeNode?.parent != nil {
             morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
@@ -572,7 +655,7 @@ extension ActionsMCViewController {
     }
     
     //2 strings for writing mode and reading mode
-    func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String) {
+    func setInstructionLabel(mainString: String, readingString: String, writingString: String) {
         var instructionString = mainString
         if !isUserTyping {
             instructionString += "\n\nOr\n\n" + readingString
@@ -711,7 +794,7 @@ extension ActionsMCViewController : ActionsMCViewControllerProtocol {
             englishStringIndex = -1
             morseCodeStringIndex = -1
             isUserTyping = false
-            setInstructionLabelForMode(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
+            setInstructionLabel(mainString: scrollStart, readingString: stopReadingString, writingString: keepTypingString)
             instructionsImageView?.image = UIImage(systemName: "hand.point.right")
         }
     }
