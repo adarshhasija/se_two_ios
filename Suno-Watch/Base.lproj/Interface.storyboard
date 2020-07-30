@@ -58,7 +58,7 @@
                                 </label>
                             </items>
                             <gestureRecognizers>
-                                <longPressGestureRecognizer id="H2U-j5-DN5">
+                                <longPressGestureRecognizer minimumPressDuration="0.20000000000000001" id="H2U-j5-DN5">
                                     <connections>
                                         <action selector="longPress:" destination="V63-br-2PY" id="s4l-7h-nUL"/>
                                     </connections>
