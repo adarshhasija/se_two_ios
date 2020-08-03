@@ -70,23 +70,25 @@ class ActionsMCViewController : UIViewController {
                 direction = "left"
             }
             else if (sender as! UISwipeGestureRecognizer).direction == UISwipeGestureRecognizerDirection.left && (sender as! UISwipeGestureRecognizer).numberOfTouchesRequired == 2 {
-                direction = "left_2_finger"
-            }
-            else if (sender as! UISwipeGestureRecognizer).direction == UISwipeGestureRecognizerDirection.right && (sender as! UISwipeGestureRecognizer).numberOfTouchesRequired == 2 {
-                if startTimeNanos == 0 {
-                    startTimeNanos = DispatchTime.now().uptimeNanoseconds
-                    direction = "right_2_finger"
+                let endTime = DispatchTime.now()
+                let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
+                if diffNanos <= quickSwipeTimeThreshold {
+                    direction = "left_2_finger_quick_swipe"
                 }
                 else {
-                    let endTime = DispatchTime.now()
-                    let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
-                    if diffNanos <= quickSwipeTimeThreshold {
-                        direction = "right_2_finger_quick_swipe"
-                    }
-                    else {
-                        direction = "right_2_finger"
-                    }
-                    startTimeNanos = 0
+                    direction = "left_2_finger"
+                    startTimeNanos = DispatchTime.now().uptimeNanoseconds
+                }
+            }
+            else if (sender as! UISwipeGestureRecognizer).direction == UISwipeGestureRecognizerDirection.right && (sender as! UISwipeGestureRecognizer).numberOfTouchesRequired == 2 {
+                let endTime = DispatchTime.now()
+                let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
+                if diffNanos <= quickSwipeTimeThreshold {
+                    direction = "right_2_finger_quick_swipe"
+                }
+                else {
+                    direction = "right_2_finger"
+                    startTimeNanos = DispatchTime.now().uptimeNanoseconds
                 }
             }
         }
@@ -130,7 +132,14 @@ class ActionsMCViewController : UIViewController {
                 hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
                 englishStringIndex = -1
                 morseCodeStringIndex = -1
-                morseCodeAutoPlay()
+                morseCodeAutoPlay(direction: "right")
+            }
+            else if direction == "left_2_finger_quick_swipe" {
+                Analytics.logEvent("se3_ios_autoplay_reverse", parameters: [:])
+                hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+                englishStringIndex = alphanumericLabel?.text?.count ?? -1
+                morseCodeStringIndex = morseCodeLabel.text?.count ?? -1
+                morseCodeAutoPlay(direction: "left")
             }
         }
         
@@ -517,15 +526,25 @@ extension ActionsMCViewController {
             Analytics.logEvent("se3_ios_2f_swipe_left", parameters: [
                 "state" : "scrolling"
             ])
-           let str = "Swipe left with 2 fingers to go back"
-           instructionsLabel?.text = str
-        view.accessibilityLabel = str
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-        str);
-        instructionsImageView?.image = UIImage(systemName: "hand.point.left")
            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
-           hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
-           animateInstructions()
+        if isAutoPlayOn == false {
+            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+        }
+        else {
+            //When resetting, We just want a short tap every time we are passing a character
+            hapticManager?.generateHaptic(code: hapticManager?.MC_DOT)
+        }
+           
+        if isAutoPlayOn == false {
+            let str = "Swipe left with 2 fingers to go back"
+            instructionsLabel?.text = str
+            view.accessibilityLabel = str
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+                str);
+            instructionsImageView?.image = UIImage(systemName: "hand.point.left")
+            animateInstructions()
+        }
+           
            
            if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
                //Need to change the selected character of the English string
@@ -551,7 +570,7 @@ extension ActionsMCViewController {
            }
     }
     
-    func swipeRight2Finger() -> Bool {
+    func swipeRight2Finger() {
         var alphanumericString = alphanumericLabel?.text ?? ""
         let morseCodeString = morseCodeLabel?.text ?? ""
         morseCodeStringIndex += 1
@@ -570,7 +589,7 @@ extension ActionsMCViewController {
             //WKInterfaceDevice.current().play(.success)
             morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
             englishStringIndex = alphanumericString.count
-            return false
+            return
         }
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
@@ -588,7 +607,7 @@ extension ActionsMCViewController {
             englishStringIndex += 1
             if englishStringIndex >= alphanumericString.count {
                 //WKInterfaceDevice.current().play(.failure)
-                return false
+                return
             }
             if MorseCodeUtils.isEngCharSpace(englishString: alphanumericString, englishStringIndex: englishStringIndex) {
                 let start = alphanumericString.index(alphanumericString.startIndex, offsetBy: englishStringIndex)
@@ -603,19 +622,45 @@ extension ActionsMCViewController {
             ])
             MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
         }
-        return true
+        return
     }
     
-    func morseCodeAutoPlay() {
+    @objc func autoPlay(timer : Timer) {
+        let dictionary : Dictionary = timer.userInfo as! Dictionary<String,String>
+        let direction : String = dictionary["direction"] ?? ""
+        if direction == "right" { swipeRight2Finger() } else { swipeLeft2Finger() }
+
+        let count = morseCodeLabel.text?.count ?? -1
+        if (direction == "right" && morseCodeStringIndex >= count)
+            || (direction == "left" && morseCodeStringIndex < 0)
+            || isAutoPlayOn == false {
+            timer.invalidate()
+            isAutoPlayOn = false
+            alphanumericLabel?.textColor = .none
+            morseCodeLabel?.textColor = .none
+            morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
+            //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
+            instructionsImageView?.image = direction == "right" ? UIImage(systemName: "hand.point.left") : UIImage(systemName: "hand.point.right")
+            instructionsLabel?.text = direction == "down" ? "Swipe left quickly quickly to reset" : stopReadingString
+        }
+    }
+    
+    func morseCodeAutoPlay(direction: String) {
         isAutoPlayOn = true
         alphanumericLabel?.textColor = .none //Resetting the string colors at the start of autoplay
         let morseCodeString = morseCodeLabel?.text
         morseCodeLabel?.text = morseCodeString?.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
         morseCodeLabel?.textColor = .none
         instructionsImageView?.image = nil
-        instructionsLabel?.text = "Autoplaying morse code...\nSwipe left to stop"
+        instructionsLabel?.text = direction == "right" ? "Autoplaying morse code...\nSwipe left to stop" : "Resetting...\nPlease wait"
                 
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+        
+        let dictionary = [
+            "direction" : direction
+        ]
+        let timeInterval = direction == "right" ? 1 : 0.5
+        Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(ActionsMCViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
+     /*   Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             let result = self.swipeRight2Finger()
 
             if result == false || self.isAutoPlayOn == false {
@@ -630,7 +675,7 @@ extension ActionsMCViewController {
                 self.instructionsImageView?.image = UIImage(systemName: "hand.point.right")
                 self.setInstructionLabel(mainString: self.scrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString)
             }
-        }
+        }   */
     }
     
     //Only used for TIME, DATE, Maths
