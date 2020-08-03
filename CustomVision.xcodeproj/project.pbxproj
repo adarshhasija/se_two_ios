@@ -284,6 +284,7 @@
 		3142C8A12496373100B1257B /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				3142C8A42496384D00B1257B /* Dictionary.storyboard */,
 				31BC65182469324100D5D801 /* MCDictionaryTableViewController.swift */,
 				31BC651C24697FDD00D5D801 /* MCDictionaryCell.swift */,
 				3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */,
@@ -408,7 +409,6 @@
 		5EBF65101F0AA47700BCD353 /* CustomVision */ = {
 			isa = PBXGroup;
 			children = (
-				3142C8A42496384D00B1257B /* Dictionary.storyboard */,
 				3142C8A12496373100B1257B /* Dictionary */,
 				3142C89E2495F32100B1257B /* Settings */,
 				3188A83224789CB00075B33E /* CameraSE */,
