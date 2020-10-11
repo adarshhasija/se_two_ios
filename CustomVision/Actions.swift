@@ -6,6 +6,9 @@
 //  Copyright © 2018 Adam Behringer. All rights reserved.
 //
 
+
+//These are actions used by the state machine in WhiteSpeechViewController
+
 import Foundation
 
 enum Action :String{

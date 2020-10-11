@@ -158,7 +158,7 @@
         <!--ActionsMC View Controller-->
         <scene sceneID="sUq-sy-fSQ">
             <objects>
-                <viewController id="ayT-RZ-t8z" customClass="ActionsMCViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ActionsMCViewController" id="ayT-RZ-t8z" customClass="ActionsMCViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HSm-UX-eB7"/>
                         <viewControllerLayoutGuide type="bottom" id="5RC-vY-IjW"/>
@@ -229,8 +229,7 @@
                             <outletCollection property="gestureRecognizers" destination="DpS-68-Lb5" appends="YES" id="3p7-yY-f8r"/>
                             <outletCollection property="gestureRecognizers" destination="soh-ao-S0f" appends="YES" id="XpP-Zg-6mJ"/>
                             <outletCollection property="gestureRecognizers" destination="jiX-cK-ys5" appends="YES" id="Qfu-us-gJk"/>
-                            <outletCollection property="gestureRecognizers" destination="tHO-nP-9g9" appends="YES" id="aFE-e7-hza"/>
-                            <outletCollection property="gestureRecognizers" destination="x0v-1d-n5n" appends="YES" id="gNq-Lq-4Sh"/>
+                            <outletCollection property="gestureRecognizers" destination="Hfh-GA-tFI" appends="YES" id="Hcd-a2-Nd7"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="tcE-DQ-GBL"/>
@@ -238,9 +237,7 @@
                         <outlet property="alphanumericLabel" destination="JiI-2c-7y9" id="aOW-Yi-dzt"/>
                         <outlet property="instructionsImageView" destination="LpY-Ps-g6k" id="vFi-sk-vNK"/>
                         <outlet property="instructionsLabel" destination="YO9-4V-IvZ" id="BUZ-Ae-GhR"/>
-                        <outlet property="left2FingerGesture" destination="tHO-nP-9g9" id="cAI-LD-xfy"/>
                         <outlet property="morseCodeLabel" destination="kFZ-fO-32D" id="Lsr-MV-wVg"/>
-                        <outlet property="right2FingerGesture" destination="x0v-1d-n5n" id="Xtf-DU-tRW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ap-Hz-g6M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -259,14 +256,9 @@
                         <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="F13-w7-IQW"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="left" id="tHO-nP-9g9">
+                <swipeGestureRecognizer direction="right" id="Hfh-GA-tFI">
                     <connections>
-                        <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="KUh-rG-rgd"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="x0v-1d-n5n">
-                    <connections>
-                        <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="9Ms-QD-A6X"/>
+                        <action selector="gestureSwipe:" destination="ayT-RZ-t8z" id="jfu-yo-XQ3"/>
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
