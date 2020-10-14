@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hX4-Gh-CDl">
+    <device id="watch38"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
+    </dependencies>
+    <scenes>
+        <!--Actions List Controller-->
+        <scene sceneID="Uxx-1h-wTq">
+            <objects>
+                <controller id="hX4-Gh-CDl" customClass="ActionsListController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <table alignment="left" id="oOl-3n-pGS">
+                            <items>
+                                <tableRow identifier="ActionRow" id="tm5-NN-SHb" customClass="ActionsListRowController" customModule="Suno_Watch_Extension">
+                                    <group key="rootItem" width="1" alignment="left" id="3ah-Lt-U5A">
+                                        <items>
+                                            <label alignment="left" text="Action" numberOfLines="0" id="Pm6-69-Lvd"/>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="actionLabel" destination="Pm6-69-Lvd" id="tva-FP-0qJ"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="actionsListTable" destination="oOl-3n-pGS" id="TUN-y6-ZOo"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="-13" y="82"/>
+        </scene>
+    </scenes>
+</document>

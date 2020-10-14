@@ -40,7 +40,8 @@ class ActionsTableViewController : UITableViewController {
         let visionMLViewController = storyBoard.instantiateViewController(withIdentifier: "VisionMLViewController") as! VisionMLViewController
         visionMLViewController.delegateActionsTable = self
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
-        self.navigationController?.present(visionMLViewController, animated: true, completion: nil)
+        //self.navigationController?.present(visionMLViewController, animated: true, completion: nil)
+        self.navigationController?.pushViewController(visionMLViewController, animated: true)
     }
     
     private func openMorseCodeReadingScreen(inputAction : String, alphanumericString : String?) {
@@ -67,6 +68,7 @@ extension ActionsTableViewController : ActionsTableViewControllerProtocol {
         Analytics.logEvent("se3_ios_cam_ret", parameters: [:]) //returned from camera
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS) //This is just to notify the user that camera recognition is complete
         if english.count > 0 {
+            self.navigationController?.popViewController(animated: false)
             Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
             openMorseCodeReadingScreen(inputAction : "INPUT_ALPHANUMERIC", alphanumericString : englishFiltered)

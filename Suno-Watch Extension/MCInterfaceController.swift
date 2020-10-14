@@ -31,7 +31,7 @@ class MCInterfaceController : WKInterfaceController {
     var crownRotationalDelta = 0.0
     var morseCode = MorseCode()
     var synth : AVSpeechSynthesizer?
-    var mode : String? //If mode = chat, we show MC dictionary. Else we show Actions list
+    var mode : String?
     var isAutoPlayOn : Bool = false
     var startTimeNanos : UInt64 = 0 //Used to calculate speed of crown rotation
     var isScreenActive = true
@@ -60,13 +60,13 @@ class MCInterfaceController : WKInterfaceController {
             return
         }
         //This is not needed. In reading mode user can swipe up as many times as he likes to repeat the audio
-      /*  if isReading() == true {
-            sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
-                "state" : "reading"
-            ])
+        if isReading() == true {
+            //sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
+            //    "state" : "reading"
+            //])
             //Should not be permitted when user is reading
             return
-        }   */
+        }
         if synth?.isSpeaking == true {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                 "state" : "is_speaking"
@@ -139,7 +139,7 @@ class MCInterfaceController : WKInterfaceController {
                 instructionsLabel.setText(nearestMatchesString)
             }
         }
-        else if let action = morseCode.mcTreeNode?.action {
+        else if let action = mode != nil ? mode : morseCode.mcTreeNode?.action {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                 "state" : "action_"+action
             ])
@@ -191,6 +191,11 @@ class MCInterfaceController : WKInterfaceController {
             return
         }
         if isReading() == true {
+            if mode != nil {
+                //It means this is not the root screen
+                return
+            }
+            
             sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
                 "state" : "reading"
                 ])
@@ -254,7 +259,7 @@ class MCInterfaceController : WKInterfaceController {
         //Swipe down to get text from the iPhone. We designed this in case user cannot read morse code on an older iPhone and wanted to transfer it to the watch.
         //Not using this functionality right now. We found a way to play haptics on older iPhones (6, 6S) using system vibrations
         
-      /*  sendAnalytics(eventName: "se3_watch_swipe_down", parameters: [:])
+        sendAnalytics(eventName: "se3_watch_swipe_down", parameters: [:])
         //let watchDelegate = WKExtension.shared().delegate as? ExtensionDelegate
         //watchDelegate?.sendMessage()
         //Making this call to see if there is any morse code to get from the iPhone app
@@ -274,7 +279,7 @@ class MCInterfaceController : WKInterfaceController {
         else {
             setInstructionLabelForMode(mainString: "Update from phone failed:\n\nPlease try again later", readingString: "", writingString: "", isError: true)
             WKInterfaceDevice.current().play(.failure)
-        }   */
+        }
     }
     
     //Original minDuration = 0.5
@@ -372,8 +377,17 @@ class MCInterfaceController : WKInterfaceController {
             }
         }
         else {
-            mainImage.setHidden(false)
-            addMenuItem(with: WKMenuItemIcon.info, title: "Actions", action: #selector(tappedActionsDictionary))
+            //mainImage.setHidden(false)
+            //addMenuItem(with: WKMenuItemIcon.info, title: "Actions", action: #selector(tappedActionsDictionary))
+        }
+        
+        if mode != nil {
+            if mode == "from_iOS" {
+                downSwipe(1) //just a dummy parameter
+            }
+            else {
+                upSwipe(1) //just a dummy parameter
+            }
         }
     }
     
@@ -910,7 +924,8 @@ extension MCInterfaceController {
             morseCodeString = morseCodeString.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
             englishTextLabel.setText(englishString)
             morseCodeTextLabel.setText(morseCodeString)
-            englishStringIndex = direction == "down" ? englishString.count : -1 //Ensuring the pointer is set correctly
+            englishStringIndex = -1 //Ensuring the pointer is set correctly
+            morseCodeStringIndex = -1
             //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
             instructionsLabel?.setText(direction == "down" ? "Rotate the Digital Crown up quickly to reset" : stopReadingString)
         }

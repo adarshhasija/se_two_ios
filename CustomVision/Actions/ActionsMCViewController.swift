@@ -692,7 +692,7 @@ extension ActionsMCViewController {
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isWatchAppInstalled {
-                fullString += "\n\nApple Watch:\nTo read this on your Apple Watch,open your watch app and select the option Get From iPhone"
+                fullString += "\n\nApple Watch:\nTo read this on your Apple Watch,open your watch app and select the option Morse Code From iPhone"
             }
         }
         self.instructionsLabel.text = fullString

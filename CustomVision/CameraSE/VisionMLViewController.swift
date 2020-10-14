@@ -132,7 +132,7 @@ class VisionMLViewController: UIViewController {
                     self.delegate?.setTextFromCamera(english: recognizedText)
                     self.delegateActions?.setTextFromCamera(english: recognizedText)
                     self.delegateActionsTable?.setTextFromCamera(english: recognizedText)
-                    self.dismiss(animated: true, completion: nil)
+                    //self.dismiss(animated: true, completion: nil) //This is now being done in ActionsTableViewController. Uncomment this line if calling from a different view.
                 }
                 //self.bubbleLayer.string = recognizedText
             }
