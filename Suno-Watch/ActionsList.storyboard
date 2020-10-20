@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hX4-Gh-CDl">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hX4-Gh-CDl">
     <device id="watch38"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17034"/>
     </dependencies>
     <scenes>
         <!--Actions List Controller-->
@@ -11,16 +12,20 @@
             <objects>
                 <controller id="hX4-Gh-CDl" customClass="ActionsListController" customModule="Suno_Watch_Extension">
                     <items>
+                        <label alignment="left" text="Actions for deaf-blind users" numberOfLines="0" id="V5u-UK-dfb">
+                            <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
+                        </label>
                         <table alignment="left" id="oOl-3n-pGS">
                             <items>
                                 <tableRow identifier="ActionRow" id="tm5-NN-SHb" customClass="ActionsListRowController" customModule="Suno_Watch_Extension">
-                                    <group key="rootItem" width="1" alignment="left" id="3ah-Lt-U5A">
+                                    <group key="rootItem" width="1" alignment="left" isAccessibilityElement="YES" id="3ah-Lt-U5A">
                                         <items>
-                                            <label alignment="left" text="Action" numberOfLines="0" id="Pm6-69-Lvd"/>
+                                            <label alignment="left" isAccessibilityElement="NO" text="Action" numberOfLines="0" id="Pm6-69-Lvd"/>
                                         </items>
                                     </group>
                                     <connections>
                                         <outlet property="actionLabel" destination="Pm6-69-Lvd" id="tva-FP-0qJ"/>
+                                        <outlet property="mainGroup" destination="3ah-Lt-U5A" id="Ejn-zD-sDZ"/>
                                     </connections>
                                 </tableRow>
                             </items>

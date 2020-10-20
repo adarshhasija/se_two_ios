@@ -16,16 +16,25 @@ class ActionsListController : WKInterfaceController {
     @IBOutlet weak var actionsListTable: WKInterfaceTable!
     
     override func awake(withContext context: Any?) {
+        WKInterfaceDevice.current().play(.success) //successfully launched app
         actionsListTable.setNumberOfRows(4, withRowType: "ActionRow")
         
         let row0 = actionsListTable.rowController(at: 0) as! ActionsListRowController
-        row0.actionLabel.setText("Morse Code From iPhone")
+        let txt0 = "Morse Code From iPhone"
+        row0.mainGroup.setAccessibilityLabel(txt0)
+        row0.actionLabel.setText(txt0)
         let row1 = actionsListTable.rowController(at: 1) as! ActionsListRowController
-        row1.actionLabel.setText("TIME")
+        let txt1 = "TIME"
+        row1.mainGroup.setAccessibilityLabel(txt1)
+        row1.actionLabel.setText(txt1)
         let row2 = actionsListTable.rowController(at: 2) as! ActionsListRowController
-        row2.actionLabel.setText("DATE")
+        let txt2 = "DATE"
+        row2.mainGroup.setAccessibilityLabel(txt2)
+        row2.actionLabel.setText(txt2)
         let row3 = actionsListTable.rowController(at: 3) as! ActionsListRowController
-        row3.actionLabel.setText("1-to-1 CHAT")
+        let txt3 = "1-to-1 CHAT"
+        row3.mainGroup.setAccessibilityLabel(txt3)
+        row3.actionLabel.setText(txt3)
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
