@@ -17,7 +17,7 @@ class LibraryCustomActions {
         var alphanumericString = ""
         if format == "12" {
             let amPm = hh > 11 ? "PM" : "AM"
-            hh = hh > 12 ? hh - 12 : hh
+            hh = hh > 12 ? hh - 12 : hh == 0 ? 12 : hh
             let minString = mm < 10 ? "0" + String(mm) : String(mm)
             alphanumericString = String(hh) + ":" + minString + " " + amPm
         }
@@ -42,7 +42,7 @@ class LibraryCustomActions {
     
     static func getCurrentTimeInDotsDashes() -> String {
         let hh24 = (Calendar.current.component(.hour, from: Date()))
-        let hh12 = hh24 > 12 ? hh24 - 12 : hh24
+        let hh12 = hh24 > 12 ? hh24 - 12 : hh24 == 0 ? 12 : hh24
         let amPm = hh24 > 11 ? "PM" : "AM"
         let hoursDashes : Int = hh12/5
         let hoursDots = hh12 - (hoursDashes*5)
