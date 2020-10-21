@@ -30,6 +30,8 @@
 		31798E01217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
 		31798E02217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
 		31798E03217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */; };
+		317C71342540AFE200E6800B /* LibraryCustomActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C71332540AFE100E6800B /* LibraryCustomActions.swift */; };
+		317C713B2540B03800E6800B /* LibraryCustomActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C71332540AFE100E6800B /* LibraryCustomActions.swift */; };
 		317D4C05217EC76A0081B38B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 317D4C03217EC76A0081B38B /* Interface.storyboard */; };
 		317D4C07217EC76C0081B38B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 317D4C06217EC76C0081B38B /* Assets.xcassets */; };
 		317D4C0E217EC76C0081B38B /* Suno-Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 317D4C0D217EC76C0081B38B /* Suno-Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -51,6 +53,7 @@
 		3188A83624789CFD0075B33E /* BubbleLabelLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */; };
 		3188A83824789FA00075B33E /* ShortcutListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83724789FA00075B33E /* ShortcutListItem.swift */; };
 		3188A83A2478A0EF0075B33E /* AdarshBlueBackpack.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */; };
+		3193F411253F6E45004940AE /* MCReaderButtonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193F410253F6E45004940AE /* MCReaderButtonsViewController.swift */; };
 		319D524E2466897400CBB1EB /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319D524D2466897400CBB1EB /* HapticManager.swift */; };
 		31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */; };
 		31A67B81235CAC6600F506BD /* FAQRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B80235CAC6600F506BD /* FAQRowController.swift */; };
@@ -165,6 +168,7 @@
 		3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewCell.swift; sourceTree = "<group>"; };
 		31798DFC217B9E66008CF9C7 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		317C71332540AFE100E6800B /* LibraryCustomActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCustomActions.swift; sourceTree = "<group>"; };
 		317D4C01217EC76A0081B38B /* SunoDayko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SunoDayko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		317D4C04217EC76A0081B38B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		317D4C06217EC76C0081B38B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -187,6 +191,7 @@
 		3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleLabelLayer.swift; sourceTree = "<group>"; };
 		3188A83724789FA00075B33E /* ShortcutListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutListItem.swift; sourceTree = "<group>"; };
 		3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = AdarshBlueBackpack.mlmodel; sourceTree = "<group>"; };
+		3193F410253F6E45004940AE /* MCReaderButtonsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCReaderButtonsViewController.swift; sourceTree = "<group>"; };
 		319D524D2466897400CBB1EB /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQInterfaceController.swift; sourceTree = "<group>"; };
 		31A67B80235CAC6600F506BD /* FAQRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRowController.swift; sourceTree = "<group>"; };
@@ -365,9 +370,11 @@
 		31B61BBF2533374000237602 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				31829CBC2493B737003C6153 /* MorseCode.storyboard */,
 				31B61BBD253317C200237602 /* ActionsTableViewController.swift */,
 				31B61BBB2532F86F00237602 /* ActionsList.storyboard */,
 				31829CBA2493B671003C6153 /* ActionsMCViewController.swift */,
+				3193F410253F6E45004940AE /* MCReaderButtonsViewController.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -447,7 +454,6 @@
 				5EBF65151F0AA47700BCD353 /* Main.storyboard */,
 				5EBF65181F0AA47700BCD353 /* Assets.xcassets */,
 				5EBF651A1F0AA47700BCD353 /* LaunchScreen.storyboard */,
-				31829CBC2493B737003C6153 /* MorseCode.storyboard */,
 				5EBF651D1F0AA47700BCD353 /* Info.plist */,
 				317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */,
 				3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */,
@@ -468,6 +474,7 @@
 				317340A1246DB60C00F75B1B /* Collection.swift */,
 				3163718524B09026006E4F4E /* UIView.swift */,
 				310D954F24B1C0BF00936A27 /* UIFont.swift */,
+				317C71332540AFE100E6800B /* LibraryCustomActions.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -819,6 +826,7 @@
 				31A67B83235CB55800F506BD /* FAQCell.swift in Sources */,
 				31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */,
 				31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */,
+				317C713B2540B03800E6800B /* LibraryCustomActions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -852,9 +860,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				317D4C262188CCF00081B38B /* Actions.swift in Sources */,
+				317C71342540AFE200E6800B /* LibraryCustomActions.swift in Sources */,
 				31829CB724936D2B003C6153 /* MorseCodeUtils.swift in Sources */,
 				313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */,
 				31BC651D24697FDD00D5D801 /* MCDictionaryCell.swift in Sources */,
+				3193F411253F6E45004940AE /* MCReaderButtonsViewController.swift in Sources */,
 				31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */,
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */,

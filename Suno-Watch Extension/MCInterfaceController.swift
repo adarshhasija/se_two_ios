@@ -144,7 +144,7 @@ class MCInterfaceController : WKInterfaceController {
                 "state" : "action_"+action
             ])
             if action == "TIME" {
-                let hh = (Calendar.current.component(.hour, from: Date()))
+              /*  let hh = (Calendar.current.component(.hour, from: Date()))
                 let mm = (Calendar.current.component(.minute, from: Date()))
                 let hourString = hh < 10 ? "0" + String(hh) : String(hh)
                 let minString = mm < 10 ? "0" + String(mm) : String(mm)
@@ -152,17 +152,31 @@ class MCInterfaceController : WKInterfaceController {
                 englishTextLabel?.setText(englishString)
                 englishTextLabel?.setHidden(false)
                 englishStringIndex = -1
-                updateMorseCodeForActions()
+                updateMorseCodeForActions() */
+                englishTextLabel.setText(LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12"))
+                englishTextLabel.setHidden(false)
+                morseCodeTextLabel.setText(LibraryCustomActions.getCurrentTimeInDotsDashes())
+                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                englishStringIndex = -1
+                morseCodeStringIndex = -1
+                isUserTyping = false
             }
             else if action == "DATE" {
-                let day = (Calendar.current.component(.day, from: Date()))
+              /*  let day = (Calendar.current.component(.day, from: Date()))
                 let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
                 let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
                 englishString = String(day) + weekdayString.prefix(2).uppercased()
                 englishTextLabel?.setText(englishString)
                 englishTextLabel?.setHidden(false)
                 englishStringIndex = -1
-                updateMorseCodeForActions()
+                updateMorseCodeForActions() */
+                englishTextLabel.setText(LibraryCustomActions.getCurrentDateInAlphanumeric())
+                englishTextLabel.setHidden(false)
+                morseCodeTextLabel.setText(LibraryCustomActions.getCurrentDateInDotsDashes())
+                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                englishStringIndex = -1
+                morseCodeStringIndex = -1
+                isUserTyping = false
             }
             else if action == "1-to-1" {
                 while morseCode.mcTreeNode?.parent != nil {
@@ -993,6 +1007,11 @@ extension MCInterfaceController {
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
+            if mode == "TIME" || mode == "DATE" {
+                //Custom pattern used, not morse code. So we not want to highlight alphanumerics
+                return
+            }
+            
             if isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
                 //Need to change the selected character of the English string
                 englishStringIndex += 1
@@ -1045,6 +1064,11 @@ extension MCInterfaceController {
             else {
                 //We just want a short tap every time we are passing a character
                 WKInterfaceDevice.current().play(.start)
+            }
+            
+            if mode == "TIME" || mode == "DATE" {
+                //Custom pattern used, not morse code. So we not want to highlight alphanumerics
+                return
             }
             
             if isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
