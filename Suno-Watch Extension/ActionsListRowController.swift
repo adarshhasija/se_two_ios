@@ -14,4 +14,6 @@ class ActionsListRowController : NSObject {
     
     @IBOutlet weak var mainGroup: WKInterfaceGroup!
     @IBOutlet weak var actionLabel: WKInterfaceLabel!
+    @IBOutlet weak var actionExplanationLabel: WKInterfaceLabel!
+    
 }

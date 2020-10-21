@@ -21,8 +21,12 @@ class ActionsListController : WKInterfaceController {
         
         let row0 = actionsListTable.rowController(at: 0) as! ActionsListRowController
         let txt0 = "Get From iPhone"
-        row0.mainGroup.setAccessibilityLabel(txt0)
+        let txt0Explanation = "Use the digital crown to scroll through dots and dashes one by one"
+        let finalString0 = txt0 + " " + txt0Explanation
+        row0.mainGroup.setAccessibilityLabel(finalString0)
         row0.actionLabel.setText(txt0)
+        row0.actionExplanationLabel.setText(txt0Explanation)
+        row0.actionExplanationLabel.setHidden(false)
         let row1 = actionsListTable.rowController(at: 1) as! ActionsListRowController
         let txt1 = "TIME"
         row1.mainGroup.setAccessibilityLabel(txt1)

@@ -11,8 +11,15 @@ import Foundation
 class ActionsCell {
     
     var action : String
+    var explanation : String?
     
     init(action : String) {
         self.action = action
+        self.explanation = nil
+    }
+    
+    init(action : String, explanation : String) {
+        self.action = action
+        self.explanation = explanation
     }
 }
