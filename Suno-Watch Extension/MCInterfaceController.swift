@@ -153,9 +153,11 @@ class MCInterfaceController : WKInterfaceController {
                 englishTextLabel?.setHidden(false)
                 englishStringIndex = -1
                 updateMorseCodeForActions() */
-                englishTextLabel.setText(LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12"))
+                englishString = LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")
+                englishTextLabel.setText(englishString)
                 englishTextLabel.setHidden(false)
-                morseCodeTextLabel.setText(LibraryCustomActions.getCurrentTimeInDotsDashes())
+                morseCodeString = LibraryCustomActions.getCurrentTimeInDotsDashes()
+                morseCodeTextLabel.setText(morseCodeString)
                 setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
                 englishStringIndex = -1
                 morseCodeStringIndex = -1
@@ -170,9 +172,11 @@ class MCInterfaceController : WKInterfaceController {
                 englishTextLabel?.setHidden(false)
                 englishStringIndex = -1
                 updateMorseCodeForActions() */
-                englishTextLabel.setText(LibraryCustomActions.getCurrentDateInAlphanumeric())
+                englishString = LibraryCustomActions.getCurrentDateInAlphanumeric()
+                englishTextLabel.setText(englishString)
                 englishTextLabel.setHidden(false)
-                morseCodeTextLabel.setText(LibraryCustomActions.getCurrentDateInDotsDashes())
+                morseCodeString = LibraryCustomActions.getCurrentDateInDotsDashes()
+                morseCodeTextLabel.setText(morseCodeString)
                 setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
                 englishStringIndex = -1
                 morseCodeStringIndex = -1
@@ -278,8 +282,10 @@ class MCInterfaceController : WKInterfaceController {
         //watchDelegate?.sendMessage()
         //Making this call to see if there is any morse code to get from the iPhone app
         if WCSession.isSupported() {
+            setInstructionLabelForMode(mainString: "Get from iPhone mode", readingString: "", writingString: "", isError: false) //This is just to make sure screen has some text when feature is activated
             let session = WCSession.default
             if session.isReachable {
+                setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease wait...", readingString: "", writingString: "", isError: false)
                 var message : [String : Any] = [:]
                 message["request_morse_code"] = true
                 // In your WatchKit extension, the value of this property is true when the paired iPhone is reachable via Bluetooth.
@@ -291,7 +297,7 @@ class MCInterfaceController : WKInterfaceController {
             }
         }
         else {
-            setInstructionLabelForMode(mainString: "Update from phone failed:\n\nPlease try again later", readingString: "", writingString: "", isError: true)
+            setInstructionLabelForMode(mainString: "Update not possible", readingString: "", writingString: "", isError: true)
             WKInterfaceDevice.current().play(.failure)
         }
     }
@@ -941,7 +947,7 @@ extension MCInterfaceController {
             englishStringIndex = -1 //Ensuring the pointer is set correctly
             morseCodeStringIndex = -1
             //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
-            instructionsLabel?.setText(direction == "down" ? "Rotate the Digital Crown up quickly to reset" : stopReadingString)
+            instructionsLabel?.setText(dcScrollStart)
         }
     }
     

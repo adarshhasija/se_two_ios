@@ -53,7 +53,17 @@ extension AppDelegate : WCSessionDelegate {
                 //This is because topViewController must be accessed from the main threads
                 //((self.window?.rootViewController as? UINavigationController)?.topViewController as? WhiteSpeechViewController)?.receivedRequestForEnglishAndMCFromWatch()
                 //((self.window?.rootViewController as? UINavigationController)?.topViewController as? ActionsMCViewController)?.receivedRequestForEnglishAndMCFromWatch()
-                ((self.window?.rootViewController as? UINavigationController)?.topViewController as? MCReaderButtonsViewController)?.receivedRequestForAlphanumericsAndMCFromWatch()
+                if ((self.window?.rootViewController as? UINavigationController)?.topViewController is MCReaderButtonsViewController) {
+                    ((self.window?.rootViewController as? UINavigationController)?.topViewController as? MCReaderButtonsViewController)?.receivedRequestForAlphanumericsAndMCFromWatch()
+                }
+                else {
+                    if WCSession.isSupported() {
+                        let session = WCSession.default
+                        if session.isWatchAppInstalled && session.isReachable {
+                            session.sendMessage([:], replyHandler: nil, errorHandler: nil)
+                        }
+                    }
+                }
             }
             
         }
