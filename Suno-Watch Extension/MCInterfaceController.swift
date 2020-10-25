@@ -36,6 +36,7 @@ class MCInterfaceController : WKInterfaceController {
     var startTimeNanos : UInt64 = 0 //Used to calculate speed of crown rotation
     var isScreenActive = true
     var quickScrollTimeThreshold = 700000000 //If the digital crown is scrolled 30 degrees within this many nano seconds, we go into autoplay
+    var isNormalMorse : Bool? = nil //Some functions, like TIME and DATE, can use customized vibrations and not normal morse code
     
     @IBOutlet weak var mainImage: WKInterfaceImage!
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
@@ -285,7 +286,11 @@ class MCInterfaceController : WKInterfaceController {
             setInstructionLabelForMode(mainString: "Get from iPhone mode", readingString: "", writingString: "", isError: false) //This is just to make sure screen has some text when feature is activated
             let session = WCSession.default
             if session.isReachable {
-                setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease wait...", readingString: "", writingString: "", isError: false)
+                if session.isCompanionAppInstalled == false {
+                                setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone app not installed", readingString: "", writingString: "", isError: true)
+                    return
+                }
+                setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease ensure the iPhone is near the Watch and the app is open on it", readingString: "", writingString: "", isError: false)
                 var message : [String : Any] = [:]
                 message["request_morse_code"] = true
                 // In your WatchKit extension, the value of this property is true when the paired iPhone is reachable via Bluetooth.
@@ -893,16 +898,16 @@ extension MCInterfaceController {
     }
     
     func receivedMessageFromPhone(message : [String : Any]) {
-        if message["is_english_mc"] != nil {
+        if message["english"] != nil && message["morse_code"] != nil {
             let english = message["english"] as? String
             let morseCode = message["morse_code"] as? String
             if english?.isEmpty == true || morseCode?.isEmpty == true {
                 WKInterfaceDevice.current().play(.failure)
-                setInstructionLabelForMode(mainString: "Update from phone failed:\n\nThere were no alphabets or morse code to share", readingString: "", writingString: "", isError: true)
+                setInstructionLabelForMode(mainString: "Update from phone failed.\n\nNo content was received", readingString: "", writingString: "", isError: true)
                 instructionsLabel?.setTextColor(.red)
                 return
             }
-            
+            isNormalMorse = message["is_normal_morse"] as? Bool
             englishString = english!
             morseCodeString = morseCode!
             englishTextLabel?.setText(englishString)
@@ -918,7 +923,7 @@ extension MCInterfaceController {
         }
         else {
             WKInterfaceDevice.current().play(.failure)
-            setInstructionLabelForMode(mainString: "Update from phone failed", readingString: "", writingString: "", isError: true)
+            setInstructionLabelForMode(mainString: "Update from phone failed.\n\nNothing was received", readingString: "", writingString: "", isError: true)
             instructionsLabel?.setTextColor(.red)
             return
         }
@@ -1013,7 +1018,7 @@ extension MCInterfaceController {
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
-            if mode == "TIME" || mode == "DATE" {
+            if mode == "TIME" || mode == "DATE" || isNormalMorse == false {
                 //Custom pattern used, not morse code. So we not want to highlight alphanumerics
                 return
             }

@@ -16,7 +16,7 @@ import WatchConnectivity
 class MCReaderButtonsViewController : UIViewController {
     
     var inputAlphanumeric : String? = nil
-    var inputMorseCode : String? = nil
+    var inputMorseCode : String? = nil //Customized morse code is sent it. If this is nil, we will use standard morse code dictionary
     var inputMCExplanation : String? = nil
     
     lazy var supportsHaptics: Bool = {
@@ -282,7 +282,11 @@ class MCReaderButtonsViewController : UIViewController {
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isWatchAppInstalled && session.isReachable {
-                session.sendMessage(["is_english_mc": true, "english": alphanumeric, "morse_code": morseCode], replyHandler: nil, errorHandler: nil)
+                session.sendMessage([
+                                        "is_normal_morse": inputMorseCode != nil ? false : true,
+                                        "english": alphanumeric,
+                                        "morse_code": morseCode
+                                    ], replyHandler: nil, errorHandler: nil)
             }
         }
     }

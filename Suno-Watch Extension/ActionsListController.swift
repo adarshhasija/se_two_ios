@@ -32,7 +32,7 @@ class ActionsListController : WKInterfaceController {
         row1.mainGroup.setAccessibilityLabel(txt1)
         row1.actionLabel.setText(txt1)
         let row2 = actionsListTable.rowController(at: 2) as! ActionsListRowController
-        let txt2 = "DATE"
+        let txt2 = "DATE AND DAY OF WEEK"
         row2.mainGroup.setAccessibilityLabel(txt2)
         row2.actionLabel.setText(txt2)
         //let row3 = actionsListTable.rowController(at: 3) as! ActionsListRowController
@@ -42,9 +42,7 @@ class ActionsListController : WKInterfaceController {
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-        sendAnalytics(eventName: "se3_watch_row_tap", parameters: [
-            "screen" : "mc_actions"
-        ])
+        
         
         var params : [String:Any] = [:]
         if rowIndex == 0 {
@@ -59,7 +57,10 @@ class ActionsListController : WKInterfaceController {
         else if rowIndex == 3 {
             params["mode"] = "chat"
         }
-         
+        
+        sendAnalytics(eventName: "se3_watch_row_tap", parameters: [
+                    "screen" : params["mode"] as? String
+                ])
         pushController(withName: "MCInterfaceController", context: params)
     }
 }
