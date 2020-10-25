@@ -17,6 +17,7 @@ class MCInterfaceController : WKInterfaceController {
     var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Lightly long press to begin typing morse code"
     var notDeafBlindInstructions = "Force press for reply options"
     var dcScrollStart = "Rotate the digital crown down to read morse code"
+    var dcScrollReverse = "Ratate the digital crown up to scroll back"
     var stopReadingString = "Swipe left once to stop reading and type morse code"
     var keepTypingString = "Keep typing"
     var noMoreMatchesString = "No more matches found for this morse code"
@@ -42,7 +43,14 @@ class MCInterfaceController : WKInterfaceController {
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
     @IBOutlet weak var instructionsLabel: WKInterfaceLabel!
+    @IBOutlet weak var aboutButton: WKInterfaceButton!
     
+    
+    @IBAction func aboutButtonTapped() {
+        var params : [String:Any] = [:]
+        params["action"] = mode
+        pushController(withName: "DictionaryDetail", context: params)
+    }
     
     @IBAction func tapGesture(_ sender: Any) {
         sendAnalytics(eventName: "se3_watch_tap", parameters: [:])
@@ -411,6 +419,7 @@ class MCInterfaceController : WKInterfaceController {
                 downSwipe(1) //just a dummy parameter
             }
             else {
+                aboutButton?.setHidden(false) //Only applies if it is TIME or DATE for now
                 upSwipe(1) //just a dummy parameter
             }
         }
@@ -953,6 +962,7 @@ extension MCInterfaceController {
             morseCodeStringIndex = -1
             //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
             instructionsLabel?.setText(dcScrollStart)
+            aboutButton?.setHidden(mode == "TIME" || mode == "DATE" ? false : true)
         }
     }
     
@@ -963,6 +973,10 @@ extension MCInterfaceController {
         morseCodeTextLabel.setText(morseCodeString)
         instructionsLabel?.setText(direction == "down" ? "Autoplaying morse code...\nSwipe left to stop" :
                                     "Resetting, please wait...")
+        if mode == "TIME" || mode == "DATE" {
+            //It means About button is visible
+            aboutButton?.setHidden(true)
+        }
         
         let dictionary = [
             "direction" : direction
@@ -1002,7 +1016,7 @@ extension MCInterfaceController {
                 englishTextLabel.setText(englishString)
                 WKInterfaceDevice.current().play(.success)
                 //setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString, isError: false)
-                instructionsLabel?.setText(stopReadingString)
+                instructionsLabel?.setText(dcScrollReverse)
                 morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
                 englishStringIndex = englishString.count
                 return

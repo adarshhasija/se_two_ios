@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="watch38"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17034"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -56,6 +57,11 @@
                                     <color key="textColor" red="0.23137254901960785" green="0.83495825639444188" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
                                 </label>
+                                <button width="1" alignment="left" hidden="YES" title="About Vibration Pattern" id="m39-gc-btL">
+                                    <connections>
+                                        <action selector="aboutButtonTapped" destination="V63-br-2PY" id="1Mt-p7-aCu"/>
+                                    </connections>
+                                </button>
                             </items>
                             <gestureRecognizers>
                                 <longPressGestureRecognizer minimumPressDuration="0.20000000000000001" id="H2U-j5-DN5">
@@ -124,6 +130,7 @@
                         </variation>
                     </menu>
                     <connections>
+                        <outlet property="aboutButton" destination="m39-gc-btL" id="PSc-gC-rms"/>
                         <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
                         <outlet property="instructionsLabel" destination="Reo-fp-Kjf" id="05H-kS-0jN"/>
                         <outlet property="mainImage" destination="L9T-BG-efi" id="0PH-ca-K4x"/>
@@ -245,7 +252,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="book.fill" catalog="system" width="128" height="99"/>
+        <image name="book.fill" catalog="system" width="128" height="101"/>
         <image name="dot.square" catalog="system" width="128" height="114"/>
         <image name="pencil" catalog="system" width="128" height="112"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>

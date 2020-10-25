@@ -99,6 +99,7 @@ class LibraryCustomActions {
             finalString = finalString + "."
             i = i + 1
         }
+        finalString = finalString + "|"
         return finalString
     }
 }

@@ -25,22 +25,22 @@ class MCDictionaryDetailController : WKInterfaceController {
             if let action = dictionary!["action"] as? String {
                 titleLabel.setText(action)
                 if action == "TIME" {
-                    aboutLabel.setText("To get the time in morse code, you must tap once and swipe up. You will get the current time in 24 hour format")
+                    aboutLabel.setText("We give the time in 12 hour format")
                     blindLabel.setHidden(false)
                     blindInstructionsLabel.setText("After getting the result, tap the screen to play audio")
                     blindInstructionsLabel.setHidden(false)
                     deafBlindLabel.setHidden(false)
-                    deafBlindInstructionsLabel.setText("After getting the result, rotate the digital crown down slowly to read the morse code. We will communicate it through vibrations\n\nIf you are comfortable with morse code, you can also rotate the Digital Crown down quickly to initiate autoplay. This will play the entire morse code in one go\n\nDot(.) : 1 vibration\nDash(-) : 1 long vibration")
+                    deafBlindInstructionsLabel.setText("After getting the result, rotate the digital crown down to feel the vibrations.\nThere are 3 Sets.\nSet 1 is the hour.\n1 Long vibration = 1 Dash = 5 hours.\n1 Short vibration = 1 Dot = 1 hour.\nEx: 1 long vibration and 1 short vibration = 6 hrs.\nSet 2 is the minute.\n1 long vibration = 1 dash = 5 minutes.\n1 short vibration = 1 dot = 1 minute.\nEx: 1 long vibration and 1 short  vibration = 6 minutes\nSet 3 is AM or PM\n1 Long vibration = 1 Dash = PM.\n1 short vibration = 1 dot = AM")
                     deafBlindInstructionsLabel.setHidden(false)
 
                 }
                 else if action == "DATE" {
-                    aboutLabel.setText("To get the date in morse code, you must tap twice and swipe up. You will get the date and the first 2 letters of the day of the week\nExample: If date is 17 and 17 is a Wednesday, you will get 17WE")
+                    aboutLabel.setText("We give you the date and day of the week")
                     blindLabel.setHidden(false)
                     blindInstructionsLabel.setText("After getting the result, tap the screen to play audio")
                     blindInstructionsLabel.setHidden(false)
                     deafBlindLabel.setHidden(false)
-                    deafBlindInstructionsLabel.setText("After getting the result, rotate the digital crown down slowly to read the morse code. We will communicate it through vibrations\n\nIf you are comfortable with morse code, you can also rotate the Digital Crown down quickly to initiate autoplay. This will play the entire morse code in one go\n\nDot(.) : 1 vibration\nDash(-) : 1 long vibration")
+                    deafBlindInstructionsLabel.setText("After getting the result, rotate the digital crown down to feel the vibrations.\nThere are 2 Sets.\nSet 1 is the date.\n1 Long vibration = 1 Dash = 5 hours.\n1 Short vibration = 1 dot = 1 hour.\nEx: 1 long vibration and 1 short vibration = 6th.\nSet 2 is the number of days after Sunday.\n1 short vibration = Sunday.\n2 short vibrations = Monday")
                     deafBlindInstructionsLabel.setHidden(false)
                 }
                 else if action == "1-to-1" {
