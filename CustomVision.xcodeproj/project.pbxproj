@@ -10,6 +10,7 @@
 		22D2C163A464B8AA5B31A8D1 /* Pods_Suno.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */; };
 		310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */; };
 		310D955024B1C0BF00936A27 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310D954F24B1C0BF00936A27 /* UIFont.swift */; };
+		31108A91254808B9009E3DF1 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */; };
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
@@ -825,6 +826,7 @@
 				31B61BC725336C6C00237602 /* ActionsCell.swift in Sources */,
 				31A67B83235CB55800F506BD /* FAQCell.swift in Sources */,
 				31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */,
+				31108A91254808B9009E3DF1 /* Actions.swift in Sources */,
 				31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */,
 				317C713B2540B03800E6800B /* LibraryCustomActions.swift in Sources */,
 			);
@@ -981,7 +983,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
@@ -1009,7 +1011,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
@@ -1331,7 +1333,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1350,7 +1352,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

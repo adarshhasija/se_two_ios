@@ -12,40 +12,34 @@ import WatchConnectivity
 
 class ActionsListController : WKInterfaceController {
     
-    
     @IBOutlet weak var actionsListTable: WKInterfaceTable!
+    
+    var actionsList : [ActionsCell] = []
     
     override func awake(withContext context: Any?) {
         WKInterfaceDevice.current().play(.success) //successfully launched app
-        actionsListTable.setNumberOfRows(3, withRowType: "ActionRow")
         
-        let row0 = actionsListTable.rowController(at: 0) as! ActionsListRowController
-        let txt0 = "Get From iPhone"
-        let txt0Explanation = "Use the digital crown to scroll through dots and dashes one by one"
-        let finalString0 = txt0 + "." + txt0Explanation
-        row0.mainGroup.setAccessibilityLabel(finalString0)
-        row0.actionLabel.setText(txt0)
-        row0.actionExplanationLabel.setText(txt0Explanation)
-        row0.actionExplanationLabel.setHidden(false)
-        let row1 = actionsListTable.rowController(at: 1) as! ActionsListRowController
-        let txt1 = "TIME"
-        row1.mainGroup.setAccessibilityLabel(txt1)
-        row1.actionLabel.setText(txt1)
-        let row2 = actionsListTable.rowController(at: 2) as! ActionsListRowController
-        let txt2 = "DATE AND DAY OF WEEK"
-        row2.mainGroup.setAccessibilityLabel(txt2)
-        row2.actionLabel.setText(txt2)
-        //let row3 = actionsListTable.rowController(at: 3) as! ActionsListRowController
-        //let txt3 = "1-to-1 CHAT"
-        //row3.mainGroup.setAccessibilityLabel(txt3)
-        //row3.actionLabel.setText(txt3)
+        actionsList.append(ActionsCell(action: "TIME", cellType: Action.TIME))
+                actionsList.append(ActionsCell(action: "DATE AND DAY OF WEEK", cellType: Action.DATE))
+        actionsList.append(ActionsCell(action: "Get from iPhone", explanation: "Use the digital crown to scroll through dots and dashes one by one", cellType: Action.GET_IOS))
+        
+        
+        actionsListTable.setNumberOfRows(actionsList.count, withRowType: "ActionRow")
+        for index in 0...actionsList.count-1 {
+            let row = actionsListTable.rowController(at: index) as! ActionsListRowController
+            let actionCell = actionsList[index]
+            row.mainGroup.setAccessibilityLabel(actionCell.accessibilityLabel)
+            row.actionLabel.setText(actionCell.action)
+            row.actionExplanationLabel.setText(actionCell.explanation)
+        }
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-        
+        let actionCell = actionsList[rowIndex]
         
         var params : [String:Any] = [:]
-        if rowIndex == 0 {
+        params["mode"] = actionCell.cellType.rawValue
+    /*    if actionCell == 0 {
             params["mode"] = "from_iOS"
         }
         else if rowIndex == 1 {
@@ -56,7 +50,7 @@ class ActionsListController : WKInterfaceController {
         }
         else if rowIndex == 3 {
             params["mode"] = "chat"
-        }
+        }   */
         
         sendAnalytics(eventName: "se3_watch_row_tap", parameters: [
                     "screen" : params["mode"] as? String

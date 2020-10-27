@@ -415,7 +415,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if mode != nil {
-            if mode == "from_iOS" {
+            if mode == Action.GET_IOS.rawValue {
                 downSwipe(1) //just a dummy parameter
             }
             else {

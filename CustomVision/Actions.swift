@@ -12,6 +12,14 @@
 import Foundation
 
 enum Action :String{
+    
+    //Now using this class for actions related to visually-impaired and deaf-blind
+    case CAMERA_OCR
+    case TIME
+    case DATE
+    case GET_IOS
+    //
+    
     case AppOpened
     case Tap
     case SpeakerDidSpeak

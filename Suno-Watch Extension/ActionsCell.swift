@@ -12,14 +12,20 @@ class ActionsCell {
     
     var action : String
     var explanation : String?
+    var cellType : Action
+    var accessibilityLabel : String
     
-    init(action : String) {
+    init(action : String, cellType : Action) {
         self.action = action
-        self.explanation = nil
+        self.explanation = " " //This is set to space character so that the row height is OK (empty string wont work)
+        self.cellType = cellType
+        self.accessibilityLabel = action
     }
     
-    init(action : String, explanation : String) {
+    init(action : String, explanation : String, cellType : Action) {
         self.action = action
         self.explanation = explanation
+        self.cellType = cellType
+        self.accessibilityLabel = action + "." + explanation
     }
 }
