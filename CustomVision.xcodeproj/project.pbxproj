@@ -11,6 +11,8 @@
 		310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */; };
 		310D955024B1C0BF00936A27 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310D954F24B1C0BF00936A27 /* UIFont.swift */; };
 		31108A91254808B9009E3DF1 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
+		31108A9825482EC6009E3DF1 /* ActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B61BC625336C6C00237602 /* ActionsCell.swift */; };
+		31108AA025483493009E3DF1 /* ActionsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31108A9F25483493009E3DF1 /* ActionsListCell.swift */; };
 		3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */; };
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
@@ -152,6 +154,7 @@
 		00A518D03A10503E18B775E7 /* Pods-Suno.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno/Pods-Suno.release.xcconfig"; sourceTree = "<group>"; };
 		310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryRowController.swift; sourceTree = "<group>"; };
 		310D954F24B1C0BF00936A27 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		31108A9F25483493009E3DF1 /* ActionsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsListCell.swift; sourceTree = "<group>"; };
 		3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeEditorViewController.swift; sourceTree = "<group>"; };
 		313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDTouchView.swift; sourceTree = "<group>"; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
@@ -376,6 +379,7 @@
 				31B61BBB2532F86F00237602 /* ActionsList.storyboard */,
 				31829CBA2493B671003C6153 /* ActionsMCViewController.swift */,
 				3193F410253F6E45004940AE /* MCReaderButtonsViewController.swift */,
+				31108A9F25483493009E3DF1 /* ActionsListCell.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -867,6 +871,7 @@
 				313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */,
 				31BC651D24697FDD00D5D801 /* MCDictionaryCell.swift in Sources */,
 				3193F411253F6E45004940AE /* MCReaderButtonsViewController.swift in Sources */,
+				31108AA025483493009E3DF1 /* ActionsListCell.swift in Sources */,
 				31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */,
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */,
@@ -882,6 +887,7 @@
 				31862B7D225E11650058883D /* ChatListItem.swift in Sources */,
 				3142C8A72496390700B1257B /* MCDictionaryDetailViewController.swift in Sources */,
 				31BC651E2469872D00D5D801 /* MorseCodeCell.swift in Sources */,
+				31108A9825482EC6009E3DF1 /* ActionsCell.swift in Sources */,
 				31862B7F226077950058883D /* EventOrigin.swift in Sources */,
 				3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */,
 				316BA194246D78F000869C89 /* UITextField.swift in Sources */,

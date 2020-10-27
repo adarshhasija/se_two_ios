@@ -11,136 +11,57 @@
         <scene sceneID="Tau-hm-nDH">
             <objects>
                 <tableViewController id="1gz-Yr-vSG" customClass="ActionsTableViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="dLM-jB-PkA">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="dLM-jB-PkA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <sections>
-                            <tableViewSection id="hK7-0l-iyw">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zKZ-Ml-ANX">
-                                        <rect key="frame" x="20" y="18" width="374" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zKZ-Ml-ANX" id="Mkv-ZZ-xLg">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActionsListCell" id="zKZ-Ml-ANX" customClass="ActionsListCell" customModule="SunoDayko" customModuleProvider="target">
+                                <rect key="frame" x="20" y="55.5" width="374" height="73.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zKZ-Ml-ANX" id="Mkv-ZZ-xLg">
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="73.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="II5-Te-Zmd">
+                                            <rect key="frame" x="20" y="10" width="344" height="53.5"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="II5-Te-Zmd">
-                                                    <rect key="frame" x="20" y="10" width="344" height="23.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Text On Door" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IxR-SP-8My">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="For: Blind and Deaf-Blind" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z6T-DX-ghd">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N07-YN-96N">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="23.5"/>
-                                                            <string key="text">How: Tapping this will open the camera. Then simply point your phone at the door where the text is written. Wait for a few seconds and the app will read the text. Blind users can then tap for audio. Deaf-blind users can scroll through the morse code </string>
-                                                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Action Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IxR-SP-8My">
+                                                    <rect key="frame" x="0.0" y="0.0" width="344" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="For Who" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z6T-DX-ghd">
+                                                    <rect key="frame" x="0.0" y="20.5" width="344" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="How: Explanation" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N07-YN-96N">
+                                                    <rect key="frame" x="0.0" y="38.5" width="344" height="15"/>
+                                                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="II5-Te-Zmd" firstAttribute="leading" secondItem="Mkv-ZZ-xLg" secondAttribute="leading" constant="20" id="6Nx-lb-EXg"/>
-                                                <constraint firstAttribute="bottom" secondItem="II5-Te-Zmd" secondAttribute="bottom" constant="10" id="LU2-L3-Aiu"/>
-                                                <constraint firstItem="II5-Te-Zmd" firstAttribute="top" secondItem="Mkv-ZZ-xLg" secondAttribute="top" constant="10" id="RwO-Lm-VBK"/>
-                                                <constraint firstAttribute="trailing" secondItem="II5-Te-Zmd" secondAttribute="trailing" constant="10" id="WgI-n1-caF"/>
-                                                <constraint firstItem="II5-Te-Zmd" firstAttribute="centerY" secondItem="Mkv-ZZ-xLg" secondAttribute="centerY" id="nNV-KB-LEJ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Nqe-ax-w9m">
-                                        <rect key="frame" x="20" y="61.5" width="374" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Nqe-ax-w9m" id="Uks-CR-3jM">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KCg-Bf-Vfl">
-                                                    <rect key="frame" x="20" y="10" width="344" height="23.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date and Day of the Week" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M3l-je-MfZ">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="For: Deaf-Blind" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Asv-2Z-Fvr">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="How: Deaf-blind person can get the date and day of the week through vibrations from the phone" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fD9-5c-Dwa">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="23.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="KCg-Bf-Vfl" secondAttribute="bottom" constant="10" id="4lN-K1-iIG"/>
-                                                <constraint firstItem="KCg-Bf-Vfl" firstAttribute="top" secondItem="Uks-CR-3jM" secondAttribute="top" constant="10" id="58W-8k-dyb"/>
-                                                <constraint firstAttribute="trailing" secondItem="KCg-Bf-Vfl" secondAttribute="trailing" constant="10" id="FoT-xn-ED0"/>
-                                                <constraint firstItem="KCg-Bf-Vfl" firstAttribute="leading" secondItem="Uks-CR-3jM" secondAttribute="leading" constant="20" id="hh6-Ru-nyQ"/>
-                                                <constraint firstItem="KCg-Bf-Vfl" firstAttribute="centerY" secondItem="Uks-CR-3jM" secondAttribute="centerY" id="uiy-xt-j3H"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="HBA-Vr-Oj4">
-                                        <rect key="frame" x="20" y="105" width="374" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HBA-Vr-Oj4" id="bRf-Ak-Xij">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4tC-QJ-tP9">
-                                                    <rect key="frame" x="20" y="10" width="344" height="23.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Current Time" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0g-xK-P7p">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="For: Deaf-Blind" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LW5-zi-GaL">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="How: Deaf-blind person can get the current time through vibrations from the phone" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8b-tN-CJm">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="23.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="4tC-QJ-tP9" secondAttribute="trailing" constant="10" id="Cmi-hU-n2v"/>
-                                                <constraint firstAttribute="bottom" secondItem="4tC-QJ-tP9" secondAttribute="bottom" constant="10" id="eSv-3A-YhF"/>
-                                                <constraint firstItem="4tC-QJ-tP9" firstAttribute="top" secondItem="bRf-Ak-Xij" secondAttribute="top" constant="10" id="kmO-XN-FVn"/>
-                                                <constraint firstItem="4tC-QJ-tP9" firstAttribute="leading" secondItem="bRf-Ak-Xij" secondAttribute="leading" constant="20" id="t5x-Nn-LII"/>
-                                                <constraint firstItem="4tC-QJ-tP9" firstAttribute="centerY" secondItem="bRf-Ak-Xij" secondAttribute="centerY" id="woa-Zj-ebW"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="II5-Te-Zmd" firstAttribute="leading" secondItem="Mkv-ZZ-xLg" secondAttribute="leading" constant="20" id="6Nx-lb-EXg"/>
+                                        <constraint firstAttribute="bottom" secondItem="II5-Te-Zmd" secondAttribute="bottom" constant="10" id="LU2-L3-Aiu"/>
+                                        <constraint firstItem="II5-Te-Zmd" firstAttribute="top" secondItem="Mkv-ZZ-xLg" secondAttribute="top" constant="10" id="RwO-Lm-VBK"/>
+                                        <constraint firstAttribute="trailing" secondItem="II5-Te-Zmd" secondAttribute="trailing" constant="10" id="WgI-n1-caF"/>
+                                        <constraint firstItem="II5-Te-Zmd" firstAttribute="centerY" secondItem="Mkv-ZZ-xLg" secondAttribute="centerY" id="nNV-KB-LEJ"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="actionsLabel" destination="IxR-SP-8My" id="UqG-UJ-HwJ"/>
+                                    <outlet property="explanationLabel" destination="N07-YN-96N" id="Xa9-W2-vl0"/>
+                                    <outlet property="forLabel" destination="z6T-DX-ghd" id="jqq-DY-AUs"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
                         <connections>
                             <outlet property="dataSource" destination="1gz-Yr-vSG" id="7rl-ZJ-dJk"/>
                             <outlet property="delegate" destination="1gz-Yr-vSG" id="fJb-eb-f6X"/>

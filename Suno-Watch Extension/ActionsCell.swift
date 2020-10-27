@@ -11,6 +11,7 @@ import Foundation
 class ActionsCell {
     
     var action : String
+    var forWho : String? //iOS version only for now
     var explanation : String?
     var cellType : Action
     var accessibilityLabel : String
@@ -27,5 +28,16 @@ class ActionsCell {
         self.explanation = explanation
         self.cellType = cellType
         self.accessibilityLabel = action + "." + explanation
+    }
+    
+    init(action : String, forWho: String, explanation : String, cellType : Action) {
+        self.action = action
+        self.forWho = forWho
+        self.explanation = explanation
+        self.cellType = cellType
+        self.accessibilityLabel = action
+                                    + "."
+                                    + "for: " + forWho
+                                    + ". " + explanation
     }
 }
