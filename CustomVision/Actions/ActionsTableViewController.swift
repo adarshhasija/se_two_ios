@@ -19,6 +19,7 @@ class ActionsTableViewController : UITableViewController {
     var actionsList : [ActionsCell] = []
     
     override func viewDidLoad() {
+        self.navigationItem.title = "Main Menu"
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         
         actionsList.append(ActionsCell(action: "Text On Door", forWho: "Blind and Deaf-blind", explanation: "Tapping this will open the camera. Then simply point your phone at the door where the text is written. Wait for a few seconds and the app will read the text. Blind users can then tap for audio. Deaf-blind users can scroll through the morse code ", cellType: Action.CAMERA_OCR))
@@ -40,6 +41,7 @@ class ActionsTableViewController : UITableViewController {
         let actionItem = actionsList[indexPath.row]
         
         cell.accessibilityLabel = actionItem.accessibilityLabel
+        cell.accessibilityTraits = UIAccessibilityTraitButton
         cell.actionsLabel?.text = actionItem.action
         if actionItem.forWho != nil { cell.forLabel?.text = "For: " + actionItem.forWho! }
         if actionItem.explanation != nil { cell.explanationLabel?.text = "How: " + actionItem.explanation! }

@@ -12,6 +12,7 @@
             <objects>
                 <controller id="hX4-Gh-CDl" customClass="ActionsListController" customModule="Suno_Watch_Extension">
                     <items>
+                        <label alignment="left" text="Actions for Deaf-Blind" numberOfLines="0" id="SII-n8-rDg"/>
                         <table alignment="left" id="oOl-3n-pGS">
                             <items>
                                 <tableRow identifier="ActionRow" id="tm5-NN-SHb" customClass="ActionsListRowController" customModule="Suno_Watch_Extension">
@@ -35,6 +36,7 @@
                     </items>
                     <connections>
                         <outlet property="actionsListTable" destination="oOl-3n-pGS" id="TUN-y6-ZOo"/>
+                        <outlet property="deafBlindLabel" destination="SII-n8-rDg" id="rhr-DZ-MVM"/>
                     </connections>
                 </controller>
             </objects>

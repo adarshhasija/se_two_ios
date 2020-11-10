@@ -116,6 +116,7 @@ class MCReaderButtonsViewController : UIViewController {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel.text = inputAlphanumeric
         morseCodeLabel.text = inputMorseCode != nil ? inputMorseCode : convertAlphanumericToMC(alphanumericString: inputAlphanumeric ?? "")
+        setUpPlayAudioButtonScalable()
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isWatchAppInstalled {
@@ -125,6 +126,10 @@ class MCReaderButtonsViewController : UIViewController {
         }
         mcExplanationLabel.text = inputMCExplanation
         mcExplanationLabel.isHidden = inputMCExplanation != nil ? false : true
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        playAudioButton?.sizeToFit()
     }
     
     private func convertAlphanumericToMC(alphanumericString : String) -> String {
@@ -289,6 +294,25 @@ class MCReaderButtonsViewController : UIViewController {
                                     ], replyHandler: nil, errorHandler: nil)
             }
         }
+    }
+    
+    //Increases the size of the PlayAudio button if the user has opted for
+    //Accessibility = Larger Text Sizes
+    func setUpPlayAudioButtonScalable() {
+        //playAudioButton.contentEdgeInsets = UIEdgeInsets(top: 0,
+        //                                                  left: 0,
+        //                                                  bottom: 0,
+        //                                                  right: 0)
+        let font = UIFont(name: "Helvetica", size: 19)!
+        let scaledFont = UIFontMetrics.default.scaledFont(for: font)
+        let attributes = [NSAttributedString.Key.font: scaledFont]
+        let attributedText = NSAttributedString(string: "Play Audio",
+                                                        attributes: attributes)
+        playAudioButton.titleLabel?.attributedText = attributedText
+        playAudioButton.setAttributedTitle(playAudioButton.titleLabel?.attributedText,
+                                            for: .normal)
+        //playAudioButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        //playAudioButton.adjustsImageSizeForAccessibilityContentSizeCategory = true
     }
     
     func showToast(message : String) {

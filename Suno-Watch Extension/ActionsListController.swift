@@ -12,12 +12,14 @@ import WatchConnectivity
 
 class ActionsListController : WKInterfaceController {
     
+    @IBOutlet weak var deafBlindLabel: WKInterfaceLabel!
     @IBOutlet weak var actionsListTable: WKInterfaceTable!
     
     var actionsList : [ActionsCell] = []
     
     override func awake(withContext context: Any?) {
         WKInterfaceDevice.current().play(.success) //successfully launched app
+        deafBlindLabel.setAccessibilityTraits(UIAccessibilityTraits.staticText) //Currently VoiceOver on watch is not saying Static Text.
         
         actionsList.append(ActionsCell(action: "TIME", cellType: Action.TIME))
                 actionsList.append(ActionsCell(action: "DATE AND DAY OF WEEK", cellType: Action.DATE))
@@ -29,6 +31,7 @@ class ActionsListController : WKInterfaceController {
             let row = actionsListTable.rowController(at: index) as! ActionsListRowController
             let actionCell = actionsList[index]
             row.mainGroup.setAccessibilityLabel(actionCell.accessibilityLabel)
+            row.mainGroup.setAccessibilityTraits(UIAccessibilityTraits.button)
             row.actionLabel.setText(actionCell.action)
             row.actionExplanationLabel.setText(actionCell.explanation)
         }
