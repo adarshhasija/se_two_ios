@@ -278,20 +278,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4iX-QT-oJS">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4iX-QT-oJS">
                                 <rect key="frame" x="16" y="44" width="288" height="524"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y3U-tb-ggf">
-                                        <rect key="frame" x="13" y="0.0" width="262" height="167"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="167"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdv-Kb-sRM">
-                                                <rect key="frame" x="0.0" y="0.0" width="262" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSh-G6-6AY">
-                                                <rect key="frame" x="0.0" y="20.5" width="262" height="31.5"/>
+                                                <rect key="frame" x="0.0" y="20.5" width="288" height="31.5"/>
                                                 <accessibility key="accessibilityConfiguration">
                                                     <bool key="isElement" value="NO"/>
                                                 </accessibility>
@@ -300,19 +300,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Activity" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gfl-xv-m4i">
-                                                <rect key="frame" x="72" y="52" width="118.5" height="0.0"/>
+                                                <rect key="frame" x="85" y="52" width="118.5" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visually-impaired?" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhM-Bj-b7a">
-                                                <rect key="frame" x="61" y="52" width="140" height="20.5"/>
+                                                <rect key="frame" x="74" y="52" width="140" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HcV-5U-9zN">
-                                                <rect key="frame" x="95" y="72.5" width="72" height="30"/>
+                                                <rect key="frame" x="108" y="72.5" width="72" height="30"/>
                                                 <state key="normal">
                                                     <attributedString key="attributedTitle">
                                                         <fragment content="Play Audio">
@@ -327,7 +327,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YZ3-iU-38b">
-                                                <rect key="frame" x="5" y="102.5" width="252.5" height="64.5"/>
+                                                <rect key="frame" x="18" y="102.5" width="252.5" height="64.5"/>
                                                 <string key="text">Deaf-blind?
 Long Press to autoplay vibrations
 </string>
@@ -336,13 +336,13 @@ Long Press to autoplay vibrations
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scroll through MC on Apple Watch" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iko-Sp-hvm">
-                                                <rect key="frame" x="0.0" y="167" width="262" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="167" width="288" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exmplanation of Morse Code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXH-ww-zU0">
-                                                <rect key="frame" x="0.0" y="167" width="262" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="167" width="288" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -361,10 +361,11 @@ Long Press to autoplay vibrations
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="Y3U-tb-ggf" firstAttribute="centerX" secondItem="4iX-QT-oJS" secondAttribute="centerX" id="4xH-Zg-hvA"/>
+                                    <constraint firstItem="Y3U-tb-ggf" firstAttribute="leading" secondItem="4iX-QT-oJS" secondAttribute="leading" id="5Wg-kP-glL"/>
+                                    <constraint firstItem="Y3U-tb-ggf" firstAttribute="centerX" secondItem="4iX-QT-oJS" secondAttribute="centerX" id="6DU-we-5z9"/>
                                     <constraint firstAttribute="bottom" secondItem="Y3U-tb-ggf" secondAttribute="bottom" id="6Ka-ce-fct"/>
+                                    <constraint firstAttribute="trailing" secondItem="Y3U-tb-ggf" secondAttribute="trailing" id="M34-u6-pnf"/>
                                     <constraint firstItem="Y3U-tb-ggf" firstAttribute="top" secondItem="4iX-QT-oJS" secondAttribute="topMargin" constant="-8" id="Txd-MG-hyE"/>
-                                    <constraint firstItem="Y3U-tb-ggf" firstAttribute="centerX" secondItem="4iX-QT-oJS" secondAttribute="centerX" id="ii4-7k-bJp"/>
                                     <constraint firstItem="Y3U-tb-ggf" firstAttribute="top" secondItem="4iX-QT-oJS" secondAttribute="top" id="niR-tS-iFC"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="JGK-Ed-IPN"/>
