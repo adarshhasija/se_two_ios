@@ -89,7 +89,7 @@
                                         <action selector="leftSwipe:" destination="V63-br-2PY" id="4ee-gt-HEk"/>
                                     </connections>
                                 </swipeGestureRecognizer>
-                                <swipeGestureRecognizer direction="8" id="8zQ-VA-914">
+                                <swipeGestureRecognizer enabled="NO" direction="8" id="8zQ-VA-914">
                                     <connections>
                                         <action selector="downSwipe:" destination="V63-br-2PY" id="8eP-fq-tiL"/>
                                     </connections>

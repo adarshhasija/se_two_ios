@@ -76,6 +76,10 @@ class MCInterfaceController : WKInterfaceController {
             //Should not be permitted when user is reading
             return
         }
+        if mode == Action.GET_IOS.rawValue {
+            //Get from iPhone mode
+            return
+        }
         if synth?.isSpeaking == true {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                 "state" : "is_speaking"
@@ -235,6 +239,10 @@ class MCInterfaceController : WKInterfaceController {
             WKInterfaceDevice.current().play(.success)
             return
         }
+        if mode == Action.GET_IOS.rawValue {
+            //Get from iPhone mode
+            return
+        }
         if morseCodeString.count > 0 {
             if morseCodeString.last != "|" {
                 //Should not be a character separator
@@ -281,7 +289,7 @@ class MCInterfaceController : WKInterfaceController {
         }
     }
     
-    
+    //Disabled in the storyboard. Re-enable if down swipe is required
     @IBAction func downSwipe(_ sender: Any) {
         //Swipe down to get text from the iPhone. We designed this in case user cannot read morse code on an older iPhone and wanted to transfer it to the watch.
         //Not using this functionality right now. We found a way to play haptics on older iPhones (6, 6S) using system vibrations
@@ -816,6 +824,10 @@ extension MCInterfaceController {
             instructionsLabel.setText("")
             morseCodeTextLabel?.setHidden(true)
             changeEnteredTextSize(inputString: englishString, textSize: 40)
+            return
+        }
+        if mode == Action.GET_IOS.rawValue {
+            //Get from iPhone mode
             return
         }
         if isNoMoreMatchesAfterThis() == true {
