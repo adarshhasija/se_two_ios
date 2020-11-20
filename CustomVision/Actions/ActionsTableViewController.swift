@@ -50,6 +50,9 @@ class ActionsTableViewController : UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let actionItem = actionsList[indexPath.row]
+        Analytics.logEvent("se3_ios_swipe_up", parameters: [
+            "state" : "action_"+actionItem.cellType.rawValue
+        ])
         if actionItem.cellType == Action.CAMERA_OCR {
             openCamera()
         }

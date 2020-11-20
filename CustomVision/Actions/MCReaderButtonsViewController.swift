@@ -45,6 +45,7 @@ class MCReaderButtonsViewController : UIViewController {
         guard let alphanumeric = inputAlphanumeric else {
             return
         }
+        Analytics.logEvent("se3_ios_audio_btn", parameters: [:])
         sayThis(string: alphanumeric)
     }
 
@@ -54,6 +55,7 @@ class MCReaderButtonsViewController : UIViewController {
                 isAutoPlayOn = false
                 return
             }
+            Analytics.logEvent("se3_ios_long_press", parameters: [:])
             alphanumericStringIndex = -1
             morseCodeStringIndex = -1
             morseCodeAutoPlay(direction: "right")
