@@ -11,10 +11,12 @@ import UIKit
 import Speech
 import FirebaseAnalytics
 import WatchConnectivity
+import IntentsUI
 
 //Morse code reader with buttons, no gestures
 class MCReaderButtonsViewController : UIViewController {
     
+    var siriShortcut: SiriShortcut? = nil
     var inputAlphanumeric : String? = nil
     var inputMorseCode : String? = nil //Customized morse code is sent it. If this is nil, we will use standard morse code dictionary
     var inputMCExplanation : String? = nil
@@ -31,6 +33,7 @@ class MCReaderButtonsViewController : UIViewController {
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     var isAutoPlayOn = false
     
+    @IBOutlet weak var stackViewMain: UIStackView!
     @IBOutlet weak var alphanumericLabel: UILabel!
     @IBOutlet weak var morseCodeLabel: UILabel!
     @IBOutlet weak var currentActivityLabel: UILabel!
@@ -39,6 +42,7 @@ class MCReaderButtonsViewController : UIViewController {
     @IBOutlet weak var deafBlindLabel: UILabel!
     @IBOutlet weak var scrollMCLabel: UILabel!
     @IBOutlet weak var mcExplanationLabel: UILabel! //Explanation of the dots and dashes screen. In the case of date and time
+    var siriButton : INUIAddVoiceShortcutButton!
 
     
     @IBAction func playAudioButtonTapped(_ sender: Any) {
@@ -87,6 +91,7 @@ class MCReaderButtonsViewController : UIViewController {
             playAudioButton.isHidden = false
             deafBlindLabel.isHidden = false
             scrollMCLabel.isHidden = false
+            siriButton.isHidden = false
         }
     }
     
@@ -102,6 +107,7 @@ class MCReaderButtonsViewController : UIViewController {
         playAudioButton.isHidden = true
         deafBlindLabel.isHidden = true
         scrollMCLabel.isHidden = true
+        siriButton.isHidden = true
         let autoPlayTxt = "Autoplaying morse code...\nLong press to stop"
         currentActivityLabel.text = autoPlayTxt
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
@@ -111,7 +117,7 @@ class MCReaderButtonsViewController : UIViewController {
             "direction" : direction
         ]
         let timeInterval = direction == "right" ? 1 : 0.5
-        Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(ActionsMCViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
+        Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCReaderButtonsViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
     
     override func viewDidLoad() {
@@ -128,6 +134,10 @@ class MCReaderButtonsViewController : UIViewController {
         }
         mcExplanationLabel.text = inputMCExplanation
         mcExplanationLabel.isHidden = inputMCExplanation != nil ? false : true
+        if siriShortcut != nil { addSiriButton(shortcutForButton: siriShortcut!, to: stackViewMain) }
+        alphanumericStringIndex = -1
+        morseCodeStringIndex = -1
+        morseCodeAutoPlay(direction: "right")
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -317,6 +327,59 @@ class MCReaderButtonsViewController : UIViewController {
         //playAudioButton.adjustsImageSizeForAccessibilityContentSizeCategory = true
     }
     
+    //Using acitivites instead of intents as Siri opens app directly for activity. For intents, it shows button to open app, which we do not want s
+    func createActivityForShortcut(siriShortcut: SiriShortcut) -> NSUserActivity {
+        let activity = NSUserActivity(activityType: siriShortcut.activityType)
+        activity.title = siriShortcut.title
+        activity.userInfo = siriShortcut.dictionary
+        activity.suggestedInvocationPhrase = siriShortcut.invocation
+        activity.persistentIdentifier = siriShortcut.activityType
+        activity.isEligibleForSearch = true
+        activity.isEligibleForPrediction = true
+        view.userActivity = activity
+        activity.becomeCurrent()
+        return activity
+    }
+    
+    // Add an "Add to Siri" button to a view.
+    func addSiriButton(shortcutForButton: SiriShortcut, to view: UIStackView) {
+        siriButton = INUIAddVoiceShortcutButton(style: .blackOutline)
+        siriButton.translatesAutoresizingMaskIntoConstraints = false
+        siriButton.isUserInteractionEnabled = true
+        let activity = createActivityForShortcut(siriShortcut: shortcutForButton)
+        siriButton.shortcut = INShortcut(userActivity: activity)
+        siriButton.delegate = self
+        
+        //view.addSubview(button)
+        //view.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
+                //view.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
+        view.insertArrangedSubview(siriButton, at: view.arrangedSubviews.count)
+        
+        
+        let model = modelIdentifier()
+        let doesNotSupportBackTap = model.split(separator: ",")[0].contains("6") || model.split(separator: ",")[0].contains("5") //Do not need to check lower than 5 as those devices are not supported by latest OS
+        guard doesNotSupportBackTap == false else {
+            return
+        }
+        //Back tap is only supported on iPhone 8 and above
+        let backTapLabel = UILabel()
+                backTapLabel.text = "After creating the shortcut, we strong encourage that you attach the shortcut to the Back Tap functionality.\nYou can find this under the Settings app -> Accessibility -> Touch -> Back Tap"
+        backTapLabel.textAlignment = .center
+        backTapLabel.lineBreakMode = .byWordWrapping
+        backTapLabel.numberOfLines = 0
+        backTapLabel.font = backTapLabel.font.withSize(12)
+        view.insertArrangedSubview(backTapLabel, at: view.arrangedSubviews.count)
+        
+        
+    }
+    
+    func modelIdentifier() -> String {
+        if let simulatorModelIdentifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] { return simulatorModelIdentifier }
+        var sysinfo = utsname()
+        uname(&sysinfo) // ignore return value
+        return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
+    }
+    
     func showToast(message : String) {
         
         let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 75, y: self.view.frame.size.height-100, width: 150, height: 60))
@@ -334,5 +397,77 @@ class MCReaderButtonsViewController : UIViewController {
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
         })
+    }
+}
+
+extension MCReaderButtonsViewController : INUIAddVoiceShortcutButtonDelegate {
+    func present(_ addVoiceShortcutViewController: INUIAddVoiceShortcutViewController, for addVoiceShortcutButton: INUIAddVoiceShortcutButton) {
+        Analytics.logEvent("se3_add_to_siri_tapped", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "mode": "add",
+            "shortcut": siriShortcut?.action.prefix(100) ?? ""
+            ])
+        
+        addVoiceShortcutViewController.delegate = self
+        addVoiceShortcutViewController.modalPresentationStyle = .formSheet
+        present(addVoiceShortcutViewController, animated: true, completion: nil)
+    }
+    
+    func present(_ editVoiceShortcutViewController: INUIEditVoiceShortcutViewController, for addVoiceShortcutButton: INUIAddVoiceShortcutButton) {
+        Analytics.logEvent("se3_add_to_siri_tapped", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "mode": "edit",
+            "shortcut": siriShortcut?.action.prefix(100) ?? ""
+            ])
+        
+        editVoiceShortcutViewController.delegate = self
+        editVoiceShortcutViewController.modalPresentationStyle = .formSheet
+        present(editVoiceShortcutViewController, animated: true, completion: nil)
+    }
+}
+
+extension MCReaderButtonsViewController : INUIAddVoiceShortcutViewControllerDelegate {
+    func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
+        Analytics.logEvent("se3_add_to_siri_completed", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "mode": "add",
+            "shortcut": siriShortcut?.action.prefix(100) ?? ""
+            ])
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
+        Analytics.logEvent("se4_add_to_siri_cancelled", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "mode": "add",
+            "shortcut": siriShortcut?.action.prefix(100) ?? ""
+            ])
+        
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+
+extension MCReaderButtonsViewController : INUIEditVoiceShortcutViewControllerDelegate {
+    func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didUpdate voiceShortcut: INVoiceShortcut?, error: Error?) {
+        Analytics.logEvent("se3_add_to_siri_completed", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "mode": siriShortcut?.action.prefix(100) ?? ""
+            ])
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didDeleteVoiceShortcutWithIdentifier deletedVoiceShortcutIdentifier: UUID) {
+        Analytics.logEvent("se3_add_to_siri_deleted", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "mode": siriShortcut?.action.prefix(100) ?? ""
+            ])
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewControllerDidCancel(_ controller: INUIEditVoiceShortcutViewController) {
+        dismiss(animated: true, completion: nil)
     }
 }

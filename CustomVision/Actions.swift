@@ -14,10 +14,11 @@ import Foundation
 enum Action :String{
     
     //Now using this class for actions related to visually-impaired and deaf-blind
+    case INPUT_ALPHANUMERIC //Used when we already have an alphanumeric to pass in
     case CAMERA_OCR
     case TIME
     case DATE
-    case GET_IOS
+    case GET_IOS //Used by the watch to get morse code from iPhone
     //
     
     case AppOpened

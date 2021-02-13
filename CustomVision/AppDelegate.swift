@@ -24,6 +24,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }   
             return true
     }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        Analytics.logEvent("se3_shortcut_selected", parameters: [
+            "os_version": UIDevice.current.systemVersion,
+            "interface": "shortcut"
+        ])
+        
+        let navigationController = window?.rootViewController as! UINavigationController
+        let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
+        let mcReaderViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
+        let siriShortcut = SiriShortcut(dictionary: userActivity.userInfo! as NSDictionary)
+        mcReaderViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: siriShortcut.action)!]
+        let inputs = SiriShortcut.getInputs(action: Action(rawValue: siriShortcut.action)!)
+        mcReaderViewController.inputAlphanumeric = inputs["inputAlphanumeric"]
+        mcReaderViewController.inputMorseCode = inputs["inputMorseCode"]
+        mcReaderViewController.inputMCExplanation = inputs["inputMCExplanation"]
+        navigationController.pushViewController(mcReaderViewController, animated: true)
+     //   self.window?.makeKeyAndVisible() //This assumes root view controller is VisionMLViewController
+        
+        return true
+    }
 
 }
 

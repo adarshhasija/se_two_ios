@@ -175,8 +175,8 @@ class HapticManager {
         let sharpness : Float = 1.0
         let intensity : Float = 1.0
         //For dash, a longer ping
-        let duration = TimeInterval(0.5)
-        let hapticDash = CHHapticEvent(eventType: .hapticTransient, parameters: [
+        let duration = TimeInterval(0.25)
+        let hapticDash = CHHapticEvent(eventType: .hapticContinuous, parameters: [
             CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness),
             CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
         ], relativeTime: 0, duration: duration)

@@ -13,6 +13,7 @@
 		31108A91254808B9009E3DF1 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		31108A9825482EC6009E3DF1 /* ActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B61BC625336C6C00237602 /* ActionsCell.swift */; };
 		31108AA025483493009E3DF1 /* ActionsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31108A9F25483493009E3DF1 /* ActionsListCell.swift */; };
+		311AEE3125D81BAA00E018FE /* SiriShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311AEE3025D81BAA00E018FE /* SiriShortcut.swift */; };
 		3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */; };
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
@@ -155,6 +156,7 @@
 		310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryRowController.swift; sourceTree = "<group>"; };
 		310D954F24B1C0BF00936A27 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		31108A9F25483493009E3DF1 /* ActionsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsListCell.swift; sourceTree = "<group>"; };
+		311AEE3025D81BAA00E018FE /* SiriShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcut.swift; sourceTree = "<group>"; };
 		3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeEditorViewController.swift; sourceTree = "<group>"; };
 		313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDTouchView.swift; sourceTree = "<group>"; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
@@ -480,6 +482,7 @@
 				3163718524B09026006E4F4E /* UIView.swift */,
 				310D954F24B1C0BF00936A27 /* UIFont.swift */,
 				317C71332540AFE100E6800B /* LibraryCustomActions.swift */,
+				311AEE3025D81BAA00E018FE /* SiriShortcut.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -873,6 +876,7 @@
 				3193F411253F6E45004940AE /* MCReaderButtonsViewController.swift in Sources */,
 				31108AA025483493009E3DF1 /* ActionsListCell.swift in Sources */,
 				31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */,
+				311AEE3125D81BAA00E018FE /* SiriShortcut.swift in Sources */,
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */,
 				31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */,
