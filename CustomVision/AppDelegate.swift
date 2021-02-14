@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ])
         
         let navigationController = window?.rootViewController as! UINavigationController
+        navigationController.popToRootViewController(animated: false) //Pop everything. We do not want an endless list of controllers
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let mcReaderViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
         let siriShortcut = SiriShortcut(dictionary: userActivity.userInfo! as NSDictionary)

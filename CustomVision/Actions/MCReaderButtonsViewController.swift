@@ -40,9 +40,11 @@ class MCReaderButtonsViewController : UIViewController {
     @IBOutlet weak var visuallyImpairedLabel: UILabel!
     @IBOutlet weak var playAudioButton: UIButton!
     @IBOutlet weak var deafBlindLabel: UILabel!
+    @IBOutlet weak var appleWatchImageView: UIImageView!
     @IBOutlet weak var scrollMCLabel: UILabel!
     @IBOutlet weak var mcExplanationLabel: UILabel! //Explanation of the dots and dashes screen. In the case of date and time
     var siriButton : INUIAddVoiceShortcutButton!
+    var backTapLabels : [UILabel] = []
 
     
     @IBAction func playAudioButtonTapped(_ sender: Any) {
@@ -84,14 +86,18 @@ class MCReaderButtonsViewController : UIViewController {
             alphanumericLabel?.textColor = .none
             morseCodeLabel?.textColor = .none
             morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
-            mcExplanationLabel.isHidden = false
+            //mcExplanationLabel.isHidden = false
             currentActivityLabel.text = ""
-            currentActivityLabel.isHidden = true
-            visuallyImpairedLabel.isHidden = false
-            playAudioButton.isHidden = false
-            deafBlindLabel.isHidden = false
+            currentActivityLabel.text = "Long press to autoplay"
+            //visuallyImpairedLabel.isHidden = false
+            //playAudioButton.isHidden = false
+            //deafBlindLabel.isHidden = false
+            appleWatchImageView.isHidden = false
             scrollMCLabel.isHidden = false
             siriButton.isHidden = false
+            for backTapLabel in backTapLabels {
+                backTapLabel.isHidden = false
+            }
         }
     }
     
@@ -106,8 +112,12 @@ class MCReaderButtonsViewController : UIViewController {
         visuallyImpairedLabel.isHidden = true
         playAudioButton.isHidden = true
         deafBlindLabel.isHidden = true
+        appleWatchImageView.isHidden = true
         scrollMCLabel.isHidden = true
         siriButton.isHidden = true
+        for backTapLabel in backTapLabels {
+            backTapLabel.isHidden = true
+        }
         let autoPlayTxt = "Autoplaying morse code...\nLong press to stop"
         currentActivityLabel.text = autoPlayTxt
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
@@ -128,7 +138,9 @@ class MCReaderButtonsViewController : UIViewController {
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isWatchAppInstalled {
-                scrollMCLabel.text = "Want to scroll through the vibrations one by one? You can do so using the digital crown on your Apple Watch.\nOpen your watch app and select Get From iPhone\n"
+                appleWatchImageView.image = UIImage(named: "AppleWatchTransparent")
+                appleWatchImageView.isHidden = false
+                scrollMCLabel.text = "You can scroll through the vibrations 1 by 1 using the Digital Crown on your Apple Watch.\nOpen your watch app and select Get From iPhone\n"
                 scrollMCLabel.isHidden = false
             }
         }
@@ -362,15 +374,18 @@ class MCReaderButtonsViewController : UIViewController {
             return
         }
         //Back tap is only supported on iPhone 8 and above
-        let backTapLabel = UILabel()
-                backTapLabel.text = "After creating the shortcut, we strong encourage that you attach the shortcut to the Back Tap functionality.\nYou can find this under the Settings app -> Accessibility -> Touch -> Back Tap"
-        backTapLabel.textAlignment = .center
-        backTapLabel.lineBreakMode = .byWordWrapping
-        backTapLabel.numberOfLines = 0
-        backTapLabel.font = backTapLabel.font.withSize(12)
-        view.insertArrangedSubview(backTapLabel, at: view.arrangedSubviews.count)
-        
-        
+        let txt = "After creating the shortcut, we strong encourage that you attach the shortcut to the Back Tap functionality.You can find this under the Settings app -> Accessibility -> Touch -> Back Tap"
+        let sentences = txt.split(separator: ".") //Doing this to ensure blind can move over 1 sentence at a time via VoiceOver
+        for sentence in sentences {
+            let backTapLabel = UILabel()
+            backTapLabel.text = String(sentence)
+            backTapLabel.textAlignment = .center
+            backTapLabel.lineBreakMode = .byWordWrapping
+            backTapLabel.numberOfLines = 0
+            backTapLabel.font = backTapLabel.font.withSize(12)
+            view.insertArrangedSubview(backTapLabel, at: view.arrangedSubviews.count)
+            backTapLabels.append(backTapLabel)
+        }
     }
     
     func modelIdentifier() -> String {

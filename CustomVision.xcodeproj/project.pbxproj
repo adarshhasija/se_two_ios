@@ -22,6 +22,7 @@
 		3142C8A72496390700B1257B /* MCDictionaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */; };
 		3142C8A92496694500B1257B /* MCDictionaryDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8A82496694500B1257B /* MCDictionaryDetailController.swift */; };
 		315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315A776523EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift */; };
+		315BF11025D94CF600A315FC /* SiriShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311AEE3025D81BAA00E018FE /* SiriShortcut.swift */; };
 		3163718624B09026006E4F4E /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3163718524B09026006E4F4E /* UIView.swift */; };
 		316BA194246D78F000869C89 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316BA193246D78F000869C89 /* UITextField.swift */; };
 		3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172732C247662FC003538F8 /* SettingsTableViewController.swift */; };
@@ -827,6 +828,7 @@
 				31EC882623467A600088051C /* MorseCode.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
 				31B61BC5253369AE00237602 /* ActionsListController.swift in Sources */,
+				315BF11025D94CF600A315FC /* SiriShortcut.swift in Sources */,
 				310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */,
 				31B5A84723435F8300196E96 /* MorseCodeCell.swift in Sources */,
 				31D97F9C23BA7936000CFCF2 /* SettingDBController.swift in Sources */,
