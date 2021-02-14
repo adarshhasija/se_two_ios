@@ -12,23 +12,30 @@ class SiriShortcut {
     
     static var shortcutsDictionary : [Action : SiriShortcut] =
             [
-                Action.TIME : SiriShortcut(
-                                        title: "Get the time in vibrations",
-                                        action: Action.TIME.rawValue,
-                                        invocation: "Get the current time in vibrations",
-                                        activityType: "com.starsearth.three.getTimeIntent"
+                Action.TIME : SiriShortcut(dictionary:
+                                            [
+                                            "title": "Get the time in vibrations",
+                                            "action": Action.TIME.rawValue,
+                                            "invocation": "Get the current time in vibrations",
+                                            "activityType": "com.starsearth.three.getTimeIntent"
+                                            ]
                                     ),
-                Action.DATE : SiriShortcut(
-                                        title: "Get the date in vibrations",
-                                        action: Action.DATE.rawValue,
-                                        invocation: "Get the date and day of the week in vibrations",
-                                        activityType: "com.starsearth.three.getDateDayOfWeekIntent"
+                Action.DATE : SiriShortcut(dictionary:
+                                            [
+                                                "title": "Get the date in vibrations",
+                                                "action": Action.DATE.rawValue,
+                                                "invocation": "Get the date and day of the week in vibrations",
+                                                "activityType": "com.starsearth.three.getDateDayOfWeekIntent"
+                                            ]
                                     ),
-                Action.CAMERA_OCR : SiriShortcut(
-                                        title: "Open the camera",
-                                        action: Action.CAMERA_OCR.rawValue,
-                                        invocation: "Get the text from the camera feed and read the text using vibrations",
-                                        activityType: "com.starsearth.three.getCameraIntent"
+                Action.CAMERA_OCR : SiriShortcut(dictionary:
+                                            [
+                                                "title": "Open the camera for text",
+                                                "action": Action.CAMERA_OCR.rawValue,
+                                                "invocation": "Get the text from the camera feed and read the text using vibrations",
+                                                "activityType": "com.starsearth.three.getCameraIntent",
+                                                "messageOnOpen": "Point your camera at the text\nWe will try to read it"
+                                            ]
                                     )
             ]
     
@@ -45,29 +52,32 @@ class SiriShortcut {
     var action: String
     var invocation: String
     var activityType: String
+    var messageOnOpen: String?
     var dictionary: [String: Any] {
         return [
                 "title": title,
                 "action": action,
                 "invocation": invocation,
-                "activity_type": activityType
+                "activity_type": activityType,
+                "messageOnOpen": messageOnOpen
         ]
     }
     var nsDictionary: NSDictionary {
         return dictionary as NSDictionary
     }
     
-    init(title: String, action: String, invocation: String, activityType: String) {
+ /*   init(title: String, action: String, invocation: String, activityType: String) {
         self.title = title
         self.action = action
         self.invocation = invocation
         self.activityType = activityType
-    }
+    }   */
     
     init(dictionary: NSDictionary) {
         self.title = dictionary["title"] as? String ?? "Get the current time in vibrations"
         self.action = dictionary["action"] as? String ?? "TIME"
         self.invocation = dictionary["invocation"] as? String ?? "Get time in vibrations"
         self.activityType = dictionary["activity_type"] as? String ?? "com.starsearth.three.getTimeIntent"
+        self.messageOnOpen = dictionary["message_on_open"] as? String
     }
 }

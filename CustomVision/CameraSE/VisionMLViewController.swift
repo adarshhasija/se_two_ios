@@ -19,17 +19,7 @@ let synth = AVSpeechSynthesizer()
 
 class VisionMLViewController: UIViewController {
     
-    public var shortcutListItem: ShortcutListItem = ShortcutListItem(
-        question: "What does this text say?",
-        messageOnOpen: "Point your camera at the door\nWe will get the text",
-        activityType: "com.starsearth.three.tellSignIntent",
-        isUsingFirebase: true,
-        isTextDetection: true,
-        isLabelDetection: false,
-        isYesNo: false,
-        textForYesNo: nil
-    )
-    
+    public var siriShortcut : SiriShortcut? = nil
     var delegate : WhiteSpeechViewControllerProtocol? = nil
     var delegateActions : ActionsMCViewControllerProtocol? = nil
     var delegateActionsTable : ActionsTableViewControllerProtocol? = nil
@@ -155,7 +145,7 @@ class VisionMLViewController: UIViewController {
     }
   
   override func viewDidAppear(_ animated: Bool) {
-    //addSiriButton(to: stackView)
+    if siriShortcut != nil { addSiriButton(shortcut: siriShortcut!, to: stackView) }
     
     bubbleLayer.opacity = 0.0
     bubbleLayer.position.x = self.view.frame.width / 2.0
@@ -167,7 +157,7 @@ class VisionMLViewController: UIViewController {
         case .authorized: // The user has previously granted access to the camera.
             //self.setupCaptureSession()
             setupCamera()
-            addInstructionsTextLabel(text: shortcutListItem.messageOnOpen, to: stackView)
+            addInstructionsTextLabel(text: self.siriShortcut?.messageOnOpen, to: stackView)
             break
         
         case .notDetermined: // The user has not yet been asked for camera access.
@@ -175,7 +165,7 @@ class VisionMLViewController: UIViewController {
                 if granted {
                     DispatchQueue.main.async {
                         self.setupCamera()
-                        self.addInstructionsTextLabel(text: self.shortcutListItem.messageOnOpen, to: self.stackView)
+                        self.addInstructionsTextLabel(text: self.siriShortcut?.messageOnOpen, to: self.stackView)
                     }
                 }
                 else {
@@ -233,7 +223,7 @@ class VisionMLViewController: UIViewController {
         if synth.isSpeaking {
             synth.stopSpeaking(at: .immediate)
         }
-        sayThis(string: shortcutListItem.messageOnOpen)
+        sayThis(string: siriShortcut?.messageOnOpen ?? "")
     }
     
     
@@ -486,34 +476,38 @@ extension VisionMLViewController {
     //Siri Shortcuts
     
     //Using acitivites instead of intents as Siri opens app directly for activity. For intents, it shows button to open app, which we do not want s
-    func createActivityForQuestion(shortcutListItem: ShortcutListItem) -> NSUserActivity {
-        let activity = NSUserActivity(activityType: shortcutListItem.activityType)
-        activity.title = shortcutListItem.question
-        activity.userInfo = shortcutListItem.dictionary
-        activity.suggestedInvocationPhrase = shortcutListItem.question
+    func createActivityForQuestion(siriShortcut: SiriShortcut) -> NSUserActivity {
+        let activity = NSUserActivity(activityType: siriShortcut.activityType)
+        activity.title = siriShortcut.title
+        activity.userInfo = siriShortcut.dictionary
+        activity.suggestedInvocationPhrase = siriShortcut.invocation
+        activity.persistentIdentifier = siriShortcut.activityType
         activity.isEligibleForSearch = true
         activity.isEligibleForPrediction = true
-        activity.persistentIdentifier = shortcutListItem.activityType
         view.userActivity = activity
         activity.becomeCurrent()
         return activity
     }
     
     // Add an "Add to Siri" button to a view.
-    func addSiriButton(to view: UIView) {
+    func addSiriButton(shortcut: SiriShortcut, to view: UIView) {
         let button = INUIAddVoiceShortcutButton(style: .blackOutline)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = true
-        let activity = createActivityForQuestion(shortcutListItem: shortcutListItem)
+        let activity = createActivityForQuestion(siriShortcut: shortcut)
         button.shortcut = INShortcut(userActivity: activity)
         button.delegate = self
         
         view.addSubview(button)
         view.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
         view.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
+        guard let sV = view as? UIStackView else {
+            return
+        }
+        //sV.insertArrangedSubview(button, at: sV.arrangedSubviews.count)
     }
     
-    func addInstructionsTextLabel(text : String, to view: UIView) {
+    func addInstructionsTextLabel(text : String?, to view: UIView) {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 21))
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = NSTextAlignment.center
@@ -523,9 +517,9 @@ extension VisionMLViewController {
         label.lineBreakMode = .byWordWrapping
         label.text = text
         label.font = UIFont.preferredFont(forTextStyle: .body)
-        self.view.addSubview(label)
-        view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
-        view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
+        //self.view.addSubview(label)
+        //view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
+        //view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraintEqualToSystemSpacingAfter(view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraintEqualToSystemSpacingAfter(view.trailingAnchor, multiplier: 1)
@@ -623,7 +617,7 @@ extension VisionMLViewController: INUIAddVoiceShortcutButtonDelegate {
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "add",
-            "question": shortcutListItem.question.prefix(100)
+            "action": siriShortcut?.action.prefix(100)
             ])
         
         addVoiceShortcutViewController.delegate = self
@@ -636,7 +630,7 @@ extension VisionMLViewController: INUIAddVoiceShortcutButtonDelegate {
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "edit",
-            "question": shortcutListItem.question.prefix(100)
+            "action": siriShortcut?.action.prefix(100)
             ])
         
         editVoiceShortcutViewController.delegate = self
@@ -653,7 +647,7 @@ extension VisionMLViewController: INUIAddVoiceShortcutViewControllerDelegate {
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "add",
-            "question": shortcutListItem.question.prefix(100)
+            "action": siriShortcut?.action.prefix(100)
             ])
         dismiss(animated: true, completion: nil)
     }
@@ -663,7 +657,7 @@ extension VisionMLViewController: INUIAddVoiceShortcutViewControllerDelegate {
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "add",
-            "question": shortcutListItem.question.prefix(100)
+            "action": siriShortcut?.action.prefix(100)
             ])
         
         dismiss(animated: true, completion: nil)
@@ -678,7 +672,7 @@ extension VisionMLViewController : INUIEditVoiceShortcutViewControllerDelegate {
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "edit",
-            "question": shortcutListItem.question.prefix(100)
+            "action": siriShortcut?.action.prefix(100)
             ])
         
         dismiss(animated: true, completion: nil)
@@ -689,7 +683,7 @@ extension VisionMLViewController : INUIEditVoiceShortcutViewControllerDelegate {
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "edit",
-            "question": shortcutListItem.question.prefix(100)
+            "action": siriShortcut?.action.prefix(100)
             ])
         
         dismiss(animated: true, completion: nil)

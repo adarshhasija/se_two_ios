@@ -33,15 +33,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let navigationController = window?.rootViewController as! UINavigationController
         navigationController.popToRootViewController(animated: false) //Pop everything. We do not want an endless list of controllers
-        let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
-        let mcReaderViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
+        
         let siriShortcut = SiriShortcut(dictionary: userActivity.userInfo! as NSDictionary)
-        mcReaderViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: siriShortcut.action)!]
-        let inputs = SiriShortcut.getInputs(action: Action(rawValue: siriShortcut.action)!)
-        mcReaderViewController.inputAlphanumeric = inputs["inputAlphanumeric"]
-        mcReaderViewController.inputMorseCode = inputs["inputMorseCode"]
-        mcReaderViewController.inputMCExplanation = inputs["inputMCExplanation"]
-        navigationController.pushViewController(mcReaderViewController, animated: true)
+        if Action(rawValue: siriShortcut.action)! == Action.CAMERA_OCR {
+            let storyBoard : UIStoryboard = UIStoryboard(name: "MainVision", bundle:nil)
+                    let visionMLViewController = storyBoard.instantiateViewController(withIdentifier: "VisionMLViewController") as! VisionMLViewController
+                    visionMLViewController.siriShortcut = siriShortcut
+                    navigationController.pushViewController(visionMLViewController, animated: true)
+        }
+        else {
+            let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
+                    let mcReaderViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
+            mcReaderViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: siriShortcut.action)!]
+            let inputs = SiriShortcut.getInputs(action: Action(rawValue: siriShortcut.action)!)
+            mcReaderViewController.inputAlphanumeric = inputs["inputAlphanumeric"]
+            mcReaderViewController.inputMorseCode = inputs["inputMorseCode"]
+            mcReaderViewController.inputMCExplanation = inputs["inputMCExplanation"]
+            navigationController.pushViewController(mcReaderViewController, animated: true)
+        }
+        
      //   self.window?.makeKeyAndVisible() //This assumes root view controller is VisionMLViewController
         
         return true

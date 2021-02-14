@@ -75,6 +75,7 @@ class ActionsTableViewController : UITableViewController {
     private func openCamera() {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MainVision", bundle:nil)
         let visionMLViewController = storyBoard.instantiateViewController(withIdentifier: "VisionMLViewController") as! VisionMLViewController
+        visionMLViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action.CAMERA_OCR]
         visionMLViewController.delegateActionsTable = self
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         //self.navigationController?.present(visionMLViewController, animated: true, completion: nil)
