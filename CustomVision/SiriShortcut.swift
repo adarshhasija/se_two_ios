@@ -17,7 +17,7 @@ class SiriShortcut {
                                             "title": "Get the time in vibrations",
                                             "action": Action.TIME.rawValue,
                                             "invocation": "Get the current time in vibrations",
-                                            "activityType": "com.starsearth.three.getTimeIntent"
+                                            "activity_type": "com.starsearth.three.getTimeIntent"
                                             ]
                                     ),
                 Action.DATE : SiriShortcut(dictionary:
@@ -25,7 +25,7 @@ class SiriShortcut {
                                                 "title": "Get the date in vibrations",
                                                 "action": Action.DATE.rawValue,
                                                 "invocation": "Get the date and day of the week in vibrations",
-                                                "activityType": "com.starsearth.three.getDateDayOfWeekIntent"
+                                                "activity_type": "com.starsearth.three.getDateDayOfWeekIntent"
                                             ]
                                     ),
                 Action.CAMERA_OCR : SiriShortcut(dictionary:
@@ -33,8 +33,8 @@ class SiriShortcut {
                                                 "title": "Open the camera for text",
                                                 "action": Action.CAMERA_OCR.rawValue,
                                                 "invocation": "Get the text from the camera feed and read the text using vibrations",
-                                                "activityType": "com.starsearth.three.getCameraIntent",
-                                                "messageOnOpen": "Point your camera at the text\nWe will try to read it"
+                                                "activity_type": "com.starsearth.three.getCameraIntent",
+                                                "message_on_open": "Point your camera at the text\nWe will try to read it"
                                             ]
                                     )
             ]
@@ -59,7 +59,7 @@ class SiriShortcut {
                 "action": action,
                 "invocation": invocation,
                 "activity_type": activityType,
-                "messageOnOpen": messageOnOpen
+                "message_on_open": messageOnOpen
         ]
     }
     var nsDictionary: NSDictionary {
