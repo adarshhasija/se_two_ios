@@ -282,7 +282,7 @@
                                 <rect key="frame" x="16" y="44" width="288" height="524"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y3U-tb-ggf">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="125.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="75.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdv-Kb-sRM">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="23.5"/>
@@ -335,21 +335,8 @@ Long Press to autoplay vibrations
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kc9-R4-7Le">
-                                                <rect key="frame" x="119" y="75.5" width="50" height="50"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="1Xn-lP-gsH"/>
-                                                    <constraint firstAttribute="width" constant="50" id="Ji9-JB-2b8"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iko-Sp-hvm" userLabel="Scroll MC on Apple Watch Label">
-                                                <rect key="frame" x="0.0" y="125.5" width="288" height="0.0"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exmplanation of Morse Code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXH-ww-zU0">
-                                                <rect key="frame" x="0.0" y="125.5" width="288" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="75.5" width="288" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -358,12 +345,10 @@ Long Press to autoplay vibrations
                                         <constraints>
                                             <constraint firstItem="cXH-ww-zU0" firstAttribute="leading" secondItem="Y3U-tb-ggf" secondAttribute="leading" id="8pp-QN-uaA"/>
                                             <constraint firstItem="WSh-G6-6AY" firstAttribute="leading" secondItem="Y3U-tb-ggf" secondAttribute="leading" id="K5H-eX-2rd"/>
-                                            <constraint firstAttribute="trailing" secondItem="Iko-Sp-hvm" secondAttribute="trailing" id="L1W-Sb-mdC"/>
                                             <constraint firstItem="sdv-Kb-sRM" firstAttribute="leading" secondItem="Y3U-tb-ggf" secondAttribute="leading" id="T6Q-9q-cIO"/>
                                             <constraint firstAttribute="trailing" secondItem="WSh-G6-6AY" secondAttribute="trailing" id="UHv-81-LDd"/>
                                             <constraint firstAttribute="trailing" secondItem="cXH-ww-zU0" secondAttribute="trailing" id="YYF-Hi-S07"/>
                                             <constraint firstItem="Gfl-xv-m4i" firstAttribute="top" secondItem="WSh-G6-6AY" secondAttribute="bottom" constant="100" id="c2Z-YN-VuX"/>
-                                            <constraint firstItem="Iko-Sp-hvm" firstAttribute="leading" secondItem="Y3U-tb-ggf" secondAttribute="leading" id="kAS-Ca-uRS"/>
                                             <constraint firstAttribute="trailing" secondItem="sdv-Kb-sRM" secondAttribute="trailing" id="kV0-0T-Kbh"/>
                                         </constraints>
                                     </stackView>
@@ -379,14 +364,43 @@ Long Press to autoplay vibrations
                                 <viewLayoutGuide key="contentLayoutGuide" id="JGK-Ed-IPN"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="tIO-xU-LEv"/>
                             </scrollView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vu2-4A-M8E">
+                                <rect key="frame" x="36" y="184" width="248" height="200"/>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nY7-i4-Baw">
+                                <rect key="frame" x="36" y="498" width="248" height="50"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kc9-R4-7Le">
+                                        <rect key="frame" x="99" y="0.0" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="1Xn-lP-gsH"/>
+                                            <constraint firstAttribute="width" constant="50" id="Ji9-JB-2b8"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iko-Sp-hvm" userLabel="Scroll MC on Apple Watch Label">
+                                        <rect key="frame" x="124" y="0.0" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="4iX-QT-oJS" firstAttribute="leading" secondItem="8XU-MZ-Eu9" secondAttribute="leadingMargin" id="0I1-49-PLC"/>
+                            <constraint firstItem="Vu2-4A-M8E" firstAttribute="leading" secondItem="8XU-MZ-Eu9" secondAttribute="leadingMargin" constant="20" id="0ep-oR-1Bk"/>
+                            <constraint firstItem="nY7-i4-Baw" firstAttribute="leading" secondItem="8XU-MZ-Eu9" secondAttribute="leadingMargin" constant="20" id="JTl-Dg-cXF"/>
                             <constraint firstItem="4iX-QT-oJS" firstAttribute="top" secondItem="DH8-Ce-ce9" secondAttribute="bottom" id="YG4-ks-ogH"/>
-                            <constraint firstItem="shr-8i-E6L" firstAttribute="top" secondItem="4iX-QT-oJS" secondAttribute="bottom" id="b3r-W2-zvn"/>
+                            <constraint firstItem="shr-8i-E6L" firstAttribute="top" secondItem="4iX-QT-oJS" secondAttribute="bottom" id="adI-ez-ubZ"/>
+                            <constraint firstItem="nY7-i4-Baw" firstAttribute="centerX" secondItem="8XU-MZ-Eu9" secondAttribute="centerX" id="fZb-fQ-TPU"/>
+                            <constraint firstItem="Vu2-4A-M8E" firstAttribute="centerY" secondItem="8XU-MZ-Eu9" secondAttribute="centerY" id="fr5-hP-qoo"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4iX-QT-oJS" secondAttribute="trailing" id="g6e-IH-dlN"/>
+                            <constraint firstItem="Vu2-4A-M8E" firstAttribute="centerX" secondItem="8XU-MZ-Eu9" secondAttribute="centerX" id="ggd-fg-2oF"/>
+                            <constraint firstItem="shr-8i-E6L" firstAttribute="top" secondItem="nY7-i4-Baw" secondAttribute="bottom" constant="20" id="lyt-ao-xb9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="nY7-i4-Baw" secondAttribute="trailing" constant="20" id="vhR-iP-rmr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Vu2-4A-M8E" secondAttribute="trailing" constant="20" id="z2O-kG-LV8"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="nD9-B0-sM6" appends="YES" id="MIW-tQ-THO"/>
@@ -399,6 +413,7 @@ Long Press to autoplay vibrations
                         <outlet property="currentActivityLabel" destination="Gfl-xv-m4i" id="6yH-dT-DNN"/>
                         <outlet property="deafBlindLabel" destination="YZ3-iU-38b" id="k9q-9H-Yqv"/>
                         <outlet property="mcExplanationLabel" destination="cXH-ww-zU0" id="2kk-1L-O6q"/>
+                        <outlet property="middleStackView" destination="Vu2-4A-M8E" id="vbU-CT-aI3"/>
                         <outlet property="morseCodeLabel" destination="WSh-G6-6AY" id="gnJ-0I-Qf4"/>
                         <outlet property="playAudioButton" destination="HcV-5U-9zN" id="vJ8-jn-sIY"/>
                         <outlet property="scrollMCLabel" destination="Iko-Sp-hvm" id="XyB-90-QbS"/>

@@ -38,6 +38,7 @@ class MCReaderButtonsViewController : UIViewController {
     @IBOutlet weak var morseCodeLabel: UILabel!
     @IBOutlet weak var currentActivityLabel: UILabel!
     @IBOutlet weak var visuallyImpairedLabel: UILabel!
+    @IBOutlet weak var middleStackView: UIStackView!
     @IBOutlet weak var playAudioButton: UIButton!
     @IBOutlet weak var deafBlindLabel: UILabel!
     @IBOutlet weak var appleWatchImageView: UIImageView!
@@ -146,7 +147,7 @@ class MCReaderButtonsViewController : UIViewController {
         }
         mcExplanationLabel.text = inputMCExplanation
         mcExplanationLabel.isHidden = inputMCExplanation != nil ? false : true
-        if siriShortcut != nil { addSiriButton(shortcutForButton: siriShortcut!, to: stackViewMain) }
+        if siriShortcut != nil { addSiriButton(shortcutForButton: siriShortcut!, to: middleStackView) }
         alphanumericStringIndex = -1
         morseCodeStringIndex = -1
         morseCodeAutoPlay(direction: "right")
