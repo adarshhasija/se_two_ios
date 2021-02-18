@@ -115,7 +115,7 @@ class MCReaderButtonsViewController : UIViewController {
         deafBlindLabel.isHidden = true
         appleWatchImageView.isHidden = true
         scrollMCLabel.isHidden = true
-        siriButton.isHidden = true
+        siriButton?.isHidden = true
         for backTapLabel in backTapLabels {
             backTapLabel.isHidden = true
         }
