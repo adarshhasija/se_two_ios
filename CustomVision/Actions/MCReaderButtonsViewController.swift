@@ -119,7 +119,7 @@ class MCReaderButtonsViewController : UIViewController {
         for backTapLabel in backTapLabels {
             backTapLabel.isHidden = true
         }
-        let autoPlayTxt = "Autoplaying morse code...\nLong press to stop"
+        let autoPlayTxt = "Autoplaying vibrrations...\nLong press to stop"
         currentActivityLabel.text = autoPlayTxt
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
         autoPlayTxt);
