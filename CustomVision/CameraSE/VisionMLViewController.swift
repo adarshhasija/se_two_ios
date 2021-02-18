@@ -47,7 +47,9 @@ class VisionMLViewController: UIViewController {
   @IBOutlet weak var stackView: UIStackView!
   @IBOutlet weak var lowerView: UIView!
   
-  var previewLayer: AVCaptureVideoPreviewLayer!
+    @IBOutlet weak var middleStackView: UIStackView!
+    @IBOutlet weak var bottomStackView: UIStackView!
+    var previewLayer: AVCaptureVideoPreviewLayer!
   let bubbleLayer = BubbleLayer(string: "")
   
   let queue = DispatchQueue(label: "videoQueue")
@@ -56,6 +58,7 @@ class VisionMLViewController: UIViewController {
   let videoOutput = AVCaptureVideoDataOutput()
   var unknownCounter = 0 // used to track how many unclassified images in a row
   let confidence: Float = 0.7
+    var backTapLabels : [UILabel] = []
   
   // MARK: Load the Model
   let targetImageSize = CGSize(width: 227, height: 227) // must match model data input
@@ -145,7 +148,7 @@ class VisionMLViewController: UIViewController {
     }
   
   override func viewDidAppear(_ animated: Bool) {
-    if siriShortcut != nil { addSiriButton(shortcut: siriShortcut!, to: stackView) }
+    if siriShortcut != nil { addSiriButton(shortcut: siriShortcut!, to: middleStackView) }
     
     bubbleLayer.opacity = 0.0
     bubbleLayer.position.x = self.view.frame.width / 2.0
@@ -157,7 +160,7 @@ class VisionMLViewController: UIViewController {
         case .authorized: // The user has previously granted access to the camera.
             //self.setupCaptureSession()
             setupCamera()
-            addInstructionsTextLabel(text: self.siriShortcut?.messageOnOpen, to: stackView)
+            addInstructionsTextLabel(text: self.siriShortcut?.messageOnOpen, to: bottomStackView)
             break
         
         case .notDetermined: // The user has not yet been asked for camera access.
@@ -165,12 +168,12 @@ class VisionMLViewController: UIViewController {
                 if granted {
                     DispatchQueue.main.async {
                         self.setupCamera()
-                        self.addInstructionsTextLabel(text: self.siriShortcut?.messageOnOpen, to: self.stackView)
+                        self.addInstructionsTextLabel(text: self.siriShortcut?.messageOnOpen, to: self.bottomStackView)
                     }
                 }
                 else {
                     DispatchQueue.main.async {
-                        self.addInstructionsTextLabel(text: "You have not given camera permission\nYou need to go to the Settings app to do so", to: self.stackView)
+                        self.addInstructionsTextLabel(text: "You have not given camera permission\nYou need to go to the Settings app to do so", to: self.bottomStackView)
                     }
                     
                 }
@@ -179,32 +182,32 @@ class VisionMLViewController: UIViewController {
         case .denied: // The user has previously denied access. Therefore requestAccess does not work here. It only returns false
             //UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!) //This opens the Settings app so user can turn the Camera permission ON again. However, we are not using this right now over doubts that Apple could reject the update in future
             DispatchQueue.main.async {
-                self.addInstructionsTextLabel(text: "You have not given camera permission\nYou need to go to the Settings app to do so", to: self.stackView)
+                self.addInstructionsTextLabel(text: "You have not given camera permission\nYou need to go to the Settings app to do so", to: self.bottomStackView)
             }
             return
 
         case .restricted: // The user can't grant access due to restrictions.
             DispatchQueue.main.async {
-                self.addInstructionsTextLabel(text: "You cannot access the camera due to restrictions on your device", to: self.stackView)
+                self.addInstructionsTextLabel(text: "You cannot access the camera due to restrictions on your device", to: self.bottomStackView)
             }
             return
     }
     
    /* if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) ==  AVAuthorizationStatus.authorized {
         // Already Authorized
-        addInstructionsTextLabel(text: shortcutListItem.messageOnOpen, to: stackView)
+        addInstructionsTextLabel(text: shortcutListItem.messageOnOpen, to: bottomStackView)
     } else {
-        //addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: stackView)
+        //addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: bottomStackView)
         AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted: Bool) -> Void in
            if granted == true {
                print("*******YES**********")
                // User granted
                //self.setupCamera()
-                //self.addInstructionsTextLabel(text: self.shortcutListItem.messageOnOpen, to: self.stackView)
+                //self.addInstructionsTextLabel(text: self.shortcutListItem.messageOnOpen, to: self.bottomStackView)
            } else {
                print("********NO***********")
                // User rejected
-                //self.addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: self.stackView)
+                //self.addInstructionsTextLabel(text: "You have not given camera permission\nPlease go to settings to give permission", to: self.bottomStackView)
            }
        })
     }   */
@@ -498,13 +501,39 @@ extension VisionMLViewController {
         button.shortcut = INShortcut(userActivity: activity)
         button.delegate = self
         
-        view.addSubview(button)
-        view.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
-        view.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
+        //view.addSubview(button)
+        //view.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
+        //view.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
         guard let sV = view as? UIStackView else {
             return
         }
-        //sV.insertArrangedSubview(button, at: sV.arrangedSubviews.count)
+        sV.insertArrangedSubview(button, at: sV.arrangedSubviews.count)
+        
+        let model = modelIdentifier()
+        let doesNotSupportBackTap = model.split(separator: ",")[0].contains("6") || model.split(separator: ",")[0].contains("5") //Do not need to check lower than 5 as those devices are not supported by latest OS
+        guard doesNotSupportBackTap == false else {
+            return
+        }
+        //Back tap is only supported on iPhone 8 and above
+        let txt = "After creating the shortcut, we strong encourage that you attach the shortcut to the Back Tap functionality.You can find this under the Settings app -> Accessibility -> Touch -> Back Tap"
+        let sentences = txt.split(separator: ".") //Doing this to ensure blind can move over 1 sentence at a time via VoiceOver
+        for sentence in sentences {
+            let backTapLabel = UILabel()
+            backTapLabel.text = String(sentence)
+            backTapLabel.textAlignment = .center
+            backTapLabel.lineBreakMode = .byWordWrapping
+            backTapLabel.numberOfLines = 0
+            backTapLabel.font = backTapLabel.font.withSize(12)
+            sV.insertArrangedSubview(backTapLabel, at: sV.arrangedSubviews.count)
+            backTapLabels.append(backTapLabel)
+        }
+    }
+    
+    func modelIdentifier() -> String {
+        if let simulatorModelIdentifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] { return simulatorModelIdentifier }
+        var sysinfo = utsname()
+        uname(&sysinfo) // ignore return value
+        return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
     }
     
     func addInstructionsTextLabel(text : String?, to view: UIView) {
@@ -517,9 +546,9 @@ extension VisionMLViewController {
         label.lineBreakMode = .byWordWrapping
         label.text = text
         label.font = UIFont.preferredFont(forTextStyle: .body)
-        //self.view.addSubview(label)
-        //view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
-        //view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
+        self.view.addSubview(label)
+        view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
+        view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraintEqualToSystemSpacingAfter(view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraintEqualToSystemSpacingAfter(view.trailingAnchor, multiplier: 1)

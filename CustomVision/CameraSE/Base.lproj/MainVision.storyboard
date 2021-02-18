@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oYg-pF-LpF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oYg-pF-LpF">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -49,9 +50,18 @@
                                     </visualEffectView>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jar-7B-FvL">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mqL-ST-9kk">
+                                                <rect key="frame" x="20" y="107" width="374" height="200"/>
+                                            </stackView>
+                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="mqL-ST-9kk" firstAttribute="centerX" secondItem="jar-7B-FvL" secondAttribute="centerX" id="3SR-C4-ehq"/>
                                             <constraint firstAttribute="width" secondItem="jar-7B-FvL" secondAttribute="height" multiplier="1:1" id="JYE-uI-Qfx"/>
+                                            <constraint firstItem="mqL-ST-9kk" firstAttribute="leading" secondItem="jar-7B-FvL" secondAttribute="leading" constant="20" id="Rsw-dO-UU2"/>
+                                            <constraint firstAttribute="bottom" secondItem="mqL-ST-9kk" secondAttribute="bottom" id="RyW-Q7-bHg"/>
+                                            <constraint firstAttribute="trailing" secondItem="mqL-ST-9kk" secondAttribute="trailing" constant="20" id="alV-40-fuw"/>
                                         </constraints>
                                     </view>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sSr-Ed-Y0w">
@@ -66,6 +76,17 @@
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Km4-4c-zfz">
                                                         <rect key="frame" x="0.0" y="0.0" width="414" height="448"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <subviews>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qxZ-s2-UcL">
+                                                                <rect key="frame" x="20" y="124" width="374" height="200"/>
+                                                            </stackView>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="qxZ-s2-UcL" firstAttribute="centerY" secondItem="Km4-4c-zfz" secondAttribute="centerY" id="LlN-ox-pKI"/>
+                                                            <constraint firstItem="qxZ-s2-UcL" firstAttribute="leading" secondItem="Km4-4c-zfz" secondAttribute="leading" constant="20" id="Ui3-wC-iWk"/>
+                                                            <constraint firstAttribute="trailing" secondItem="qxZ-s2-UcL" secondAttribute="trailing" constant="20" id="hvG-B3-uVs"/>
+                                                            <constraint firstItem="qxZ-s2-UcL" firstAttribute="centerX" secondItem="Km4-4c-zfz" secondAttribute="centerX" id="mgu-c0-AfZ"/>
+                                                        </constraints>
                                                     </view>
                                                     <vibrancyEffect>
                                                         <blurEffect style="light"/>
@@ -86,6 +107,7 @@
                                 </connections>
                             </stackView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="B5g-RL-Sle"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration">
                             <bool key="isElement" value="YES"/>
@@ -100,10 +122,11 @@
                             <constraint firstItem="9uj-00-xTT" firstAttribute="top" secondItem="FCo-Sd-sPt" secondAttribute="bottom" id="ynA-sG-QR0"/>
                             <constraint firstItem="UyM-lP-Pve" firstAttribute="leading" secondItem="FCo-Sd-sPt" secondAttribute="leading" id="z3a-cZ-FU5"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="B5g-RL-Sle"/>
                     </view>
                     <connections>
+                        <outlet property="bottomStackView" destination="qxZ-s2-UcL" id="OHk-7G-ySl"/>
                         <outlet property="lowerView" destination="sSr-Ed-Y0w" id="BtB-Y6-sZ6"/>
+                        <outlet property="middleStackView" destination="mqL-ST-9kk" id="5CI-GA-rSZ"/>
                         <outlet property="previewView" destination="FCo-Sd-sPt" id="nuW-mp-Fvb"/>
                         <outlet property="stackView" destination="UyM-lP-Pve" id="417-nz-KaI"/>
                     </connections>
@@ -121,11 +144,11 @@
         <scene sceneID="pJV-cP-Xio">
             <objects>
                 <viewController id="LyW-vm-bDf" customClass="ARViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Rgf-7b-BEU">
+                    <view key="view" contentMode="scaleToFill" id="Rgf-7b-BEU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" sceneName="CameraSetup.scn" wantsMultisampling="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wyD-IH-2VT">
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="CameraSetup.scn" wantsMultisampling="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wyD-IH-2VT">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <connections>
                                     <outlet property="delegate" destination="LyW-vm-bDf" id="Bvs-B6-5hG"/>
@@ -145,7 +168,7 @@
                                 </userDefinedRuntimeAttributes>
                             </visualEffectView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Initializing AR session." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dQ-zZ-eH7">
-                                <rect key="frame" x="103" y="98" width="169" height="217"/>
+                                <rect key="frame" x="103" y="98" width="168" height="217"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="cKI-Gy-MxO"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="sBF-We-NOS"/>
@@ -155,6 +178,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Nbh-LN-HJp"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TWl-nm-iCt" firstAttribute="leading" secondItem="Nbh-LN-HJp" secondAttribute="leading" constant="15" id="393-sw-N9g"/>
@@ -169,7 +193,6 @@
                             <constraint firstItem="Nbh-LN-HJp" firstAttribute="bottom" secondItem="TWl-nm-iCt" secondAttribute="bottom" constant="33" id="uaG-lw-7Xj"/>
                             <constraint firstItem="9dQ-zZ-eH7" firstAttribute="top" secondItem="Nbh-LN-HJp" secondAttribute="top" constant="10" id="zGU-QA-5H4"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Nbh-LN-HJp"/>
                     </view>
                     <navigationItem key="navigationItem" id="002-6l-F8t"/>
                     <connections>
@@ -214,7 +237,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZKl-Sy-4r7">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZKl-Sy-4r7">
                                 <rect key="frame" x="160" y="152" width="94" height="30"/>
                                 <state key="normal" title="Add to my list"/>
                                 <connections>
@@ -222,6 +245,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="kyH-gO-DYs"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="UFk-Rh-Zn7" firstAttribute="leading" secondItem="kyH-gO-DYs" secondAttribute="leading" constant="20" id="6UN-3M-mBI"/>
@@ -235,7 +259,6 @@
                             <constraint firstItem="UFk-Rh-Zn7" firstAttribute="trailing" secondItem="kyH-gO-DYs" secondAttribute="trailing" constant="10" id="jiW-ax-rfo"/>
                             <constraint firstItem="ZKl-Sy-4r7" firstAttribute="top" secondItem="UFk-Rh-Zn7" secondAttribute="bottom" constant="10" id="zLW-lG-C3Y"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="kyH-gO-DYs"/>
                     </view>
                     <connections>
                         <outlet property="addButton" destination="ZKl-Sy-4r7" id="CAy-a5-4pH"/>
