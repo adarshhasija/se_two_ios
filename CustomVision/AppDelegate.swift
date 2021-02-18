@@ -56,6 +56,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    func isBackTapSupported() -> Bool {
+        let model = modelIdentifier()
+        let iphoneModel = model.split(separator: ",")[0]
+        let number : Int = Int(iphoneModel.filter("0123456789.".contains)) ?? 0
+        let supportsBackTap = number >= 10 //Has to be iPhone 8 or later: https://stackoverflow.com/questions/26028918/how-to-determine-the-current-iphone-device-model
+        return supportsBackTap
+    }
+    
+    private func modelIdentifier() -> String {
+        if let simulatorModelIdentifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] { return simulatorModelIdentifier }
+        var sysinfo = utsname()
+        uname(&sysinfo) // ignore return value
+        return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
+    }
 
 }
 

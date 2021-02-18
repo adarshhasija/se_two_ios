@@ -119,7 +119,7 @@ class MCReaderButtonsViewController : UIViewController {
         for backTapLabel in backTapLabels {
             backTapLabel.isHidden = true
         }
-        let autoPlayTxt = "Autoplaying vibrrations...\nLong press to stop"
+        let autoPlayTxt = "Autoplaying vibrations...\nLong press to stop"
         currentActivityLabel.text = autoPlayTxt
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
         autoPlayTxt);
@@ -368,10 +368,7 @@ class MCReaderButtonsViewController : UIViewController {
                 //view.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
         view.insertArrangedSubview(siriButton, at: view.arrangedSubviews.count)
         
-        
-        let model = modelIdentifier()
-        let doesNotSupportBackTap = model.split(separator: ",")[0].contains("6") || model.split(separator: ",")[0].contains("5") //Do not need to check lower than 5 as those devices are not supported by latest OS
-        guard doesNotSupportBackTap == false else {
+        guard (UIApplication.shared.delegate as? AppDelegate)?.isBackTapSupported() == true else {
             return
         }
         //Back tap is only supported on iPhone 8 and above
@@ -387,13 +384,6 @@ class MCReaderButtonsViewController : UIViewController {
             view.insertArrangedSubview(backTapLabel, at: view.arrangedSubviews.count)
             backTapLabels.append(backTapLabel)
         }
-    }
-    
-    func modelIdentifier() -> String {
-        if let simulatorModelIdentifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] { return simulatorModelIdentifier }
-        var sysinfo = utsname()
-        uname(&sysinfo) // ignore return value
-        return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
     }
     
     func showToast(message : String) {
