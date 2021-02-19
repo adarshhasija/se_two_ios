@@ -46,9 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let mcReaderViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
             mcReaderViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: siriShortcut.action)!]
             let inputs = SiriShortcut.getInputs(action: Action(rawValue: siriShortcut.action)!)
-            mcReaderViewController.inputAlphanumeric = inputs["inputAlphanumeric"]
-            mcReaderViewController.inputMorseCode = inputs["inputMorseCode"]
-            mcReaderViewController.inputMCExplanation = inputs["inputMCExplanation"]
+            mcReaderViewController.inputAlphanumeric = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String
+            mcReaderViewController.inputMorseCode = inputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String
+            mcReaderViewController.inputMCExplanation.append(contentsOf: inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
+            )
             navigationController.pushViewController(mcReaderViewController, animated: true)
         }
         

@@ -19,7 +19,7 @@ class MCReaderButtonsViewController : UIViewController {
     var siriShortcut: SiriShortcut? = nil
     var inputAlphanumeric : String? = nil
     var inputMorseCode : String? = nil //Customized morse code is sent it. If this is nil, we will use standard morse code dictionary
-    var inputMCExplanation : String? = nil
+    var inputMCExplanation : [String] = []
     
     lazy var supportsHaptics: Bool = {
             return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
@@ -33,6 +33,7 @@ class MCReaderButtonsViewController : UIViewController {
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     var isAutoPlayOn = false
     
+    @IBOutlet weak var middleBigTextView: UILabel!
     @IBOutlet weak var stackViewMain: UIStackView!
     @IBOutlet weak var alphanumericLabel: UILabel!
     @IBOutlet weak var morseCodeLabel: UILabel!
@@ -145,8 +146,8 @@ class MCReaderButtonsViewController : UIViewController {
                 scrollMCLabel.isHidden = false
             }
         }
-        mcExplanationLabel.text = inputMCExplanation
-        mcExplanationLabel.isHidden = inputMCExplanation != nil ? false : true
+        //mcExplanationLabel.text = inputMCExplanation
+        //mcExplanationLabel.isHidden = inputMCExplanation != nil ? false : true
         if siriShortcut != nil { addSiriButton(shortcutForButton: siriShortcut!, to: middleStackView) }
         alphanumericStringIndex = -1
         morseCodeStringIndex = -1
@@ -251,6 +252,7 @@ class MCReaderButtonsViewController : UIViewController {
         }
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+        animateMiddleText(text: inputMCExplanation[morseCodeStringIndex])
         
         if inputMorseCode != nil {
             //That means it is some custom morse code, like TIME or DATE. We do not want to highlight alphanumerics
@@ -403,6 +405,23 @@ class MCReaderButtonsViewController : UIViewController {
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
         })
+    }
+    
+    private func animateMiddleText(text: String) {
+        self.middleBigTextView.text = text
+        self.middleBigTextView.isHidden = false
+        self.middleBigTextView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 6.0,
+                       options: .allowUserInteraction,
+                       animations: { [weak self] in
+                        self?.middleBigTextView.transform = .identity
+            },
+                       completion: { _ in
+                           self.middleBigTextView.isHidden = true
+                       })
     }
 }
 

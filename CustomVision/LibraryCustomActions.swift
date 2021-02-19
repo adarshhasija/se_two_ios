@@ -40,7 +40,7 @@ class LibraryCustomActions {
         return alphanumericString
     }
     
-    static func getCurrentTimeInDotsDashes() -> String {
+    static func getCurrentTimeInDotsDashes() -> [String:Any] {
         let hh24 = (Calendar.current.component(.hour, from: Date()))
         let hh12 = hh24 > 12 ? hh24 - 12 : hh24 == 0 ? 12 : hh24
         let amPm = hh24 > 11 ? "PM" : "AM"
@@ -49,57 +49,81 @@ class LibraryCustomActions {
         let mm = (Calendar.current.component(.minute, from: Date()))
         let minsDashes : Int = mm/5
         let minsDots = mm - (minsDashes*5)
-        var finalString = ""
+        var finalMorseCodeString = ""
+        var finalInstructionStringArray : [String] = []
         var i = 0
         while (i < hoursDashes) {
-            finalString = finalString + "-"
+            finalMorseCodeString = finalMorseCodeString + "-"
+            finalInstructionStringArray.append("+5 hrs")
             i = i + 1
         }
         i = 0
         while (i < hoursDots) {
-            finalString = finalString + "."
+            finalMorseCodeString = finalMorseCodeString + "."
+            finalInstructionStringArray.append("+1 hr")
             i = i + 1
         }
-        finalString = finalString + "|"
+        finalMorseCodeString = finalMorseCodeString + "|"
+        finalInstructionStringArray.append("= " + String(hh12) + " " + "hrs")
         i = 0
         while i < minsDashes {
-            finalString = finalString + "-"
+            finalMorseCodeString = finalMorseCodeString + "-"
+            finalInstructionStringArray.append("+5 min")
             i = i + 1
         }
         i = 0
         while i < minsDots {
-            finalString = finalString + "."
+            finalMorseCodeString = finalMorseCodeString + "."
+            finalInstructionStringArray.append("+1 min")
             i = i + 1
         }
-        finalString = finalString + "|"
-        finalString = finalString + (amPm == "PM" ? "-" : ".")
-        finalString = finalString + "|"
-        return finalString
+        finalMorseCodeString = finalMorseCodeString + "|"
+        finalInstructionStringArray.append("= " + String(mm) + " " + "mins")
+        finalMorseCodeString = finalMorseCodeString + (amPm == "PM" ? "-" : ".")
+        finalInstructionStringArray.append(amPm)
+        finalMorseCodeString = finalMorseCodeString + "|"
+        finalInstructionStringArray.append("✓")
+        return
+                [
+                    "morse_code" : finalMorseCodeString,
+                    "instructions" : finalInstructionStringArray
+                ]
     }
     
-    static func getCurrentDateInDotsDashes() -> String {
+    static func getCurrentDateInDotsDashes() -> [String:Any] {
         let day = (Calendar.current.component(.day, from: Date()))
         let dayDashes : Int = day/5
         let dayDots : Int = day - (dayDashes*5)
         let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
-        var finalString = ""
+        var finalMorseCodeString = ""
+        var finalInstructionStringArray : [String] = []
         var i = 0
         while (i < dayDashes) {
-            finalString = finalString + "-"
+            finalMorseCodeString = finalMorseCodeString + "-"
+            finalInstructionStringArray.append("+5 days")
             i = i + 1
         }
         i = 0
         while (i < dayDots) {
-            finalString = finalString + "."
+            finalMorseCodeString = finalMorseCodeString + "."
+            finalInstructionStringArray.append("+1 days")
             i = i + 1
         }
-        finalString = finalString + "|"
+        finalMorseCodeString = finalMorseCodeString + "|"
+        finalInstructionStringArray.append("= " + String(day))
         i = 0
         while (i < weekdayInt) {
-            finalString = finalString + "."
+            finalMorseCodeString = finalMorseCodeString + "."
             i = i + 1
+            finalInstructionStringArray.append(((i <= 1) ? "Sunday" : "Sunday + " + String(i-1))) //Sunday is 1, so need to -1
         }
-        finalString = finalString + "|"
-        return finalString
+        finalMorseCodeString = finalMorseCodeString + "|"
+        let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
+        finalInstructionStringArray.append("= " + weekdayString)
+        return
+            [
+                "morse_code" : finalMorseCodeString,
+                "instructions" : finalInstructionStringArray
+            ]
     }
 }

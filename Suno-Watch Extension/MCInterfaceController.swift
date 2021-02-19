@@ -25,6 +25,7 @@ class MCInterfaceController : WKInterfaceController {
     var isUserTyping : Bool = false
     var morseCodeString : String = ""
     var englishString : String = ""
+    var explanationArray : [String] = []
     var alphabetToMcDictionary : [String : String] = [:]
     var englishStringIndex = -1
     var morseCodeStringIndex = -1
@@ -156,41 +157,32 @@ class MCInterfaceController : WKInterfaceController {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                 "state" : "action_"+action
             ])
+            let inputs = SiriShortcut.getInputs(action: Action(rawValue: action)!)
+            englishString = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
+            englishTextLabel.setText(englishString)
+            englishTextLabel.setHidden(false)
+            morseCodeString = inputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String ?? ""
+            morseCodeTextLabel.setText(morseCodeString)
+            explanationArray.append(contentsOf:  inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
+            )
             if action == "TIME" {
-              /*  let hh = (Calendar.current.component(.hour, from: Date()))
-                let mm = (Calendar.current.component(.minute, from: Date()))
-                let hourString = hh < 10 ? "0" + String(hh) : String(hh)
-                let minString = mm < 10 ? "0" + String(mm) : String(mm)
-                englishString = hourString + minString
-                englishTextLabel?.setText(englishString)
-                englishTextLabel?.setHidden(false)
-                englishStringIndex = -1
-                updateMorseCodeForActions() */
-                englishString = LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")
+             /*   englishString = LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")
                 englishTextLabel.setText(englishString)
                 englishTextLabel.setHidden(false)
                 morseCodeString = LibraryCustomActions.getCurrentTimeInDotsDashes()
                 morseCodeTextLabel.setText(morseCodeString)
-                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)    */
                 englishStringIndex = -1
                 morseCodeStringIndex = -1
                 isUserTyping = false
             }
             else if action == "DATE" {
-              /*  let day = (Calendar.current.component(.day, from: Date()))
-                let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
-                let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
-                englishString = String(day) + weekdayString.prefix(2).uppercased()
-                englishTextLabel?.setText(englishString)
-                englishTextLabel?.setHidden(false)
-                englishStringIndex = -1
-                updateMorseCodeForActions() */
-                englishString = LibraryCustomActions.getCurrentDateInAlphanumeric()
+              /*  englishString = LibraryCustomActions.getCurrentDateInAlphanumeric()
                 englishTextLabel.setText(englishString)
                 englishTextLabel.setHidden(false)
                 morseCodeString = LibraryCustomActions.getCurrentDateInDotsDashes()
                 morseCodeTextLabel.setText(morseCodeString)
-                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)    */
                 englishStringIndex = -1
                 morseCodeStringIndex = -1
                 isUserTyping = false

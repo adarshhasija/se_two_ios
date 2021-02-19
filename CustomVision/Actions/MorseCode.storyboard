@@ -278,6 +278,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYk-9M-WPq">
+                                <rect key="frame" x="160" y="284" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4iX-QT-oJS">
                                 <rect key="frame" x="16" y="44" width="288" height="524"/>
                                 <subviews>
@@ -398,6 +404,8 @@ Long Press to autoplay vibrations
                             <constraint firstItem="Vu2-4A-M8E" firstAttribute="centerY" secondItem="8XU-MZ-Eu9" secondAttribute="centerY" id="fr5-hP-qoo"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4iX-QT-oJS" secondAttribute="trailing" id="g6e-IH-dlN"/>
                             <constraint firstItem="Vu2-4A-M8E" firstAttribute="centerX" secondItem="8XU-MZ-Eu9" secondAttribute="centerX" id="ggd-fg-2oF"/>
+                            <constraint firstItem="aYk-9M-WPq" firstAttribute="centerX" secondItem="8XU-MZ-Eu9" secondAttribute="centerX" id="kIN-4g-z57"/>
+                            <constraint firstItem="aYk-9M-WPq" firstAttribute="centerY" secondItem="8XU-MZ-Eu9" secondAttribute="centerY" id="lDc-7Y-tmq"/>
                             <constraint firstItem="shr-8i-E6L" firstAttribute="top" secondItem="nY7-i4-Baw" secondAttribute="bottom" constant="20" id="lyt-ao-xb9"/>
                             <constraint firstAttribute="trailingMargin" secondItem="nY7-i4-Baw" secondAttribute="trailing" constant="20" id="vhR-iP-rmr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Vu2-4A-M8E" secondAttribute="trailing" constant="20" id="z2O-kG-LV8"/>
@@ -413,6 +421,7 @@ Long Press to autoplay vibrations
                         <outlet property="currentActivityLabel" destination="Gfl-xv-m4i" id="6yH-dT-DNN"/>
                         <outlet property="deafBlindLabel" destination="YZ3-iU-38b" id="k9q-9H-Yqv"/>
                         <outlet property="mcExplanationLabel" destination="cXH-ww-zU0" id="2kk-1L-O6q"/>
+                        <outlet property="middleBigTextView" destination="aYk-9M-WPq" id="TIq-ra-t2F"/>
                         <outlet property="middleStackView" destination="Vu2-4A-M8E" id="vbU-CT-aI3"/>
                         <outlet property="morseCodeLabel" destination="WSh-G6-6AY" id="gnJ-0I-Qf4"/>
                         <outlet property="playAudioButton" destination="HcV-5U-9zN" id="vJ8-jn-sIY"/>

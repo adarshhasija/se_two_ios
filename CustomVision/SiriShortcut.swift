@@ -39,13 +39,26 @@ class SiriShortcut {
                                     )
             ]
     
-    static func getInputs(action: Action) -> [String: String] {
-        return
-            [
-                "inputAlphanumeric" : action == Action.TIME ? LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12") : LibraryCustomActions.getCurrentDateInAlphanumeric(),
-                "inputMorseCode" : action == Action.TIME ? LibraryCustomActions.getCurrentTimeInDotsDashes() : LibraryCustomActions.getCurrentDateInDotsDashes(),
-                "inputMCExplanation" : action == Action.TIME ? "Explanation:\nThere are 3 sets of characters.\nSet 1 is the hour.\nDash = long vibration = 5 hours.\nDot = short vibration = 1 hour.\nExample: 1 long vibration and 1 short vibration = 6.\nSet 2 is the minute.\nDash = 1 long vibration = 5 mins.\nDot = 1 short vobration = 1 min.\nExample: 1 long vibration and 1 short vibration = 6 minutes.\nLast set is AM or PM.\nShort vibration = AM.\nLong vibration = PM." : "Explanation:\nThere are 2 sets of characters.\nSet 1 is the date.\nDash = long vibration = 5 days.\nDot = short vibration = 1 day.\nExample: 1 long vibration and 1 short vibration = 6th.\nSet 2 is the day of the week.\nEvery dot is number of days after Sunday.\nExample: 2 short vibrations = Monday."
-            ]
+    enum INPUT_FIELDS: String {
+        case input_alphanumerics
+        case input_morse_code
+        case input_mc_explanation
+    }
+    
+    static func getInputs(action: Action) -> [String: Any] {
+        var dictionary : [String : Any] = [:]
+        dictionary[INPUT_FIELDS.input_alphanumerics.rawValue] =
+                            action == Action.TIME ? String(LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")) : String(LibraryCustomActions.getCurrentDateInAlphanumeric())
+        dictionary[INPUT_FIELDS.input_morse_code.rawValue] =
+                            action == Action.TIME ?         LibraryCustomActions.getCurrentTimeInDotsDashes()["morse_code"] : LibraryCustomActions.getCurrentDateInDotsDashes()["morse_code"]
+        dictionary[INPUT_FIELDS.input_mc_explanation.rawValue] =
+                            action == Action.TIME ? LibraryCustomActions.getCurrentTimeInDotsDashes()["instructions"] : LibraryCustomActions.getCurrentDateInDotsDashes()["instructions"]
+          /*  [
+                "inputAlphanumeric" : action == Action.TIME ? String(LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")) : String(LibraryCustomActions.getCurrentDateInAlphanumeric()),
+                "inputMorseCode" : action == Action.TIME ? String(LibraryCustomActions.getCurrentTimeInDotsDashes()["morse_code"]) : String(LibraryCustomActions.getCurrentDateInDotsDashes()["morse_code"]),
+                "inputMCExplanation" : action == Action.TIME ? Array(LibraryCustomActions.getCurrentTimeInDotsDashes()["instructions"]) : Array(LibraryCustomActions.getCurrentDateInDotsDashes()["instructions"])
+            ]   */
+        return dictionary
     }
     
     var title: String
