@@ -44,6 +44,8 @@ class MCInterfaceController : WKInterfaceController {
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
     @IBOutlet weak var instructionsLabel: WKInterfaceLabel!
+    @IBOutlet weak var bigTextLabel: WKInterfaceLabel!
+    @IBOutlet weak var bigTextLabel2: WKInterfaceLabel!
     @IBOutlet weak var aboutButton: WKInterfaceButton!
     
     
@@ -419,7 +421,7 @@ class MCInterfaceController : WKInterfaceController {
                 downSwipe(1) //just a dummy parameter
             }
             else {
-                aboutButton?.setHidden(false) //Only applies if it is TIME or DATE for now
+                //aboutButton?.setHidden(false) //Only applies if it is TIME or DATE for now
                 upSwipe(1) //just a dummy parameter
             }
         }
@@ -966,7 +968,8 @@ extension MCInterfaceController {
             morseCodeStringIndex = -1
             //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
             instructionsLabel?.setText(dcScrollStart)
-            aboutButton?.setHidden(mode == "TIME" || mode == "DATE" ? false : true)
+            resetBigText()
+            //aboutButton?.setHidden(mode == "TIME" || mode == "DATE" ? false : true)
         }
     }
     
@@ -1021,6 +1024,7 @@ extension MCInterfaceController {
                 WKInterfaceDevice.current().play(.success)
                 //setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString, isError: false)
                 instructionsLabel?.setText(dcScrollReverse)
+                resetBigText()
                 morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
                 englishStringIndex = englishString.count
                 return
@@ -1034,6 +1038,7 @@ extension MCInterfaceController {
                 setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString, isError: false)
             }
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
+            animateMiddleText(text: explanationArray[morseCodeStringIndex])
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if mode == "TIME" || mode == "DATE" || isNormalMorse == false {
@@ -1071,13 +1076,11 @@ extension MCInterfaceController {
                 ])
                 WKInterfaceDevice.current().play(.failure)
                 setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
-                
-                if morseCodeStringIndex < 0 {
-                    morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
-                    englishStringIndex = -1
-                    englishTextLabel.setText(englishString)
-                }
+                morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
                 morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
+                englishStringIndex = -1
+                englishTextLabel.setText(englishString)
+                resetBigText()
                 return
             }
             
@@ -1086,6 +1089,7 @@ extension MCInterfaceController {
                 "is_reading" : self.isReading()
             ])
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
+            resetBigText()
             if isAutoPlayOn == false {
                 //This means we are doing a manual scroll
                 playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
@@ -1124,6 +1128,32 @@ extension MCInterfaceController {
                 
             }
         }
+    }
+    
+    private func animateMiddleText(text: String) {
+        if morseCodeStringIndex % 2 == 0 {
+            self.bigTextLabel.setText(text)
+            self.bigTextLabel2.setText("")
+            animate(withDuration: 1.0, animations: {
+                self.bigTextLabel.setAlpha(1.0)
+                self.bigTextLabel2.setAlpha(0.0)
+            })
+        }
+        else {
+            self.bigTextLabel.setText("")
+            self.bigTextLabel2.setText(text)
+            animate(withDuration: 1.0, animations: {
+                self.bigTextLabel.setAlpha(0.0)
+                self.bigTextLabel2.setAlpha(1.0)
+            })
+        }
+    }
+    
+    func resetBigText() {
+        bigTextLabel.setText("")
+        bigTextLabel.setAlpha(0.0)
+        bigTextLabel2.setText("")
+        bigTextLabel2.setAlpha(0.0)
     }
 }
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17701" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="watch38"/>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17034"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17500"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -56,6 +56,12 @@
                                 <label width="1" alignment="left" text="Instruction Label" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
                                     <color key="textColor" red="0.23137254901960785" green="0.83495825639444188" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                                </label>
+                                <label width="1" alignment="left" textAlignment="center" id="wRo-cs-xho">
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                                </label>
+                                <label width="1" alignment="left" textAlignment="center" id="ehB-ed-bR5">
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
                                 </label>
                                 <button width="1" alignment="left" hidden="YES" title="About Vibration Pattern" id="m39-gc-btL">
                                     <connections>
@@ -131,6 +137,8 @@
                     </menu>
                     <connections>
                         <outlet property="aboutButton" destination="m39-gc-btL" id="PSc-gC-rms"/>
+                        <outlet property="bigTextLabel" destination="wRo-cs-xho" id="ath-ds-hbk"/>
+                        <outlet property="bigTextLabel2" destination="ehB-ed-bR5" id="Y8j-xz-qEp"/>
                         <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
                         <outlet property="instructionsLabel" destination="Reo-fp-Kjf" id="05H-kS-0jN"/>
                         <outlet property="mainImage" destination="L9T-BG-efi" id="0PH-ca-K4x"/>
