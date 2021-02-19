@@ -13,10 +13,11 @@ import WatchConnectivity
 
 class MCInterfaceController : WKInterfaceController {
     
-    var defaultInstructions = "Tap screen to type a dot"
+    var defaultInstructions = ""
+    var tapToTypeInstructions = "Tap screen to type a dot"
     var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Lightly long press to begin typing morse code"
     var notDeafBlindInstructions = "Force press for reply options"
-    var dcScrollStart = "Rotate the digital crown down to read morse code"
+    var dcScrollStart = "Rotate the digital crown down to read via vibrations"
     var dcScrollReverse = "Ratate the digital crown up to scroll back"
     var stopReadingString = "Swipe left once to stop reading and type morse code"
     var keepTypingString = "Keep typing"
@@ -167,27 +168,9 @@ class MCInterfaceController : WKInterfaceController {
             morseCodeTextLabel.setText(morseCodeString)
             explanationArray.append(contentsOf:  inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
             )
-            if action == "TIME" {
-             /*   englishString = LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")
-                englishTextLabel.setText(englishString)
-                englishTextLabel.setHidden(false)
-                morseCodeString = LibraryCustomActions.getCurrentTimeInDotsDashes()
-                morseCodeTextLabel.setText(morseCodeString)
-                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)    */
-                englishStringIndex = -1
-                morseCodeStringIndex = -1
+            if action == "TIME" || action == "DATE" {
                 isUserTyping = false
-            }
-            else if action == "DATE" {
-              /*  englishString = LibraryCustomActions.getCurrentDateInAlphanumeric()
-                englishTextLabel.setText(englishString)
-                englishTextLabel.setHidden(false)
-                morseCodeString = LibraryCustomActions.getCurrentDateInDotsDashes()
-                morseCodeTextLabel.setText(morseCodeString)
-                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)    */
-                englishStringIndex = -1
-                morseCodeStringIndex = -1
-                isUserTyping = false
+                morseCodeAutoPlay(direction: "down")
             }
             else if action == "1-to-1" {
                 while morseCode.mcTreeNode?.parent != nil {
@@ -210,11 +193,11 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func leftSwipe(_ sender: Any) {
-        if isAutoPlayOn == true {
+     /*   if isAutoPlayOn == true {
             isAutoPlayOn = false //All reformatting will be done in autoplay timer
             WKInterfaceDevice.current().play(.success) //A haptic to indicate that the left swipe has been registered
             return
-        }
+        }   */
         if isReading() == true {
             if mode != nil {
                 //It means this is not the root screen
@@ -321,7 +304,15 @@ class MCInterfaceController : WKInterfaceController {
     @IBAction func longPress(_ sender: WKLongPressGestureRecognizer) {
         if sender.state == .ended {
             sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
-            //openTalkTypeMode()
+            if isAutoPlayOn == true {
+                isAutoPlayOn = false //All reformatting will be done in autoplay timer
+                WKInterfaceDevice.current().play(.success) //A haptic to indicate that the left swipe has been registered
+                return
+            }
+            if isUserTyping == false {
+                morseCodeAutoPlay(direction: "down")
+                return
+            }
             morseCodeInput(input: "-") //Shorten minDuration for morse code typing
         }
         
@@ -516,8 +507,6 @@ extension MCInterfaceController : WKCrownDelegate {
             let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
             if diffNanos <= quickScrollTimeThreshold {
                 sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
-                englishStringIndex = -1 //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
-                morseCodeStringIndex = 0
                 WKInterfaceDevice.current().play(.success)
                 morseCodeAutoPlay(direction: "down")
                 startTimeNanos = 0
@@ -535,8 +524,6 @@ extension MCInterfaceController : WKCrownDelegate {
             let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
             if diffNanos <= quickScrollTimeThreshold {
                 sendAnalytics(eventName: "se3_watch_autoplay_reverse", parameters: [:])
-                englishStringIndex = englishString.count //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
-                morseCodeStringIndex = morseCodeString.count - 1
                 WKInterfaceDevice.current().play(.success)
                 morseCodeAutoPlay(direction: "up")
                 startTimeNanos = 0
@@ -978,7 +965,7 @@ extension MCInterfaceController {
         englishTextLabel.setText(englishString) //Resetting the string colors at the start of autoplay
         morseCodeString = morseCodeString.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
         morseCodeTextLabel.setText(morseCodeString)
-        instructionsLabel?.setText(direction == "down" ? "Autoplaying morse code...\nSwipe left to stop" :
+        instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations...\nLong press to stop" :
                                     "Resetting, please wait...")
         if mode == "TIME" || mode == "DATE" {
             //It means About button is visible
@@ -988,6 +975,8 @@ extension MCInterfaceController {
         let dictionary = [
             "direction" : direction
         ]
+        englishStringIndex = direction == "down" ? -1 : englishString.count //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
+        morseCodeStringIndex = direction == "down" ? 0 : morseCodeString.count - 1
         let timeInterval = direction == "down" ? 1 : 0.5
         Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     /*    Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
