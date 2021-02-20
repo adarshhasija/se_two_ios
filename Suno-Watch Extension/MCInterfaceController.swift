@@ -927,7 +927,6 @@ extension MCInterfaceController {
             WKInterfaceDevice.current().play(.failure)
             setInstructionLabelForMode(mainString: "Update from phone failed.\n\nNothing was received", readingString: "", writingString: "", isError: true)
             instructionsLabel?.setTextColor(.red)
-            return
         }
     }
     
@@ -1027,8 +1026,8 @@ extension MCInterfaceController {
                 setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters", readingString: stopReadingString, writingString: keepTypingString, isError: false)
             }
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
-            animateMiddleText(text: explanationArray[morseCodeStringIndex])
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
+            animateMiddleText(text: morseCodeStringIndex < explanationArray.count ? explanationArray[morseCodeStringIndex] : nil)
             
             if mode == "TIME" || mode == "DATE" || isNormalMorse == false {
                 //Custom pattern used, not morse code. So we not want to highlight alphanumerics
@@ -1119,9 +1118,30 @@ extension MCInterfaceController {
         }
     }
     
-    private func animateMiddleText(text: String) {
+    private func animateMiddleText(text: String?) {
+        var localText : String? = text
+        if localText == nil {
+            //If text is not preset, we are assuming its morse code
+            if morseCodeStringIndex == 0 {
+                //If its the first character in the string
+                localText = "morse code"
+            }
+            else {
+                let prevMCChar = morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy:  morseCodeStringIndex > 0 ? morseCodeStringIndex - 1 : morseCodeStringIndex)]
+                            if prevMCChar == "|" || prevMCChar == " " {
+                                //means that we are starting a new character
+                                localText = "morse code"
+                }
+            }
+            
+        }
+        
+        if localText == nil {
+            //If we are in the middle of playing a morse code character, we do not want to change the label
+            return
+        }
         if morseCodeStringIndex % 2 == 0 {
-            self.bigTextLabel.setText(text)
+            self.bigTextLabel.setText(localText)
             self.bigTextLabel2.setText("")
             animate(withDuration: 1.0, animations: {
                 self.bigTextLabel.setAlpha(1.0)
@@ -1130,7 +1150,7 @@ extension MCInterfaceController {
         }
         else {
             self.bigTextLabel.setText("")
-            self.bigTextLabel2.setText(text)
+            self.bigTextLabel2.setText(localText)
             animate(withDuration: 1.0, animations: {
                 self.bigTextLabel.setAlpha(0.0)
                 self.bigTextLabel2.setAlpha(1.0)

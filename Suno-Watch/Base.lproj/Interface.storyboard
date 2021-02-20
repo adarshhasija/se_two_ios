@@ -57,10 +57,10 @@
                                     <color key="textColor" red="0.23137254901960785" green="0.83495825639444188" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
                                 </label>
-                                <label width="1" alignment="left" textAlignment="center" id="wRo-cs-xho">
+                                <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="wRo-cs-xho">
                                     <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
                                 </label>
-                                <label width="1" alignment="left" textAlignment="center" id="ehB-ed-bR5">
+                                <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="ehB-ed-bR5">
                                     <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
                                 </label>
                                 <button width="1" alignment="left" hidden="YES" title="About Vibration Pattern" id="m39-gc-btL">

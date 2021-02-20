@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hX4-Gh-CDl">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17701" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hX4-Gh-CDl">
     <device id="watch38"/>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17034"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17500"/>
     </dependencies>
     <scenes>
         <!--Actions List Controller-->
@@ -12,7 +12,7 @@
             <objects>
                 <controller id="hX4-Gh-CDl" customClass="ActionsListController" customModule="Suno_Watch_Extension">
                     <items>
-                        <label alignment="left" text="Actions for Deaf-Blind" numberOfLines="0" id="SII-n8-rDg"/>
+                        <label alignment="left" hidden="YES" text="Actions for Deaf-Blind" numberOfLines="0" id="SII-n8-rDg"/>
                         <table alignment="left" id="oOl-3n-pGS">
                             <items>
                                 <tableRow identifier="ActionRow" id="tm5-NN-SHb" customClass="ActionsListRowController" customModule="Suno_Watch_Extension">

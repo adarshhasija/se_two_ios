@@ -21,9 +21,9 @@ class ActionsListController : WKInterfaceController {
         WKInterfaceDevice.current().play(.success) //successfully launched app
         deafBlindLabel.setAccessibilityTraits(UIAccessibilityTraits.staticText) //Currently VoiceOver on watch is not saying Static Text.
         
-        actionsList.append(ActionsCell(action: "TIME", cellType: Action.TIME))
-                actionsList.append(ActionsCell(action: "DATE AND DAY OF WEEK", cellType: Action.DATE))
-        actionsList.append(ActionsCell(action: "Get from iPhone", explanation: "Use the digital crown to scroll through dots and dashes one by one", cellType: Action.GET_IOS))
+        actionsList.append(ActionsCell(action: "Time", cellType: Action.TIME))
+                actionsList.append(ActionsCell(action: "Date and Day of week", cellType: Action.DATE))
+        actionsList.append(ActionsCell(action: "Get text read by iPhone camera", cellType: Action.GET_IOS))
         
         
         actionsListTable.setNumberOfRows(actionsList.count, withRowType: "ActionRow")
