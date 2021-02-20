@@ -89,14 +89,14 @@ class MCReaderButtonsViewController : UIViewController {
             morseCodeLabel?.textColor = .none
             morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
             //mcExplanationLabel.isHidden = false
-            currentActivityLabel.text = ""
             currentActivityLabel.text = "Long press to autoplay"
+            middleBigTextView.isHidden = true
             //visuallyImpairedLabel.isHidden = false
             //playAudioButton.isHidden = false
             //deafBlindLabel.isHidden = false
             appleWatchImageView.isHidden = false
             scrollMCLabel.isHidden = false
-            siriButton.isHidden = false
+            siriButton?.isHidden = false
             for backTapLabel in backTapLabels {
                 backTapLabel.isHidden = false
             }
@@ -152,6 +152,10 @@ class MCReaderButtonsViewController : UIViewController {
         alphanumericStringIndex = -1
         morseCodeStringIndex = -1
         morseCodeAutoPlay(direction: "right")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        isAutoPlayOn = false
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -252,7 +256,7 @@ class MCReaderButtonsViewController : UIViewController {
         }
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
-        animateMiddleText(text: inputMCExplanation[morseCodeStringIndex])
+        animateMiddleText(text: inputMCExplanation[safe: morseCodeStringIndex])
         
         if inputMorseCode != nil {
             //That means it is some custom morse code, like TIME or DATE. We do not want to highlight alphanumerics
@@ -279,6 +283,7 @@ class MCReaderButtonsViewController : UIViewController {
             ])
             MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: alphanumericStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
         }
+
         return
     }
     
@@ -407,8 +412,30 @@ class MCReaderButtonsViewController : UIViewController {
         })
     }
     
-    private func animateMiddleText(text: String) {
-        self.middleBigTextView.text = text
+    private func animateMiddleText(text: String?) {
+        var localText : String? = text
+        if localText == nil {
+            //If text is not preset, we are assuming its morse code
+            if morseCodeStringIndex == 0 {
+                //If its the first character in the string
+                localText = "morse code"
+            }
+            else {
+                let morseCodeString = morseCodeLabel?.text ?? ""
+                let prevMCChar = morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy:  morseCodeStringIndex > 0 ? morseCodeStringIndex - 1 : morseCodeStringIndex)]
+                            if prevMCChar == "|" || prevMCChar == " " {
+                                //means that we are starting a new character
+                                localText = "morse code"
+                }
+            }
+            
+        }
+        
+        if localText == nil {
+            //If we are in the middle of playing a morse code character, we do not want to change the label
+            return
+        }
+        self.middleBigTextView.text = localText
         self.middleBigTextView.isHidden = false
         self.middleBigTextView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         UIView.animate(withDuration: 0.5,
@@ -420,7 +447,8 @@ class MCReaderButtonsViewController : UIViewController {
                         self?.middleBigTextView.transform = .identity
             },
                        completion: { _ in
-                           self.middleBigTextView.isHidden = true
+                            //If its the start of morse code combination, we do not want it to fade out
+                            self.middleBigTextView.isHidden = localText == "morse code" ? false : true
                        })
     }
 }

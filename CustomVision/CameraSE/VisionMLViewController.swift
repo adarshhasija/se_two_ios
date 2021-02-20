@@ -122,10 +122,10 @@ class VisionMLViewController: UIViewController {
                     //recognizedText += "\n"
                 }
                 DispatchQueue.main.async {
-                    self.delegate?.setTextFromCamera(english: recognizedText)
-                    self.delegateActions?.setTextFromCamera(english: recognizedText)
+                    //self.delegate?.setTextFromCamera(english: recognizedText)
+                    //self.delegateActions?.setTextFromCamera(english: recognizedText)
                     self.delegateActionsTable?.setTextFromCamera(english: recognizedText)
-                    //self.dismiss(animated: true, completion: nil) //This is now being done in ActionsTableViewController. Uncomment this line if calling from a different view.
+                    self.dismiss(animated: true, completion: nil) //This is now being done in ActionsTableViewController. Uncomment this line if calling from a different view.
                 }
                 //self.bubbleLayer.string = recognizedText
             }
