@@ -23,6 +23,7 @@ class ActionsListController : WKInterfaceController {
         
         actionsList.append(ActionsCell(action: "Time", explanation: "12 hour format", cellType: Action.TIME))
                 actionsList.append(ActionsCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
+        actionsList.append(ActionsCell(action: "Manual", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", explanation: "Get the text that was captured by the iPhone camera", cellType: Action.GET_IOS))
         
         
@@ -39,26 +40,19 @@ class ActionsListController : WKInterfaceController {
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let actionCell = actionsList[rowIndex]
-        
-        var params : [String:Any] = [:]
-        params["mode"] = actionCell.cellType.rawValue
-    /*    if actionCell == 0 {
-            params["mode"] = "from_iOS"
-        }
-        else if rowIndex == 1 {
-            params["mode"] = "TIME"
-        }
-        else if rowIndex == 2 {
-            params["mode"] = "DATE"
-        }
-        else if rowIndex == 3 {
-            params["mode"] = "chat"
-        }   */
-        
         sendAnalytics(eventName: "se3_watch_row_tap", parameters: [
-                    "screen" : params["mode"] as? String
-                ])
-        pushController(withName: "MCInterfaceController", context: params)
+            "list_item" : actionCell.cellType.rawValue
+        ])
+        
+        if actionCell.cellType == Action.MANUAL {
+            pushManualTypingController()
+        }
+        else {
+            var params : [String:Any] = [:]
+            params["mode"] = actionCell.cellType.rawValue
+            pushController(withName: "MCInterfaceController", context: params)
+        }
+        
     }
 }
 
@@ -77,6 +71,30 @@ extension ActionsListController {
             }
             
         }
+    }
+    
+    func pushManualTypingController() {
+        presentTextInputController(withSuggestions: [
+            "24",
+            "16",
+            "17"
+        ], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
+            
+            if var input = (result as [Any]?)?[0] as? String {
+                input = input.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains) //Remove anything that is not alphanumeric
+                if input.count < 1 {
+                    return
+                }
+                var params : [String:Any] = [:]
+                params["mode"] = Action.MANUAL.rawValue
+                params["alphanumeric"] = input
+                self.pushController(withName: "MCInterfaceController", context: params)
+            }
+            else {
+                //User cancelled typing
+                
+            }
+        })
     }
     
 }

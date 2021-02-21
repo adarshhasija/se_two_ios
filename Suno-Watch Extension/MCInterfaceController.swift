@@ -412,8 +412,28 @@ class MCInterfaceController : WKInterfaceController {
             if mode == Action.GET_IOS.rawValue {
                 downSwipe(1) //just a dummy parameter
             }
+            else if mode == Action.MANUAL.rawValue {
+                self.englishString = dictionary!["alphanumeric"] as? String ?? ""
+                self.englishTextLabel.setText(self.englishString)
+                self.englishTextLabel.setHidden(false)
+                for char in englishString {
+                    let charAsString : String = String(char)
+                    if let morseCode = self.alphabetToMcDictionary[charAsString] {
+                        self.morseCodeString += morseCode
+                    }
+                    else if char.isWholeNumber {
+                        self.morseCodeString += LibraryCustomActions.getIntegerInDotsAndDashes(integer: char.wholeNumberValue ?? 0)
+                    }
+                    self.morseCodeString += "|"
+                }
+                self.morseCodeTextLabel.setText(self.morseCodeString)
+                self.morseCodeTextLabel.setHidden(false)
+                isUserTyping = false
+                self.defaultInstructions = dcScrollStart
+                self.instructionsLabel.setText(self.defaultInstructions)
+            }
             else {
-                //aboutButton?.setHidden(false) //Only applies if it is TIME or DATE for now
+                //Only applies if it is TIME or DATE for now
                 upSwipe(1) //just a dummy parameter
             }
         }

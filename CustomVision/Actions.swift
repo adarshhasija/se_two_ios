@@ -18,6 +18,7 @@ enum Action :String{
     case CAMERA_OCR
     case TIME
     case DATE
+    case MANUAL
     case GET_IOS //Used by the watch to get morse code from iPhone
     //
     
