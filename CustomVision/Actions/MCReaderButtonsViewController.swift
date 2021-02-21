@@ -169,7 +169,7 @@ class MCReaderButtonsViewController : UIViewController {
         indicesOfPipes.removeAll()
         indicesOfPipes.append(0)
         for character in english {
-            var mcChar = morseCode.alphabetToMCDictionary[String(character)] ?? ""
+            var mcChar : String = character.isWholeNumber == true ? LibraryCustomActions.getIntegerInDotsAndDashes(integer: character.wholeNumberValue ?? 0) : (morseCode.alphabetToMCDictionary[String(character)] ?? "")
             mcChar += "|"
             index += mcChar.count
             indicesOfPipes.append(index)
@@ -256,12 +256,7 @@ class MCReaderButtonsViewController : UIViewController {
         }
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
-        animateMiddleText(text: inputMCExplanation[safe: morseCodeStringIndex])
         
-        if inputMorseCode != nil {
-            //That means it is some custom morse code, like TIME or DATE. We do not want to highlight alphanumerics
-            return
-        }
         
         if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || alphanumericStringIndex == -1 {
             //Need to change the selected character of the English string
@@ -281,8 +276,14 @@ class MCReaderButtonsViewController : UIViewController {
             Analytics.logEvent("se3_ios_mc_right", parameters: [
                 "state" : "index_alpha_change"
             ])
-            MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: alphanumericStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
+            if inputMorseCode == nil {
+                //That means it is NOT a custom morse code, like TIME or DATE. We want to highlight alphanumerics
+                MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: alphanumericStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
+            }
+            
         }
+        
+        animateMiddleText(text: inputMCExplanation[safe: morseCodeStringIndex])
 
         return
     }
@@ -415,18 +416,17 @@ class MCReaderButtonsViewController : UIViewController {
     private func animateMiddleText(text: String?) {
         var localText : String? = text
         if localText == nil {
-            //If text is not preset, we are assuming its morse code
-            if morseCodeStringIndex == 0 {
-                //If its the first character in the string
-                localText = "morse code"
+            //First check if it is a number
+            let alphanumericString = alphanumericLabel?.text ?? ""
+            let currentAlphanumericChar = alphanumericString[alphanumericString.index(alphanumericString.startIndex, offsetBy:  alphanumericStringIndex >= 0 ? alphanumericStringIndex : 0)]
+            if currentAlphanumericChar.isWholeNumber == true {
+                let morseCodeString = morseCodeLabel?.text ?? ""
+                localText = LibraryCustomActions.getInfoTextForWholeNumber(morseCodeString: morseCodeString, morseCodeStringIndex: morseCodeStringIndex, currentAlphanumericChar: String(currentAlphanumericChar))
             }
             else {
+                //We are assuming its morse code
                 let morseCodeString = morseCodeLabel?.text ?? ""
-                let prevMCChar = morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy:  morseCodeStringIndex > 0 ? morseCodeStringIndex - 1 : morseCodeStringIndex)]
-                            if prevMCChar == "|" || prevMCChar == " " {
-                                //means that we are starting a new character
-                                localText = "morse code"
-                }
+                localText = LibraryCustomActions.getInfoTextForMorseCode(morseCodeString: morseCodeString, morseCodeStringIndex: morseCodeStringIndex)
             }
             
         }

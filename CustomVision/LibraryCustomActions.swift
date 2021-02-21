@@ -68,7 +68,7 @@ class LibraryCustomActions {
         i = 0
         while i < minsDashes {
             finalMorseCodeString = finalMorseCodeString + "-"
-            finalInstructionStringArray.append("+5 min")
+            finalInstructionStringArray.append("+5 mins")
             i = i + 1
         }
         i = 0
@@ -106,7 +106,7 @@ class LibraryCustomActions {
         i = 0
         while (i < dayDots) {
             finalMorseCodeString = finalMorseCodeString + "."
-            finalInstructionStringArray.append("+1 days")
+            finalInstructionStringArray.append("+1 day")
             i = i + 1
         }
         finalMorseCodeString = finalMorseCodeString + "|"
@@ -126,4 +126,55 @@ class LibraryCustomActions {
                 "instructions" : finalInstructionStringArray
             ]
     }
+    
+    static func getIntegerInDotsAndDashes(integer: Int) -> String {
+        let dashes : Int = integer/5
+        let dots : Int = integer - (dashes*5)
+        var finalMorseCodeString = ""
+        var finalInstructionStringArray : [String] = []
+        var i = 0
+        while (i < dashes) {
+            finalMorseCodeString = finalMorseCodeString + "-"
+            finalInstructionStringArray.append("+5")
+            i = i + 1
+        }
+        i = 0
+        while (i < dots) {
+            finalMorseCodeString = finalMorseCodeString + "."
+            finalInstructionStringArray.append("+1")
+            i = i + 1
+        }
+        //finalMorseCodeString = finalMorseCodeString + "|"
+        finalInstructionStringArray.append("= " + String(integer))
+        return finalMorseCodeString
+    }
+    
+    static func getInfoTextForWholeNumber(morseCodeString : String, morseCodeStringIndex: Int, currentAlphanumericChar : String) -> String? {
+        //current character is a number
+        //next set the middle text based on morse code character
+        let curMCChar = morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy:  morseCodeStringIndex >= 0 ? morseCodeStringIndex : 0)]
+        let text = curMCChar == "." ? "+1"
+                    : curMCChar == "-" ? "+5"
+                    : curMCChar == "|" || curMCChar == " " ? "= " + currentAlphanumericChar //Means we have reached the end of a character
+                    : nil
+        
+        return text
+    }
+    
+    static func getInfoTextForMorseCode(morseCodeString : String, morseCodeStringIndex: Int) -> String? {
+        var text : String? = nil
+        if morseCodeStringIndex == 0 {
+            text = "morse code"
+        }
+        else {
+            //We are somewhere in the middle
+            let prevMCChar = morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy:  morseCodeStringIndex > 0 ? morseCodeStringIndex - 1 : morseCodeStringIndex)]
+            if prevMCChar == "|" || prevMCChar == " " {
+                //means that we are starting a new character
+                text = "morse code"
+            }
+        }
+        return text
+    }
+    
 }

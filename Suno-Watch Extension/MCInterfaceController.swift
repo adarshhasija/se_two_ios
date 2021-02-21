@@ -1027,12 +1027,6 @@ extension MCInterfaceController {
             }
             setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
-            animateMiddleText(text: morseCodeStringIndex < explanationArray.count ? explanationArray[morseCodeStringIndex] : nil)
-            
-            if mode == "TIME" || mode == "DATE" || isNormalMorse == false {
-                //Custom pattern used, not morse code. So we not want to highlight alphanumerics
-                return
-            }
             
             if isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
                 //Need to change the selected character of the English string
@@ -1053,8 +1047,13 @@ extension MCInterfaceController {
                     "state" : "index_alpha_change",
                     "is_reading" : self.isReading()
                 ])
-                setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
+                if mode != "TIME" || mode != "DATE" || isNormalMorse == true {
+                    //Its morse code, not a custom pattern. So we want to highlight alphanumerics
+                    setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
+                }
             }
+            animateMiddleText(text: morseCodeStringIndex < explanationArray.count ? explanationArray[morseCodeStringIndex] : nil)
+            
         }
         else if direction == "up" {
             if morseCodeStringIndex < 0 {
@@ -1121,17 +1120,14 @@ extension MCInterfaceController {
     private func animateMiddleText(text: String?) {
         var localText : String? = text
         if localText == nil {
-            //If text is not preset, we are assuming its morse code
-            if morseCodeStringIndex == 0 {
-                //If its the first character in the string
-                localText = "morse code"
+            //First check if it is a number
+            let currentAlphanumericChar = englishString[englishString.index(englishString.startIndex, offsetBy:  englishStringIndex >= 0 ? englishStringIndex : 0)]
+            if currentAlphanumericChar.isWholeNumber == true {
+                localText = LibraryCustomActions.getInfoTextForWholeNumber(morseCodeString: morseCodeString, morseCodeStringIndex: morseCodeStringIndex, currentAlphanumericChar: String(currentAlphanumericChar))
             }
             else {
-                let prevMCChar = morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy:  morseCodeStringIndex > 0 ? morseCodeStringIndex - 1 : morseCodeStringIndex)]
-                            if prevMCChar == "|" || prevMCChar == " " {
-                                //means that we are starting a new character
-                                localText = "morse code"
-                }
+                //We are assuming its morse code
+                localText = LibraryCustomActions.getInfoTextForMorseCode(morseCodeString: morseCodeString, morseCodeStringIndex: morseCodeStringIndex)
             }
             
         }
