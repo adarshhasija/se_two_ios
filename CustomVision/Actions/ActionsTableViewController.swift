@@ -21,9 +21,9 @@ class ActionsTableViewController : UITableViewController {
     override func viewDidLoad() {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         
-        actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "Deaf-blind person can get the current time through vibrations from the phone", cellType: Action.TIME))
-        actionsList.append(ActionsCell(action: "Date and Day of week", forWho: "Deaf-blind", explanation: "Deaf-blind person can get the date and day of the week through vibrations from the phone", cellType: Action.DATE))
-        actionsList.append(ActionsCell(action: "Read text using device camera", forWho: "Blind and Deaf-blind", explanation: "Tapping this will open the camera. Then simply point your phone at the door where the text is written. Wait for a few seconds and the app will read the text. Blind users can then tap for audio. Deaf-blind users can scroll through the morse code ", cellType: Action.CAMERA_OCR))
+        actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
+        actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
+        actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
         
         
     }
@@ -44,7 +44,7 @@ class ActionsTableViewController : UITableViewController {
         cell.accessibilityTraits = UIAccessibilityTraitButton
         cell.actionsLabel?.text = actionItem.action
         if actionItem.forWho != nil { cell.forLabel?.text = "For: " + actionItem.forWho! }
-        if actionItem.explanation != nil { cell.explanationLabel?.text = "How: " + actionItem.explanation! }
+        if actionItem.explanation != nil { cell.explanationLabel?.text = actionItem.explanation! }
                 
         return cell
     }
