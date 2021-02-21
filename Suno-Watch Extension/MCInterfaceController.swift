@@ -17,7 +17,7 @@ class MCInterfaceController : WKInterfaceController {
     var tapToTypeInstructions = "Tap screen to type a dot"
     var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Lightly long press to begin typing morse code"
     var notDeafBlindInstructions = "Force press for reply options"
-    var dcScrollStart = "Rotate the digital crown down to read via vibrations"
+    var dcScrollStart = "Rotate the digital crown down to feel each character"
     var dcScrollReverse = "Ratate the digital crown up to scroll back"
     var stopReadingString = "Swipe left once to stop reading and type morse code"
     var keepTypingString = "Keep typing"
@@ -170,7 +170,8 @@ class MCInterfaceController : WKInterfaceController {
             )
             if action == "TIME" || action == "DATE" {
                 isUserTyping = false
-                morseCodeAutoPlay(direction: "down")
+                defaultInstructions = dcScrollStart
+                instructionsLabel?.setText(defaultInstructions)
             }
             else if action == "1-to-1" {
                 while morseCode.mcTreeNode?.parent != nil {
