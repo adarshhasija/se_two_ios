@@ -23,6 +23,7 @@ class ActionsTableViewController : UITableViewController {
         
         actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
         actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
+        actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
         
         
@@ -57,19 +58,13 @@ class ActionsTableViewController : UITableViewController {
         if actionItem.cellType == Action.CAMERA_OCR {
             openCamera()
         }
+        else if actionItem.cellType == Action.MANUAL {
+            openManualEntryPopup()
+            tableView.deselectRow(at: indexPath, animated: false) //It remains in grey selected state. got to remove that
+        }
         else {
             openMorseCodeReadingScreen(inputAction: actionItem.cellType, alphanumericString: nil)
         }
-     /*   let selectedIndex = indexPath.row
-        if selectedIndex == 0 {
-            openCamera()
-        }
-        else if selectedIndex == 1 {
-            openMorseCodeReadingScreen(inputAction: "DATE", alphanumericString: nil)
-        }
-        else if selectedIndex == 2 {
-            openMorseCodeReadingScreen(inputAction: "TIME", alphanumericString: nil)
-        }   */
     }
     
     
@@ -81,6 +76,42 @@ class ActionsTableViewController : UITableViewController {
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         //self.navigationController?.present(visionMLViewController, animated: true, completion: nil)
         self.navigationController?.pushViewController(visionMLViewController, animated: true)
+    }
+    
+    @IBAction func textFieldDidChange(_ sender: UITextField) {
+        //Current controlled by maxlength. Use this if needed
+    }
+    
+    private func openManualEntryPopup() {
+        let maxLength = 7
+        let alert = UIAlertController(title: "Enter a number", message: "Max " + String(maxLength) + " characters", preferredStyle: .alert)
+
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.placeholder = "Enter here"
+            textField.maxLength = maxLength
+            textField.keyboardType = .numberPad
+            //textField.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged) //Currently controller by maxLength. Use this if needed
+        }
+
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            if textField?.text?.isEmpty == false {
+                let text : String = textField!.text!
+                Analytics.logEvent("se3_manual_success", parameters: [:]) //returned from camera
+                let textFiltered = text.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
+                self.openMorseCodeReadingScreen(inputAction : Action.INPUT_ALPHANUMERIC, alphanumericString : textFiltered)
+                alert?.dismiss(animated: true, completion: nil)
+            }
+            //print("Text field: \(textField.text)")
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [weak alert] (_) in
+            alert?.dismiss(animated: true, completion: nil)
+        }))
+
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: nil)
     }
     
     private func openMorseCodeReadingScreen(inputAction : Action, alphanumericString : String?) {
@@ -125,7 +156,7 @@ extension ActionsTableViewController : ActionsTableViewControllerProtocol {
         if english.count > 0 {
             self.navigationController?.popViewController(animated: false)
             Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
-            let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
+            let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
             openMorseCodeReadingScreen(inputAction : Action.INPUT_ALPHANUMERIC, alphanumericString : englishFiltered)
         }
     }
