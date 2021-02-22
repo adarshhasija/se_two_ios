@@ -170,8 +170,7 @@ class MCInterfaceController : WKInterfaceController {
             )
             if action == "TIME" || action == "DATE" {
                 isUserTyping = false
-                defaultInstructions = dcScrollStart
-                instructionsLabel?.setText(defaultInstructions)
+                morseCodeAutoPlay(direction: "down") //If it does not have a dependency on iPhone, it can autoplay by default
             }
             else if action == "1-to-1" {
                 while morseCode.mcTreeNode?.parent != nil {
@@ -1068,7 +1067,7 @@ extension MCInterfaceController {
                     "state" : "index_alpha_change",
                     "is_reading" : self.isReading()
                 ])
-                if mode != "TIME" || mode != "DATE" || isNormalMorse == true {
+                if (mode != "TIME" && mode != "DATE") || isNormalMorse == true {
                     //Its morse code, not a custom pattern. So we want to highlight alphanumerics
                     setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
                 }
@@ -1176,10 +1175,13 @@ extension MCInterfaceController {
     }
     
     func resetBigText() {
-        bigTextLabel.setText("")
-        bigTextLabel.setAlpha(0.0)
-        bigTextLabel2.setText("")
-        bigTextLabel2.setAlpha(0.0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            //We give it 1.1 seconds to give time for the final character to animate. If we do it before 1 second, that last animation does not happen
+            self.bigTextLabel.setText("")
+            self.bigTextLabel.setAlpha(0.0)
+            self.bigTextLabel2.setText("")
+            self.bigTextLabel2.setAlpha(0.0)
+        }
     }
 }
 
