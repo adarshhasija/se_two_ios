@@ -829,7 +829,7 @@ extension MCInterfaceController {
             changeEnteredTextSize(inputString: englishString, textSize: 40)
             return
         }
-        if mode == Action.GET_IOS.rawValue {
+        if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
             //Get from iPhone mode
             return
         }
