@@ -378,6 +378,10 @@ Long Press to autoplay vibrations
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kc9-R4-7Le">
                                         <rect key="frame" x="99" y="0.0" width="50" height="50"/>
+                                        <color key="tintColor" systemColor="systemGrayColor"/>
+                                        <accessibility key="accessibilityConfiguration" label="apple watch">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="1Xn-lP-gsH"/>
                                             <constraint firstAttribute="width" constant="50" id="Ji9-JB-2b8"/>

@@ -45,6 +45,7 @@ class MCInterfaceController : WKInterfaceController {
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
     @IBOutlet weak var instructionsLabel: WKInterfaceLabel!
+    @IBOutlet weak var iphoneImage: WKInterfaceImage!
     @IBOutlet weak var bigTextLabel: WKInterfaceLabel!
     @IBOutlet weak var bigTextLabel2: WKInterfaceLabel!
     @IBOutlet weak var aboutButton: WKInterfaceButton!
@@ -283,7 +284,18 @@ class MCInterfaceController : WKInterfaceController {
                                 setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone app not installed", readingString: "", writingString: "", isError: true)
                     return
                 }
-                setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease ensure the iPhone is near the Watch and the app is open on it", readingString: "", writingString: "", isError: false)
+                if mode == Action.CAMERA_OCR.rawValue {
+                    setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease use the camera in the iPhone app to read text", readingString: "", writingString: "", isError: false)
+                    iphoneImage.setImage(UIImage(systemName: "iphone"))
+                    iphoneImage.setTintColor(UIColor.white)
+                    iphoneImage.setHidden(false)
+                }
+                else {
+                    setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease ensure the iPhone is near the Watch and the app is open on it", readingString: "", writingString: "", isError: false)
+                    iphoneImage.setImage(UIImage(systemName: "iphone"))
+                    iphoneImage.setTintColor(UIColor.white)
+                    iphoneImage.setHidden(false)
+                }
                 var message : [String : Any] = [:]
                 message["request_morse_code"] = true
                 message["mode"] = Action.CAMERA_OCR.rawValue
@@ -292,6 +304,9 @@ class MCInterfaceController : WKInterfaceController {
             }
             else {
                 setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone is not reachable", readingString: "", writingString: "", isError: true)
+                iphoneImage.setImage(UIImage(systemName: "iphone.slash"))
+                iphoneImage.setTintColor(UIColor.red)
+                iphoneImage.setHidden(false)
                 WKInterfaceDevice.current().play(.failure)
             }
         }
@@ -933,6 +948,7 @@ extension MCInterfaceController {
                 WKInterfaceDevice.current().play(.failure)
                 setInstructionLabelForMode(mainString: "Update from phone failed.\n\nNo content was received", readingString: "", writingString: "", isError: true)
                 instructionsLabel?.setTextColor(.red)
+                iphoneImage?.setHidden(true)
                 return
             }
             isNormalMorse = message["is_normal_morse"] as? Bool
@@ -946,6 +962,7 @@ extension MCInterfaceController {
             morseCodeStringIndex = -1
             isUserTyping = false
             mainImage?.setHidden(true)
+            iphoneImage?.setHidden(true)
             setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
             WKInterfaceDevice.current().play(.success)
         }
@@ -953,6 +970,7 @@ extension MCInterfaceController {
             WKInterfaceDevice.current().play(.failure)
             setInstructionLabelForMode(mainString: "Update from phone failed.\n\nNothing was received", readingString: "", writingString: "", isError: true)
             instructionsLabel?.setTextColor(.red)
+            iphoneImage?.setHidden(true)
         }
     }
     
