@@ -140,9 +140,13 @@ class MCReaderButtonsViewController : UIViewController {
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isWatchAppInstalled {
-                appleWatchImageView.image = UIImage(named: "AppleWatchTransparent")
+                //appleWatchImageView.image = UIImage(named: "AppleWatchTransparent")
                 appleWatchImageView.isHidden = false
-                scrollMCLabel.text = "You can scroll through the vibrations 1 by 1 using the Digital Crown on your Apple Watch.\nOpen your watch app and select Get From iPhone\n"
+                scrollMCLabel.text = "You can scroll through the vibrations 1-by-1 on your Apple Watch app"
+                scrollMCLabel.isHidden = false
+            }
+            else {
+                scrollMCLabel.text = "You can scroll through the vibrations 1-by-1 on your Apple Watch\nYou must install the watch app"
                 scrollMCLabel.isHidden = false
             }
         }

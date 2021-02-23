@@ -28,6 +28,16 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
             session.activate()
         }
     }
+    
+    func handle(_ userActivity: NSUserActivity) {
+        //Got from SO but have not tested it yet
+        //WKExtension.shared().rootInterfaceController?.pushController(withName: "ActionListController", context: nil)
+    }
+    
+    func handleUserActivity(_ userInfo: [AnyHashable : Any]?) {
+        //Got from SO but not tested it yet
+        //WKExtension.shared().rootInterfaceController?.pushController(withName: "ActionListController", context: nil)
+    }
 
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
