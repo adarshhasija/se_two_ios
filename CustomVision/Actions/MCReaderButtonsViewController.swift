@@ -17,6 +17,7 @@ import IntentsUI
 class MCReaderButtonsViewController : UIViewController {
     
     var siriShortcut: SiriShortcut? = nil
+    var inputMode: Action? = nil //Used when a request comes in from a watch. Need to validate type of request
     var inputAlphanumeric : String? = nil
     var inputMorseCode : String? = nil //Customized morse code is sent it. If this is nil, we will use standard morse code dictionary
     var inputMCExplanation : [String] = []
@@ -135,7 +136,9 @@ class MCReaderButtonsViewController : UIViewController {
     override func viewDidLoad() {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         alphanumericLabel.text = inputAlphanumeric
-        morseCodeLabel.text = inputMorseCode != nil ? inputMorseCode : convertAlphanumericToMC(alphanumericString: inputAlphanumeric ?? "")
+        let morseCodeText = inputMorseCode != nil ? inputMorseCode : convertAlphanumericToMC(alphanumericString: inputAlphanumeric ?? "")
+        morseCodeLabel.text = morseCodeText
+        sendEnglishAndMCToWatch(alphanumeric: inputAlphanumeric ?? "", morseCode: morseCodeText ?? "") //The Watch may already be waiting for camera input.
         setUpPlayAudioButtonScalable()
         if WCSession.isSupported() {
             let session = WCSession.default
@@ -314,10 +317,14 @@ class MCReaderButtonsViewController : UIViewController {
         }
     }
     
-    func receivedRequestForAlphanumericsAndMCFromWatch() {
-        let alphanumericString = alphanumericLabel?.text ?? ""
-        let morseCodeString = morseCodeLabel?.text ?? ""
-        sendEnglishAndMCToWatch(alphanumeric: alphanumericString, morseCode: morseCodeString)
+    func receivedRequestForAlphanumericsAndMCFromWatch(mode: String?) {
+        if mode == inputMode?.rawValue {
+            //Mode requested by the watch has to match mode currently being viewed
+            let alphanumericString = alphanumericLabel?.text ?? ""
+            let morseCodeString = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") ?? "" //If it is on autoplay mode, there maybe no pipes. When its sent to the watch, its NOT on autoplay mode
+            sendEnglishAndMCToWatch(alphanumeric: alphanumericString, morseCode: morseCodeString)
+        }
+        
     }
     
     func sendEnglishAndMCToWatch(alphanumeric: String, morseCode: String) {
@@ -326,6 +333,7 @@ class MCReaderButtonsViewController : UIViewController {
             if session.isWatchAppInstalled && session.isReachable {
                 session.sendMessage([
                                         "is_normal_morse": inputMorseCode != nil ? false : true,
+                                        "mode" : inputMode?.rawValue,
                                         "english": alphanumeric,
                                         "morse_code": morseCode
                                     ], replyHandler: nil, errorHandler: nil)

@@ -101,7 +101,7 @@ class ActionsTableViewController : UITableViewController {
                 let text : String = textField!.text!
                 Analytics.logEvent("se3_manual_success", parameters: [:]) //returned from camera
                 let textFiltered = text.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
-                self.openMorseCodeReadingScreen(inputAction : Action.INPUT_ALPHANUMERIC, alphanumericString : textFiltered)
+                self.openMorseCodeReadingScreen(inputAction : Action.MANUAL, alphanumericString : textFiltered)
                 alert?.dismiss(animated: true, completion: nil)
             }
             //print("Text field: \(textField.text)")
@@ -127,6 +127,7 @@ class ActionsTableViewController : UITableViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
         if alphanumericString != nil {
+            mcReaderButtonsViewController.inputMode = inputAction
             mcReaderButtonsViewController.inputAlphanumeric = alphanumericString
         }
         else {
@@ -157,7 +158,7 @@ extension ActionsTableViewController : ActionsTableViewControllerProtocol {
             self.navigationController?.popViewController(animated: false)
             Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
-            openMorseCodeReadingScreen(inputAction : Action.INPUT_ALPHANUMERIC, alphanumericString : englishFiltered)
+            openMorseCodeReadingScreen(inputAction : Action.CAMERA_OCR, alphanumericString : englishFiltered)
         }
     }
 

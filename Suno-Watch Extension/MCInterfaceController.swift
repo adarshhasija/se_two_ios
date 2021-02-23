@@ -286,6 +286,7 @@ class MCInterfaceController : WKInterfaceController {
                 setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease ensure the iPhone is near the Watch and the app is open on it", readingString: "", writingString: "", isError: false)
                 var message : [String : Any] = [:]
                 message["request_morse_code"] = true
+                message["mode"] = Action.CAMERA_OCR.rawValue
                 // In your WatchKit extension, the value of this property is true when the paired iPhone is reachable via Bluetooth.
                 session.sendMessage(message, replyHandler: nil, errorHandler: nil)
             }
@@ -408,7 +409,8 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if mode != nil {
-            if mode == Action.GET_IOS.rawValue {
+            if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
+                //these modes get data from connected iOS device
                 downSwipe(1) //just a dummy parameter
             }
             else if mode == Action.MANUAL.rawValue {
@@ -799,7 +801,7 @@ extension MCInterfaceController {
     
     //2 strings for writing mode and reading mode
     func setInstructionLabelForMode(mainString: String, readingString: String, writingString: String, isError: Bool?) {
-        var instructionString = mainString
+        let instructionString = mainString
         if !isUserTyping && readingString.isEmpty == false {
             //instructionString += "\nOr\n" + readingString
         }
@@ -920,6 +922,10 @@ extension MCInterfaceController {
     }
     
     func receivedMessageFromPhone(message : [String : Any]) {
+        if (message["mode"] as? String) != mode {
+            //The modes on watch and iOS must be the same. eg: INPUT FROM CAMERA
+            return
+        }
         if message["english"] != nil && message["morse_code"] != nil {
             let english = message["english"] as? String
             let morseCode = message["morse_code"] as? String

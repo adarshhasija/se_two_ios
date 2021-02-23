@@ -97,12 +97,13 @@ extension AppDelegate : WCSessionDelegate {
         else if let requestMorseCode = message["request_morse_code"] as? Bool {
             //User has opened the watch app and is requesting the current english and morse code on the phone
             //This is because they prefer to read it on the watch
+            let mode = message["mode"] as? String
             DispatchQueue.main.async {
                 //This is because topViewController must be accessed from the main threads
                 //((self.window?.rootViewController as? UINavigationController)?.topViewController as? WhiteSpeechViewController)?.receivedRequestForEnglishAndMCFromWatch()
                 //((self.window?.rootViewController as? UINavigationController)?.topViewController as? ActionsMCViewController)?.receivedRequestForEnglishAndMCFromWatch()
                 if ((self.window?.rootViewController as? UINavigationController)?.topViewController is MCReaderButtonsViewController) {
-                    ((self.window?.rootViewController as? UINavigationController)?.topViewController as? MCReaderButtonsViewController)?.receivedRequestForAlphanumericsAndMCFromWatch()
+                    ((self.window?.rootViewController as? UINavigationController)?.topViewController as? MCReaderButtonsViewController)?.receivedRequestForAlphanumericsAndMCFromWatch(mode: mode)
                 }
                 else {
                     if WCSession.isSupported() {
