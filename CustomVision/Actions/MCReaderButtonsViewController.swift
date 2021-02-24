@@ -369,6 +369,8 @@ class MCReaderButtonsViewController : UIViewController {
         activity.userInfo = siriShortcut.dictionary
         activity.suggestedInvocationPhrase = siriShortcut.invocation
         activity.persistentIdentifier = siriShortcut.activityType
+        activity.isAccessibilityElement = true
+        activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = true
         activity.isEligibleForPrediction = true
         view.userActivity = activity
