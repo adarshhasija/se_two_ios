@@ -154,7 +154,6 @@ class VisionMLViewController: UIViewController {
     bubbleLayer.position.x = self.view.frame.width / 2.0
     bubbleLayer.position.y = lowerView.frame.height / 2
     lowerView.layer.addSublayer(bubbleLayer)
-    //setupCamera()
     
     switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized: // The user has previously granted access to the camera.
@@ -173,7 +172,8 @@ class VisionMLViewController: UIViewController {
                 }
                 else {
                     DispatchQueue.main.async {
-                        self.addInstructionsTextLabel(text: "You have not given camera permission\nYou need to go to the Settings app to do so", to: self.bottomStackView)
+                        self.addInstructionsTextLabel(text: "You have not given camera permission\nTap the Settings button on the top right to go to the Settings app and give permission", to: self.bottomStackView)
+                        self.addButtonForSettings(to: self.bottomStackView)
                     }
                     
                 }
@@ -182,7 +182,8 @@ class VisionMLViewController: UIViewController {
         case .denied: // The user has previously denied access. Therefore requestAccess does not work here. It only returns false
             //UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!) //This opens the Settings app so user can turn the Camera permission ON again. However, we are not using this right now over doubts that Apple could reject the update in future
             DispatchQueue.main.async {
-                self.addInstructionsTextLabel(text: "You have not given camera permission\nYou need to go to the Settings app to do so", to: self.bottomStackView)
+                self.addInstructionsTextLabel(text: "You have not given camera permission\nTap the Settings button on the top right to go to the Settings app and give permission", to: self.bottomStackView)
+                self.addButtonForSettings(to: self.bottomStackView)
             }
             return
 
@@ -529,29 +530,44 @@ extension VisionMLViewController {
         }
     }
     
-    func addInstructionsTextLabel(text : String?, to view: UIView) {
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 21))
+    func addInstructionsTextLabel(text : String?, to view: UIStackView) {
+        //let label = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 21))
+        //label.backgroundColor = UIColor.black
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = NSTextAlignment.center
-        label.backgroundColor = UIColor.black
         label.textColor = UIColor.white
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.text = text
         label.font = UIFont.preferredFont(forTextStyle: .body)
-        self.view.addSubview(label)
-        view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
+        view.insertArrangedSubview(label, at: view.arrangedSubviews.count)
+     /*   view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
         view.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraintEqualToSystemSpacingAfter(view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraintEqualToSystemSpacingAfter(view.trailingAnchor, multiplier: 1)
-        ])
-        self.view.accessibilityLabel = text
+        ])  */
+        view.accessibilityLabel = text
     }
     
-    func addButtonForSettings(to view: UIView) {
-        //let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)!
-        //UIApplication.shared.open(settingsUrl)
+    @objc func settingsButtonTapped() {
+        let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)!
+        UIApplication.shared.open(settingsUrl)
+    }
+    
+    func addButtonForSettings(to view: UIStackView) {
+        //Not doinng this as the text does not appear blue
+      /*  let button = UIButton()
+        button.setTitle("Settings", for: .normal)
+        button.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+        view.insertArrangedSubview(button, at: view.arrangedSubviews.count) */
+        
+        let barButtonItem = UIBarButtonItem()
+        barButtonItem.image = UIImage(systemName: "gear")
+        barButtonItem.target = self
+        barButtonItem.action = #selector(settingsButtonTapped)
+        self.navigationItem.rightBarButtonItem = barButtonItem
     }
     
     private func sayThis(string: String) {
