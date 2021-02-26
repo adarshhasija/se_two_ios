@@ -396,7 +396,7 @@ class MCReaderButtonsViewController : UIViewController {
             return
         }
         //Back tap is only supported on iPhone 8 and above
-        let txt = "After creating the shortcut, we strong encourage that you attach the shortcut to the Back Tap functionality.You can find this under the Settings app -> Accessibility -> Touch -> Back Tap"
+        let txt = "After creating the shortcut, we strongly encourage that you attach the shortcut to the Back Tap functionality.You can find this under the Settings app -> Accessibility -> Touch -> Back Tap"
         let sentences = txt.split(separator: ".") //Doing this to ensure blind can move over 1 sentence at a time via VoiceOver
         for sentence in sentences {
             let backTapLabel = UILabel()
@@ -451,6 +451,8 @@ class MCReaderButtonsViewController : UIViewController {
             //If we are in the middle of playing a morse code character, we do not want to change the label
             return
         }
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        localText);
         self.middleBigTextView.text = localText
         self.middleBigTextView.isHidden = false
         self.middleBigTextView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)

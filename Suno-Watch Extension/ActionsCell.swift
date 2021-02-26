@@ -37,7 +37,7 @@ class ActionsCell {
         self.cellType = cellType
         self.accessibilityLabel = action
                                     + "."
-                                    + "for: " + forWho
+                                    //+ "for: " + forWho
                                     + ". " + explanation
     }
 }
