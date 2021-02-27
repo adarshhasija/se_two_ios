@@ -498,6 +498,7 @@ extension VisionMLViewController {
     // Add an "Add to Siri" button to a view.
     func addSiriButton(shortcut: SiriShortcut, to view: UIView) {
         let button = INUIAddVoiceShortcutButton(style: .blackOutline)
+        button.isAccessibilityElement = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = true
         let activity = createActivityForQuestion(siriShortcut: shortcut)
@@ -548,7 +549,6 @@ extension VisionMLViewController {
             view.leadingAnchor.constraintEqualToSystemSpacingAfter(view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraintEqualToSystemSpacingAfter(view.trailingAnchor, multiplier: 1)
         ])  */
-        view.accessibilityLabel = text
     }
     
     @objc func settingsButtonTapped() {

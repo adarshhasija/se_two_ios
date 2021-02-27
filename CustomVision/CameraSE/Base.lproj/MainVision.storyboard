@@ -16,7 +16,7 @@
                         <viewControllerLayoutGuide type="top" id="Lvf-fF-3NQ"/>
                         <viewControllerLayoutGuide type="bottom" id="9uj-00-xTT"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="vWp-6z-2Sg">
+                    <view key="view" userInteractionEnabled="NO" contentMode="scaleToFill" id="vWp-6z-2Sg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -109,9 +109,6 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="B5g-RL-Sle"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <accessibility key="accessibilityConfiguration">
-                            <bool key="isElement" value="YES"/>
-                        </accessibility>
                         <constraints>
                             <constraint firstItem="FCo-Sd-sPt" firstAttribute="top" secondItem="vWp-6z-2Sg" secondAttribute="top" id="3gF-El-T6d"/>
                             <constraint firstItem="UyM-lP-Pve" firstAttribute="trailing" secondItem="FCo-Sd-sPt" secondAttribute="trailing" id="HKE-c8-GI4"/>
