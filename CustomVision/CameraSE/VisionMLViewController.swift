@@ -521,10 +521,10 @@ extension VisionMLViewController {
         for sentence in sentences {
             let backTapLabel = UILabel()
             backTapLabel.text = String(sentence)
+            backTapLabel.font = UIFont.preferredFont(forTextStyle: .body)
             backTapLabel.textAlignment = .center
             backTapLabel.lineBreakMode = .byWordWrapping
             backTapLabel.numberOfLines = 0
-            backTapLabel.font = backTapLabel.font.withSize(12)
             sV.insertArrangedSubview(backTapLabel, at: sV.arrangedSubviews.count)
             backTapLabels.append(backTapLabel)
         }

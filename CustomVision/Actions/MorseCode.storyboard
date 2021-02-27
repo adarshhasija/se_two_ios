@@ -288,16 +288,16 @@
                                 <rect key="frame" x="16" y="44" width="288" height="524"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y3U-tb-ggf">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="75.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="99"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdv-Kb-sRM">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="23.5"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="31.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSh-G6-6AY">
-                                                <rect key="frame" x="0.0" y="23.5" width="288" height="31.5"/>
+                                                <rect key="frame" x="0.0" y="31.5" width="288" height="31.5"/>
                                                 <accessibility key="accessibilityConfiguration">
                                                     <bool key="isElement" value="NO"/>
                                                 </accessibility>
@@ -305,56 +305,27 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to autoplay" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gfl-xv-m4i" userLabel="Autoplay Instruction Label">
-                                                <rect key="frame" x="57.5" y="55" width="173" height="20.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visually-impaired?" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhM-Bj-b7a">
-                                                <rect key="frame" x="74" y="75.5" width="140" height="0.0"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HcV-5U-9zN">
-                                                <rect key="frame" x="108" y="75.5" width="72" height="0.0"/>
-                                                <state key="normal">
-                                                    <attributedString key="attributedTitle">
-                                                        <fragment content="Play Audio">
-                                                            <attributes>
-                                                                <font key="NSFont" metaFont="system" size="15"/>
-                                                            </attributes>
-                                                        </fragment>
-                                                    </attributedString>
-                                                </state>
+                                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8d-Ez-seD">
+                                                <rect key="frame" x="114.5" y="63" width="59" height="36"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                <state key="normal" title="Button"/>
                                                 <connections>
-                                                    <action selector="playAudioButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="bPM-6a-iqP"/>
+                                                    <action selector="autoplayButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="xtM-4V-HWo"/>
                                                 </connections>
                                             </button>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YZ3-iU-38b">
-                                                <rect key="frame" x="18" y="75.5" width="252.5" height="0.0"/>
-                                                <string key="text">Deaf-blind?
-Long Press to autoplay vibrations
-</string>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exmplanation of Morse Code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXH-ww-zU0">
-                                                <rect key="frame" x="0.0" y="75.5" width="288" height="0.0"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lv9-9I-e76">
+                                                <rect key="frame" x="114.5" y="99" width="59" height="0.0"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="audioButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="ZVJ-Y3-Wyt"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="cXH-ww-zU0" firstAttribute="leading" secondItem="Y3U-tb-ggf" secondAttribute="leading" id="8pp-QN-uaA"/>
                                             <constraint firstItem="WSh-G6-6AY" firstAttribute="leading" secondItem="Y3U-tb-ggf" secondAttribute="leading" id="K5H-eX-2rd"/>
                                             <constraint firstItem="sdv-Kb-sRM" firstAttribute="leading" secondItem="Y3U-tb-ggf" secondAttribute="leading" id="T6Q-9q-cIO"/>
                                             <constraint firstAttribute="trailing" secondItem="WSh-G6-6AY" secondAttribute="trailing" id="UHv-81-LDd"/>
-                                            <constraint firstAttribute="trailing" secondItem="cXH-ww-zU0" secondAttribute="trailing" id="YYF-Hi-S07"/>
-                                            <constraint firstItem="Gfl-xv-m4i" firstAttribute="top" secondItem="WSh-G6-6AY" secondAttribute="bottom" constant="100" id="c2Z-YN-VuX"/>
                                             <constraint firstAttribute="trailing" secondItem="sdv-Kb-sRM" secondAttribute="trailing" id="kV0-0T-Kbh"/>
                                         </constraints>
                                     </stackView>
@@ -371,7 +342,7 @@ Long Press to autoplay vibrations
                                 <viewLayoutGuide key="frameLayoutGuide" id="tIO-xU-LEv"/>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vu2-4A-M8E">
-                                <rect key="frame" x="36" y="184" width="248" height="200"/>
+                                <rect key="frame" x="36" y="284" width="248" height="0.0"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nY7-i4-Baw">
                                 <rect key="frame" x="36" y="498" width="248" height="50"/>
@@ -389,7 +360,7 @@ Long Press to autoplay vibrations
                                     </imageView>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iko-Sp-hvm" userLabel="Scroll MC on Apple Watch Label">
                                         <rect key="frame" x="124" y="0.0" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -422,16 +393,13 @@ Long Press to autoplay vibrations
                     <connections>
                         <outlet property="alphanumericLabel" destination="sdv-Kb-sRM" id="pRB-c1-kP4"/>
                         <outlet property="appleWatchImageView" destination="kc9-R4-7Le" id="WG5-TS-UiP"/>
-                        <outlet property="currentActivityLabel" destination="Gfl-xv-m4i" id="6yH-dT-DNN"/>
-                        <outlet property="deafBlindLabel" destination="YZ3-iU-38b" id="k9q-9H-Yqv"/>
-                        <outlet property="mcExplanationLabel" destination="cXH-ww-zU0" id="2kk-1L-O6q"/>
+                        <outlet property="audioButton" destination="Lv9-9I-e76" id="skN-EV-B5b"/>
+                        <outlet property="autoplayButton" destination="f8d-Ez-seD" id="jnv-hh-nlQ"/>
                         <outlet property="middleBigTextView" destination="aYk-9M-WPq" id="TIq-ra-t2F"/>
                         <outlet property="middleStackView" destination="Vu2-4A-M8E" id="vbU-CT-aI3"/>
                         <outlet property="morseCodeLabel" destination="WSh-G6-6AY" id="gnJ-0I-Qf4"/>
-                        <outlet property="playAudioButton" destination="HcV-5U-9zN" id="vJ8-jn-sIY"/>
                         <outlet property="scrollMCLabel" destination="Iko-Sp-hvm" id="XyB-90-QbS"/>
                         <outlet property="stackViewMain" destination="Y3U-tb-ggf" id="KDt-FI-b6D"/>
-                        <outlet property="visuallyImpairedLabel" destination="nhM-Bj-b7a" id="PIA-JI-0h7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FHW-gO-Y0y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

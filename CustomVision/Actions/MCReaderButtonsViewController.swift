@@ -33,41 +33,51 @@ class MCReaderButtonsViewController : UIViewController {
     var synth = AVSpeechSynthesizer()
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     var isAutoPlayOn = false
+    var isAudioRequestedByUser = false
     
     @IBOutlet weak var middleBigTextView: UILabel!
     @IBOutlet weak var stackViewMain: UIStackView!
     @IBOutlet weak var alphanumericLabel: UILabel!
     @IBOutlet weak var morseCodeLabel: UILabel!
-    @IBOutlet weak var currentActivityLabel: UILabel!
-    @IBOutlet weak var visuallyImpairedLabel: UILabel!
+    @IBOutlet weak var autoplayButton: UIButton!
+    @IBOutlet weak var audioButton: UIButton! //Audio descriptions during autoplay
     @IBOutlet weak var middleStackView: UIStackView!
-    @IBOutlet weak var playAudioButton: UIButton!
-    @IBOutlet weak var deafBlindLabel: UILabel!
     @IBOutlet weak var appleWatchImageView: UIImageView!
     @IBOutlet weak var scrollMCLabel: UILabel!
-    @IBOutlet weak var mcExplanationLabel: UILabel! //Explanation of the dots and dashes screen. In the case of date and time
     var siriButton : INUIAddVoiceShortcutButton!
     var backTapLabels : [UILabel] = []
 
     
-    @IBAction func playAudioButtonTapped(_ sender: Any) {
+    @IBAction func audioButtonTapped(_ sender: Any) {
         guard let alphanumeric = inputAlphanumeric else {
             return
         }
         Analytics.logEvent("se3_ios_audio_btn", parameters: [:])
-        sayThis(string: alphanumeric)
+        isAudioRequestedByUser = !isAudioRequestedByUser
+        audioButton?.setTitle(isAudioRequestedByUser == false ? "Play Audio" : "Stop Audio", for: .normal)
+        audioButton?.setTitleColor(isAudioRequestedByUser == false ? UIColor.blue : UIColor.red, for: .normal)
     }
-
+    
+    
+    @IBAction func autoplayButtonTapped(_ sender: Any) {
+        if isAutoPlayOn == true {
+            isAutoPlayOn = false
+        }
+        else {
+            morseCodeAutoPlay(direction: "right")
+        }
+    }
+    
     @IBAction func gestureLongPress(_ sender: Any) {
         if (sender as? UIGestureRecognizer)?.state == UIGestureRecognizer.State.recognized {
-            if isAutoPlayOn == true {
+         /*   if isAutoPlayOn == true {
                 isAutoPlayOn = false
                 return
             }
             Analytics.logEvent("se3_ios_long_press", parameters: [:])
             alphanumericStringIndex = -1
             morseCodeStringIndex = -1
-            morseCodeAutoPlay(direction: "right")
+            morseCodeAutoPlay(direction: "right")   */
         }
     }
     
@@ -89,12 +99,10 @@ class MCReaderButtonsViewController : UIViewController {
             alphanumericLabel?.textColor = .none
             morseCodeLabel?.textColor = .none
             morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
-            //mcExplanationLabel.isHidden = false
-            currentActivityLabel.text = "Long press to autoplay"
+            autoplayButton?.setTitle("Autoplay", for: .normal)
+            autoplayButton?.setTitleColor(UIColor.blue, for: .normal)
+            audioButton?.isHidden = true
             middleBigTextView.isHidden = true
-            //visuallyImpairedLabel.isHidden = false
-            //playAudioButton.isHidden = false
-            //deafBlindLabel.isHidden = false
             appleWatchImageView.isHidden = false
             scrollMCLabel.isHidden = false
             siriButton?.isHidden = false
@@ -110,21 +118,19 @@ class MCReaderButtonsViewController : UIViewController {
         let morseCodeString = morseCodeLabel?.text
         morseCodeLabel?.text = morseCodeString?.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
         morseCodeLabel?.textColor = .none
-        mcExplanationLabel.isHidden = true
-        currentActivityLabel.isHidden = false
-        visuallyImpairedLabel.isHidden = true
-        playAudioButton.isHidden = true
-        deafBlindLabel.isHidden = true
+        autoplayButton?.setTitle("Stop Autoplay", for: .normal)
+        autoplayButton?.setTitleColor(UIColor.red, for: .normal)
+        audioButton?.isHidden = UIAccessibility.isVoiceOverRunning == false ? true : false
+        if UIAccessibility.isVoiceOverRunning {
+            audioButton?.setTitle(isAudioRequestedByUser == false ? "Play Audio" : "Stop Audio", for: .normal)
+                    audioButton?.setTitleColor(isAudioRequestedByUser == false ? UIColor.blue : UIColor.red, for: .normal)
+        }
         appleWatchImageView.isHidden = true
         scrollMCLabel.isHidden = true
         siriButton?.isHidden = true
         for backTapLabel in backTapLabels {
             backTapLabel.isHidden = true
         }
-        let autoPlayTxt = "Autoplaying vibrations...\nLong press to stop"
-        currentActivityLabel.text = autoPlayTxt
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-        autoPlayTxt);
         
         let dictionary = [
             "direction" : direction
@@ -139,7 +145,6 @@ class MCReaderButtonsViewController : UIViewController {
         let morseCodeText = inputMorseCode != nil ? inputMorseCode : convertAlphanumericToMC(alphanumericString: inputAlphanumeric ?? "")
         morseCodeLabel.text = morseCodeText
         sendEnglishAndMCToWatch(alphanumeric: inputAlphanumeric ?? "", morseCode: morseCodeText ?? "") //The Watch may already be waiting for camera input.
-        setUpPlayAudioButtonScalable()
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isWatchAppInstalled {
@@ -155,12 +160,11 @@ class MCReaderButtonsViewController : UIViewController {
                 scrollMCLabel.isHidden = false
             }
         }
-        //mcExplanationLabel.text = inputMCExplanation
-        //mcExplanationLabel.isHidden = inputMCExplanation != nil ? false : true
         if siriShortcut != nil { addSiriButton(shortcutForButton: siriShortcut!, to: middleStackView) }
         alphanumericStringIndex = -1
         morseCodeStringIndex = -1
         morseCodeAutoPlay(direction: "right")
+        //setUpButtonScalable(button: autoplayButton, title: isAutoPlayOn == true ? "Stop Autoplay" : "Autoplay")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -168,7 +172,7 @@ class MCReaderButtonsViewController : UIViewController {
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        playAudioButton?.sizeToFit()
+        //playAudioButton?.sizeToFit()
     }
     
     private func convertAlphanumericToMC(alphanumericString : String) -> String {
@@ -345,7 +349,7 @@ class MCReaderButtonsViewController : UIViewController {
     
     //Increases the size of the PlayAudio button if the user has opted for
     //Accessibility = Larger Text Sizes
-    func setUpPlayAudioButtonScalable() {
+    func setUpButtonScalable(button: UIButton, title: String) {
         //playAudioButton.contentEdgeInsets = UIEdgeInsets(top: 0,
         //                                                  left: 0,
         //                                                  bottom: 0,
@@ -353,13 +357,10 @@ class MCReaderButtonsViewController : UIViewController {
         let font = UIFont(name: "Helvetica", size: 19)!
         let scaledFont = UIFontMetrics.default.scaledFont(for: font)
         let attributes = [NSAttributedString.Key.font: scaledFont]
-        let attributedText = NSAttributedString(string: "Play Audio",
+        let attributedText = NSAttributedString(string: title,
                                                         attributes: attributes)
-        playAudioButton.titleLabel?.attributedText = attributedText
-        playAudioButton.setAttributedTitle(playAudioButton.titleLabel?.attributedText,
-                                            for: .normal)
-        //playAudioButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        //playAudioButton.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        button.titleLabel?.attributedText = attributedText
+        button.setAttributedTitle(button.titleLabel?.attributedText,for: .normal)
     }
     
     //Using acitivites instead of intents as Siri opens app directly for activity. For intents, it shows button to open app, which we do not want s
@@ -390,21 +391,21 @@ class MCReaderButtonsViewController : UIViewController {
         //view.addSubview(button)
         //view.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
                 //view.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
-        view.insertArrangedSubview(siriButton, at: view.arrangedSubviews.count)
+        view.insertArrangedSubview(siriButton, at: 0)
         
         guard (UIApplication.shared.delegate as? AppDelegate)?.isBackTapSupported() == true else {
             return
         }
         //Back tap is only supported on iPhone 8 and above
-        let txt = "After creating the shortcut, we strongly encourage that you attach the shortcut to the Back Tap functionality.You can find this under the Settings app -> Accessibility -> Touch -> Back Tap"
+        let txt = "After creating the shortcut, we strongly encourage that you attach the shortcut to the Back Tap functionality.You can find this by going to the Settings app, then Accessibility, then Touch, then Back Tap"
         let sentences = txt.split(separator: ".") //Doing this to ensure blind can move over 1 sentence at a time via VoiceOver
         for sentence in sentences {
             let backTapLabel = UILabel()
             backTapLabel.text = String(sentence)
+            backTapLabel.font = UIFont.preferredFont(forTextStyle: .body)
             backTapLabel.textAlignment = .center
             backTapLabel.lineBreakMode = .byWordWrapping
             backTapLabel.numberOfLines = 0
-            backTapLabel.font = backTapLabel.font.withSize(12)
             view.insertArrangedSubview(backTapLabel, at: view.arrangedSubviews.count)
             backTapLabels.append(backTapLabel)
         }
@@ -451,8 +452,10 @@ class MCReaderButtonsViewController : UIViewController {
             //If we are in the middle of playing a morse code character, we do not want to change the label
             return
         }
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-        localText);
+        if isAudioRequestedByUser == true {
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+                    localText);
+        }
         self.middleBigTextView.text = localText
         self.middleBigTextView.isHidden = false
         self.middleBigTextView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
