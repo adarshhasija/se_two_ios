@@ -997,6 +997,7 @@ extension MCInterfaceController {
             || isAutoPlayOn == false {
             timer.invalidate()
             isAutoPlayOn = false
+            englishString = englishString.replacingOccurrences(of: "␣", with: " ")
             morseCodeString = morseCodeString.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
             englishTextLabel.setText(englishString)
             morseCodeTextLabel.setText(morseCodeString)
