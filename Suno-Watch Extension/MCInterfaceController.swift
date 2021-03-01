@@ -286,15 +286,19 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 if mode == Action.CAMERA_OCR.rawValue {
                     setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease use the camera in the iPhone app to read text", readingString: "", writingString: "", isError: false)
-                    iphoneImage.setImage(UIImage(systemName: "iphone"))
-                    iphoneImage.setTintColor(UIColor.white)
-                    iphoneImage.setHidden(false)
+                    iphoneImage?.setImage(UIImage(systemName: "iphone"))
+                    iphoneImage?.setIsAccessibilityElement(true)
+                    iphoneImage?.setAccessibilityLabel("iPhone")
+                    iphoneImage?.setTintColor(UIColor.white)
+                    iphoneImage?.setHidden(false)
                 }
                 else {
                     setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease ensure the iPhone is near the Watch and the app is open on it", readingString: "", writingString: "", isError: false)
-                    iphoneImage.setImage(UIImage(systemName: "iphone"))
-                    iphoneImage.setTintColor(UIColor.white)
-                    iphoneImage.setHidden(false)
+                    iphoneImage?.setImage(UIImage(systemName: "iphone"))
+                    iphoneImage?.setIsAccessibilityElement(true)
+                    iphoneImage?.setAccessibilityLabel("iPhone")
+                    iphoneImage?.setTintColor(UIColor.white)
+                    iphoneImage?.setHidden(false)
                 }
                 var message : [String : Any] = [:]
                 message["request_morse_code"] = true
@@ -304,9 +308,11 @@ class MCInterfaceController : WKInterfaceController {
             }
             else {
                 setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone is not reachable", readingString: "", writingString: "", isError: true)
-                iphoneImage.setImage(UIImage(systemName: "iphone.slash"))
-                iphoneImage.setTintColor(UIColor.red)
-                iphoneImage.setHidden(false)
+                iphoneImage?.setImage(UIImage(systemName: "iphone.slash"))
+                iphoneImage?.setIsAccessibilityElement(true)
+                iphoneImage?.setAccessibilityLabel("iPhone with slash")
+                iphoneImage?.setTintColor(UIColor.red)
+                iphoneImage?.setHidden(false)
                 WKInterfaceDevice.current().play(.failure)
             }
         }

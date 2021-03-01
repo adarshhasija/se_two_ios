@@ -453,8 +453,14 @@ class MCReaderButtonsViewController : UIViewController {
             return
         }
         if isAudioRequestedByUser == true {
-            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-                    localText);
+            if localText == "✓" {
+                UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+                                    "Done");
+            }
+            else {
+                UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+                                    localText);
+            }
         }
         self.middleBigTextView.text = localText
         self.middleBigTextView.isHidden = false
