@@ -651,7 +651,7 @@ extension VisionMLViewController {
 ///MARK:- Add or Edit Button
 extension VisionMLViewController: INUIAddVoiceShortcutButtonDelegate {
     func present(_ addVoiceShortcutViewController: INUIAddVoiceShortcutViewController, for addVoiceShortcutButton: INUIAddVoiceShortcutButton) {
-        Analytics.logEvent("se4_add_to_siri_tapped", parameters: [
+        Analytics.logEvent("se3_add_to_siri_tapped", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "add",
@@ -664,7 +664,7 @@ extension VisionMLViewController: INUIAddVoiceShortcutButtonDelegate {
     }
     
     func present(_ editVoiceShortcutViewController: INUIEditVoiceShortcutViewController, for addVoiceShortcutButton: INUIAddVoiceShortcutButton) {
-        Analytics.logEvent("se4_add_to_siri_tapped", parameters: [
+        Analytics.logEvent("se3_add_to_siri_tapped", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "edit",
@@ -681,7 +681,7 @@ extension VisionMLViewController: INUIAddVoiceShortcutButtonDelegate {
 
 extension VisionMLViewController: INUIAddVoiceShortcutViewControllerDelegate {
     func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
-        Analytics.logEvent("se4_add_to_siri_completed", parameters: [
+        Analytics.logEvent("se3_add_to_siri_completed", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "add",
@@ -691,7 +691,7 @@ extension VisionMLViewController: INUIAddVoiceShortcutViewControllerDelegate {
     }
     
     func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
-        Analytics.logEvent("se4_add_to_siri_cancelled", parameters: [
+        Analytics.logEvent("se3_add_to_siri_cancelled", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "add",
@@ -706,7 +706,7 @@ extension VisionMLViewController: INUIAddVoiceShortcutViewControllerDelegate {
 
 extension VisionMLViewController : INUIEditVoiceShortcutViewControllerDelegate {
     func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didUpdate voiceShortcut: INVoiceShortcut?, error: Error?) {
-        Analytics.logEvent("se4_add_to_siri_completed", parameters: [
+        Analytics.logEvent("se3_add_to_siri_completed", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "edit",
@@ -717,7 +717,7 @@ extension VisionMLViewController : INUIEditVoiceShortcutViewControllerDelegate {
     }
     
     func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didDeleteVoiceShortcutWithIdentifier deletedVoiceShortcutIdentifier: UUID) {
-        Analytics.logEvent("se4_add_to_siri_cancelled", parameters: [
+        Analytics.logEvent("se3_add_to_siri_cancelled", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "device_type": getDeviceType(),
             "mode": "edit",

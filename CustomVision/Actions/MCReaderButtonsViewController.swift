@@ -517,7 +517,7 @@ extension MCReaderButtonsViewController : INUIAddVoiceShortcutViewControllerDele
     }
     
     func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
-        Analytics.logEvent("se4_add_to_siri_cancelled", parameters: [
+        Analytics.logEvent("se3_add_to_siri_cancelled", parameters: [
             "os_version": UIDevice.current.systemVersion,
             "mode": "add",
             "shortcut": siriShortcut?.action.prefix(100) ?? ""
