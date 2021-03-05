@@ -434,7 +434,7 @@ class MCInterfaceController : WKInterfaceController {
                 //these modes get data from connected iOS device
                 downSwipe(1) //just a dummy parameter
             }
-            else if mode == Action.MANUAL.rawValue {
+            else if mode == Action.MANUAL.rawValue || mode == Action.BATTERY_LEVEL.rawValue {
                 self.englishString = dictionary!["alphanumeric"] as? String ?? ""
                 self.englishTextLabel.setText(self.englishString)
                 self.englishTextLabel.setHidden(false)
@@ -453,6 +453,7 @@ class MCInterfaceController : WKInterfaceController {
                 isUserTyping = false
                 self.defaultInstructions = dcScrollStart
                 self.instructionsLabel.setText(self.defaultInstructions)
+                morseCodeAutoPlay(direction: "down")
             }
             else {
                 //Only applies if it is TIME or DATE for now

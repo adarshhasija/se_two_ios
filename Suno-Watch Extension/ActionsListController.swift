@@ -25,6 +25,7 @@ class ActionsListController : WKInterfaceController {
                 actionsList.append(ActionsCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
         actionsList.append(ActionsCell(action: "Manual", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", explanation: "Get the text that was captured by the iPhone camera", cellType: Action.CAMERA_OCR))
+        actionsList.append(ActionsCell(action: "Battery", explanation: "Battery level as a percentage", cellType: Action.BATTERY_LEVEL))
         
         
         actionsListTable.setNumberOfRows(actionsList.count, withRowType: "ActionRow")
@@ -46,6 +47,15 @@ class ActionsListController : WKInterfaceController {
         
         if actionCell.cellType == Action.MANUAL {
             pushManualTypingController()
+        }
+        else if actionCell.cellType == Action.BATTERY_LEVEL {
+            WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
+            let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
+            WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
+            var params : [String:Any] = [:]
+            params["mode"] = Action.MANUAL.rawValue
+            params["alphanumeric"] = level
+            self.pushController(withName: "MCInterfaceController", context: params)
         }
         else {
             var params : [String:Any] = [:]
