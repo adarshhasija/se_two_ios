@@ -113,24 +113,3 @@ extension ActionsListController {
     }
     
 }
-
-
-protocol ActionsListControllerProtocol {
-    
-    //To get text recognized by the camera
-    func setVibrationsForHeartRate(heartRate : String)
-}
-
-extension ActionsListController : ActionsListControllerProtocol {
-    
-    func setVibrationsForHeartRate(heartRate: String) {
-        if heartRate.count > 0 {
-            var params : [String:Any] = [:]
-            params["mode"] = Action.HEART_RATE.rawValue
-            params["alphanumeric"] = heartRate
-            params["actions_list_delegate"] = self
-            self.pushController(withName: "MCInterfaceController", context: params)
-        }
-    }
-
-}

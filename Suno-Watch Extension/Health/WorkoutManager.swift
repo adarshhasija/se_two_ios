@@ -11,6 +11,8 @@ import HealthKit
 
 class WorkoutManager : NSObject {
     
+    weak var delegate: WorkoutManagerDelegate?
+    
     /// - Tag: DeclareSessionBuilder
     let healthStore = HKHealthStore()
     var session: HKWorkoutSession!
@@ -52,9 +54,11 @@ class WorkoutManager : NSObject {
             // Handle error.
             if success {
                 print("Authorization healthkit success")
+                self.delegate?.didReceiveAuthorizationResult(result: true)
                 
             } else if let error = error {
                 print("*****HEALTHKIT AUTHORIZATION ERROR: " + error.localizedDescription)
+                self.delegate?.didReceiveAuthorizationResult(result: false)
             }
         }
     }
@@ -95,6 +99,15 @@ class WorkoutManager : NSObject {
         session.startActivity(with: Date())
         builder.beginCollection(withStart: Date()) { (success, error) in
             // The workout has started.
+            if success {
+                print("BEGIN COLLECTION success")
+                self.delegate?.didWorkoutStart(result: true)
+                
+            }
+            if let error = error {
+                print("*****BEGIN COLLECTION ERROR: " + error.localizedDescription)
+                self.delegate?.didWorkoutStart(result: false)
+            }
         }
     }
     
@@ -116,7 +129,8 @@ class WorkoutManager : NSObject {
                 let value = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit)
                 let roundedValue = Double( round( 1 * value! ) / 1 )
                 self.heartrate = roundedValue
-                print("*****HEART RATE: "+String(self.heartrate))
+                print("*****HEART RATE: "+String(Int(self.heartrate)))
+                self.delegate?.didReceiveHealthKitHeartRate(self.heartrate)
             case HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned):
                 return
             case HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning):
@@ -135,10 +149,10 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
         // Wait for the session to transition states before ending the builder.
         /// - Tag: SaveWorkout
         if toState == .ended {
-            print("The workout has now ended.")
             builder.endCollection(withEnd: Date()) { (success, error) in
                 self.builder.finishWorkout { (workout, error) in
                     // Optionally display a workout summary to the user.
+                    print("The workout has now ended.")
                     //self.resetWorkout()
                 }
             }
@@ -148,6 +162,13 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
         
     }
+}
+
+// MARK: - WorkoutManagerDelegate
+protocol WorkoutManagerDelegate: class {
+    func didReceiveAuthorizationResult(result : Bool)
+    func didWorkoutStart(result: Bool)
+    func didReceiveHealthKitHeartRate(_ heartRate: Double)
 }
 
 // MARK: - HKLiveWorkoutBuilderDelegate

@@ -13,50 +13,66 @@ import HealthKit
 //heart rate calculator
 class HRCalculatorController : WKInterfaceController {
     
-    let delegate = WKExtension.shared().delegate as! ExtensionDelegate
+    var heartrate: Double? = nil
+    var isWorkoutInProgress : Bool = false
     
-    var delegateActionsList : ActionsListControllerProtocol? = nil
+    let extensionDelegate = WKExtension.shared().delegate as! ExtensionDelegate
     
     @IBOutlet weak var mainLabel: WKInterfaceLabel!
     @IBOutlet weak var cancelButton: WKInterfaceButton!
     
-    
     @IBAction func cancelTapped() {
-        //pop()
-        //WorkoutTracking.shared.startWorkOut()
-        //WorkoutTracking.shared.delegate = self
-        delegate.workoutManager?.startWorkout()
+        if isWorkoutInProgress == true {
+            extensionDelegate.workoutManager?.endWorkout()
+        }
+        pop()
     }
     
     override func awake(withContext context: Any?) {
-        let dictionary = context as? NSDictionary
-        if dictionary != nil {
-            delegateActionsList = dictionary!["actions_list_delegate"] as? ActionsListControllerProtocol
-        }
-        delegate.workoutManager = WorkoutManager()
-        delegate.workoutManager?.requestAuthorization()
+        extensionDelegate.workoutManager = WorkoutManager()
+        extensionDelegate.workoutManager?.delegate = self
+        extensionDelegate.workoutManager?.requestAuthorization()
         //WorkoutTracking.authorizeHealthKit()
         //WorkoutTracking.shared.startWorkOut()
         //WorkoutTracking.shared.delegate = self
     }
     
+    override func didAppear() {
+        if heartrate != nil {
+            pop()
+        }
+    }
+    
     override func didDeactivate() {
         //WorkoutTracking.shared.stopWorkOut()
-        delegate.workoutManager?.endWorkout()
+        if isWorkoutInProgress == true {
+            extensionDelegate.workoutManager?.endWorkout()
+        }
     }
 }
 
-extension HRCalculatorController : WorkoutTrackingDelegate {
-    
-    func healthKitAuthorizationReceived(success: Bool) {
-
+extension HRCalculatorController : WorkoutManagerDelegate {
+    func didReceiveAuthorizationResult(result: Bool) {
+        if result == true {
+            extensionDelegate.workoutManager?.startWorkout()
+        }
+        else {
+            pop()
+        }
     }
     
     func didReceiveHealthKitHeartRate(_ heartRate: Double) {
-        print("************"+String(Int(heartRate)))
+        self.heartrate = heartRate
         let heartRateString = String(Int(heartRate))
-        mainLabel.setText(heartRateString)
-        WorkoutTracking.shared.stopWorkOut()
-        delegateActionsList?.setVibrationsForHeartRate(heartRate: heartRateString)
+        extensionDelegate.workoutManager?.endWorkout()
+        var params : [String:Any] = [:]
+        params["mode"] = Action.HEART_RATE.rawValue
+        params["alphanumeric"] = heartRateString
+        self.pushController(withName: "MCInterfaceController", context: params)
+        //pop() //this is done on the return, in didAppear
+    }
+    
+    func didWorkoutStart(result: Bool) {
+        self.isWorkoutInProgress = result
     }
 }
