@@ -45,6 +45,13 @@ class HRCalculatorController : WKInterfaceController {
             extensionDelegate.workoutManager?.endWorkout()
         }
     }
+    
+    func showPopupPermissionsError(){
+        let action1 = WKAlertAction(title: "OK", style: .default) {}
+
+        presentAlert(withTitle: "Error", message: "Something went wrong. You may have declined the read or write permission", preferredStyle: .actionSheet, actions: [action1])
+
+    }
 }
 
 extension HRCalculatorController : WorkoutManagerDelegate {
@@ -69,6 +76,12 @@ extension HRCalculatorController : WorkoutManagerDelegate {
     }
     
     func didWorkoutStart(result: Bool) {
-        self.isWorkoutInProgress = result
+        if result == true {
+            self.isWorkoutInProgress = result
+        }
+        else {
+            pop()
+            showPopupPermissionsError()
+        }
     }
 }
