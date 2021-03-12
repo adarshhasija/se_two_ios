@@ -32,9 +32,6 @@ class HRCalculatorController : WKInterfaceController {
         extensionDelegate.workoutManager = WorkoutManager()
         extensionDelegate.workoutManager?.delegate = self
         extensionDelegate.workoutManager?.requestAuthorization()
-        //WorkoutTracking.authorizeHealthKit()
-        //WorkoutTracking.shared.startWorkOut()
-        //WorkoutTracking.shared.delegate = self
     }
     
     override func didAppear() {
@@ -44,7 +41,6 @@ class HRCalculatorController : WKInterfaceController {
     }
     
     override func didDeactivate() {
-        //WorkoutTracking.shared.stopWorkOut()
         if isWorkoutInProgress == true {
             extensionDelegate.workoutManager?.endWorkout()
         }

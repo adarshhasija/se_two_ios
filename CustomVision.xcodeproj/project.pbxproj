@@ -11,7 +11,6 @@
 		310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */; };
 		310CE56025F92FEC00C948DB /* HRCalculatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310CE55F25F92FEC00C948DB /* HRCalculatorController.swift */; };
 		310CE56925F9FE1D00C948DB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 310CE56825F9FE1D00C948DB /* HealthKit.framework */; };
-		310CE57225FA052100C948DB /* WorkoutTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310CE57125FA052100C948DB /* WorkoutTracking.swift */; };
 		310D955024B1C0BF00936A27 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310D954F24B1C0BF00936A27 /* UIFont.swift */; };
 		31108A91254808B9009E3DF1 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		31108A9825482EC6009E3DF1 /* ActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B61BC625336C6C00237602 /* ActionsCell.swift */; };
@@ -162,7 +161,6 @@
 		310CE55F25F92FEC00C948DB /* HRCalculatorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HRCalculatorController.swift; sourceTree = "<group>"; };
 		310CE56725F9FE1D00C948DB /* Suno-Watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Suno-Watch Extension.entitlements"; sourceTree = "<group>"; };
 		310CE56825F9FE1D00C948DB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.2.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
-		310CE57125FA052100C948DB /* WorkoutTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTracking.swift; sourceTree = "<group>"; };
 		310D954F24B1C0BF00936A27 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		31108A9F25483493009E3DF1 /* ActionsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsListCell.swift; sourceTree = "<group>"; };
 		311AEE3025D81BAA00E018FE /* SiriShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcut.swift; sourceTree = "<group>"; };
@@ -310,7 +308,6 @@
 			isa = PBXGroup;
 			children = (
 				310CE55F25F92FEC00C948DB /* HRCalculatorController.swift */,
-				310CE57125FA052100C948DB /* WorkoutTracking.swift */,
 				3141022625FA5FC30065B0EE /* WorkoutManager.swift */,
 			);
 			path = Health;
@@ -862,7 +859,6 @@
 				31108A91254808B9009E3DF1 /* Actions.swift in Sources */,
 				31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */,
 				317C713B2540B03800E6800B /* LibraryCustomActions.swift in Sources */,
-				310CE57225FA052100C948DB /* WorkoutTracking.swift in Sources */,
 				310CE56025F92FEC00C948DB /* HRCalculatorController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
