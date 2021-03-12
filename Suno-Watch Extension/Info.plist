@@ -30,11 +30,21 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
 	</dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Need to read the heart rate so we can display it in vibration format. Information is not sent from the device to any server.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Storing the heart rate reading in the health app for your convinience</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.starsearth.three.getTimeIntent</string>
 		<string>com.starsearth.three.getDateDayOfWeekIntent</string>
 		<string>com.starsearth.three.getCameraIntent</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array/>
+	<key>WKBackgroundModes</key>
+	<array>
+		<string>workout-processing</string>
 	</array>
 	<key>WKExtensionDelegateClassName</key>
 	<string>$(PRODUCT_MODULE_NAME).ExtensionDelegate</string>

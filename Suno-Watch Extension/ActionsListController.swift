@@ -26,6 +26,7 @@ class ActionsListController : WKInterfaceController {
         actionsList.append(ActionsCell(action: "Manual", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", explanation: "Get the text that was captured by the iPhone camera", cellType: Action.CAMERA_OCR))
         actionsList.append(ActionsCell(action: "Battery", explanation: "Battery level as a percentage", cellType: Action.BATTERY_LEVEL))
+        actionsList.append(ActionsCell(action: "Heart Rate", explanation: "As Beats Per Minute(BPM)", cellType: Action.HEART_RATE))
         
         
         actionsListTable.setNumberOfRows(actionsList.count, withRowType: "ActionRow")
@@ -56,6 +57,10 @@ class ActionsListController : WKInterfaceController {
             params["mode"] = Action.MANUAL.rawValue
             params["alphanumeric"] = level
             self.pushController(withName: "MCInterfaceController", context: params)
+        }
+        else if actionCell.cellType == Action.HEART_RATE {
+            var params : [String:Any] = [:]
+            pushController(withName: "HRCalculatorController", context: params)
         }
         else {
             var params : [String:Any] = [:]
@@ -107,4 +112,25 @@ extension ActionsListController {
         })
     }
     
+}
+
+
+protocol ActionsListControllerProtocol {
+    
+    //To get text recognized by the camera
+    func setVibrationsForHeartRate(heartRate : String)
+}
+
+extension ActionsListController : ActionsListControllerProtocol {
+    
+    func setVibrationsForHeartRate(heartRate: String) {
+        if heartRate.count > 0 {
+            var params : [String:Any] = [:]
+            params["mode"] = Action.HEART_RATE.rawValue
+            params["alphanumeric"] = heartRate
+            params["actions_list_delegate"] = self
+            self.pushController(withName: "MCInterfaceController", context: params)
+        }
+    }
+
 }

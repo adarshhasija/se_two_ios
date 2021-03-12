@@ -173,6 +173,27 @@
             </objects>
             <point key="canvasLocation" x="34" y="741"/>
         </scene>
+        <!--HRCalculatorController-->
+        <scene sceneID="PWx-Mj-VWd">
+            <objects>
+                <controller identifier="HRCalculatorController" id="JVz-Dn-u3m" customClass="HRCalculatorController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <label alignment="left" text="Getting heart rate. Please wait..." textAlignment="left" numberOfLines="0" id="ZCF-2M-YE2"/>
+                        <button width="1" alignment="left" title="Cancel" id="Wof-Na-I1x">
+                            <color key="backgroundColor" red="0.33333334329999997" green="0.03661756419" blue="0.042610244720000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <action selector="cancelTapped" destination="JVz-Dn-u3m" id="0n6-FS-Fpm"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="cancelButton" destination="Wof-Na-I1x" id="ItP-r3-6lg"/>
+                        <outlet property="mainLabel" destination="ZCF-2M-YE2" id="cUX-yL-GT0"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="34" y="1066"/>
+        </scene>
         <!--Dictionary-->
         <scene sceneID="oSs-BH-Sas">
             <objects>
