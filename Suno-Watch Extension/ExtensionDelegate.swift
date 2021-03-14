@@ -30,8 +30,10 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     }
     
     func handle(_ userActivity: NSUserActivity) {
-        //Got from SO but have not tested it yet
-        //WKExtension.shared().rootInterfaceController?.pushController(withName: "ActionListController", context: nil)
+        let siriShortcut = SiriShortcut(dictionary: userActivity.userInfo! as NSDictionary)
+        var params : [String:Any] = [:]
+        params["mode"] = siriShortcut.action
+        WKExtension.shared().rootInterfaceController?.pushController(withName: "MCInterfaceController", context: params)
     }
     
     func handleUserActivity(_ userInfo: [AnyHashable : Any]?) {

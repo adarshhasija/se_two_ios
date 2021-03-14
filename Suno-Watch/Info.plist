@@ -29,5 +29,11 @@
 	<string>com.starsearth.three</string>
 	<key>WKWatchKitApp</key>
 	<true/>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>com.starsearth.three.getTimeIntent</string>
+		<string>com.starsearth.three.getDateDayOfWeekIntent</string>
+		<string>com.starsearth.three.getCameraIntent</string>
+	</array>
 </dict>
 </plist>

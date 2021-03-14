@@ -170,6 +170,7 @@
 		316BA193246D78F000869C89 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3172732C247662FC003538F8 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		317340A1246DB60C00F75B1B /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		3176C9EB25FE960700A10197 /* Suno-Watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Suno-Watch Extension.entitlements"; sourceTree = "<group>"; };
 		317972282156AAA1006495E3 /* HelpTopicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewController.swift; sourceTree = "<group>"; };
 		3179722A2156ABBC006495E3 /* HelpTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicViewController.swift; sourceTree = "<group>"; };
 		3179722C2156B3C7006495E3 /* HelpTopicsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopicsTableViewCell.swift; sourceTree = "<group>"; };
@@ -339,6 +340,7 @@
 		317D4C11217EC76C0081B38B /* Suno-Watch Extension */ = {
 			isa = PBXGroup;
 			children = (
+				3176C9EB25FE960700A10197 /* Suno-Watch Extension.entitlements */,
 				317D4C12217EC76C0081B38B /* InterfaceController.swift */,
 				317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */,
 				317D4C16217EC76D0081B38B /* Assets.xcassets */,
@@ -1048,6 +1050,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_ENTITLEMENTS = "Suno-Watch Extension/Suno-Watch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = "Suno-Watch Extension/Info.plist";
@@ -1073,6 +1076,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_ENTITLEMENTS = "Suno-Watch Extension/Suno-Watch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = "Suno-Watch Extension/Info.plist";
