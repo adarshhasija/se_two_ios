@@ -43,21 +43,24 @@ class ActionsListController : WKInterfaceController {
         sendAnalytics(eventName: "se3_watch_row_tap", parameters: [
             "list_item" : actionCell.cellType.rawValue
         ])
-        
-        if actionCell.cellType == Action.MANUAL {
-            pushManualTypingController()
-        }
-        else {
-            var params : [String:Any] = [:]
-            params["mode"] = actionCell.cellType.rawValue
-            pushController(withName: "MCInterfaceController", context: params)
-        }
+        selectedAction(action: actionCell.cellType.rawValue)
         
     }
 }
 
 
 extension ActionsListController {
+    
+    func selectedAction(action : String) {
+        if action == Action.MANUAL.rawValue {
+            pushManualTypingController()
+        }
+        else {
+            var params : [String:Any] = [:]
+            params["mode"] = action
+            pushController(withName: "MCInterfaceController", context: params)
+        }
+    }
     
     func sendAnalytics(eventName : String, parameters : Dictionary<String, Any>) {
         var message : [String : Any] = [:]
