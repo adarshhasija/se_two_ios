@@ -81,7 +81,7 @@ class MCInterfaceController : WKInterfaceController {
             //Should not be permitted when user is reading
             return
         }
-        if mode == Action.GET_IOS.rawValue {
+        if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
             //Get from iPhone mode
             return
         }
@@ -589,6 +589,14 @@ extension MCInterfaceController : WKCrownDelegate {
 
 ///Private Helpers
 extension MCInterfaceController {
+    
+    func sessionReachabilityDidChange() {
+        if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
+            //these modes get data from connected iOS device
+            //refresh the screen
+            downSwipe(1) //just a dummy parameter
+        }
+    }
     
     //Only used for TIME, DATE, Maths
     func updateMorseCodeForActions() {

@@ -13,7 +13,10 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     
     /// MARK:- WCSessionDelegate
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
+    }
+    
+    func sessionReachabilityDidChange(_ session: WCSession) {
+        (WKExtension.shared().visibleInterfaceController as? MCInterfaceController)?.sessionReachabilityDidChange()
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
