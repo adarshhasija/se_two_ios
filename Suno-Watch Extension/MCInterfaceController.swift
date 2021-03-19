@@ -591,6 +591,10 @@ extension MCInterfaceController : WKCrownDelegate {
 extension MCInterfaceController {
     
     func sessionReachabilityDidChange() {
+        if englishString.isEmpty == false && morseCodeString.isEmpty == false {
+            //Means we have already received the input
+            return
+        }
         if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
             //these modes get data from connected iOS device
             //refresh the screen
