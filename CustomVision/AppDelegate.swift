@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Action(rawValue: siriShortcut.action)! == Action.CAMERA_OCR {
             let storyBoard : UIStoryboard = UIStoryboard(name: "MainVision", bundle:nil)
                     let visionMLViewController = storyBoard.instantiateViewController(withIdentifier: "VisionMLViewController") as! VisionMLViewController
+                    visionMLViewController.delegateActionsTable = navigationController.topViewController as? ActionsTableViewController
                     visionMLViewController.siriShortcut = siriShortcut
                     navigationController.pushViewController(visionMLViewController, animated: true)
         }
