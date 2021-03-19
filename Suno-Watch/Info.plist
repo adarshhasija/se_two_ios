@@ -20,6 +20,13 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>com.starsearth.three.getTimeIntent</string>
+		<string>com.starsearth.three.getDateDayOfWeekIntent</string>
+		<string>com.starsearth.three.getCameraIntent</string>
+		<string>com.starsearth.three.getBatteryLevelIntent</string>
+	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -29,12 +36,5 @@
 	<string>com.starsearth.three</string>
 	<key>WKWatchKitApp</key>
 	<true/>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>com.starsearth.three.getTimeIntent</string>
-		<string>com.starsearth.three.getDateDayOfWeekIntent</string>
-		<string>com.starsearth.three.getCameraIntent</string>
-		<string>com.starsearth.three.getBatteryLevelIntent</string>
-	</array>
 </dict>
 </plist>
