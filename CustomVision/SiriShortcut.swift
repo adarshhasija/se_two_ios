@@ -61,6 +61,20 @@ class SiriShortcut {
         return dictionary
     }
     
+    //Using acitivites instead of intents as Siri opens app directly for activity. For intents, it shows button to open app, which we do not want s
+    //This is being used in this file as it could be used by multiple targets (eg: iOS and watchOS)
+    static func createActivityForShortcut(siriShortcut: SiriShortcut) -> NSUserActivity {
+        let activity = NSUserActivity(activityType: siriShortcut.activityType)
+        activity.title = siriShortcut.title
+        activity.userInfo = siriShortcut.dictionary
+        activity.persistentIdentifier = siriShortcut.activityType
+        activity.isEligibleForHandoff = true
+        activity.isEligibleForSearch = true
+        activity.isEligibleForPrediction = true
+        activity.becomeCurrent()
+        return activity
+    }
+    
     var title: String
     var action: String
     var invocation: String
