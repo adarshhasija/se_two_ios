@@ -36,6 +36,12 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
         let siriShortcut = SiriShortcut(dictionary: userActivity.userInfo! as NSDictionary)
         var params : [String:Any] = [:]
         params["mode"] = siriShortcut.action
+        if siriShortcut.action == Action.BATTERY_LEVEL.rawValue {
+            WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
+            let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
+            WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
+            params["alphanumeric"] = level
+        }
         WKExtension.shared().rootInterfaceController?.pushController(withName: "MCInterfaceController", context: params)
     }
     

@@ -43,11 +43,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     navigationController.pushViewController(visionMLViewController, animated: true)
         }
         else {
+            var inputAlphanumeric : String? = nil
+            if siriShortcut.action == Action.BATTERY_LEVEL.rawValue {
+                UIDevice.current.isBatteryMonitoringEnabled = true
+                let level = String(Int(UIDevice.current.batteryLevel * 100)) //int as we do not decimal
+                UIDevice.current.isBatteryMonitoringEnabled = false
+                inputAlphanumeric = level
+            }
             let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
                     let mcReaderViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
             mcReaderViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: siriShortcut.action)!]
             let inputs = SiriShortcut.getInputs(action: Action(rawValue: siriShortcut.action)!)
-            mcReaderViewController.inputAlphanumeric = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String
+            mcReaderViewController.inputAlphanumeric = inputAlphanumeric ?? inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String
             mcReaderViewController.inputMorseCode = inputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String
             mcReaderViewController.inputMCExplanation.append(contentsOf: inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
             )

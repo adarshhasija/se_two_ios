@@ -27,12 +27,13 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone permission is needed to hear what a person says</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Speech Recognition permission is needed to convert a person's speech into text you can read</string>
+	<string>Speech Recognition permission is needed to convert a person&apos;s speech into text you can read</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.starsearth.three.getTimeIntent</string>
 		<string>com.starsearth.three.getDateDayOfWeekIntent</string>
 		<string>com.starsearth.three.getCameraIntent</string>
+		<string>com.starsearth.three.getBatteryLevelIntent</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

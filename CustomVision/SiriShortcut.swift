@@ -36,6 +36,14 @@ class SiriShortcut {
                                                 "activity_type": "com.starsearth.three.getCameraIntent",
                                                 "message_on_open": "Point your camera at the text\nWe will try to read it"
                                             ]
+                                    ),
+                Action.BATTERY_LEVEL : SiriShortcut(dictionary:
+                                            [
+                                                "title": "Get the battery level in vibrations",
+                                                "action": Action.BATTERY_LEVEL.rawValue,
+                                                "invocation": "Get the battery level in vibrations",
+                                                "activity_type": "com.starsearth.three.getBatteryLevelIntent"
+                                            ]
                                     )
             ]
     

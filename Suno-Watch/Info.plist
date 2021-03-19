@@ -34,6 +34,7 @@
 		<string>com.starsearth.three.getTimeIntent</string>
 		<string>com.starsearth.three.getDateDayOfWeekIntent</string>
 		<string>com.starsearth.three.getCameraIntent</string>
+		<string>com.starsearth.three.getBatteryLevelIntent</string>
 	</array>
 </dict>
 </plist>

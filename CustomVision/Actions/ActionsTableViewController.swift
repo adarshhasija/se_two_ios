@@ -25,6 +25,7 @@ class ActionsTableViewController : UITableViewController {
         actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
         actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
+        actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
         
         
     }
@@ -61,6 +62,12 @@ class ActionsTableViewController : UITableViewController {
         else if actionItem.cellType == Action.MANUAL {
             openManualEntryPopup()
             tableView.deselectRow(at: indexPath, animated: false) //It remains in grey selected state. got to remove that
+        }
+        else if actionItem.cellType == Action.BATTERY_LEVEL {
+            UIDevice.current.isBatteryMonitoringEnabled = true
+            let level = String(Int(UIDevice.current.batteryLevel * 100)) //int as we do not decimal
+            UIDevice.current.isBatteryMonitoringEnabled = false
+            openMorseCodeReadingScreen(inputAction: actionItem.cellType, alphanumericString: level)
         }
         else {
             openMorseCodeReadingScreen(inputAction: actionItem.cellType, alphanumericString: nil)
@@ -127,6 +134,7 @@ class ActionsTableViewController : UITableViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
         if alphanumericString != nil {
+            mcReaderButtonsViewController.siriShortcut = inputAction == Action.BATTERY_LEVEL ? SiriShortcut.shortcutsDictionary[inputAction] : nil //In CAMERA mode we give the alphanumeric string directly, but we do not want a siri shortcut passed in for that
             mcReaderButtonsViewController.inputMode = inputAction
             mcReaderButtonsViewController.inputAlphanumeric = alphanumericString
         }
