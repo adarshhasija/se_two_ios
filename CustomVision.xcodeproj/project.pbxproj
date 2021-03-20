@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		22D2C163A464B8AA5B31A8D1 /* Pods_Suno.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */; };
 		310AEECE2344AEF400B11D44 /* MCDictionaryRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */; };
+		310CE56025F92FEC00C948DB /* HRCalculatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310CE55F25F92FEC00C948DB /* HRCalculatorController.swift */; };
+		310CE56925F9FE1D00C948DB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 310CE56825F9FE1D00C948DB /* HealthKit.framework */; };
 		310D955024B1C0BF00936A27 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310D954F24B1C0BF00936A27 /* UIFont.swift */; };
 		31108A91254808B9009E3DF1 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		31108A9825482EC6009E3DF1 /* ActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B61BC625336C6C00237602 /* ActionsCell.swift */; };
@@ -17,6 +19,7 @@
 		3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */; };
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
 		313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313DDB49225B659A00BF65D4 /* EditingType.swift */; };
+		3141022725FA5FC30065B0EE /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3141022625FA5FC30065B0EE /* WorkoutManager.swift */; };
 		3142C8A02495F32E00B1257B /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3142C89F2495F32E00B1257B /* Settings.storyboard */; };
 		3142C8A52496384D00B1257B /* Dictionary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3142C8A42496384D00B1257B /* Dictionary.storyboard */; };
 		3142C8A72496390700B1257B /* MCDictionaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */; };
@@ -155,12 +158,16 @@
 /* Begin PBXFileReference section */
 		00A518D03A10503E18B775E7 /* Pods-Suno.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno/Pods-Suno.release.xcconfig"; sourceTree = "<group>"; };
 		310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryRowController.swift; sourceTree = "<group>"; };
+		310CE55F25F92FEC00C948DB /* HRCalculatorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HRCalculatorController.swift; sourceTree = "<group>"; };
+		310CE56725F9FE1D00C948DB /* Suno-Watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Suno-Watch Extension.entitlements"; sourceTree = "<group>"; };
+		310CE56825F9FE1D00C948DB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.2.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		310D954F24B1C0BF00936A27 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		31108A9F25483493009E3DF1 /* ActionsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsListCell.swift; sourceTree = "<group>"; };
 		311AEE3025D81BAA00E018FE /* SiriShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcut.swift; sourceTree = "<group>"; };
 		3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeEditorViewController.swift; sourceTree = "<group>"; };
 		313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDTouchView.swift; sourceTree = "<group>"; };
 		313DDB49225B659A00BF65D4 /* EditingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingType.swift; sourceTree = "<group>"; };
+		3141022625FA5FC30065B0EE /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		3142C89F2495F32E00B1257B /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		3142C8A42496384D00B1257B /* Dictionary.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dictionary.storyboard; sourceTree = "<group>"; };
 		3142C8A62496390700B1257B /* MCDictionaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryDetailViewController.swift; sourceTree = "<group>"; };
@@ -261,6 +268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				310CE56925F9FE1D00C948DB /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +305,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		310CE57025FA04B500C948DB /* Health */ = {
+			isa = PBXGroup;
+			children = (
+				310CE55F25F92FEC00C948DB /* HRCalculatorController.swift */,
+				3141022625FA5FC30065B0EE /* WorkoutManager.swift */,
+			);
+			path = Health;
+			sourceTree = "<group>";
+		};
 		3142C89E2495F32100B1257B /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +337,7 @@
 		3179722E21578148006495E3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				310CE56825F9FE1D00C948DB /* HealthKit.framework */,
 				CF42970A7DC6B0BA75E3F01F /* Pods_Suno.framework */,
 				DD2D6E2825DA333FE102C056 /* Pods_Suno_Mac.framework */,
 			);
@@ -340,7 +358,8 @@
 		317D4C11217EC76C0081B38B /* Suno-Watch Extension */ = {
 			isa = PBXGroup;
 			children = (
-				3176C9EB25FE960700A10197 /* Suno-Watch Extension.entitlements */,
+				310CE57025FA04B500C948DB /* Health */,
+				310CE56725F9FE1D00C948DB /* Suno-Watch Extension.entitlements */,
 				317D4C12217EC76C0081B38B /* InterfaceController.swift */,
 				317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */,
 				317D4C16217EC76D0081B38B /* Assets.xcassets */,
@@ -836,10 +855,12 @@
 				31D97F9C23BA7936000CFCF2 /* SettingDBController.swift in Sources */,
 				31B61BC725336C6C00237602 /* ActionsCell.swift in Sources */,
 				31A67B83235CB55800F506BD /* FAQCell.swift in Sources */,
+				3141022725FA5FC30065B0EE /* WorkoutManager.swift in Sources */,
 				31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */,
 				31108A91254808B9009E3DF1 /* Actions.swift in Sources */,
 				31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */,
 				317C713B2540B03800E6800B /* LibraryCustomActions.swift in Sources */,
+				310CE56025F92FEC00C948DB /* HRCalculatorController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
