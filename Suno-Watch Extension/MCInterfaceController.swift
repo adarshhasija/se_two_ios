@@ -328,7 +328,7 @@ class MCInterfaceController : WKInterfaceController {
             sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
             if isAutoPlayOn == true {
                 isAutoPlayOn = false //All reformatting will be done in autoplay timer
-                WKInterfaceDevice.current().play(.success) //A haptic to indicate that the left swipe has been registered
+                WKInterfaceDevice.current().play(.success) //A haptic to indicate that the long press has been registered
                 return
             }
             if isUserTyping == false {
@@ -571,25 +571,14 @@ extension MCInterfaceController : WKCrownDelegate {
             }
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
-            let endTime = DispatchTime.now()
-            let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
-            if diffNanos <= quickScrollTimeThreshold {
-                sendAnalytics(eventName: "se3_watch_autoplay_reverse", parameters: [:])
-                WKInterfaceDevice.current().play(.success)
-                morseCodeAutoPlay(direction: "up")
-                startTimeNanos = 0
+            if morseCodeString.isEmpty {
+                //There is no morse code to scroll through. Simply play a failure haptic
+                //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
+                morseCodeStringIndex = -1 //To override the decrement made aboves
+                WKInterfaceDevice.current().play(.failure)
+                return
             }
-            else {
-                 if morseCodeString.isEmpty {
-                     //There is no morse code to scroll through. Simply play a failure haptic
-                     //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
-                     morseCodeStringIndex = -1 //To override the decrement made aboves
-                     WKInterfaceDevice.current().play(.failure)
-                     return
-                 }
-                startTimeNanos = DispatchTime.now().uptimeNanoseconds //Update this so we can do a check on the next rotation
-                digitalCrownRotated(direction: "up")
-            }
+           digitalCrownRotated(direction: "up")
         }
     }
     
