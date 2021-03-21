@@ -529,12 +529,7 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
 extension MCInterfaceController : WKCrownDelegate {
     
     func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
-        if isAutoPlayOn == true {
-            //No processing while autoplay is ON
-            return
-        }
         crownRotationalDelta  += rotationalDelta
-        
         
         if crownRotationalDelta < -expectedMoveDelta {
             //downward scroll
@@ -543,6 +538,11 @@ extension MCInterfaceController : WKCrownDelegate {
                 //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
                 morseCodeStringIndex = -1 //To override the decrement made aboves
                 WKInterfaceDevice.current().play(.failure)
+                return
+            }
+            //This check should only be done after the mandatory minimum rotation
+            if isAutoPlayOn == true {
+                isAutoPlayOn = false //Reset will happen in autoplay function
                 return
             }
             
@@ -563,6 +563,12 @@ extension MCInterfaceController : WKCrownDelegate {
         }
         else if crownRotationalDelta > expectedMoveDelta {
             //upward scroll
+            
+            //This check should only be done after the mandatory minimum rotation
+            if isAutoPlayOn == true {
+                isAutoPlayOn = false //Reset will happen in autoplay function
+                return
+            }
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
             let endTime = DispatchTime.now()
@@ -1029,7 +1035,7 @@ extension MCInterfaceController {
         englishTextLabel.setText(englishString) //Resetting the string colors at the start of autoplay
         morseCodeString = morseCodeString.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
         morseCodeTextLabel.setText(morseCodeString)
-        instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations...\nLong press to stop" :
+        instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown to stop" :
                                     "Resetting, please wait...")
         if mode == "TIME" || mode == "DATE" {
             //It means About button is visible
