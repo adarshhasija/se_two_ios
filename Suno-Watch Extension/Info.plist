@@ -33,7 +33,7 @@
 	<key>NSHealthShareUsageDescription</key>
 	<string>Need to read the heart rate so we can display it in vibration format. Information is not sent from the device to any server.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Will store the workout type for you</string>
+	<string>Will need to update these details</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.starsearth.three.getTimeIntent</string>
