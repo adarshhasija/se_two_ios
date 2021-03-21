@@ -178,17 +178,16 @@
             <objects>
                 <controller identifier="HRCalculatorController" id="JVz-Dn-u3m" customClass="HRCalculatorController" customModule="Suno_Watch_Extension">
                     <items>
-                        <label alignment="left" text="Getting heart rate. Please wait..." textAlignment="left" numberOfLines="0" id="ZCF-2M-YE2"/>
-                        <button width="1" alignment="left" title="Cancel" id="Wof-Na-I1x">
-                            <color key="backgroundColor" red="0.33333334329999997" green="0.03661756419" blue="0.042610244720000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <label alignment="left" text="We must start workout to get the heart rate" textAlignment="left" numberOfLines="0" id="ZCF-2M-YE2"/>
+                        <button width="1" alignment="left" title="Button" id="Wof-Na-I1x">
                             <connections>
-                                <action selector="cancelTapped" destination="JVz-Dn-u3m" id="0n6-FS-Fpm"/>
+                                <action selector="buttonTapped" destination="JVz-Dn-u3m" id="5gh-kd-BV5"/>
                             </connections>
                         </button>
                     </items>
                     <connections>
-                        <outlet property="cancelButton" destination="Wof-Na-I1x" id="ItP-r3-6lg"/>
-                        <outlet property="mainLabel" destination="ZCF-2M-YE2" id="cUX-yL-GT0"/>
+                        <outlet property="button" destination="Wof-Na-I1x" id="1jX-UF-eik"/>
+                        <outlet property="label" destination="ZCF-2M-YE2" id="v57-Xn-dyj"/>
                     </connections>
                 </controller>
             </objects>

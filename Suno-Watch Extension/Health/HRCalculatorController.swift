@@ -18,17 +18,26 @@ class HRCalculatorController : WKInterfaceController {
     
     let extensionDelegate = WKExtension.shared().delegate as! ExtensionDelegate
     
-    @IBOutlet weak var mainLabel: WKInterfaceLabel!
-    @IBOutlet weak var cancelButton: WKInterfaceButton!
+    @IBOutlet weak var label: WKInterfaceLabel!
+    @IBOutlet weak var button: WKInterfaceButton!
     
-    @IBAction func cancelTapped() {
+    @IBAction func buttonTapped() {
         if isWorkoutInProgress == true {
             extensionDelegate.workoutManager?.endWorkout()
         }
         pop()
     }
     
+  /*  @IBAction func buttonTapped() {
+        if isWorkoutInProgress == true {
+            extensionDelegate.workoutManager?.endWorkout()
+        }
+        pop()
+    }   */
+    
     override func awake(withContext context: Any?) {
+        label.setText("Opening permission dialog")
+        button.setHidden(true)
         extensionDelegate.workoutManager = WorkoutManager()
         extensionDelegate.workoutManager?.delegate = self
         extensionDelegate.workoutManager?.requestAuthorization()
@@ -58,9 +67,15 @@ extension HRCalculatorController : WorkoutManagerDelegate {
     func didReceiveAuthorizationResult(result: Bool) {
         if result == true {
             extensionDelegate.workoutManager?.startWorkout()
+            label.setText("Starting workout")
+            button.setTitle("Stop Workout")
+            button.setBackgroundColor(UIColor.red)
+            button.setHidden(false)
         }
         else {
-            pop()
+            //pop()
+            label.setText("Authorization failed. Please see Heart Rate section of iPhone app")
+            button.setHidden(true)
         }
     }
     
@@ -78,10 +93,16 @@ extension HRCalculatorController : WorkoutManagerDelegate {
     func didWorkoutStart(result: Bool) {
         if result == true {
             self.isWorkoutInProgress = result
+            label.setText("Getting heart rate. Please wait")
+            button.setTitle("Stop Workout and Go Back")
+            button.setBackgroundColor(UIColor.red)
+            button.setHidden(false)
         }
         else {
-            pop()
-            showPopupPermissionsError()
+            //pop()
+            //showPopupPermissionsError()
+            label.setText("Something went wrong. You may have declined some of the permissions. Please see the Heart Rate section of the iPhone app")
+            button.setHidden(true)
         }
     }
 }
