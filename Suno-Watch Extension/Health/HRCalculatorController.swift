@@ -24,23 +24,25 @@ class HRCalculatorController : WKInterfaceController {
     @IBAction func buttonTapped() {
         if isWorkoutInProgress == true {
             extensionDelegate.workoutManager?.endWorkout()
+            pop()
         }
-        pop()
+        else {
+            //It should be just a GO BACK button
+            pop()
+        }
     }
     
-  /*  @IBAction func buttonTapped() {
-        if isWorkoutInProgress == true {
-            extensionDelegate.workoutManager?.endWorkout()
-        }
-        pop()
-    }   */
-    
     override func awake(withContext context: Any?) {
-        label.setText("Opening permission dialog")
-        button.setHidden(true)
+        if HKHealthStore.isHealthDataAvailable() == false {
+            label.setText("Healthkit not available on this device. This maybe because there are other securities that are restricting its use")
+            label.setHidden(false)
+            button.setHidden(true)
+            return
+        }
         extensionDelegate.workoutManager = WorkoutManager()
         extensionDelegate.workoutManager?.delegate = self
         extensionDelegate.workoutManager?.requestAuthorization()
+        
     }
     
     override func didAppear() {
@@ -55,10 +57,19 @@ class HRCalculatorController : WKInterfaceController {
         }
     }
     
-    func showPopupPermissionsError(){
+    //This is called if requestaurthorization or start workout fails
+    //It will not fail if READ is denied. Only if WRITE is denied
+    func writePermissionDenied() {
+        //let isWriteAuthorized = extensionDelegate.workoutManager?.isWriteHealthPermissionReceived(workoutType: HKObjectType.workoutType())
+        label.setText("WORKOUT STOPPED\nYou may have denied some permissions. We need both read and write permissions to give you this feature. You can go to Settings -> Health -> Apps and grant all permissions to this app")
+        label.setHidden(false)
+        button.setHidden(true)
+    }
+    
+    func showPopupPermissionsError(message: String){
         let action1 = WKAlertAction(title: "OK", style: .default) {}
 
-        presentAlert(withTitle: "Error", message: "Something went wrong. You may have declined the read or write permission", preferredStyle: .actionSheet, actions: [action1])
+        presentAlert(withTitle: "Error", message: message, preferredStyle: .actionSheet, actions: [action1])
 
     }
 }
@@ -66,16 +77,18 @@ class HRCalculatorController : WKInterfaceController {
 extension HRCalculatorController : WorkoutManagerDelegate {
     func didReceiveAuthorizationResult(result: Bool) {
         if result == true {
+            if extensionDelegate.workoutManager != nil {
+                label.setText("Starting workout")
+                button.setTitle("Stop Workout and Go Back")
+                button.setBackgroundColor(UIColor.red)
+                button.setHidden(false)
+            }
             extensionDelegate.workoutManager?.startWorkout()
-            label.setText("Starting workout")
-            button.setTitle("Stop Workout")
-            button.setBackgroundColor(UIColor.red)
-            button.setHidden(false)
+            
         }
         else {
-            //pop()
-            label.setText("Authorization failed. Please see Heart Rate section of iPhone app")
-            button.setHidden(true)
+            //READ does not trigger a failure. It has to be WRITE
+            writePermissionDenied()
         }
     }
     
@@ -93,16 +106,32 @@ extension HRCalculatorController : WorkoutManagerDelegate {
     func didWorkoutStart(result: Bool) {
         if result == true {
             self.isWorkoutInProgress = result
-            label.setText("Getting heart rate. Please wait")
+            label.setText("Workout Started. Getting heart rate. Please wait. Workout will be stopped automatically when we get the heart rate")
             button.setTitle("Stop Workout and Go Back")
             button.setBackgroundColor(UIColor.red)
             button.setHidden(false)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+                let watchDelegate = WKExtension.shared().delegate as? ExtensionDelegate
+                if watchDelegate?.visibleInterfaceController is HRCalculatorController {
+                    watchDelegate?.workoutManager?.endWorkout()
+                    WKInterfaceDevice.current().play(.failure)
+                    self.label?.setText("WORKOUT STOPPED\nCould not get the reading. You may have declined the READ permission. We need all permissions in order to proceed. Please to the Settings app -> Health -> Apps, and grant this app all permissions to this app")
+                    self.label?.setHidden(false)
+                    self.button?.setTitle("Go Back")
+                    self.button?.setBackgroundColor(UIColor.red)
+                }
+            }
+            
         }
         else {
-            //pop()
-            //showPopupPermissionsError()
-            label.setText("Something went wrong. You may have declined some of the permissions. Please see the Heart Rate section of the iPhone app")
-            button.setHidden(true)
+            //READ does not trigger a failure. So it has to be WRITE
+            writePermissionDenied()
         }
+    }
+    
+    func didWorkoutStop(result: Bool) {
+        //Only used when the timeout happens and we could not get a value
+        self.isWorkoutInProgress = false
     }
 }

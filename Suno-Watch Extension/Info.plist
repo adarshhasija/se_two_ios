@@ -33,7 +33,7 @@
 	<key>NSHealthShareUsageDescription</key>
 	<string>Need to read this data so we can display it in vibration format. Information is not sent from the device to any server.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Will need to update these details to be able to show the requested data as vibrations. Information is not sent from the device to any server.</string>
+	<string>As per device requirements, we will need this permission in order to provide this feature. Information is not sent from the device to any server.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.starsearth.three.getTimeIntent</string>

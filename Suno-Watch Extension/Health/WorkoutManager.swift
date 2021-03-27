@@ -140,6 +140,14 @@ class WorkoutManager : NSObject {
             }
         }
     }
+    
+    //We are assuming that there will be 1 read and 1 write
+    func isWriteHealthPermissionReceived(workoutType : HKWorkoutType) -> Bool? {
+        let status = healthStore.authorizationStatus(for: workoutType)
+        
+        return status == HKAuthorizationStatus.sharingAuthorized ? true
+                        : status == HKAuthorizationStatus.sharingDenied ? false : nil
+    }
 }
 
 // MARK: - HKWorkoutSessionDelegate
@@ -153,7 +161,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
                 self.builder.finishWorkout { (workout, error) in
                     // Optionally display a workout summary to the user.
                     print("The workout has now ended.")
-                    //self.resetWorkout()
+                    self.delegate?.didWorkoutStop(result: true)
                 }
             }
         }
@@ -168,13 +176,14 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
 protocol WorkoutManagerDelegate: class {
     func didReceiveAuthorizationResult(result : Bool)
     func didWorkoutStart(result: Bool)
+    func didWorkoutStop(result: Bool)
     func didReceiveHealthKitHeartRate(_ heartRate: Double)
 }
 
 // MARK: - HKLiveWorkoutBuilderDelegate
 extension WorkoutManager: HKLiveWorkoutBuilderDelegate {
     func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
-        
+        let counnt = workoutBuilder.dataSource?.typesToCollect.count
     }
     
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {

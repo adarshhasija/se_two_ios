@@ -44,6 +44,14 @@ class SiriShortcut {
                                                 "invocation": "Get the battery level in vibrations",
                                                 "activity_type": "com.starsearth.three.getBatteryLevelIntent"
                                             ]
+                                    ),
+                Action.HEART_RATE : SiriShortcut(dictionary:
+                                            [
+                                                "title": "Get my heart rate(BPM) in vibrations form",
+                                                "action": Action.HEART_RATE.rawValue,
+                                                "invocation": "Get my heart rate in vibrations",
+                                                "activity_type": "com.starsearth.three.getHeartRateIntent"
+                                            ]
                                     )
             ]
     

@@ -178,8 +178,10 @@
             <objects>
                 <controller identifier="HRCalculatorController" id="JVz-Dn-u3m" customClass="HRCalculatorController" customModule="Suno_Watch_Extension">
                     <items>
-                        <label alignment="left" text="We must start workout to get the heart rate" textAlignment="left" numberOfLines="0" id="ZCF-2M-YE2"/>
-                        <button width="1" alignment="left" title="Button" id="Wof-Na-I1x">
+                        <label alignment="left" text="Showing permissions screen. You will need to allow READ and WRITE permissions to use this feature." textAlignment="left" numberOfLines="0" id="ZCF-2M-YE2">
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                        <button width="1" alignment="left" hidden="YES" title="Button" id="Wof-Na-I1x">
                             <connections>
                                 <action selector="buttonTapped" destination="JVz-Dn-u3m" id="5gh-kd-BV5"/>
                             </connections>
