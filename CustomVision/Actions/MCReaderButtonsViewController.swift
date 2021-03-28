@@ -34,6 +34,7 @@ class MCReaderButtonsViewController : UIViewController {
     var indicesOfPipes : [Int] = [] //This is needed when highlighting morse code when the user taps on the screen to play audio
     var isAutoPlayOn = false
     var isAudioRequestedByUser = false
+    var autoPlayTimer : Timer? = nil
     
     @IBOutlet weak var middleBigTextView: UILabel!
     @IBOutlet weak var stackViewMain: UIStackView!
@@ -49,9 +50,6 @@ class MCReaderButtonsViewController : UIViewController {
 
     
     @IBAction func audioButtonTapped(_ sender: Any) {
-        guard let alphanumeric = inputAlphanumeric else {
-            return
-        }
         Analytics.logEvent("se3_ios_audio_btn", parameters: [:])
         isAudioRequestedByUser = !isAudioRequestedByUser
         audioButton?.setTitle(isAudioRequestedByUser == false ? "Play Audio" : "Stop Audio", for: .normal)
@@ -61,7 +59,7 @@ class MCReaderButtonsViewController : UIViewController {
     
     @IBAction func autoplayButtonTapped(_ sender: Any) {
         if isAutoPlayOn == true {
-            isAutoPlayOn = false
+            stopAutoPlay()
         }
         else {
             morseCodeAutoPlay(direction: "right")
@@ -70,14 +68,8 @@ class MCReaderButtonsViewController : UIViewController {
     
     @IBAction func gestureLongPress(_ sender: Any) {
         if (sender as? UIGestureRecognizer)?.state == UIGestureRecognizer.State.recognized {
-         /*   if isAutoPlayOn == true {
-                isAutoPlayOn = false
-                return
-            }
-            Analytics.logEvent("se3_ios_long_press", parameters: [:])
-            alphanumericStringIndex = -1
-            morseCodeStringIndex = -1
-            morseCodeAutoPlay(direction: "right")   */
+            //Not used right now
+            //Analytics.logEvent("se3_ios_long_press", parameters: [:])
         }
     }
     
@@ -88,28 +80,31 @@ class MCReaderButtonsViewController : UIViewController {
 
         let count = morseCodeLabel.text?.count ?? -1
         if (direction == "right" && morseCodeStringIndex >= count)
-            || (direction == "left" && morseCodeStringIndex < 0)
-            || isAutoPlayOn == false {
-            timer.invalidate()
-            isAutoPlayOn = false
-            alphanumericStringIndex = -1
-            morseCodeStringIndex = -1
-            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-            "Autoplay complete");
-            alphanumericLabel?.textColor = .none
-            morseCodeLabel?.textColor = .none
-            morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
-            autoplayButton?.setTitle("Autoplay", for: .normal)
-            autoplayButton?.setTitleColor(UIColor.blue, for: .normal)
-            audioButton?.isHidden = true
-            middleBigTextView.isHidden = true
-            appleWatchImageView.isHidden = false
-            scrollMCLabel.isHidden = false
-            siriButton?.isHidden = false
-            for backTapLabel in backTapLabels {
-                backTapLabel.isHidden = false
-            }
+            || (direction == "left" && morseCodeStringIndex < 0) {
+            stopAutoPlay()
         }
+    }
+    
+    func stopAutoPlay() {
+        autoPlayTimer?.invalidate()
+        alphanumericStringIndex = -1
+        morseCodeStringIndex = -1
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+                    "Autoplay complete");
+        alphanumericLabel?.textColor = .none
+        morseCodeLabel?.textColor = .none
+        morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
+        autoplayButton?.setTitle("Autoplay", for: .normal)
+        autoplayButton?.setTitleColor(UIColor.blue, for: .normal)
+        audioButton?.isHidden = true
+        middleBigTextView.isHidden = true
+        appleWatchImageView.isHidden = false
+        scrollMCLabel.isHidden = false
+        siriButton?.isHidden = false
+        for backTapLabel in backTapLabels {
+            backTapLabel.isHidden = false
+        }
+        isAutoPlayOn = false
     }
     
     func morseCodeAutoPlay(direction: String) {
@@ -136,7 +131,7 @@ class MCReaderButtonsViewController : UIViewController {
             "direction" : direction
         ]
         let timeInterval = direction == "right" ? 1 : 0.5
-        Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCReaderButtonsViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
+        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCReaderButtonsViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
     
     override func viewDidLoad() {
@@ -168,7 +163,7 @@ class MCReaderButtonsViewController : UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        isAutoPlayOn = false
+        stopAutoPlay()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

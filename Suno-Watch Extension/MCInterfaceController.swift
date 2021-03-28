@@ -40,6 +40,7 @@ class MCInterfaceController : WKInterfaceController {
     var isScreenActive = true
     var quickScrollTimeThreshold = 700000000 //If the digital crown is scrolled 30 degrees within this many nano seconds, we go into autoplay
     var isNormalMorse : Bool? = nil //Some functions, like TIME and DATE, can use customized vibrations and not normal morse code
+    var autoPlayTimer : Timer? = nil
     
     @IBOutlet weak var mainImage: WKInterfaceImage!
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
@@ -327,8 +328,8 @@ class MCInterfaceController : WKInterfaceController {
         if sender.state == .ended {
             sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
             if isAutoPlayOn == true {
-                isAutoPlayOn = false //All reformatting will be done in autoplay timer
                 WKInterfaceDevice.current().play(.success) //A haptic to indicate that the long press has been registered
+                stopAutoPlay()
                 return
             }
             if isUserTyping == false {
@@ -533,21 +534,11 @@ extension MCInterfaceController : WKCrownDelegate {
         
         if crownRotationalDelta < -expectedMoveDelta {
             //downward scroll
-            if morseCodeString.isEmpty {
-                //There is no morse code to scroll through. Simply play a failure haptic
-                //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
-                morseCodeStringIndex = -1 //To override the decrement made aboves
-                WKInterfaceDevice.current().play(.failure)
-                return
-            }
-            //This check should only be done after the mandatory minimum rotation
-            if isAutoPlayOn == true {
-                isAutoPlayOn = false //Reset will happen in autoplay function
-                return
-            }
-            
-            morseCodeStringIndex += 1
             crownRotationalDelta = 0.0
+            if isAutoPlayOn == true {
+                return
+            }
+            morseCodeStringIndex += 1
             let endTime = DispatchTime.now()
             let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
             if diffNanos <= quickScrollTimeThreshold {
@@ -563,22 +554,16 @@ extension MCInterfaceController : WKCrownDelegate {
         }
         else if crownRotationalDelta > expectedMoveDelta {
             //upward scroll
-            
-            //This check should only be done after the mandatory minimum rotation
-            if isAutoPlayOn == true {
-                isAutoPlayOn = false //Reset will happen in autoplay function
-                return
-            }
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
-            if morseCodeString.isEmpty {
-                //There is no morse code to scroll through. Simply play a failure haptic
-                //This is inside the first 'if' statement because we only want it to happen after the user has rotated the crown a certain angle, rather than on every degree of rotation. That would be annoying for the user
-                morseCodeStringIndex = -1 //To override the decrement made aboves
-                WKInterfaceDevice.current().play(.failure)
+            if isAutoPlayOn == true {
+                WKInterfaceDevice.current().play(.success)
+                stopAutoPlay()
                 return
             }
-           digitalCrownRotated(direction: "up")
+            else {
+                digitalCrownRotated(direction: "up")
+            }
         }
     }
     
@@ -1002,21 +987,24 @@ extension MCInterfaceController {
         }
 
         if (direction == "down" && morseCodeStringIndex >= morseCodeString.count)
-            || (direction == "up" && morseCodeStringIndex < 0)
-            || isAutoPlayOn == false {
-            timer.invalidate()
-            isAutoPlayOn = false
-            englishString = englishString.replacingOccurrences(of: "␣", with: " ")
-            morseCodeString = morseCodeString.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
-            englishTextLabel.setText(englishString)
-            morseCodeTextLabel.setText(morseCodeString)
-            englishStringIndex = -1 //Ensuring the pointer is set correctly
-            morseCodeStringIndex = -1
-            //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
-            instructionsLabel?.setText(dcScrollStart)
-            resetBigText()
-            //aboutButton?.setHidden(mode == "TIME" || mode == "DATE" ? false : true)
+            || (direction == "up" && morseCodeStringIndex < 0) {
+            stopAutoPlay()
         }
+    }
+    
+    func stopAutoPlay() {
+        autoPlayTimer?.invalidate()
+        englishString = englishString.replacingOccurrences(of: "␣", with: " ")
+        morseCodeString = morseCodeString.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
+        englishTextLabel.setText(englishString)
+        morseCodeTextLabel.setText(morseCodeString)
+        englishStringIndex = -1 //Ensuring the pointer is set correctly
+        morseCodeStringIndex = -1
+                    //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
+                    instructionsLabel?.setText(dcScrollStart)
+                    resetBigText()
+                    //aboutButton?.setHidden(mode == "TIME" || mode == "DATE" ? false : true)
+        isAutoPlayOn = false
     }
     
     func morseCodeAutoPlay(direction : String) {
@@ -1024,7 +1012,7 @@ extension MCInterfaceController {
         englishTextLabel.setText(englishString) //Resetting the string colors at the start of autoplay
         morseCodeString = morseCodeString.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
         morseCodeTextLabel.setText(morseCodeString)
-        instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown to stop" :
+        instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" :
                                     "Resetting, please wait...")
         if mode == "TIME" || mode == "DATE" {
             //It means About button is visible
@@ -1037,7 +1025,7 @@ extension MCInterfaceController {
         englishStringIndex = direction == "down" ? -1 : englishString.count //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
         morseCodeStringIndex = direction == "down" ? 0 : morseCodeString.count - 1
         let timeInterval = direction == "down" ? 1 : 0.5
-        Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
+        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     /*    Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             if self.isScreenActive == true {
                 //In case the watch screen goes off, we pause
@@ -1061,6 +1049,11 @@ extension MCInterfaceController {
     }
     
     func digitalCrownRotated(direction : String) {
+        if morseCodeString.isEmpty {
+            WKInterfaceDevice.current().play(.failure)
+            morseCodeStringIndex = -1
+            return
+        }
         if direction == "down" {
             if morseCodeStringIndex >= morseCodeString.count {
                 sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
