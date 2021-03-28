@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Intents
 
 class SiriShortcut {
     
@@ -81,6 +82,20 @@ class SiriShortcut {
         activity.isEligibleForPrediction = true
         activity.becomeCurrent()
         return activity
+    }
+    
+    static func createRelevantShortcutFromShortcut(siriShortcut: SiriShortcut) -> INRelevantShortcut {
+        let userActivity = createActivityForShortcut(siriShortcut: siriShortcut)
+        let shortcut = INShortcut(userActivity: userActivity)
+        let relevantShortcut = INRelevantShortcut(shortcut: shortcut)
+        relevantShortcut.shortcutRole = INRelevantShortcutRole.action
+        
+        let startTime = Date(timeIntervalSinceNow: 60.0)
+        let endTime = Date(timeIntervalSinceNow: 300.0)
+        let relevantDateProvider = INDateRelevanceProvider(start: startTime, end: endTime)
+        relevantShortcut.relevanceProviders = [relevantDateProvider]
+        
+        return relevantShortcut
     }
     
     var title: String

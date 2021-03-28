@@ -162,6 +162,11 @@ class MCInterfaceController : WKInterfaceController {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                 "state" : "action_"+action
             ])
+            if let siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: action)!] {
+                let relevantShortcut = SiriShortcut.createRelevantShortcutFromShortcut(siriShortcut: siriShortcut)
+                let relevantShortcuts = [relevantShortcut]
+                (WKExtension.shared().delegate as? ExtensionDelegate)?.setRelevantShortcuts(newShortcuts: relevantShortcuts)
+            }
             let inputs = SiriShortcut.getInputs(action: Action(rawValue: action)!)
             englishString = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
             englishTextLabel.setText(englishString)
