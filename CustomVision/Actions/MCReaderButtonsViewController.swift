@@ -363,11 +363,8 @@ class MCReaderButtonsViewController : UIViewController {
         siriButton = INUIAddVoiceShortcutButton(style: .blackOutline)
         siriButton.translatesAutoresizingMaskIntoConstraints = false
         siriButton.isUserInteractionEnabled = true
-        let activity = SiriShortcut.createActivityForShortcut(siriShortcut: shortcutForButton)
-        activity.suggestedInvocationPhrase = shortcutForButton.invocation //These apply only to iOS
-        activity.isAccessibilityElement = true
-        view.userActivity = activity
-        siriButton.shortcut = INShortcut(userActivity: activity)
+        siriButton.shortcut = SiriShortcut.createINShortcutAndAddToSiriWatchFace(siriShortcut: shortcutForButton)
+        siriButton.shortcut?.userActivity?.isAccessibilityElement = true
         siriButton.delegate = self
         
         //view.addSubview(button)

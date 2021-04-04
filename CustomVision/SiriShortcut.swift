@@ -72,30 +72,37 @@ class SiriShortcut {
     
     //Using acitivites instead of intents as Siri opens app directly for activity. For intents, it shows button to open app, which we do not want s
     //This is being used in this file as it could be used by multiple targets (eg: iOS and watchOS)
-    static func createActivityForShortcut(siriShortcut: SiriShortcut) -> NSUserActivity {
+    //This has to be called from the View Controller where it takes place because the Add to Siri button must be setup there
+    // isAccessibilityElement is not set here because it is an iOS thing. It is set in iOS controllers
+    static func createINShortcutAndAddToSiriWatchFace(siriShortcut: SiriShortcut) -> INShortcut {
         let activity = NSUserActivity(activityType: siriShortcut.activityType)
         activity.title = siriShortcut.title
         activity.userInfo = siriShortcut.dictionary
+        activity.suggestedInvocationPhrase = siriShortcut.invocation
         activity.persistentIdentifier = siriShortcut.activityType
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = true
         activity.isEligibleForPrediction = true
         activity.becomeCurrent()
-        return activity
+        let inShortcut = INShortcut(userActivity: activity)
+        addShortcutToSiriWatchFace(inShortcut: inShortcut)
+        return inShortcut
     }
     
-    static func createRelevantShortcutFromShortcut(siriShortcut: SiriShortcut) -> INRelevantShortcut {
-        let userActivity = createActivityForShortcut(siriShortcut: siriShortcut)
-        let shortcut = INShortcut(userActivity: userActivity)
-        let relevantShortcut = INRelevantShortcut(shortcut: shortcut)
+    static var relevantShortcuts : [INRelevantShortcut] = []
+    static func addShortcutToSiriWatchFace(inShortcut: INShortcut) {
+        let relevantShortcut = INRelevantShortcut(shortcut: inShortcut)
         relevantShortcut.shortcutRole = INRelevantShortcutRole.action
         
-        let startTime = Date(timeIntervalSinceNow: 60.0)
-        let endTime = Date(timeIntervalSinceNow: 300.0)
-        let relevantDateProvider = INDateRelevanceProvider(start: startTime, end: endTime)
-        relevantShortcut.relevanceProviders = [relevantDateProvider]
-        
-        return relevantShortcut
+        //var relevantShortcuts : [INRelevantShortcut] = [] //Use this to override a long list of relevant shortcuts and replace them with just one
+        relevantShortcuts.append(relevantShortcut)
+        INRelevantShortcutStore.default.setRelevantShortcuts(relevantShortcuts) { (error) in
+            if let error = error {
+                print("Failed to set relevant shortcuts. \(error))")
+            } else {
+                print("Relevant shortcuts set.")
+            }
+        }
     }
     
     var title: String

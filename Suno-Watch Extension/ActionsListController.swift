@@ -58,7 +58,7 @@ extension ActionsListController {
             let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
             WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
             var params : [String:Any] = [:]
-            params["mode"] = Action.MANUAL.rawValue
+            params["mode"] = Action.BATTERY_LEVEL.rawValue
             params["alphanumeric"] = level
             self.pushController(withName: "MCInterfaceController", context: params)
         }

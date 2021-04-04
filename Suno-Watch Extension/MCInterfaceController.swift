@@ -163,9 +163,8 @@ class MCInterfaceController : WKInterfaceController {
                 "state" : "action_"+action
             ])
             if let siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: action)!] {
-                let relevantShortcut = SiriShortcut.createRelevantShortcutFromShortcut(siriShortcut: siriShortcut)
-                let relevantShortcuts = [relevantShortcut]
-                (WKExtension.shared().delegate as? ExtensionDelegate)?.setRelevantShortcuts(newShortcuts: relevantShortcuts)
+                SiriShortcut.createINShortcutAndAddToSiriWatchFace(siriShortcut: siriShortcut) //Return value is used for Add To Siri button, which does not apply to watchOS at the moment
+                //(WKExtension.shared().delegate as? ExtensionDelegate)?.setRelevantShortcuts(newShortcuts: relevantShortcuts)
             }
             let inputs = SiriShortcut.getInputs(action: Action(rawValue: action)!)
             englishString = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
@@ -442,6 +441,13 @@ class MCInterfaceController : WKInterfaceController {
             }
             else if mode == Action.MANUAL.rawValue
                         || mode == Action.BATTERY_LEVEL.rawValue {
+                
+                if mode == Action.BATTERY_LEVEL.rawValue {
+                    if let siriShortcut = SiriShortcut.shortcutsDictionary[Action.BATTERY_LEVEL] {
+                        SiriShortcut.createINShortcutAndAddToSiriWatchFace(siriShortcut: siriShortcut) //Return value is used for Add To Siri button on iOS. Does not apply here for now
+                        //(WKExtension.shared().delegate as? ExtensionDelegate)?.setRelevantShortcuts(newShortcuts: relevantShortcuts)
+                    }
+                }
                 self.englishString = dictionary!["alphanumeric"] as? String ?? ""
                 self.englishTextLabel.setText(self.englishString)
                 self.englishTextLabel.setHidden(false)

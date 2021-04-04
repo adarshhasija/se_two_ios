@@ -12,8 +12,6 @@ import Intents
 
 class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     
-    var relevantShortcuts:[INRelevantShortcut] = []
-    
     /// MARK:- WCSessionDelegate
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
     }
@@ -88,17 +86,6 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
             default:
                 // make sure to complete unhandled task types
                 task.setTaskCompletedWithSnapshot(false)
-            }
-        }
-    }
-    
-    func setRelevantShortcuts(newShortcuts : [INRelevantShortcut]) {
-        relevantShortcuts.append(contentsOf: newShortcuts)
-        INRelevantShortcutStore.default.setRelevantShortcuts(relevantShortcuts) { (error) in
-            if let error = error {
-                print("Failed to set relevant shortcuts. \(error))")
-            } else {
-                print("Relevant shortcuts set.")
             }
         }
     }

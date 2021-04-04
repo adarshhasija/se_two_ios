@@ -479,30 +479,14 @@ extension VisionMLViewController {
 extension VisionMLViewController {
     //Siri Shortcuts
     
-    //Using acitivites instead of intents as Siri opens app directly for activity. For intents, it shows button to open app, which we do not want s
-    func createActivityForQuestion(siriShortcut: SiriShortcut) -> NSUserActivity {
-        let activity = NSUserActivity(activityType: siriShortcut.activityType)
-        activity.title = siriShortcut.title
-        activity.userInfo = siriShortcut.dictionary
-        activity.suggestedInvocationPhrase = siriShortcut.invocation
-        activity.persistentIdentifier = siriShortcut.activityType
-        activity.isAccessibilityElement = true
-        activity.isEligibleForHandoff = true
-        activity.isEligibleForSearch = true
-        activity.isEligibleForPrediction = true
-        view.userActivity = activity
-        activity.becomeCurrent()
-        return activity
-    }
-    
     // Add an "Add to Siri" button to a view.
     func addSiriButton(shortcut: SiriShortcut, to view: UIView) {
         let button = INUIAddVoiceShortcutButton(style: .blackOutline)
         button.isAccessibilityElement = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = true
-        let activity = createActivityForQuestion(siriShortcut: shortcut)
-        button.shortcut = INShortcut(userActivity: activity)
+        button.shortcut = SiriShortcut.createINShortcutAndAddToSiriWatchFace(siriShortcut: shortcut)
+        button.shortcut?.userActivity?.isAccessibilityElement = true
         button.delegate = self
         
         //view.addSubview(button)

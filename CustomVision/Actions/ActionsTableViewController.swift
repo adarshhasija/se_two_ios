@@ -131,6 +131,7 @@ class ActionsTableViewController : UITableViewController {
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         self.navigationController?.pushViewController(actionsMCViewController, animated: true)  */
         
+        
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
         if alphanumericString != nil {
