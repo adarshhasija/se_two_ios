@@ -75,6 +75,7 @@
 		31BC651D24697FDD00D5D801 /* MCDictionaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC651C24697FDD00D5D801 /* MCDictionaryCell.swift */; };
 		31BC651E2469872D00D5D801 /* MorseCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84623435F8300196E96 /* MorseCodeCell.swift */; };
 		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
+		31CBAE7D261F13C7006563B8 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CBAE7C261F13C7006563B8 /* ComplicationController.swift */; };
 		31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */; };
 		31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
 		31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
@@ -216,6 +217,7 @@
 		31BC65182469324100D5D801 /* MCDictionaryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryTableViewController.swift; sourceTree = "<group>"; };
 		31BC651C24697FDD00D5D801 /* MCDictionaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryCell.swift; sourceTree = "<group>"; };
 		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		31CBAE7C261F13C7006563B8 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCInterfaceController.swift; sourceTree = "<group>"; };
 		31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDBController.swift; sourceTree = "<group>"; };
 		31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewController.swift; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				31B61BC4253369AE00237602 /* ActionsListController.swift */,
 				31B61BC625336C6C00237602 /* ActionsCell.swift */,
 				31B61BC825336CB700237602 /* ActionsListRowController.swift */,
+				31CBAE7C261F13C7006563B8 /* ComplicationController.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -838,6 +841,7 @@
 				31A67B83235CB55800F506BD /* FAQCell.swift in Sources */,
 				31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */,
 				31108A91254808B9009E3DF1 /* Actions.swift in Sources */,
+				31CBAE7D261F13C7006563B8 /* ComplicationController.swift in Sources */,
 				31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */,
 				317C713B2540B03800E6800B /* LibraryCustomActions.swift in Sources */,
 			);

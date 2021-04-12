@@ -73,6 +73,8 @@ class MorseCodeUtils {
     //It is a sign to change the character in the English string
     static func isPrevMCCharPipeOrSpace(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
         var retVal = false
+        var isCurAlphanumericZero = false //A zero does not have have a dot/dash. Pipe followed by pipe or space followed by space
+        //isReverse is not really used in iOS at the moment but we are keeping it just in case
         if isReverse {
             if currentIndex < input.count - 1 {
                 //To ensure the next character down exists
@@ -81,6 +83,7 @@ class MorseCodeUtils {
                 let prevIndex = input.index(input.startIndex, offsetBy: currentIndex + 1)
                 let prevChar = String(input[prevIndex])
                 retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
+                isCurAlphanumericZero = (char == "|" && prevChar == "|") || (char == " " && prevChar == " ")
             }
         }
         else if currentIndex > 0 {
@@ -90,9 +93,11 @@ class MorseCodeUtils {
             let prevIndex = input.index(input.startIndex, offsetBy: currentIndex - 1)
             let prevChar = String(input[prevIndex])
             retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
+            
+            isCurAlphanumericZero = (char == "|" && prevChar == "|") || (char == " " && prevChar == " ")
         }
         
-        return retVal
+        return retVal || isCurAlphanumericZero
     }
 
 }

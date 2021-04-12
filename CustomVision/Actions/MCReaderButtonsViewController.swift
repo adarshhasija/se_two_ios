@@ -136,6 +136,13 @@ class MCReaderButtonsViewController : UIViewController {
     
     override func viewDidLoad() {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
+        if inputAlphanumeric == nil {
+            alphanumericLabel?.text = "Error\nSomething went wrong"
+            alphanumericLabel?.textColor = .red
+            morseCodeLabel?.isHidden = true
+            autoplayButton?.isHidden = true
+            return
+        }
         alphanumericLabel.text = inputAlphanumeric
         let morseCodeText = inputMorseCode != nil ? inputMorseCode : convertAlphanumericToMC(alphanumericString: inputAlphanumeric ?? "")
         morseCodeLabel.text = morseCodeText

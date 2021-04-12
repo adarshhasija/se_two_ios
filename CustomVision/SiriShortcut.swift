@@ -70,11 +70,7 @@ class SiriShortcut {
         return dictionary
     }
     
-    //Using acitivites instead of intents as Siri opens app directly for activity. For intents, it shows button to open app, which we do not want s
-    //This is being used in this file as it could be used by multiple targets (eg: iOS and watchOS)
-    //This has to be called from the View Controller where it takes place because the Add to Siri button must be setup there
-    // isAccessibilityElement is not set here because it is an iOS thing. It is set in iOS controllers
-    static func createINShortcutAndAddToSiriWatchFace(siriShortcut: SiriShortcut) -> INShortcut {
+    static func createUserActivityFromSiriShortcut(siriShortcut : SiriShortcut) -> NSUserActivity {
         let activity = NSUserActivity(activityType: siriShortcut.activityType)
         activity.title = siriShortcut.title
         activity.userInfo = siriShortcut.dictionary
@@ -84,6 +80,15 @@ class SiriShortcut {
         activity.isEligibleForSearch = true
         activity.isEligibleForPrediction = true
         activity.becomeCurrent()
+        return activity
+    }
+    
+    //Using acitivites instead of intents as Siri opens app directly for activity. For intents, it shows button to open app, which we do not want s
+    //This is being used in this file as it could be used by multiple targets (eg: iOS and watchOS)
+    //This has to be called from the View Controller where it takes place because the Add to Siri button must be setup there
+    // isAccessibilityElement is not set here because it is an iOS thing. It is set in iOS controllers
+    static func createINShortcutAndAddToSiriWatchFace(siriShortcut: SiriShortcut) -> INShortcut {
+        let activity = createUserActivityFromSiriShortcut(siriShortcut: siriShortcut)
         let inShortcut = INShortcut(userActivity: activity)
         addShortcutToSiriWatchFace(inShortcut: inShortcut)
         return inShortcut
@@ -131,10 +136,10 @@ class SiriShortcut {
     }   */
     
     init(dictionary: NSDictionary) {
-        self.title = dictionary["title"] as? String ?? "Get the current time in vibrations"
-        self.action = dictionary["action"] as? String ?? "TIME"
-        self.invocation = dictionary["invocation"] as? String ?? "Get time in vibrations"
-        self.activityType = dictionary["activity_type"] as? String ?? "com.starsearth.three.getTimeIntent"
-        self.messageOnOpen = dictionary["message_on_open"] as? String
+        self.title = dictionary["title"] as? String ?? ""
+        self.action = dictionary["action"] as? String ?? "UNKNOWN"
+        self.invocation = dictionary["invocation"] as? String ?? ""
+        self.activityType = dictionary["activity_type"] as? String ?? ""
+        self.messageOnOpen = dictionary["message_on_open"] as? String ?? "" //For watch complications, this cannot be nil
     }
 }

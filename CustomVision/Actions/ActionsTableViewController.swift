@@ -141,7 +141,7 @@ class ActionsTableViewController : UITableViewController {
         }
         else {
             mcReaderButtonsViewController.siriShortcut = SiriShortcut.shortcutsDictionary[inputAction]
-            let inputs = SiriShortcut.getInputs(action: Action(rawValue: inputAction.rawValue)!)
+            let inputs = SiriShortcut.getInputs(action: Action(rawValue: inputAction.rawValue) ?? Action.UNKNOWN)
             mcReaderButtonsViewController.inputAlphanumeric = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String
             mcReaderButtonsViewController.inputMorseCode = inputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String
             mcReaderButtonsViewController.inputMCExplanation.append(contentsOf: inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []

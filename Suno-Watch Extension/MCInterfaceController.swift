@@ -162,11 +162,11 @@ class MCInterfaceController : WKInterfaceController {
             sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
                 "state" : "action_"+action
             ])
-            if let siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: action)!] {
+            if let siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: action) ?? Action.UNKNOWN] {
                 SiriShortcut.createINShortcutAndAddToSiriWatchFace(siriShortcut: siriShortcut) //Return value is used for Add To Siri button, which does not apply to watchOS at the moment
                 //(WKExtension.shared().delegate as? ExtensionDelegate)?.setRelevantShortcuts(newShortcuts: relevantShortcuts)
             }
-            let inputs = SiriShortcut.getInputs(action: Action(rawValue: action)!)
+            let inputs = SiriShortcut.getInputs(action: Action(rawValue: action) ?? Action.UNKNOWN)
             englishString = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
             englishTextLabel.setText(englishString)
             englishTextLabel.setHidden(false)
@@ -193,6 +193,13 @@ class MCInterfaceController : WKInterfaceController {
                     "mode" : "chat"
                 ]
                 pushController(withName: "MCInterfaceController", context: params)
+            }
+            else {
+                //Its an error. Action = UNKNOWN
+                englishTextLabel.setHidden(true)
+                morseCodeTextLabel.setHidden(true)
+                setInstructionLabelForMode(mainString: "There was an error. You may have used a faulty complication. Please remove the complication from your watch face and add it again", readingString: "", writingString: "", isError: true)
+                instructionsLabel.setHidden(false)
             }
         }
     }
@@ -691,6 +698,7 @@ extension MCInterfaceController {
     //It is a sign to change the character in the English string
     func isPrevMCCharPipeOrSpace(input : String, currentIndex : Int, isReverse : Bool) -> Bool {
         var retVal = false
+        var isCurAlphanumericZero = false //A zero does not have have a dot/dash. Pipe followed by pipe or space followed by space
         if isReverse {
             if currentIndex < input.count - 1 {
                 //To ensure the next character down exists
@@ -699,6 +707,7 @@ extension MCInterfaceController {
                 let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex + 1)
                 let prevChar = String(morseCodeString[prevIndex])
                 retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
+                isCurAlphanumericZero = (char == "|" && prevChar == "|") || (char == " " && prevChar == " ")
             }
         }
         else if currentIndex > 0 {
@@ -708,9 +717,11 @@ extension MCInterfaceController {
             let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex - 1)
             let prevChar = String(morseCodeString[prevIndex])
             retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
+            
+            isCurAlphanumericZero = (char == "|" && prevChar == "|") || (char == " " && prevChar == " ")
         }
         
-        return retVal
+        return retVal || isCurAlphanumericZero
     }
     
     func isEngCharSpace() -> Bool {

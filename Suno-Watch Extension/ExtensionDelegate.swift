@@ -43,6 +43,7 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
             WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
             params["alphanumeric"] = level
         }
+        WKExtension.shared().rootInterfaceController?.popToRootController()
         WKExtension.shared().rootInterfaceController?.pushController(withName: "MCInterfaceController", context: params)
     }
     
