@@ -25,6 +25,7 @@ class VisionMLViewController: UIViewController {
     var delegateActionsTable : ActionsTableViewControllerProtocol? = nil
     
     private var lastFrame: CMSampleBuffer?
+    private let messageOnOpen = "Point your camera at the text\nWe will try to read it"
     
     private lazy var previewOverlayView: UIImageView = {
         
@@ -159,7 +160,7 @@ class VisionMLViewController: UIViewController {
         case .authorized: // The user has previously granted access to the camera.
             //self.setupCaptureSession()
             setupCamera()
-            addInstructionsTextLabel(text: self.siriShortcut?.messageOnOpen, to: bottomStackView)
+            addInstructionsTextLabel(text: messageOnOpen, to: bottomStackView)
             break
         
         case .notDetermined: // The user has not yet been asked for camera access.
@@ -167,7 +168,7 @@ class VisionMLViewController: UIViewController {
                 if granted {
                     DispatchQueue.main.async {
                         self.setupCamera()
-                        self.addInstructionsTextLabel(text: self.siriShortcut?.messageOnOpen, to: self.bottomStackView)
+                        self.addInstructionsTextLabel(text: self.messageOnOpen, to: self.bottomStackView)
                     }
                 }
                 else {
@@ -227,7 +228,7 @@ class VisionMLViewController: UIViewController {
         if synth.isSpeaking {
             synth.stopSpeaking(at: .immediate)
         }
-        sayThis(string: siriShortcut?.messageOnOpen ?? "")
+        sayThis(string: messageOnOpen)
     }
     
     

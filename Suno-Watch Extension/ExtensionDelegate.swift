@@ -34,10 +34,10 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     }
     
     func handle(_ userActivity: NSUserActivity) {
-        let siriShortcut = SiriShortcut(dictionary: userActivity.userInfo! as NSDictionary)
+        let action = SiriShortcut.intentToActionMap[userActivity.activityType] ?? Action.UNKNOWN
         var params : [String:Any] = [:]
-        params["mode"] = siriShortcut.action
-        if siriShortcut.action == Action.BATTERY_LEVEL.rawValue {
+        params["mode"] = action.rawValue
+        if action == Action.BATTERY_LEVEL {
             WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
             let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
             WKInterfaceDevice.current().isBatteryMonitoringEnabled = false

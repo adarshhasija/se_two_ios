@@ -11,6 +11,14 @@ import Intents
 
 class SiriShortcut {
     
+    static let intentToActionMap : [String : Action] =
+            [
+                "com.starsearth.three.getTimeIntent" : Action.TIME,
+                "com.starsearth.three.getDateDayOfWeekIntent" : Action.DATE,
+                "com.starsearth.three.getCameraIntent" : Action.CAMERA_OCR,
+                "com.starsearth.three.getBatteryLevelIntent" : Action.BATTERY_LEVEL
+            ]
+    
     static var shortcutsDictionary : [Action : SiriShortcut] =
             [
                 Action.TIME : SiriShortcut(dictionary:
@@ -34,8 +42,7 @@ class SiriShortcut {
                                                 "title": "Open the camera for text",
                                                 "action": Action.CAMERA_OCR.rawValue,
                                                 "invocation": "Get the text from the camera feed and read the text using vibrations",
-                                                "activity_type": "com.starsearth.three.getCameraIntent",
-                                                "message_on_open": "Point your camera at the text\nWe will try to read it"
+                                                "activity_type": "com.starsearth.three.getCameraIntent"
                                             ]
                                     ),
                 Action.BATTERY_LEVEL : SiriShortcut(dictionary:
@@ -73,7 +80,7 @@ class SiriShortcut {
     static func createUserActivityFromSiriShortcut(siriShortcut : SiriShortcut) -> NSUserActivity {
         let activity = NSUserActivity(activityType: siriShortcut.activityType)
         activity.title = siriShortcut.title
-        activity.userInfo = siriShortcut.dictionary
+        //activity.userInfo = siriShortcut.dictionary //BUG: We are not sending this as any modifications made to the dictionary breaks Add To Siri button. Any modifications to this dictionary breaks Add to Siri button. It does not capture the shortcut even if it exists. However the shortcut continues to work from the shortcut app
         activity.suggestedInvocationPhrase = siriShortcut.invocation
         activity.persistentIdentifier = siriShortcut.activityType
         activity.isEligibleForHandoff = true
@@ -114,32 +121,24 @@ class SiriShortcut {
     var action: String
     var invocation: String
     var activityType: String
-    var messageOnOpen: String?
+    //var messageOnOpen: String //Not recommended to put text that can be changed often into the Shortcut. Modifying the text breaks the Add to Siri button
     var dictionary: [String: Any] {
         return [
                 "title": title,
                 "action": action,
                 "invocation": invocation,
-                "activity_type": activityType,
-                "message_on_open": messageOnOpen
+                "activity_type": activityType
         ]
     }
     var nsDictionary: NSDictionary {
         return dictionary as NSDictionary
     }
     
- /*   init(title: String, action: String, invocation: String, activityType: String) {
-        self.title = title
-        self.action = action
-        self.invocation = invocation
-        self.activityType = activityType
-    }   */
-    
     init(dictionary: NSDictionary) {
+        //None can be nil. It breaks complications
         self.title = dictionary["title"] as? String ?? ""
-        self.action = dictionary["action"] as? String ?? "UNKNOWN"
+        self.action = dictionary["action"] as? String ?? Action.UNKNOWN.rawValue
         self.invocation = dictionary["invocation"] as? String ?? ""
         self.activityType = dictionary["activity_type"] as? String ?? ""
-        self.messageOnOpen = dictionary["message_on_open"] as? String ?? "" //For watch complications, this cannot be nil
     }
 }

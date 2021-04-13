@@ -34,8 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = window?.rootViewController as! UINavigationController
         navigationController.popToRootViewController(animated: false) //Pop everything. We do not want an endless list of controllers
         
-        let siriShortcut = SiriShortcut(dictionary: userActivity.userInfo! as NSDictionary)
-        if Action(rawValue: siriShortcut.action)! == Action.CAMERA_OCR {
+        let action = SiriShortcut.intentToActionMap[userActivity.activityType] ?? Action.UNKNOWN
+        let siriShortcut = SiriShortcut.shortcutsDictionary[action]
+        if action == Action.CAMERA_OCR {
             let storyBoard : UIStoryboard = UIStoryboard(name: "MainVision", bundle:nil)
                     let visionMLViewController = storyBoard.instantiateViewController(withIdentifier: "VisionMLViewController") as! VisionMLViewController
                     visionMLViewController.delegateActionsTable = navigationController.topViewController as? ActionsTableViewController
@@ -44,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         else {
             var inputAlphanumeric : String? = nil
-            if siriShortcut.action == Action.BATTERY_LEVEL.rawValue {
+            if action == Action.BATTERY_LEVEL {
                 UIDevice.current.isBatteryMonitoringEnabled = true
                 let level = String(Int(UIDevice.current.batteryLevel * 100)) //int as we do not decimal
                 UIDevice.current.isBatteryMonitoringEnabled = false
@@ -52,8 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
                     let mcReaderViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
-            mcReaderViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action(rawValue: siriShortcut.action)!]
-            let inputs = SiriShortcut.getInputs(action: Action(rawValue: siriShortcut.action)!)
+            mcReaderViewController.siriShortcut = siriShortcut
+            let inputs = SiriShortcut.getInputs(action: action)
             mcReaderViewController.inputAlphanumeric = inputAlphanumeric ?? inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String
             mcReaderViewController.inputMorseCode = inputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String
             mcReaderViewController.inputMCExplanation.append(contentsOf: inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
