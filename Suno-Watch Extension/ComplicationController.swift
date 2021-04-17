@@ -34,7 +34,7 @@ extension ComplicationController : CLKComplicationDataSource {
                     case .modularLarge:
                         if let image = thumbnailImage,
                            let userActivityTitle = complication.userActivity?.title {
-                            let template = CLKComplicationTemplateModularLargeStandardBody(headerImageProvider: CLKImageProvider(onePieceImage: image), headerTextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), body1TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
+                            let template = CLKComplicationTemplateModularLargeStandardBody(headerTextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), body1TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                             entry = CLKComplicationTimelineEntry(date: date, complicationTemplate: template)
                         }
                     case .utilitarianSmall:
@@ -48,8 +48,9 @@ extension ComplicationController : CLKComplicationDataSource {
                             entry = CLKComplicationTimelineEntry(date: date, complicationTemplate: template)
                         }
                     case .utilitarianLarge:
-                        if let image = thumbnailImage {
-                            let template = CLKComplicationTemplateUtilitarianLargeFlat(textProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), imageProvider: CLKImageProvider(onePieceImage: image))
+                        if let image = thumbnailImage,
+                           let userActivityTitle = complication.userActivity?.title {
+                            let template = CLKComplicationTemplateUtilitarianLargeFlat(textProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                             entry = CLKComplicationTimelineEntry(date: date, complicationTemplate: template)
                         }
                     case .circularSmall:
@@ -58,8 +59,9 @@ extension ComplicationController : CLKComplicationDataSource {
                             entry = CLKComplicationTimelineEntry(date: date, complicationTemplate: template)
                         }
                     case .extraLarge:
-                        if let image = thumbnailImage {
-                            let template = CLKComplicationTemplateExtraLargeSimpleImage(imageProvider: CLKImageProvider(onePieceImage: image))
+                        if let image = thumbnailImage,
+                           let userActivityTitle = complication.userActivity?.title {
+                            let template = CLKComplicationTemplateExtraLargeStackText(line1TextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), line2TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                             entry = CLKComplicationTimelineEntry(date: date, complicationTemplate: template)
                         }
                     case .graphicCorner:
@@ -80,12 +82,13 @@ extension ComplicationController : CLKComplicationDataSource {
                     case .graphicRectangular:
                         if let image = thumbnailImage,
                            let userActivityTitle = complication.userActivity?.title {
-                            let template = CLKComplicationTemplateGraphicRectangularStandardBody(headerImageProvider: CLKFullColorImageProvider(fullColorImage: image), headerTextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), body1TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
+                            let template = CLKComplicationTemplateGraphicRectangularStandardBody(headerTextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), body1TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                             entry = CLKComplicationTimelineEntry(date: date, complicationTemplate: template)
                         }
                     case .graphicExtraLarge:
-                        if let image = thumbnailImage {
-                            let template = CLKComplicationTemplateGraphicExtraLargeCircularImage(imageProvider: CLKFullColorImageProvider(fullColorImage: image))
+                        if let image = thumbnailImage,
+                           let userActivityTitle = complication.userActivity?.title {
+                            let template = CLKComplicationTemplateGraphicExtraLargeCircularStackText(line1TextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), line2TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                             entry = CLKComplicationTimelineEntry(date: date, complicationTemplate: template)
                         }
 
@@ -106,6 +109,7 @@ extension ComplicationController : CLKComplicationDataSource {
         //Using this only for battery as we need the extra space for text explanation. Image is not enough
         let supportedFamiliesLarge : [CLKComplicationFamily] =
         [
+            //.utilitarianLarge, //Text is too long
             .modularLarge,
             .extraLarge,
             .graphicRectangular,
@@ -146,7 +150,7 @@ extension ComplicationController : CLKComplicationDataSource {
                     case .modularLarge:
                         if let image = thumbnailImage,
                            let userActivityTitle = complication.userActivity?.title {
-                            template = CLKComplicationTemplateModularLargeStandardBody(headerImageProvider: CLKImageProvider(onePieceImage: image), headerTextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), body1TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
+                            template = CLKComplicationTemplateModularLargeStandardBody(headerTextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), body1TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                         }
                     case .utilitarianSmall:
                         if let image = thumbnailImage {
@@ -157,16 +161,18 @@ extension ComplicationController : CLKComplicationDataSource {
                             template = CLKComplicationTemplateUtilitarianSmallFlat(textProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), imageProvider: CLKImageProvider(onePieceImage: image))
                         }
                     case .utilitarianLarge:
-                        if let image = thumbnailImage {
-                            template = CLKComplicationTemplateUtilitarianLargeFlat(textProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), imageProvider: CLKImageProvider(onePieceImage: image))
+                        if let image = thumbnailImage,
+                           let userActivityTitle = complication.userActivity?.title  {
+                            template = CLKComplicationTemplateUtilitarianLargeFlat(textProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                         }
                     case .circularSmall:
                         if let image = thumbnailImage {
                             template = CLKComplicationTemplateCircularSmallSimpleImage(imageProvider: CLKImageProvider(onePieceImage: image))
                         }
                     case .extraLarge:
-                        if let image = thumbnailImage {
-                            template = CLKComplicationTemplateExtraLargeSimpleImage(imageProvider: CLKImageProvider(onePieceImage: image))
+                        if let image = thumbnailImage,
+                           let userActivityTitle = complication.userActivity?.title {
+                            template = CLKComplicationTemplateExtraLargeStackText(line1TextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), line2TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                         }
                     case .graphicCorner:
                         if let image = thumbnailImage {
@@ -183,11 +189,12 @@ extension ComplicationController : CLKComplicationDataSource {
                     case .graphicRectangular:
                         if let image = thumbnailImage,
                            let userActivityTitle = complication.userActivity?.title {
-                            template = CLKComplicationTemplateGraphicRectangularStandardBody(headerImageProvider: CLKFullColorImageProvider(fullColorImage: image), headerTextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), body1TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
+                            template = CLKComplicationTemplateGraphicRectangularStandardBody(headerTextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), body1TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                         }
                     case .graphicExtraLarge:
-                        if let image = thumbnailImage {
-                            template = CLKComplicationTemplateGraphicExtraLargeCircularImage(imageProvider: CLKFullColorImageProvider(fullColorImage: image))
+                        if let image = thumbnailImage,
+                           let userActivityTitle = complication.userActivity?.title {
+                            template = CLKComplicationTemplateGraphicExtraLargeCircularStackText(line1TextProvider: CLKSimpleTextProvider(text: text, shortText: text, accessibilityLabel: text), line2TextProvider: CLKSimpleTextProvider(text: userActivityTitle, shortText: userActivityTitle, accessibilityLabel: userActivityTitle))
                         }
 
                     default:
