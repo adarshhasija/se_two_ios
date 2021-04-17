@@ -61,14 +61,26 @@ class SiriShortcut {
         case input_mc_explanation
     }
     
-    static func getInputs(action: Action) -> [String: Any] {
+    /*
+     Applies when the Actions vibrations are custom
+     */
+    static func getCustomInputs(action: Action) -> [String: Any] {
         var dictionary : [String : Any] = [:]
         dictionary[INPUT_FIELDS.input_alphanumerics.rawValue] =
-                            action == Action.TIME ? String(LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")) : String(LibraryCustomActions.getCurrentDateInAlphanumeric())
+                            action == Action.TIME ? String(LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")) :
+                            action == Action.DATE ?
+                                String(LibraryCustomActions.getCurrentDateInAlphanumeric()) :
+                                nil
         dictionary[INPUT_FIELDS.input_morse_code.rawValue] =
-                            action == Action.TIME ?         LibraryCustomActions.getCurrentTimeInDotsDashes()["morse_code"] : LibraryCustomActions.getCurrentDateInDotsDashes()["morse_code"]
+                            action == Action.TIME ?         LibraryCustomActions.getCurrentTimeInDotsDashes()["morse_code"] :
+                            action == Action.DATE ?
+                                LibraryCustomActions.getCurrentDateInDotsDashes()["morse_code"] :
+                                nil
         dictionary[INPUT_FIELDS.input_mc_explanation.rawValue] =
-                            action == Action.TIME ? LibraryCustomActions.getCurrentTimeInDotsDashes()["instructions"] : LibraryCustomActions.getCurrentDateInDotsDashes()["instructions"]
+                            action == Action.TIME ? LibraryCustomActions.getCurrentTimeInDotsDashes()["instructions"] :
+                            action == Action.DATE ?
+                                LibraryCustomActions.getCurrentDateInDotsDashes()["instructions"] :
+                                nil
           /*  [
                 "inputAlphanumeric" : action == Action.TIME ? String(LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")) : String(LibraryCustomActions.getCurrentDateInAlphanumeric()),
                 "inputMorseCode" : action == Action.TIME ? String(LibraryCustomActions.getCurrentTimeInDotsDashes()["morse_code"]) : String(LibraryCustomActions.getCurrentDateInDotsDashes()["morse_code"]),

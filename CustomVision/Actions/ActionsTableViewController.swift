@@ -67,10 +67,10 @@ class ActionsTableViewController : UITableViewController {
             UIDevice.current.isBatteryMonitoringEnabled = true
             let level = String(Int(UIDevice.current.batteryLevel * 100)) //int as we do not decimal
             UIDevice.current.isBatteryMonitoringEnabled = false
-            openMorseCodeReadingScreen(inputAction: actionItem.cellType, alphanumericString: level)
+            openMorseCodeReadingScreen(alphanumericString: level, inputAction: actionItem.cellType)
         }
         else {
-            openMorseCodeReadingScreen(inputAction: actionItem.cellType, alphanumericString: nil)
+            openMorseCodeReadingScreen(alphanumericString: nil, inputAction: actionItem.cellType)
         }
     }
     
@@ -107,7 +107,7 @@ class ActionsTableViewController : UITableViewController {
                 let text : String = textField!.text!
                 Analytics.logEvent("se3_manual_success", parameters: [:]) //returned from camera
                 let textFiltered = text.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
-                self.openMorseCodeReadingScreen(inputAction : Action.MANUAL, alphanumericString : textFiltered)
+                self.openMorseCodeReadingScreen(alphanumericString: textFiltered, inputAction: Action.MANUAL)
                 alert?.dismiss(animated: true, completion: nil)
             }
             //print("Text field: \(textField.text)")
@@ -120,33 +120,9 @@ class ActionsTableViewController : UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func openMorseCodeReadingScreen(inputAction : Action, alphanumericString : String?) {
-     /*   let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
-        let actionsMCViewController = storyBoard.instantiateViewController(withIdentifier: "ActionsMCViewController") as! ActionsMCViewController
-        actionsMCViewController.mInputAction = inputAction
-        if alphanumericString != nil {
-            actionsMCViewController.mInputAlphanumeric = alphanumericString
-        }
+    private func openMorseCodeReadingScreen(alphanumericString : String?, inputAction: Action) {
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
-        self.navigationController?.pushViewController(actionsMCViewController, animated: true)  */
-        
-        
-        let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
-        let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
-        if alphanumericString != nil {
-            mcReaderButtonsViewController.siriShortcut = inputAction == Action.BATTERY_LEVEL ? SiriShortcut.shortcutsDictionary[inputAction] : nil //In CAMERA mode we give the alphanumeric string directly, but we do not want a siri shortcut passed in for that
-            mcReaderButtonsViewController.inputMode = inputAction
-            mcReaderButtonsViewController.inputAlphanumeric = alphanumericString
-        }
-        else {
-            mcReaderButtonsViewController.siriShortcut = SiriShortcut.shortcutsDictionary[inputAction]
-            let inputs = SiriShortcut.getInputs(action: Action(rawValue: inputAction.rawValue) ?? Action.UNKNOWN)
-            mcReaderButtonsViewController.inputAlphanumeric = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String
-            mcReaderButtonsViewController.inputMorseCode = inputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String
-            mcReaderButtonsViewController.inputMCExplanation.append(contentsOf: inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
-            )
-        }
-        hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
+        guard let mcReaderButtonsViewController = (UIApplication.shared.delegate as? AppDelegate)?.getMorseCodeReadingScreen(alphanumericString: alphanumericString, inputAction: inputAction) else { return }
         self.navigationController?.pushViewController(mcReaderButtonsViewController, animated: true)
     }
 }
@@ -166,7 +142,7 @@ extension ActionsTableViewController : ActionsTableViewControllerProtocol {
             self.navigationController?.popViewController(animated: false)
             Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
-            openMorseCodeReadingScreen(inputAction : Action.CAMERA_OCR, alphanumericString : englishFiltered)
+            openMorseCodeReadingScreen(alphanumericString: englishFiltered, inputAction: Action.CAMERA_OCR)
         }
     }
 

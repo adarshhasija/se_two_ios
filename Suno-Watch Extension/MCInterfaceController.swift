@@ -166,13 +166,13 @@ class MCInterfaceController : WKInterfaceController {
                 SiriShortcut.createINShortcutAndAddToSiriWatchFace(siriShortcut: siriShortcut) //Return value is used for Add To Siri button, which does not apply to watchOS at the moment
                 //(WKExtension.shared().delegate as? ExtensionDelegate)?.setRelevantShortcuts(newShortcuts: relevantShortcuts)
             }
-            let inputs = SiriShortcut.getInputs(action: Action(rawValue: action) ?? Action.UNKNOWN)
-            englishString = inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
+            let customInputs = SiriShortcut.getCustomInputs(action: Action(rawValue: action) ?? Action.UNKNOWN)
+            englishString = customInputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
             englishTextLabel.setText(englishString)
             englishTextLabel.setHidden(false)
-            morseCodeString = inputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String ?? ""
+            morseCodeString = customInputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String ?? ""
             morseCodeTextLabel.setText(morseCodeString)
-            explanationArray.append(contentsOf:  inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
+            explanationArray.append(contentsOf:  customInputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
             )
             if action == "TIME" || action == "DATE" {
                 isUserTyping = false

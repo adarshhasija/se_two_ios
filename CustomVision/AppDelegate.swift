@@ -51,14 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UIDevice.current.isBatteryMonitoringEnabled = false
                 inputAlphanumeric = level
             }
-            let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
-                    let mcReaderViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
-            mcReaderViewController.siriShortcut = siriShortcut
-            let inputs = SiriShortcut.getInputs(action: action)
-            mcReaderViewController.inputAlphanumeric = inputAlphanumeric ?? inputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String
-            mcReaderViewController.inputMorseCode = inputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String
-            mcReaderViewController.inputMCExplanation.append(contentsOf: inputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
-            )
+            let mcReaderViewController = getMorseCodeReadingScreen(alphanumericString: inputAlphanumeric, inputAction: action)
             navigationController.pushViewController(mcReaderViewController, animated: true)
         }
         
@@ -125,5 +118,25 @@ extension AppDelegate : WCSessionDelegate {
             }
             
         }
+    }
+    
+    func getMorseCodeReadingScreen(alphanumericString : String?, inputAction: Action) -> MCReaderButtonsViewController {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
+        let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
+        mcReaderButtonsViewController.siriShortcut = inputAction == Action.CAMERA_OCR ? nil : SiriShortcut.shortcutsDictionary[inputAction] //If its not BATTERY_LEVEL, its CAMERA_OCR. In this case we dont want to get the siri shortcut as the Add to Siri button should not appear on the reader screen
+        let customInputs = SiriShortcut.getCustomInputs(action: Action(rawValue: inputAction.rawValue) ?? Action.UNKNOWN)
+        mcReaderButtonsViewController.inputMode = inputAction
+        if customInputs.isEmpty == false {
+            mcReaderButtonsViewController.inputAlphanumeric = customInputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue]! as? String
+            mcReaderButtonsViewController.inputMorseCode = customInputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue]! as? String
+            mcReaderButtonsViewController.inputMCExplanation.append(contentsOf: customInputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue]! as? [String] ?? []
+            )
+        }
+        else if alphanumericString != nil {
+            //Probably MANUAL or CAMERA_OCR
+            mcReaderButtonsViewController.inputAlphanumeric = alphanumericString
+        }
+        
+        return mcReaderButtonsViewController
     }
 }
