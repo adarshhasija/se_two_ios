@@ -41,7 +41,6 @@
 	<string>ActionsList</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>arkit</string>
 		<string>armv7</string>
 	</array>
 	<key>UIStatusBarHidden</key>

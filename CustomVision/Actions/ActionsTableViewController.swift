@@ -77,12 +77,11 @@ class ActionsTableViewController : UITableViewController {
     
     private func openCamera() {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MainVision", bundle:nil)
-        let visionMLViewController = storyBoard.instantiateViewController(withIdentifier: "VisionMLViewController") as! VisionMLViewController
-        visionMLViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action.CAMERA_OCR]
-        visionMLViewController.delegateActionsTable = self
+        let cameraViewController = storyBoard.instantiateViewController(withIdentifier: "CameraViewController") as! CameraViewController
+        cameraViewController.siriShortcut = SiriShortcut.shortcutsDictionary[Action.CAMERA_OCR]
+        cameraViewController.delegateActionsTable = self
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
-        //self.navigationController?.present(visionMLViewController, animated: true, completion: nil)
-        self.navigationController?.pushViewController(visionMLViewController, animated: true)
+        self.navigationController?.pushViewController(cameraViewController, animated: true)
     }
     
     @IBAction func textFieldDidChange(_ sender: UITextField) {

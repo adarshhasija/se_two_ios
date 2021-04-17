@@ -38,10 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let siriShortcut = SiriShortcut.shortcutsDictionary[action]
         if action == Action.CAMERA_OCR {
             let storyBoard : UIStoryboard = UIStoryboard(name: "MainVision", bundle:nil)
-                    let visionMLViewController = storyBoard.instantiateViewController(withIdentifier: "VisionMLViewController") as! VisionMLViewController
-                    visionMLViewController.delegateActionsTable = navigationController.topViewController as? ActionsTableViewController
-                    visionMLViewController.siriShortcut = siriShortcut
-                    navigationController.pushViewController(visionMLViewController, animated: true)
+            let cameraViewController = storyBoard.instantiateViewController(withIdentifier: "CameraViewController") as! CameraViewController
+            cameraViewController.siriShortcut = siriShortcut
+            cameraViewController.delegateActionsTable = navigationController.topViewController as? ActionsTableViewController
+            navigationController.pushViewController(cameraViewController, animated: true)
         }
         else {
             var inputAlphanumeric : String? = nil

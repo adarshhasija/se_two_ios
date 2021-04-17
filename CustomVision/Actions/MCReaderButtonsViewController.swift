@@ -383,7 +383,7 @@ class MCReaderButtonsViewController : UIViewController {
             return
         }
         //Back tap is only supported on iPhone 8 and above
-        let txt = "After creating the shortcut, we strongly encourage that you attach the shortcut to the Back Tap functionality.You can find this by going to the Settings app, then Accessibility, then Touch, then Back Tap"
+        let txt = "After creating shortcut, go to the Settings app to attach this shortcut to Back Tap"
         let sentences = txt.split(separator: ".") //Doing this to ensure blind can move over 1 sentence at a time via VoiceOver
         for sentence in sentences {
             let backTapLabel = UILabel()

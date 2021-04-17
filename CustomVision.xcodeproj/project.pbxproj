@@ -80,6 +80,7 @@
 		31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
 		31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
 		31D97F9C23BA7936000CFCF2 /* SettingDBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */; };
+		31DCDFB126261E2100366DDD /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DCDFB026261E2100366DDD /* CameraViewController.swift */; };
 		31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */; };
 		31EC882623467A600088051C /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
 		31EC882823467AD50088051C /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
@@ -220,6 +221,7 @@
 		31CBAE7C261F13C7006563B8 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCInterfaceController.swift; sourceTree = "<group>"; };
 		31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDBController.swift; sourceTree = "<group>"; };
+		31DCDFB026261E2100366DDD /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewController.swift; sourceTree = "<group>"; };
 		31EC882523467A600088051C /* MorseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCode.swift; sourceTree = "<group>"; };
 		31EC882723467AD50088051C /* MCTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCTreeNode.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */,
 				3188A83324789CFD0075B33E /* BubbleLayer.swift */,
 				3188A83024789C2D0075B33E /* VisionMLViewController.swift */,
+				31DCDFB026261E2100366DDD /* CameraViewController.swift */,
 			);
 			path = CameraSE;
 			sourceTree = "<group>";
@@ -882,6 +885,7 @@
 				313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */,
 				31BC651D24697FDD00D5D801 /* MCDictionaryCell.swift in Sources */,
 				3193F411253F6E45004940AE /* MCReaderButtonsViewController.swift in Sources */,
+				31DCDFB126261E2100366DDD /* CameraViewController.swift in Sources */,
 				31108AA025483493009E3DF1 /* ActionsListCell.swift in Sources */,
 				31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */,
 				311AEE3125D81BAA00E018FE /* SiriShortcut.swift in Sources */,
