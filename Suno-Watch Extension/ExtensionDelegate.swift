@@ -35,14 +35,7 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     
     func handle(_ userActivity: NSUserActivity) {
         let action = SiriShortcut.intentToActionMap[userActivity.activityType] ?? Action.UNKNOWN
-        var params : [String:Any] = [:]
-        params["mode"] = action.rawValue
-        if action == Action.BATTERY_LEVEL {
-            WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
-            let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
-            WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
-            params["alphanumeric"] = level
-        }
+        var params = getParamsForMCInterfaceController(action: action)
         WKExtension.shared().rootInterfaceController?.popToRootController()
         WKExtension.shared().rootInterfaceController?.pushController(withName: "MCInterfaceController", context: params)
     }
@@ -89,6 +82,18 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
                 task.setTaskCompletedWithSnapshot(false)
             }
         }
+    }
+    
+    func getParamsForMCInterfaceController(action : Action) -> [String:Any] {
+        var params : [String:Any] = [:]
+        params["mode"] = action.rawValue
+        if action == Action.BATTERY_LEVEL {
+            WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
+            let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
+            WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
+            params["alphanumeric"] = level
+        }
+        return params
     }
 
 }

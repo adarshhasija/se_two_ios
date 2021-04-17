@@ -53,18 +53,8 @@ extension ActionsListController {
         if action == Action.MANUAL.rawValue {
             pushManualTypingController()
         }
-        else if action == Action.BATTERY_LEVEL.rawValue {
-            WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
-            let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
-            WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
-            var params : [String:Any] = [:]
-            params["mode"] = Action.BATTERY_LEVEL.rawValue
-            params["alphanumeric"] = level
-            self.pushController(withName: "MCInterfaceController", context: params)
-        }
         else {
-            var params : [String:Any] = [:]
-            params["mode"] = action
+            let params = (WKExtension.shared().delegate as? ExtensionDelegate)?.getParamsForMCInterfaceController(action: Action(rawValue: action) ?? Action.UNKNOWN)
             pushController(withName: "MCInterfaceController", context: params)
         }
     }
