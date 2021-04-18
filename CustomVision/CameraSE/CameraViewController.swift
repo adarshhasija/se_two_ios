@@ -40,6 +40,7 @@ class CameraViewController : UIViewController {
     var backTapLabels : [UILabel] = []
     var siriShortcut : SiriShortcut? = nil
     var delegateActionsTable : ActionsTableViewControllerProtocol? = nil
+    var textObserved : String? = nil //Used when popping this view controller on the return
     
     override func viewDidLoad() {
         //This must be here so that other UI can be added over it
@@ -49,6 +50,13 @@ class CameraViewController : UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        if textObserved != nil {
+            //Means we are returning backwards from the Reader controller. Simply pop this
+            //We are doing it like this so it works well with VoiceOver.
+            //If we popped this controller before showing the reader then VoiceOver will pick UI of the parent controller (table), which we do not want
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
         if siriShortcut != nil { addToSiriStackView(siriShortcut: siriShortcut!) }
         switch AVCaptureDevice.authorizationStatus(for: .video) {
                     case .authorized: // The user has previously granted access to the camera.
@@ -219,8 +227,8 @@ class CameraViewController : UIViewController {
                       //recognizedText += "\n"
                   }
                   DispatchQueue.main.async {
-                      self.delegateActionsTable?.setTextFromCamera(english: recognizedText)
-                      self.dismiss(animated: true, completion: nil) //This is now being done in ActionsTableViewController. Uncomment this line if calling from a different view.
+                    self.textObserved = recognizedText
+                    self.delegateActionsTable?.setTextFromCamera(english: recognizedText)
                   }
                   //self.bubbleLayer.string = recognizedText
               }

@@ -136,10 +136,16 @@ protocol ActionsTableViewControllerProtocol {
 extension ActionsTableViewController : ActionsTableViewControllerProtocol {
     
     func setTextFromCamera(english: String) {
+        guard navigationController?.topViewController is MCReaderButtonsViewController == false else {
+            //If FALSE, the we have not yet displayed the camera result to user
+            //If TRUE, we have displayed the camera result to user already. This is a 2nd or later call
+            return
+        }
+        
         Analytics.logEvent("se3_ios_cam_ret", parameters: [:]) //returned from camera
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS) //This is just to notify the user that camera recognition is complete
         if english.count > 0 {
-            self.navigationController?.popViewController(animated: false)
+            //self.navigationController?.popViewController(animated: false) //We are not popping here as it breaks VoiceOver. VoiceOver picks elements from this page instead of from the next page. Therefore we will be popping the camera view on the return. See viewDidAppear in CameraViewController
             Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
             let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
             openMorseCodeReadingScreen(alphanumericString: englishFiltered, inputAction: Action.CAMERA_OCR)

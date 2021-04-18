@@ -96,7 +96,7 @@ class MCReaderButtonsViewController : UIViewController {
         morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
         autoplayButton?.setTitle("Autoplay", for: .normal)
         autoplayButton?.setTitleColor(UIColor.blue, for: .normal)
-        audioButton?.isHidden = true
+        audioButton?.isEnabled = false //We were previously hiding it. We do not want to do that as VoiceOver may/may not lose focus of the element
         middleBigTextView.isHidden = true
         appleWatchImageView.isHidden = false
         scrollMCLabel.isHidden = false
@@ -115,10 +115,10 @@ class MCReaderButtonsViewController : UIViewController {
         morseCodeLabel?.textColor = .none
         autoplayButton?.setTitle("Stop Autoplay", for: .normal)
         autoplayButton?.setTitleColor(UIColor.red, for: .normal)
-        audioButton?.isHidden = UIAccessibility.isVoiceOverRunning == false ? true : false
         if UIAccessibility.isVoiceOverRunning {
             audioButton?.setTitle(isAudioRequestedByUser == false ? "Play Audio" : "Stop Audio", for: .normal)
-                    audioButton?.setTitleColor(isAudioRequestedByUser == false ? UIColor.blue : UIColor.red, for: .normal)
+            audioButton?.setTitleColor(isAudioRequestedByUser == false ? UIColor.blue : UIColor.red, for: .normal)
+            audioButton?.isEnabled = true
         }
         appleWatchImageView.isHidden = true
         scrollMCLabel.isHidden = true
@@ -165,6 +165,12 @@ class MCReaderButtonsViewController : UIViewController {
         if siriShortcut != nil { addSiriButton(shortcutForButton: siriShortcut!, to: middleStackView) }
         alphanumericStringIndex = -1
         morseCodeStringIndex = -1
+        audioButton?.setTitleColor(.gray, for: .disabled)
+        audioButton?.isHidden = UIAccessibility.isVoiceOverRunning == false ? true : false
+        audioButton?.titleLabel?.numberOfLines = 0
+        audioButton?.titleLabel?.textAlignment = .center
+        audioButton?.setTitle("Play Audio.\nEnabled when autoplay is ON", for: .disabled)
+        audioButton?.isEnabled = false
         morseCodeAutoPlay(direction: "right")
         //setUpButtonScalable(button: autoplayButton, title: isAutoPlayOn == true ? "Stop Autoplay" : "Autoplay")
     }

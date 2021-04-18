@@ -306,17 +306,17 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8d-Ez-seD">
-                                                <rect key="frame" x="114.5" y="63" width="59" height="36"/>
+                                                <rect key="frame" x="105.5" y="63" width="77" height="36"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                                <state key="normal" title="Button"/>
+                                                <state key="normal" title="Autoplay"/>
                                                 <connections>
                                                     <action selector="autoplayButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="xtM-4V-HWo"/>
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lv9-9I-e76">
-                                                <rect key="frame" x="114.5" y="99" width="59" height="0.0"/>
+                                                <rect key="frame" x="98" y="99" width="92" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                <state key="normal" title="Button"/>
+                                                <state key="normal" title="Play Audio"/>
                                                 <connections>
                                                     <action selector="audioButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="ZVJ-Y3-Wyt"/>
                                                 </connections>
