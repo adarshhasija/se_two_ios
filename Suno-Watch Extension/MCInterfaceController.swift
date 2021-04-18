@@ -314,7 +314,7 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 var message : [String : Any] = [:]
                 message["request_morse_code"] = true
-                message["mode"] = Action.CAMERA_OCR.rawValue
+                message["mode"] = mode
                 // In your WatchKit extension, the value of this property is true when the paired iPhone is reachable via Bluetooth.
                 session.sendMessage(message, replyHandler: nil, errorHandler: nil)
             }
@@ -491,6 +491,14 @@ class MCInterfaceController : WKInterfaceController {
         self.crownSequencer.focus()
         self.instructionsLabel?.setTextColor(UIColor.gray)
         isScreenActive = true
+        
+        //Incase the user lowers his/her wrist and lifts it again
+        //Then the screen will go OFF and ON
+        if (mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue)
+            && englishString.isEmpty == true
+            && morseCodeString.isEmpty == true {
+            downSwipe(1)
+        }
     }
     
     
