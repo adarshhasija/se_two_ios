@@ -23,9 +23,10 @@ class ActionsTableViewController : UITableViewController {
         
         actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
         actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
+        actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
         actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
-        actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
+        
         
         
     }
@@ -122,7 +123,7 @@ class ActionsTableViewController : UITableViewController {
     
     private func openMorseCodeReadingScreen(alphanumericString : String?, inputAction: Action) {
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
-        guard let mcReaderButtonsViewController = (UIApplication.shared.delegate as? AppDelegate)?.getMorseCodeReadingScreen(alphanumericString: alphanumericString, inputAction: inputAction) else { return }
+        guard let mcReaderButtonsViewController = (UIApplication.shared.delegate as? AppDelegate)?.getMorseCodeReadingScreen(inputAction: inputAction, alphanumericString: alphanumericString) else { return }
         self.navigationController?.pushViewController(mcReaderButtonsViewController, animated: true)
     }
 }

@@ -95,5 +95,18 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
         }
         return params
     }
+    
+    func getBatteryLevelCustomInputs() -> [String:Any] {
+        WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
+        let level = Int(WKInterfaceDevice.current().batteryLevel * 100) //int as we do not decimal
+        WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
+        let levelString = String(level)
+        let dotsDashesExplanations = LibraryCustomActions.getBatteryLevelInDotsDashes(batteryLevel: level)
+        return [
+            SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue: levelString,
+            SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue: dotsDashesExplanations["morse_code"],
+            SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue: dotsDashesExplanations["instructions"]
+        ]
+    }
 
 }

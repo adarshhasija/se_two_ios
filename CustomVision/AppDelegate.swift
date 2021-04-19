@@ -45,13 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         else {
             var inputAlphanumeric : String? = nil
-            if action == Action.BATTERY_LEVEL {
-                UIDevice.current.isBatteryMonitoringEnabled = true
-                let level = String(Int(UIDevice.current.batteryLevel * 100)) //int as we do not decimal
-                UIDevice.current.isBatteryMonitoringEnabled = false
-                inputAlphanumeric = level
-            }
-            let mcReaderViewController = getMorseCodeReadingScreen(alphanumericString: inputAlphanumeric, inputAction: action)
+            let mcReaderViewController = getMorseCodeReadingScreen(inputAction: action, alphanumericString: inputAlphanumeric)
             navigationController.pushViewController(mcReaderViewController, animated: true)
         }
         
@@ -120,11 +114,11 @@ extension AppDelegate : WCSessionDelegate {
         }
     }
     
-    func getMorseCodeReadingScreen(alphanumericString : String?, inputAction: Action) -> MCReaderButtonsViewController {
+    func getMorseCodeReadingScreen(inputAction: Action, alphanumericString : String?) -> MCReaderButtonsViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
         mcReaderButtonsViewController.siriShortcut = inputAction == Action.CAMERA_OCR ? nil : SiriShortcut.shortcutsDictionary[inputAction] //If its not BATTERY_LEVEL, its CAMERA_OCR. In this case we dont want to get the siri shortcut as the Add to Siri button should not appear on the reader screen
-        let customInputs = SiriShortcut.getCustomInputs(action: Action(rawValue: inputAction.rawValue) ?? Action.UNKNOWN)
+        let customInputs = inputAction == Action.BATTERY_LEVEL ? getBatteryLevelCustomInputs() : SiriShortcut.getCustomInputs(action: Action(rawValue: inputAction.rawValue) ?? Action.UNKNOWN)
         mcReaderButtonsViewController.inputMode = inputAction
         if customInputs.isEmpty == false {
             mcReaderButtonsViewController.inputAlphanumeric = customInputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue]! as? String
@@ -138,5 +132,19 @@ extension AppDelegate : WCSessionDelegate {
         }
         
         return mcReaderButtonsViewController
+    }
+    
+    //Have to call it here as UIDevice cannot be access inside LibraryCustomActions or SiriShortcut
+    func getBatteryLevelCustomInputs() -> [String:Any] {
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        let level = Int(UIDevice.current.batteryLevel * 100) //int as we do not decimal
+        UIDevice.current.isBatteryMonitoringEnabled = false
+        let levelString = String(level)
+        let dotsDashesExplanations = LibraryCustomActions.getBatteryLevelInDotsDashes(batteryLevel: level)
+        return [
+            SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue: levelString,
+            SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue: dotsDashesExplanations["morse_code"],
+            SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue: dotsDashesExplanations["instructions"]
+        ]
     }
 }

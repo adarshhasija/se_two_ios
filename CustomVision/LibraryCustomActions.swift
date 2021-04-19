@@ -127,25 +127,47 @@ class LibraryCustomActions {
             ]
     }
     
-    static func getIntegerInDotsAndDashes(integer: Int) -> String {
-        let dashes : Int = integer/5
-        let dots : Int = integer - (dashes*5)
+    static func getBatteryLevelInDotsDashes(batteryLevel : Int) -> [String:Any] {
+        let dashes : Int = batteryLevel/5
+        let dots : Int = batteryLevel - (dashes*5)
         var finalMorseCodeString = ""
         var finalInstructionStringArray : [String] = []
         var i = 0
         while (i < dashes) {
             finalMorseCodeString = finalMorseCodeString + "-"
-            finalInstructionStringArray.append("+5")
+            finalInstructionStringArray.append("+5 %")
             i = i + 1
         }
         i = 0
         while (i < dots) {
             finalMorseCodeString = finalMorseCodeString + "."
-            finalInstructionStringArray.append("+1")
+            finalInstructionStringArray.append("+1 %")
             i = i + 1
         }
-        //finalMorseCodeString = finalMorseCodeString + "|"
-        finalInstructionStringArray.append("= " + String(integer))
+        finalMorseCodeString = finalMorseCodeString + "|"
+        finalInstructionStringArray.append("= " + String(batteryLevel) + "%")
+        return
+            [
+                "morse_code" : finalMorseCodeString,
+                "instructions" : finalInstructionStringArray
+            ]
+    }
+    
+    static func getIntegerInDotsAndDashes(integer: Int) -> String {
+        let dashes : Int = integer/5
+        let dots : Int = integer - (dashes*5)
+        var finalMorseCodeString = ""
+        var finalInstructionStringArray : [String] = [] //Not needed right now but keeping for future
+        var i = 0
+        while (i < dashes) {
+            finalMorseCodeString = finalMorseCodeString + "-"
+            i = i + 1
+        }
+        i = 0
+        while (i < dots) {
+            finalMorseCodeString = finalMorseCodeString + "."
+            i = i + 1
+        }
         return finalMorseCodeString
     }
     

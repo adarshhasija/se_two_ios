@@ -166,15 +166,19 @@ class MCInterfaceController : WKInterfaceController {
                 SiriShortcut.createINShortcutAndAddToSiriWatchFace(siriShortcut: siriShortcut) //Return value is used for Add To Siri button, which does not apply to watchOS at the moment
                 //(WKExtension.shared().delegate as? ExtensionDelegate)?.setRelevantShortcuts(newShortcuts: relevantShortcuts)
             }
-            let customInputs = SiriShortcut.getCustomInputs(action: Action(rawValue: action) ?? Action.UNKNOWN)
-            englishString = customInputs[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
+            let customInputs = action == Action.BATTERY_LEVEL.rawValue ?
+                (WKExtension.shared().delegate as? ExtensionDelegate)?.getBatteryLevelCustomInputs() :
+                SiriShortcut.getCustomInputs(action: Action(rawValue: action) ?? Action.UNKNOWN)
+            englishString = customInputs?[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
             englishTextLabel.setText(englishString)
             englishTextLabel.setHidden(false)
-            morseCodeString = customInputs[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String ?? ""
+            morseCodeString = customInputs?[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String ?? ""
             morseCodeTextLabel.setText(morseCodeString)
-            explanationArray.append(contentsOf:  customInputs[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
+            explanationArray.append(contentsOf:  customInputs?[SiriShortcut.INPUT_FIELDS.input_mc_explanation.rawValue] as? [String] ?? []
             )
-            if action == "TIME" || action == "DATE" {
+            if action == Action.TIME.rawValue
+                || action == Action.DATE.rawValue
+                || action == Action.BATTERY_LEVEL.rawValue {
                 isUserTyping = false
                 morseCodeAutoPlay(direction: "down") //If it does not have a dependency on iPhone, it can autoplay by default
             }
@@ -446,15 +450,7 @@ class MCInterfaceController : WKInterfaceController {
                 //these modes get data from connected iOS device
                 downSwipe(1) //just a dummy parameter
             }
-            else if mode == Action.MANUAL.rawValue
-                        || mode == Action.BATTERY_LEVEL.rawValue {
-                
-                if mode == Action.BATTERY_LEVEL.rawValue {
-                    if let siriShortcut = SiriShortcut.shortcutsDictionary[Action.BATTERY_LEVEL] {
-                        SiriShortcut.createINShortcutAndAddToSiriWatchFace(siriShortcut: siriShortcut) //Return value is used for Add To Siri button on iOS. Does not apply here for now
-                        //(WKExtension.shared().delegate as? ExtensionDelegate)?.setRelevantShortcuts(newShortcuts: relevantShortcuts)
-                    }
-                }
+            else if mode == Action.MANUAL.rawValue {
                 self.englishString = dictionary!["alphanumeric"] as? String ?? ""
                 self.englishTextLabel.setText(self.englishString)
                 self.englishTextLabel.setHidden(false)
@@ -1130,7 +1126,7 @@ extension MCInterfaceController {
                     "state" : "index_alpha_change",
                     "is_reading" : self.isReading()
                 ])
-                if (mode != "TIME" && mode != "DATE") || isNormalMorse == true {
+                if (mode != Action.TIME.rawValue && mode != Action.DATE.rawValue && mode != Action.BATTERY_LEVEL.rawValue) || isNormalMorse == true {
                     //Its morse code, not a custom pattern. So we want to highlight alphanumerics
                     setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
                 }
