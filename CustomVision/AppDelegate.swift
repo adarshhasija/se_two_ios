@@ -139,7 +139,7 @@ extension AppDelegate : WCSessionDelegate {
         UIDevice.current.isBatteryMonitoringEnabled = true
         let level = Int(UIDevice.current.batteryLevel * 100) //int as we do not decimal
         UIDevice.current.isBatteryMonitoringEnabled = false
-        let levelString = String(level)
+        let levelString = String(level) + "%"
         let dotsDashesExplanations = LibraryCustomActions.getBatteryLevelInDotsDashes(batteryLevel: level)
         return [
             SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue: levelString,

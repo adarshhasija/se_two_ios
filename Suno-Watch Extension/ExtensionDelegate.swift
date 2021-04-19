@@ -100,7 +100,7 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
         WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
         let level = Int(WKInterfaceDevice.current().batteryLevel * 100) //int as we do not decimal
         WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
-        let levelString = String(level)
+        let levelString = String(level) + "%"
         let dotsDashesExplanations = LibraryCustomActions.getBatteryLevelInDotsDashes(batteryLevel: level)
         return [
             SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue: levelString,

@@ -135,17 +135,17 @@ class LibraryCustomActions {
         var i = 0
         while (i < dashes) {
             finalMorseCodeString = finalMorseCodeString + "-"
-            finalInstructionStringArray.append("+5 %")
+            finalInstructionStringArray.append("+5")
             i = i + 1
         }
         i = 0
         while (i < dots) {
             finalMorseCodeString = finalMorseCodeString + "."
-            finalInstructionStringArray.append("+1 %")
+            finalInstructionStringArray.append("+1")
             i = i + 1
         }
         finalMorseCodeString = finalMorseCodeString + "|"
-        finalInstructionStringArray.append("= " + String(batteryLevel) + "%")
+        finalInstructionStringArray.append(String(batteryLevel) + "%") //Not using = as it takes too long for VoiceOver to say
         return
             [
                 "morse_code" : finalMorseCodeString,
