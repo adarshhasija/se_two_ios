@@ -24,7 +24,7 @@ class ActionsListController : WKInterfaceController {
         actionsList.append(ActionsCell(action: "Battery Level", explanation: "Of this watch as a percentage", cellType: Action.BATTERY_LEVEL))
         actionsList.append(ActionsCell(action: "Manual", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", explanation: "Get the text that was captured by the iPhone camera", cellType: Action.CAMERA_OCR))
-        
+        actionsList.append(ActionsCell(action: "Heart Rate(BPM)", explanation: "This will start a workout session", cellType: Action.HEART_RATE))
         
         actionsListTable.setNumberOfRows(actionsList.count, withRowType: "ActionRow")
         for index in 0...actionsList.count-1 {
@@ -53,6 +53,10 @@ extension ActionsListController {
     func selectedAction(action : String) {
         if action == Action.MANUAL.rawValue {
             pushManualTypingController()
+        }
+        else if action == Action.HEART_RATE.rawValue {
+            var params : [String:Any] = [:]
+            pushController(withName: "HRCalculatorController", context: params)
         }
         else {
             let params = (WKExtension.shared().delegate as? ExtensionDelegate)?.getParamsForMCInterfaceController(action: Action(rawValue: action) ?? Action.UNKNOWN)

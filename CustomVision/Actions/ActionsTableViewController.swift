@@ -28,7 +28,6 @@ class ActionsTableViewController : UITableViewController {
         actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
         
         
-        
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

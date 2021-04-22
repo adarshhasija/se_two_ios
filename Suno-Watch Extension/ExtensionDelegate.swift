@@ -12,6 +12,8 @@ import Intents
 
 class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     
+    var workoutManager: WorkoutManager? = nil
+    
     /// MARK:- WCSessionDelegate
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
     }

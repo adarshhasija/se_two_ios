@@ -450,7 +450,8 @@ class MCInterfaceController : WKInterfaceController {
                 //these modes get data from connected iOS device
                 downSwipe(1) //just a dummy parameter
             }
-            else if mode == Action.MANUAL.rawValue {
+            else if mode == Action.MANUAL.rawValue
+                        || mode == Action.HEART_RATE.rawValue {
                 self.englishString = dictionary!["alphanumeric"] as? String ?? ""
                 self.englishTextLabel.setText(self.englishString)
                 self.englishTextLabel.setHidden(false)

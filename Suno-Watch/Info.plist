@@ -26,6 +26,7 @@
 		<string>com.starsearth.three.getDateDayOfWeekIntent</string>
 		<string>com.starsearth.three.getCameraIntent</string>
 		<string>com.starsearth.three.getBatteryLevelIntent</string>
+		<string>com.starsearth.three.getHeartRateIntent</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

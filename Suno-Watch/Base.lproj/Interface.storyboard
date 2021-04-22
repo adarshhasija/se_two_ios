@@ -173,6 +173,28 @@
             </objects>
             <point key="canvasLocation" x="34" y="741"/>
         </scene>
+        <!--HRCalculatorController-->
+        <scene sceneID="PWx-Mj-VWd">
+            <objects>
+                <controller identifier="HRCalculatorController" id="JVz-Dn-u3m" customClass="HRCalculatorController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <label alignment="left" text="Showing permissions screen. You will need to allow READ and WRITE permissions to use this feature." textAlignment="left" numberOfLines="0" id="ZCF-2M-YE2">
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                        <button width="1" alignment="left" hidden="YES" title="Button" id="Wof-Na-I1x">
+                            <connections>
+                                <action selector="buttonTapped" destination="JVz-Dn-u3m" id="5gh-kd-BV5"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="button" destination="Wof-Na-I1x" id="1jX-UF-eik"/>
+                        <outlet property="label" destination="ZCF-2M-YE2" id="v57-Xn-dyj"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="34" y="1066"/>
+        </scene>
         <!--Dictionary-->
         <scene sceneID="oSs-BH-Sas">
             <objects>
