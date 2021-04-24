@@ -93,7 +93,7 @@ class MCInterfaceController : WKInterfaceController {
             return
         }
         
-        if mode == "chat" && morseCodeString.count > 0 {
+        if mode == Action.CHAT.rawValue && morseCodeString.count > 0 {
             if morseCodeString.last == "|" {
                 
                 let mathResult = performMathCalculation(inputString: englishString) //NSExpression(format:englishString).expressionValue(with: nil, context: nil) as? Int //This wont work if the string also contains alphabets
@@ -192,9 +192,9 @@ class MCInterfaceController : WKInterfaceController {
                 englishTextLabel.setText("")
                 morseCodeString = ""
                 morseCodeTextLabel.setText("")
-                instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
+                instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
                 let params = [
-                    "mode" : "chat"
+                    "mode" : Action.CHAT.rawValue
                 ]
                 pushController(withName: "MCInterfaceController", context: params)
             }
@@ -224,12 +224,12 @@ class MCInterfaceController : WKInterfaceController {
             sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
                 "state" : "reading"
                 ])
-            mainImage.setHidden(mode == "chat" ? true : false)
+            mainImage.setHidden(mode == Action.CHAT.rawValue ? true : false)
             englishString = ""
             englishTextLabel.setText("")
             morseCodeString = ""
             morseCodeTextLabel.setText("")
-            instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
+            instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
             WKInterfaceDevice.current().play(.success)
             return
         }
@@ -278,8 +278,8 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
-            mainImage.setHidden(mode == "chat" ? true : false)
-            instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
+            mainImage.setHidden(mode == Action.CHAT.rawValue ? true : false)
+            instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
         }
     }
     
@@ -400,21 +400,6 @@ class MCInterfaceController : WKInterfaceController {
         if dictionary != nil {
             mode = dictionary!["mode"] as? String
         }
-        instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
-        if alphabetToMcDictionary.count < 1 {
-            //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
-            morseCode = MorseCode(operatingSystem: "watchOS")
-            for morseCodeCell in morseCode.mcArray {
-                if morseCodeCell.morseCode == "......." {
-                    //space
-                    alphabetToMcDictionary[" "] = morseCodeCell.morseCode
-                }
-                else {
-                    alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
-                }
-                
-            }
-        }
         
         //UserDefaults.standard.removeObject(forKey: "SE3_WATCHOS_USER_TYPE")
       /*  let se3UserType = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
@@ -431,7 +416,7 @@ class MCInterfaceController : WKInterfaceController {
             instructionsLabel.setText(defaultInstructions)
         }   */
         
-        if mode == "chat" {
+        if mode == Action.CHAT.rawValue {
             mainImage.setHidden(true)
             if let talkTypeImage = UIImage(systemName: "pencil") {
                 addMenuItem(with: talkTypeImage, title: "Talk/Type", action: #selector(tappedTalkType))
@@ -470,6 +455,23 @@ class MCInterfaceController : WKInterfaceController {
                 self.defaultInstructions = dcScrollStart
                 self.instructionsLabel.setText(self.defaultInstructions)
                 morseCodeAutoPlay(direction: "down")
+            }
+            else if mode == Action.CHAT.rawValue {
+                instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
+                if alphabetToMcDictionary.count < 1 {
+                    //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
+                    morseCode = MorseCode(operatingSystem: "watchOS")
+                    for morseCodeCell in morseCode.mcArray {
+                        if morseCodeCell.morseCode == "......." {
+                            //space
+                            alphabetToMcDictionary[" "] = morseCodeCell.morseCode
+                        }
+                        else {
+                            alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
+                        }
+                        
+                    }
+                }
             }
             else {
                 //Only applies if it is TIME or DATE for now
@@ -804,14 +806,14 @@ extension MCInterfaceController {
         var recommendations = ""
         if morseCode.mcTreeNode?.alphabet != nil || morseCode.mcTreeNode?.action != nil {
             //welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
-            if mode == "chat" && morseCode.mcTreeNode?.alphabet != nil {
+            if mode == Action.CHAT.rawValue && morseCode.mcTreeNode?.alphabet != nil {
                 recommendations += "Swipe up to set: " + morseCode.mcTreeNode!.alphabet! + "\n"
             }
             else if morseCode.mcTreeNode?.action != nil {
                 recommendations += "Swipe up to get: " + morseCode.mcTreeNode!.action! + "\n"
             }
         }
-        let nextCharMatches = mode == "chat" ? morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode) : morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
+        let nextCharMatches = mode == Action.CHAT.rawValue ? morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode) : morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
         for nextMatch in nextCharMatches {
             recommendations += "\n" + nextMatch
         }

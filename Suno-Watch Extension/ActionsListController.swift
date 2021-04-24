@@ -24,6 +24,7 @@ class ActionsListController : WKInterfaceController {
         actionsList.append(ActionsCell(action: "Battery Level", explanation: "Of this watch as a percentage", cellType: Action.BATTERY_LEVEL))
         actionsList.append(ActionsCell(action: "Manual", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", explanation: "Get the text that was captured by the iPhone camera", cellType: Action.CAMERA_OCR))
+        actionsList.append(ActionsCell(action: "Morse Code", explanation: "A mode of typing for deaf-blind", cellType: Action.CHAT))
         
         
         actionsListTable.setNumberOfRows(actionsList.count, withRowType: "ActionRow")

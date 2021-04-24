@@ -22,6 +22,7 @@ enum Action :String{
     case DATE
     case MANUAL
     case BATTERY_LEVEL
+    case CHAT //morse code tyoing mode
     case GET_IOS //Used by the watch to get morse code from iPhone
     //
     
