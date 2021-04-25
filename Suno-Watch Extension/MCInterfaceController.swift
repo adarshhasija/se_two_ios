@@ -138,10 +138,10 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeString += "|"
                 morseCodeTextLabel.setText(morseCodeString)
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
-                instructionsLabel.setText("Keep Typing\nor\nDouble tap screen to play audio. Ensure your watch is not on Silent Mode.")
                 while morseCode.mcTreeNode?.parent != nil {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
+                instructionsLabel.setText("Character " + letterOrNumber + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
             }
             else {
                 sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
@@ -266,6 +266,7 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 englishTextLabel.setText(englishString)
                 WKInterfaceDevice.current().play(.success)
+                isAlphabetReached(input: "b") //backspace
             }
         }
         else {
@@ -821,6 +822,11 @@ extension MCInterfaceController {
             if morseCode.mcTreeNode?.parent != nil {
                 morseCode.mcTreeNode = morseCode.mcTreeNode?.parent
                 setRecommendedActionsText()
+            }
+            if morseCodeString.last == "|",
+               let lastAlphanumeric = englishString.last {
+                //Overwrite the instructions label. We do not wannt to show recommended characters if the last char was a pipe(|)
+                instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
             }
         }
     }
