@@ -71,27 +71,27 @@
                                 </button>
                             </items>
                             <gestureRecognizers>
-                                <longPressGestureRecognizer minimumPressDuration="0.20000000000000001" id="H2U-j5-DN5">
+                                <longPressGestureRecognizer enabled="NO" minimumPressDuration="0.20000000000000001" id="H2U-j5-DN5">
                                     <connections>
                                         <action selector="longPress:" destination="V63-br-2PY" id="s4l-7h-nUL"/>
                                     </connections>
                                 </longPressGestureRecognizer>
-                                <tapGestureRecognizer id="fBy-or-tNT">
+                                <tapGestureRecognizer enabled="NO" id="fBy-or-tNT">
                                     <connections>
                                         <action selector="tapGesture:" destination="V63-br-2PY" id="AGg-0C-KSD"/>
                                     </connections>
                                 </tapGestureRecognizer>
-                                <swipeGestureRecognizer id="nao-cR-r9t">
+                                <swipeGestureRecognizer enabled="NO" id="nao-cR-r9t">
                                     <connections>
                                         <action selector="rightSwipe:" destination="V63-br-2PY" id="r9g-YC-Dzy"/>
                                     </connections>
                                 </swipeGestureRecognizer>
-                                <swipeGestureRecognizer direction="4" id="Y1D-dn-sPp">
+                                <swipeGestureRecognizer enabled="NO" direction="4" id="Y1D-dn-sPp">
                                     <connections>
                                         <action selector="upSwipe:" destination="V63-br-2PY" id="ahC-HR-HsF"/>
                                     </connections>
                                 </swipeGestureRecognizer>
-                                <swipeGestureRecognizer direction="2" id="vAZ-9w-GqS">
+                                <swipeGestureRecognizer enabled="NO" direction="2" id="vAZ-9w-GqS">
                                     <connections>
                                         <action selector="leftSwipe:" destination="V63-br-2PY" id="4ee-gt-HEk"/>
                                     </connections>
@@ -101,6 +101,11 @@
                                         <action selector="downSwipe:" destination="V63-br-2PY" id="8eP-fq-tiL"/>
                                     </connections>
                                 </swipeGestureRecognizer>
+                                <tapGestureRecognizer numberOfTapsRequired="2" id="eFm-Vk-hM5" userLabel="Double Tap Gesture Recognizer">
+                                    <connections>
+                                        <action selector="doubleTapGesture:" destination="V63-br-2PY" id="lNV-7v-bfG"/>
+                                    </connections>
+                                </tapGestureRecognizer>
                             </gestureRecognizers>
                         </group>
                     </items>

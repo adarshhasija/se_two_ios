@@ -58,17 +58,23 @@ class MCInterfaceController : WKInterfaceController {
         pushController(withName: "DictionaryDetail", context: params)
     }
     
+    //Disabled in storyboard. Do not want to assign things to tap gesture. Accidental taps are possible
     @IBAction func tapGesture(_ sender: Any) {
         sendAnalytics(eventName: "se3_watch_tap", parameters: [:])
         morseCodeInput(input: ".")
     }
     
+    @IBAction func doubleTapGesture(_ sender: Any) {
+        upSwipe(1)
+    }
+    
+    //Disabled in storyboard. Swipes gestures are tough in VoiceOver
     @IBAction func rightSwipe(_ sender: Any) {
         //sendAnalytics(eventName: "se3_watch_swipe_right", parameters: [:])
         //morseCodeInput(input: "-")
     }
     
-    
+    //Disabled in storyboard. Swipe gestures are tough in VoiceOver
     @IBAction func upSwipe(_ sender: Any) {
         if isAutoPlayOn == true {
             //Swipe up cannot interrupt Autoplay
@@ -208,7 +214,7 @@ class MCInterfaceController : WKInterfaceController {
         }
     }
     
-    
+    //Disabled in storyboard. Swipe gestures are tough in VoiceOver
     @IBAction func leftSwipe(_ sender: Any) {
      /*   if isAutoPlayOn == true {
             isAutoPlayOn = false //All reformatting will be done in autoplay timer
@@ -283,7 +289,7 @@ class MCInterfaceController : WKInterfaceController {
         }
     }
     
-    //Disabled in the storyboard. Re-enable if down swipe is required
+    //Disabled in storyboard. Swipe gestures are tough in VoiceOver
     @IBAction func downSwipe(_ sender: Any) {
         //Swipe down to get text from the iPhone. We designed this in case user cannot read morse code on an older iPhone and wanted to transfer it to the watch.
         //Not using this functionality right now. We found a way to play haptics on older iPhones (6, 6S) using system vibrations
@@ -339,6 +345,7 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     //Original minDuration = 0.5
+    //Disabled in storyboard. Can cause confusion between long press and force press. Long Press is also tough with VoiceOver
     @IBAction func longPress(_ sender: WKLongPressGestureRecognizer) {
         if sender.state == .ended {
             sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
@@ -457,6 +464,7 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeAutoPlay(direction: "down")
             }
             else if mode == Action.CHAT.rawValue {
+                isUserTyping = true
                 instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
                 if alphabetToMcDictionary.count < 1 {
                     //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
@@ -566,26 +574,53 @@ extension MCInterfaceController : WKCrownDelegate {
             let endTime = DispatchTime.now()
             let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
             if diffNanos <= quickScrollTimeThreshold {
-                sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
-                WKInterfaceDevice.current().play(.success)
-                morseCodeAutoPlay(direction: "down")
-                startTimeNanos = 0
+                if isUserTyping == false {
+                    //We are in reading mode
+                    sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
+                    WKInterfaceDevice.current().play(.success)
+                    morseCodeAutoPlay(direction: "down")
+                    startTimeNanos = 0
+                }
+                else {
+                    //We are in typing mode.
+                    //This is a quick rotation
+                    //Insert a dash (-)
+                    if morseCodeString.last == "." {
+                        //Dot was enntered on the first rotation.
+                        //Need to remove the dot first
+                        morseCodeString.removeLast()
+                        morseCodeTextLabel?.setText(morseCodeString)
+                    }
+                    //Enter a dash(-)
+                    morseCodeInput(input: "-") //dummy parameter. Need to send something
+                }
             }
             else {
                 startTimeNanos = DispatchTime.now().uptimeNanoseconds //Update this so we can do a check on the next rotation
-                digitalCrownRotated(direction: "down")
+                if isUserTyping == false {
+                    digitalCrownRotated(direction: "down")
+                }
+                else {
+                    //A single scroll down means type a dot
+                    tapGesture(1)
+                }
             }
         }
         else if crownRotationalDelta > expectedMoveDelta {
             //upward scroll
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
-            if isAutoPlayOn == true {
+            if isUserTyping == true {
+                //If we are in typing mode, an up swipe becomes a delete
+                leftSwipe(1) //Dummy parameter
+            }
+            else if isAutoPlayOn == true {
                 WKInterfaceDevice.current().play(.success)
                 stopAutoPlay()
                 return
             }
             else {
+                //Autoplay is off, scroll to read last character
                 digitalCrownRotated(direction: "up")
             }
         }
@@ -1031,7 +1066,6 @@ extension MCInterfaceController {
                     //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
                     instructionsLabel?.setText(dcScrollStart)
                     resetBigText()
-                    //aboutButton?.setHidden(mode == "TIME" || mode == "DATE" ? false : true)
         isAutoPlayOn = false
     }
     
@@ -1042,10 +1076,6 @@ extension MCInterfaceController {
         morseCodeTextLabel.setText(morseCodeString)
         instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" :
                                     "Resetting, please wait...")
-        if mode == "TIME" || mode == "DATE" {
-            //It means About button is visible
-            aboutButton?.setHidden(true)
-        }
         
         let dictionary = [
             "direction" : direction
