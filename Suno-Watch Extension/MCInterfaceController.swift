@@ -92,7 +92,7 @@ class MCInterfaceController : WKInterfaceController {
             return
         }
         
-        if mode == Action.CHAT.rawValue && morseCodeString.count > 0 {
+        if mode == Action.MC_TYPING.rawValue && morseCodeString.count > 0 {
             if morseCodeString.last == "|" {
                 
                 let mathResult = performMathCalculation(inputString: englishString) //NSExpression(format:englishString).expressionValue(with: nil, context: nil) as? Int //This wont work if the string also contains alphabets
@@ -138,7 +138,7 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeString += "|"
                 morseCodeTextLabel.setText(morseCodeString)
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
-                instructionsLabel.setText("Keep Typing\nor\nSwipe up again to play audio. Ensure your watch is not on Silent Mode.")
+                instructionsLabel.setText("Keep Typing\nor\nDouble tap screen to play audio. Ensure your watch is not on Silent Mode.")
                 while morseCode.mcTreeNode?.parent != nil {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
@@ -193,7 +193,7 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeTextLabel.setText("")
                 instructionsLabel.setText(defaultInstructions)
                 let params = [
-                    "mode" : Action.CHAT.rawValue
+                    "mode" : Action.MC_TYPING.rawValue
                 ]
                 pushController(withName: "MCInterfaceController", context: params)
             }
@@ -223,7 +223,7 @@ class MCInterfaceController : WKInterfaceController {
             sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
                 "state" : "reading"
                 ])
-            mainImage.setHidden(mode == Action.CHAT.rawValue ? true : false)
+            mainImage.setHidden(mode == Action.MC_TYPING.rawValue ? true : false)
             englishString = ""
             englishTextLabel.setText("")
             morseCodeString = ""
@@ -277,7 +277,7 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
-            mainImage.setHidden(mode == Action.CHAT.rawValue ? true : false)
+            mainImage.setHidden(mode == Action.MC_TYPING.rawValue ? true : false)
             instructionsLabel.setText(defaultInstructions)
         }
     }
@@ -416,7 +416,7 @@ class MCInterfaceController : WKInterfaceController {
             instructionsLabel.setText(defaultInstructions)
         }   */
         
-        if mode == Action.CHAT.rawValue {
+        if mode == Action.MC_TYPING.rawValue {
             mainImage.setHidden(true)
             if let talkTypeImage = UIImage(systemName: "pencil") {
                 addMenuItem(with: talkTypeImage, title: "Talk/Type", action: #selector(tappedTalkType))
@@ -456,7 +456,7 @@ class MCInterfaceController : WKInterfaceController {
                 self.instructionsLabel.setText(self.defaultInstructions)
                 morseCodeAutoPlay(direction: "down")
             }
-            else if mode == Action.CHAT.rawValue {
+            else if mode == Action.MC_TYPING.rawValue {
                 isUserTyping = true
                 defaultInstructions = mcTypingInstructions
                 instructionsLabel.setText(defaultInstructions)
@@ -581,9 +581,8 @@ extension MCInterfaceController : WKCrownDelegate {
                     //Insert a dash (-)
                     if morseCodeString.last == "." {
                         //Dot was enntered on the first rotation.
-                        //Need to remove the dot first
-                        morseCodeString.removeLast()
-                        morseCodeTextLabel?.setText(morseCodeString)
+                        //Need to delete the dot first
+                        leftSwipe(1)
                     }
                     //Enter a dash(-)
                     morseCodeInput(input: "-") //dummy parameter. Need to send something
@@ -835,14 +834,14 @@ extension MCInterfaceController {
         var recommendations = ""
         if morseCode.mcTreeNode?.alphabet != nil || morseCode.mcTreeNode?.action != nil {
             //welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
-            if mode == Action.CHAT.rawValue && morseCode.mcTreeNode?.alphabet != nil {
+            if mode == Action.MC_TYPING.rawValue && morseCode.mcTreeNode?.alphabet != nil {
                 recommendations += "Double tap screen to confirm: " + morseCode.mcTreeNode!.alphabet! + "\n"
             }
             else if morseCode.mcTreeNode?.action != nil {
                 recommendations += "Double tap screen to confirm: " + morseCode.mcTreeNode!.action! + "\n"
             }
         }
-        let nextCharMatches = mode == Action.CHAT.rawValue ? morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode) : morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
+        let nextCharMatches = mode == Action.MC_TYPING.rawValue ? morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode) : morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
         for nextMatch in nextCharMatches {
             recommendations += "\n" + nextMatch
         }

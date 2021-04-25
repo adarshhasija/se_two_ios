@@ -27,11 +27,16 @@ class MCDictionaryDetailViewController : UIViewController {
         
         //Ignoring the settings in storyboard for font. Setting them here
         titleLabel.font = UIFont.preferredFont(forTextStyle: .body).bold() //Not doing it in storyboard as we cannot add BOLD to textStyle. Overriding storyboard for the titles here
-        aboutLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        blindLabel.font = UIFont.preferredFont(forTextStyle: .body).bold()
-        blindInstructionsLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        deafBlindLabel.font = UIFont.preferredFont(forTextStyle: .body).bold()
-        deafBlindInstructionsLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        
+        aboutLabel?.isHidden = true
+        blindLabel?.isHidden = true
+        blindInstructionsLabel?.isHidden = true
+        deafBlindLabel?.isHidden = true
+        //aboutLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        //blindLabel.font = UIFont.preferredFont(forTextStyle: .body).bold()
+        //blindInstructionsLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        //deafBlindLabel.font = UIFont.preferredFont(forTextStyle: .body).bold()
+        //deafBlindInstructionsLabel.font = UIFont.preferredFont(forTextStyle: .body)
         
         titleLabel.text = morseCodeCell?.english
         if morseCodeCell?.english == "TIME" {
@@ -44,7 +49,7 @@ class MCDictionaryDetailViewController : UIViewController {
             aboutLabel.text = "To open the camera and get the text on a door in front of you, you must tap three times and swipe up\n"
         }
         
-        blindInstructionsLabel.text = "After getting the result, tap the screen to play audio\n"
-        deafBlindInstructionsLabel.text = "After getting the result, swipe right with 2 fingers to read the morse code. We will communicate it through vibrations\n\nIf you are comfortable with morse code, you can autoplay the entire morse text text. Quickly swipe right with 2 fingers a few times to activate autoplay mode\n\nDot(.) : 1 vibration\nDash(-) : 1 longer vibration"
+        //blindInstructionsLabel.text = "After getting the result, tap the screen to play audio\n"
+        deafBlindInstructionsLabel.text = "You must rotate the digital crown on the Apple Watch downwards to type out the morse code combination " + (morseCodeCell?.morseCode ?? "") + "\n\nTyping Instructions:\n\nOn the Apple Watch, rotate digital crown:\nDown to type a dot.\nDown quickly to type a dash.\nUpwards to delete last character.\n\nDouble tap the Apple Watch screen to confirm a character."
     }
 }

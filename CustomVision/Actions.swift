@@ -22,7 +22,8 @@ enum Action :String{
     case DATE
     case MANUAL
     case BATTERY_LEVEL
-    case CHAT //morse code tyoing mode
+    case MC_TYPING //watchOS only as deaf-blind can already attach keyboards to iPhone
+    case MC_DICTIONARY
     case GET_IOS //Used by the watch to get morse code from iPhone
     //
     

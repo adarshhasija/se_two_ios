@@ -48,7 +48,7 @@ class MCDictionaryDetailController : WKInterfaceController {
                 }
             }
             else if let morseCodeCell = dictionary!["object"] as? MorseCodeCell {
-                let finalString = "You must rotate the digital crown on the Apple Watch downwards to type out this morse code combination: " + morseCodeCell.morseCode                
+                let finalString = "You must rotate the digital crown downwards to type out this morse code combination: " + morseCodeCell.morseCode + "\n\nTyping Instructions:\n\nRotate digital crown:\nDown to type a dot.\nDown quickly to type a dash.\nUpwards to delete last character.\n\nDouble tap the Apple Watch screen to confirm a character."
                 titleLabel.setText(morseCodeCell.english)
                 aboutLabel.setText(finalString)
                 blindLabel.setHidden(true)
