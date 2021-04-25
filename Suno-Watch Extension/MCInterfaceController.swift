@@ -430,6 +430,23 @@ class MCInterfaceController : WKInterfaceController {
             //addMenuItem(with: WKMenuItemIcon.info, title: "Actions", action: #selector(tappedActionsDictionary))
         }
         
+        //This is needed in multiple modes
+        //eg: MANUAL, MC_TYPING
+        if alphabetToMcDictionary.count < 1 {
+            //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
+            morseCode = MorseCode(operatingSystem: "watchOS")
+            for morseCodeCell in morseCode.mcArray {
+                if morseCodeCell.morseCode == "......." {
+                    //space
+                    alphabetToMcDictionary[" "] = morseCodeCell.morseCode
+                }
+                else {
+                    alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
+                }
+                
+            }
+        }
+        
         if mode != nil {
             if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
                 //these modes get data from connected iOS device
@@ -460,20 +477,6 @@ class MCInterfaceController : WKInterfaceController {
                 isUserTyping = true
                 defaultInstructions = mcTypingInstructions
                 instructionsLabel.setText(defaultInstructions)
-                if alphabetToMcDictionary.count < 1 {
-                    //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
-                    morseCode = MorseCode(operatingSystem: "watchOS")
-                    for morseCodeCell in morseCode.mcArray {
-                        if morseCodeCell.morseCode == "......." {
-                            //space
-                            alphabetToMcDictionary[" "] = morseCodeCell.morseCode
-                        }
-                        else {
-                            alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
-                        }
-                        
-                    }
-                }
             }
             else {
                 //Only applies if it is TIME or DATE for now
