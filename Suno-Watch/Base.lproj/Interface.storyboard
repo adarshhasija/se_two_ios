@@ -64,11 +64,6 @@
                                 <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="ehB-ed-bR5">
                                     <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
                                 </label>
-                                <button width="1" alignment="left" hidden="YES" title="About Vibration Pattern" id="m39-gc-btL">
-                                    <connections>
-                                        <action selector="aboutButtonTapped" destination="V63-br-2PY" id="1Mt-p7-aCu"/>
-                                    </connections>
-                                </button>
                             </items>
                             <gestureRecognizers>
                                 <longPressGestureRecognizer enabled="NO" minimumPressDuration="0.20000000000000001" id="H2U-j5-DN5">
@@ -142,7 +137,6 @@
                         </variation>
                     </menu>
                     <connections>
-                        <outlet property="aboutButton" destination="m39-gc-btL" id="PSc-gC-rms"/>
                         <outlet property="bigTextLabel" destination="wRo-cs-xho" id="ath-ds-hbk"/>
                         <outlet property="bigTextLabel2" destination="ehB-ed-bR5" id="Y8j-xz-qEp"/>
                         <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
@@ -205,7 +199,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="428" y="741"/>
+            <point key="canvasLocation" x="400" y="394"/>
         </scene>
         <!--DictionaryDetail-->
         <scene sceneID="2iw-vT-hFk">
@@ -235,7 +229,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="756" y="741"/>
+            <point key="canvasLocation" x="715" y="394"/>
         </scene>
         <!--FAQs-->
         <scene sceneID="5L1-bC-Dkf">
@@ -263,7 +257,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="428" y="391"/>
+            <point key="canvasLocation" x="428" y="31"/>
         </scene>
     </scenes>
     <resources>

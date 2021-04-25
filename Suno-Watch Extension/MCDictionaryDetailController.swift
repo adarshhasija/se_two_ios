@@ -24,7 +24,7 @@ class MCDictionaryDetailController : WKInterfaceController {
         if dictionary != nil {
             if let action = dictionary!["action"] as? String {
                 titleLabel.setText(action)
-                if action == "TIME" {
+                if action == Action.TIME.rawValue {
                     aboutLabel.setText("We give the time in 12 hour format")
                     blindLabel.setHidden(false)
                     blindInstructionsLabel.setText("After getting the result, tap the screen to play audio")
@@ -34,7 +34,7 @@ class MCDictionaryDetailController : WKInterfaceController {
                     deafBlindInstructionsLabel.setHidden(false)
 
                 }
-                else if action == "DATE" {
+                else if action == Action.DATE.rawValue {
                     aboutLabel.setText("We give you the date and day of the week")
                     blindLabel.setHidden(false)
                     blindInstructionsLabel.setText("After getting the result, tap the screen to play audio")
@@ -48,19 +48,7 @@ class MCDictionaryDetailController : WKInterfaceController {
                 }
             }
             else if let morseCodeCell = dictionary!["object"] as? MorseCodeCell {
-                var finalString = "To type this out you must "
-                for char in morseCodeCell.morseCode {
-                    if char == "." {
-                        finalString += "tap"
-                    }
-                    else if char == "-" {
-                        finalString += "swipe right"
-                    }
-                    
-                    finalString += ","
-                }
-                finalString.removeLast() //Removes the last comma
-                
+                let finalString = "You must rotate the digital crown on the Apple Watch downwards to type out this morse code combination: " + morseCodeCell.morseCode                
                 titleLabel.setText(morseCodeCell.english)
                 aboutLabel.setText(finalString)
                 blindLabel.setHidden(true)

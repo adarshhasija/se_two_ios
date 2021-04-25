@@ -15,7 +15,7 @@ class MCInterfaceController : WKInterfaceController {
     
     var defaultInstructions = ""
     var tapToTypeInstructions = "Tap screen to type a dot"
-    var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Lightly long press to begin typing morse code"
+    var mcTypingInstructions = "Rotate digital crown:\n\nDown to type a dot.\nDown quickly to type a dash.\nUpwards to delete last character."
     var notDeafBlindInstructions = "Force press for reply options"
     var dcScrollStart = "Rotate the digital crown down to feel each character"
     var dcScrollReverse = "Ratate the digital crown up to scroll back"
@@ -42,21 +42,14 @@ class MCInterfaceController : WKInterfaceController {
     var isNormalMorse : Bool? = nil //Some functions, like TIME and DATE, can use customized vibrations and not normal morse code
     var autoPlayTimer : Timer? = nil
     
-    @IBOutlet weak var mainImage: WKInterfaceImage!
+    @IBOutlet weak var mainImage: WKInterfaceImage! //The default 'home' image of the application
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
     @IBOutlet weak var instructionsLabel: WKInterfaceLabel!
     @IBOutlet weak var iphoneImage: WKInterfaceImage!
     @IBOutlet weak var bigTextLabel: WKInterfaceLabel!
     @IBOutlet weak var bigTextLabel2: WKInterfaceLabel!
-    @IBOutlet weak var aboutButton: WKInterfaceButton!
     
-    
-    @IBAction func aboutButtonTapped() {
-        var params : [String:Any] = [:]
-        params["action"] = mode
-        pushController(withName: "DictionaryDetail", context: params)
-    }
     
     //Disabled in storyboard. Do not want to assign things to tap gesture. Accidental taps are possible
     @IBAction func tapGesture(_ sender: Any) {
@@ -198,7 +191,7 @@ class MCInterfaceController : WKInterfaceController {
                 englishTextLabel.setText("")
                 morseCodeString = ""
                 morseCodeTextLabel.setText("")
-                instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
+                instructionsLabel.setText(defaultInstructions)
                 let params = [
                     "mode" : Action.CHAT.rawValue
                 ]
@@ -235,7 +228,7 @@ class MCInterfaceController : WKInterfaceController {
             englishTextLabel.setText("")
             morseCodeString = ""
             morseCodeTextLabel.setText("")
-            instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
+            instructionsLabel.setText(defaultInstructions)
             WKInterfaceDevice.current().play(.success)
             return
         }
@@ -285,7 +278,7 @@ class MCInterfaceController : WKInterfaceController {
         
         if morseCodeString.count == 0 && englishString.count == 0 {
             mainImage.setHidden(mode == Action.CHAT.rawValue ? true : false)
-            instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
+            instructionsLabel.setText(defaultInstructions)
         }
     }
     
@@ -465,7 +458,8 @@ class MCInterfaceController : WKInterfaceController {
             }
             else if mode == Action.CHAT.rawValue {
                 isUserTyping = true
-                instructionsLabel.setText(mode == Action.CHAT.rawValue ? f2fInstructions : defaultInstructions)
+                defaultInstructions = mcTypingInstructions
+                instructionsLabel.setText(defaultInstructions)
                 if alphabetToMcDictionary.count < 1 {
                     //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
                     morseCode = MorseCode(operatingSystem: "watchOS")
@@ -842,10 +836,10 @@ extension MCInterfaceController {
         if morseCode.mcTreeNode?.alphabet != nil || morseCode.mcTreeNode?.action != nil {
             //welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
             if mode == Action.CHAT.rawValue && morseCode.mcTreeNode?.alphabet != nil {
-                recommendations += "Swipe up to set: " + morseCode.mcTreeNode!.alphabet! + "\n"
+                recommendations += "Double tap screen to confirm: " + morseCode.mcTreeNode!.alphabet! + "\n"
             }
             else if morseCode.mcTreeNode?.action != nil {
-                recommendations += "Swipe up to get: " + morseCode.mcTreeNode!.action! + "\n"
+                recommendations += "Double tap screen to confirm: " + morseCode.mcTreeNode!.action! + "\n"
             }
         }
         let nextCharMatches = mode == Action.CHAT.rawValue ? morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode) : morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
@@ -1287,7 +1281,7 @@ extension MCInterfaceController : MCInterfaceControllerProtocol {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [
                 "is_deaf_blind": true
             ])
-            defaultInstructions = f2fInstructions
+            defaultInstructions = mcTypingInstructions
         }
         else if se3UserType == "_1" {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [
