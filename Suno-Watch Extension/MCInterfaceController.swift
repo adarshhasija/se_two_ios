@@ -517,13 +517,12 @@ class MCInterfaceController : WKInterfaceController {
 extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        var finalString = ""
         if isUserTyping == true {
-            finalString.append("Force press to see reply options")
-            //if typingSuggestions.count > 0 {
-                //finalString += " or typing"
-            //}
-            instructionsLabel.setText(finalString)
+            if morseCodeString.last == "|",
+               let lastAlphanumeric = englishString.last {
+                //This is assumingn speech can only be called when the last character is a pipe (|)
+                instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
+            }
         }
         else {
             setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
@@ -537,13 +536,12 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-        var finalString = ""
         if isUserTyping == true {
-            finalString.append("Rotate the digital crown upwards quickly to reply by talking")
-            if typingSuggestions.count > 0 {
-                finalString += " or typing"
+            if morseCodeString.last == "|",
+               let lastAlphanumeric = englishString.last {
+                //This is assumingn speech can only be called when the last character is a pipe (|)
+                instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
             }
-            instructionsLabel.setText(finalString)
         }
         else {
             setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
