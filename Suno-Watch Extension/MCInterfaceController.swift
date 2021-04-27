@@ -15,7 +15,7 @@ class MCInterfaceController : WKInterfaceController {
     
     var defaultInstructions = ""
     var tapToTypeInstructions = "Tap screen to type a dot"
-    var f2fInstructions = "FACE-TO-FACE\nCHAT\n\nTap or Lightly long press to begin typing morse code"
+    var mcTypingInstructions = "Rotate digital crown:\n\nDown to type a dot.\nDown quickly to type a dash.\nUpwards to delete last character."
     var notDeafBlindInstructions = "Force press for reply options"
     var dcScrollStart = "Rotate the digital crown down to feel each character"
     var dcScrollReverse = "Ratate the digital crown up to scroll back"
@@ -42,33 +42,32 @@ class MCInterfaceController : WKInterfaceController {
     var isNormalMorse : Bool? = nil //Some functions, like TIME and DATE, can use customized vibrations and not normal morse code
     var autoPlayTimer : Timer? = nil
     
-    @IBOutlet weak var mainImage: WKInterfaceImage!
+    @IBOutlet weak var mainImage: WKInterfaceImage! //The default 'home' image of the application
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
     @IBOutlet weak var morseCodeTextLabel: WKInterfaceLabel!
     @IBOutlet weak var instructionsLabel: WKInterfaceLabel!
     @IBOutlet weak var iphoneImage: WKInterfaceImage!
     @IBOutlet weak var bigTextLabel: WKInterfaceLabel!
     @IBOutlet weak var bigTextLabel2: WKInterfaceLabel!
-    @IBOutlet weak var aboutButton: WKInterfaceButton!
     
     
-    @IBAction func aboutButtonTapped() {
-        var params : [String:Any] = [:]
-        params["action"] = mode
-        pushController(withName: "DictionaryDetail", context: params)
-    }
-    
+    //Disabled in storyboard. Do not want to assign things to tap gesture. Accidental taps are possible
     @IBAction func tapGesture(_ sender: Any) {
         sendAnalytics(eventName: "se3_watch_tap", parameters: [:])
         morseCodeInput(input: ".")
     }
     
+    @IBAction func doubleTapGesture(_ sender: Any) {
+        upSwipe(1)
+    }
+    
+    //Disabled in storyboard. Swipes gestures are tough in VoiceOver
     @IBAction func rightSwipe(_ sender: Any) {
         //sendAnalytics(eventName: "se3_watch_swipe_right", parameters: [:])
         //morseCodeInput(input: "-")
     }
     
-    
+    //Disabled in storyboard. Swipe gestures are tough in VoiceOver
     @IBAction func upSwipe(_ sender: Any) {
         if isAutoPlayOn == true {
             //Swipe up cannot interrupt Autoplay
@@ -93,7 +92,7 @@ class MCInterfaceController : WKInterfaceController {
             return
         }
         
-        if mode == "chat" && morseCodeString.count > 0 {
+        if mode == Action.MC_TYPING.rawValue && morseCodeString.count > 0 {
             if morseCodeString.last == "|" {
                 
                 let mathResult = performMathCalculation(inputString: englishString) //NSExpression(format:englishString).expressionValue(with: nil, context: nil) as? Int //This wont work if the string also contains alphabets
@@ -139,10 +138,10 @@ class MCInterfaceController : WKInterfaceController {
                 morseCodeString += "|"
                 morseCodeTextLabel.setText(morseCodeString)
                 WKInterfaceDevice.current().play(.success) //successfully got a letter/number
-                instructionsLabel.setText("Keep Typing\nor\nSwipe up again to play audio. Ensure your watch is not on Silent Mode.")
                 while morseCode.mcTreeNode?.parent != nil {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
+                instructionsLabel.setText("Character " + letterOrNumber + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
             }
             else {
                 sendAnalytics(eventName: "se3_watch_swipe_up", parameters: [
@@ -192,9 +191,9 @@ class MCInterfaceController : WKInterfaceController {
                 englishTextLabel.setText("")
                 morseCodeString = ""
                 morseCodeTextLabel.setText("")
-                instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
+                instructionsLabel.setText(defaultInstructions)
                 let params = [
-                    "mode" : "chat"
+                    "mode" : Action.MC_TYPING.rawValue
                 ]
                 pushController(withName: "MCInterfaceController", context: params)
             }
@@ -208,7 +207,7 @@ class MCInterfaceController : WKInterfaceController {
         }
     }
     
-    
+    //Disabled in storyboard. Swipe gestures are tough in VoiceOver
     @IBAction func leftSwipe(_ sender: Any) {
      /*   if isAutoPlayOn == true {
             isAutoPlayOn = false //All reformatting will be done in autoplay timer
@@ -224,12 +223,12 @@ class MCInterfaceController : WKInterfaceController {
             sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
                 "state" : "reading"
                 ])
-            mainImage.setHidden(mode == "chat" ? true : false)
+            mainImage.setHidden(mode == Action.MC_TYPING.rawValue ? true : false)
             englishString = ""
             englishTextLabel.setText("")
             morseCodeString = ""
             morseCodeTextLabel.setText("")
-            instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
+            instructionsLabel.setText(defaultInstructions)
             WKInterfaceDevice.current().play(.success)
             return
         }
@@ -267,6 +266,7 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 englishTextLabel.setText(englishString)
                 WKInterfaceDevice.current().play(.success)
+                isAlphabetReached(input: "b") //backspace
             }
         }
         else {
@@ -278,12 +278,12 @@ class MCInterfaceController : WKInterfaceController {
         }
         
         if morseCodeString.count == 0 && englishString.count == 0 {
-            mainImage.setHidden(mode == "chat" ? true : false)
-            instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
+            mainImage.setHidden(mode == Action.MC_TYPING.rawValue ? true : false)
+            instructionsLabel.setText(defaultInstructions)
         }
     }
     
-    //Disabled in the storyboard. Re-enable if down swipe is required
+    //Disabled in storyboard. Swipe gestures are tough in VoiceOver
     @IBAction func downSwipe(_ sender: Any) {
         //Swipe down to get text from the iPhone. We designed this in case user cannot read morse code on an older iPhone and wanted to transfer it to the watch.
         //Not using this functionality right now. We found a way to play haptics on older iPhones (6, 6S) using system vibrations
@@ -339,6 +339,7 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     //Original minDuration = 0.5
+    //Disabled in storyboard. Can cause confusion between long press and force press. Long Press is also tough with VoiceOver
     @IBAction func longPress(_ sender: WKLongPressGestureRecognizer) {
         if sender.state == .ended {
             sendAnalytics(eventName: "se3_watch_long_press", parameters: [:])
@@ -400,21 +401,6 @@ class MCInterfaceController : WKInterfaceController {
         if dictionary != nil {
             mode = dictionary!["mode"] as? String
         }
-        instructionsLabel.setText(mode == "chat" ? f2fInstructions : defaultInstructions)
-        if alphabetToMcDictionary.count < 1 {
-            //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
-            morseCode = MorseCode(operatingSystem: "watchOS")
-            for morseCodeCell in morseCode.mcArray {
-                if morseCodeCell.morseCode == "......." {
-                    //space
-                    alphabetToMcDictionary[" "] = morseCodeCell.morseCode
-                }
-                else {
-                    alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
-                }
-                
-            }
-        }
         
         //UserDefaults.standard.removeObject(forKey: "SE3_WATCHOS_USER_TYPE")
       /*  let se3UserType = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
@@ -431,7 +417,7 @@ class MCInterfaceController : WKInterfaceController {
             instructionsLabel.setText(defaultInstructions)
         }   */
         
-        if mode == "chat" {
+        if mode == Action.MC_TYPING.rawValue {
             mainImage.setHidden(true)
             if let talkTypeImage = UIImage(systemName: "pencil") {
                 addMenuItem(with: talkTypeImage, title: "Talk/Type", action: #selector(tappedTalkType))
@@ -443,6 +429,23 @@ class MCInterfaceController : WKInterfaceController {
         else {
             //mainImage.setHidden(false)
             //addMenuItem(with: WKMenuItemIcon.info, title: "Actions", action: #selector(tappedActionsDictionary))
+        }
+        
+        //This is needed in multiple modes
+        //eg: MANUAL, MC_TYPING
+        if alphabetToMcDictionary.count < 1 {
+            //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
+            morseCode = MorseCode(operatingSystem: "watchOS")
+            for morseCodeCell in morseCode.mcArray {
+                if morseCodeCell.morseCode == "......." {
+                    //space
+                    alphabetToMcDictionary[" "] = morseCodeCell.morseCode
+                }
+                else {
+                    alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
+                }
+                
+            }
         }
         
         if mode != nil {
@@ -471,6 +474,11 @@ class MCInterfaceController : WKInterfaceController {
                 self.defaultInstructions = dcScrollStart
                 self.instructionsLabel.setText(self.defaultInstructions)
                 morseCodeAutoPlay(direction: "down")
+            }
+            else if mode == Action.MC_TYPING.rawValue {
+                isUserTyping = true
+                defaultInstructions = mcTypingInstructions
+                instructionsLabel.setText(defaultInstructions)
             }
             else {
                 //Only applies if it is TIME or DATE for now
@@ -510,13 +518,12 @@ class MCInterfaceController : WKInterfaceController {
 extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        var finalString = ""
         if isUserTyping == true {
-            finalString.append("Force press to see reply options")
-            //if typingSuggestions.count > 0 {
-                //finalString += " or typing"
-            //}
-            instructionsLabel.setText(finalString)
+            if morseCodeString.last == "|",
+               let lastAlphanumeric = englishString.last {
+                //This is assumingn speech can only be called when the last character is a pipe (|)
+                instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
+            }
         }
         else {
             setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
@@ -530,13 +537,12 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-        var finalString = ""
         if isUserTyping == true {
-            finalString.append("Rotate the digital crown upwards quickly to reply by talking")
-            if typingSuggestions.count > 0 {
-                finalString += " or typing"
+            if morseCodeString.last == "|",
+               let lastAlphanumeric = englishString.last {
+                //This is assumingn speech can only be called when the last character is a pipe (|)
+                instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
             }
-            instructionsLabel.setText(finalString)
         }
         else {
             setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
@@ -565,26 +571,52 @@ extension MCInterfaceController : WKCrownDelegate {
             let endTime = DispatchTime.now()
             let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
             if diffNanos <= quickScrollTimeThreshold {
-                sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
-                WKInterfaceDevice.current().play(.success)
-                morseCodeAutoPlay(direction: "down")
-                startTimeNanos = 0
+                if isUserTyping == false {
+                    //We are in reading mode
+                    sendAnalytics(eventName: "se3_watch_autoplay", parameters: [:])
+                    WKInterfaceDevice.current().play(.success)
+                    morseCodeAutoPlay(direction: "down")
+                    startTimeNanos = 0
+                }
+                else {
+                    //We are in typing mode.
+                    //This is a quick rotation
+                    //Insert a dash (-)
+                    if morseCodeString.last == "." {
+                        //Dot was enntered on the first rotation.
+                        //Need to delete the dot first
+                        leftSwipe(1)
+                    }
+                    //Enter a dash(-)
+                    morseCodeInput(input: "-") //dummy parameter. Need to send something
+                }
             }
             else {
                 startTimeNanos = DispatchTime.now().uptimeNanoseconds //Update this so we can do a check on the next rotation
-                digitalCrownRotated(direction: "down")
+                if isUserTyping == false {
+                    digitalCrownRotated(direction: "down")
+                }
+                else {
+                    //A single scroll down means type a dot
+                    tapGesture(1)
+                }
             }
         }
         else if crownRotationalDelta > expectedMoveDelta {
             //upward scroll
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
-            if isAutoPlayOn == true {
+            if isUserTyping == true {
+                //If we are in typing mode, an up swipe becomes a delete
+                leftSwipe(1) //Dummy parameter
+            }
+            else if isAutoPlayOn == true {
                 WKInterfaceDevice.current().play(.success)
                 stopAutoPlay()
                 return
             }
             else {
+                //Autoplay is off, scroll to read last character
                 digitalCrownRotated(direction: "up")
             }
         }
@@ -790,6 +822,11 @@ extension MCInterfaceController {
                 morseCode.mcTreeNode = morseCode.mcTreeNode?.parent
                 setRecommendedActionsText()
             }
+            if morseCodeString.last == "|",
+               let lastAlphanumeric = englishString.last {
+                //Overwrite the instructions label. We do not wannt to show recommended characters if the last char was a pipe(|)
+                instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
+            }
         }
     }
     
@@ -805,14 +842,14 @@ extension MCInterfaceController {
         var recommendations = ""
         if morseCode.mcTreeNode?.alphabet != nil || morseCode.mcTreeNode?.action != nil {
             //welcomeLabel.setText("Swipe up to set\n\n"+morseCode.mcTreeNode!.alphabet!)
-            if mode == "chat" && morseCode.mcTreeNode?.alphabet != nil {
-                recommendations += "Swipe up to set: " + morseCode.mcTreeNode!.alphabet! + "\n"
+            if mode == Action.MC_TYPING.rawValue && morseCode.mcTreeNode?.alphabet != nil {
+                recommendations += "Double tap screen to confirm: " + morseCode.mcTreeNode!.alphabet! + "\n"
             }
             else if morseCode.mcTreeNode?.action != nil {
-                recommendations += "Swipe up to get: " + morseCode.mcTreeNode!.action! + "\n"
+                recommendations += "Double tap screen to confirm: " + morseCode.mcTreeNode!.action! + "\n"
             }
         }
-        let nextCharMatches = mode == "chat" ? morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode) : morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
+        let nextCharMatches = mode == Action.MC_TYPING.rawValue ? morseCode.getNextCharMatches(currentNode: morseCode.mcTreeNode) : morseCode.getNextActionMatches(currentNode: morseCode.mcTreeNode)
         for nextMatch in nextCharMatches {
             recommendations += "\n" + nextMatch
         }
@@ -1030,7 +1067,6 @@ extension MCInterfaceController {
                     //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
                     instructionsLabel?.setText(dcScrollStart)
                     resetBigText()
-                    //aboutButton?.setHidden(mode == "TIME" || mode == "DATE" ? false : true)
         isAutoPlayOn = false
     }
     
@@ -1041,10 +1077,6 @@ extension MCInterfaceController {
         morseCodeTextLabel.setText(morseCodeString)
         instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" :
                                     "Resetting, please wait...")
-        if mode == "TIME" || mode == "DATE" {
-            //It means About button is visible
-            aboutButton?.setHidden(true)
-        }
         
         let dictionary = [
             "direction" : direction
@@ -1256,7 +1288,7 @@ extension MCInterfaceController : MCInterfaceControllerProtocol {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [
                 "is_deaf_blind": true
             ])
-            defaultInstructions = f2fInstructions
+            defaultInstructions = mcTypingInstructions
         }
         else if se3UserType == "_1" {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [

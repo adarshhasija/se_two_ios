@@ -193,10 +193,10 @@ class MorseCode {
     func getNextCharMatches(currentNode : MCTreeNode?) -> [String] {
         var matches : [String] = []
         if currentNode?.dotNode?.alphabet != nil {
-            matches.append("Add a dot to get: " + currentNode!.dotNode!.alphabet!)
+            matches.append("Add a dot to get: " + currentNode!.dotNode!.alphabet! + ".")
         }
         if currentNode?.dashNode?.alphabet != nil {
-            matches.append("Add a dash to get: " + currentNode!.dashNode!.alphabet!)
+            matches.append("Add a dash to get: " + currentNode!.dashNode!.alphabet! + ".")
         }
         return matches
     }
@@ -204,10 +204,10 @@ class MorseCode {
     func getNextActionMatches(currentNode : MCTreeNode?) -> [String] {
         var matches : [String] = []
         if currentNode?.dotNode?.action != nil {
-            matches.append("Add a dot to get: " + currentNode!.dotNode!.action!)
+            matches.append("Add a dot to get: " + currentNode!.dotNode!.action! + ".")
         }
         if currentNode?.dashNode?.action != nil {
-            matches.append("Add a dash to get: " + currentNode!.dashNode!.action!)
+            matches.append("Add a dash to get: " + currentNode!.dashNode!.action! + ".")
         }
         return matches
     }

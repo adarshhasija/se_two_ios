@@ -26,7 +26,7 @@ class ActionsTableViewController : UITableViewController {
         actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
         actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
-        
+        actionsList.append(ActionsCell(action: "Morse Code Dictionary", forWho: "Blind and Deaf-blind", explanation: "To be used as reference when using Morse Code Typing feature in the Apple Watch app", cellType: Action.MC_DICTIONARY))
         
     }
     
@@ -58,6 +58,12 @@ class ActionsTableViewController : UITableViewController {
         ])
         if actionItem.cellType == Action.CAMERA_OCR {
             openCamera()
+        }
+        else if actionItem.cellType == Action.MC_DICTIONARY {
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Dictionary", bundle:nil)
+            let dictionaryViewController = storyBoard.instantiateViewController(withIdentifier: "UITableViewController-HHA-Ce-gYY") as! MCDictionaryTableViewController
+            dictionaryViewController.typeToDisplay = "morse_code"
+            self.navigationController?.pushViewController(dictionaryViewController, animated: true)
         }
         else if actionItem.cellType == Action.MANUAL {
             openManualEntryPopup()
