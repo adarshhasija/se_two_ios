@@ -94,7 +94,7 @@ class MCReaderButtonsViewController : UIViewController {
         alphanumericLabel?.textColor = .none
         morseCodeLabel?.textColor = .none
         morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
-        autoplayButton?.setTitle("Autoplay", for: .normal)
+        autoplayButton?.setTitle("Replay", for: .normal)
         autoplayButton?.setTitleColor(UIColor.blue, for: .normal)
         audioButton?.isEnabled = false //We were previously hiding it. We do not want to do that as VoiceOver may/may not lose focus of the element
         middleBigTextView.isHidden = true
@@ -172,7 +172,7 @@ class MCReaderButtonsViewController : UIViewController {
         audioButton?.setTitle("Play Audio.\nEnabled when autoplay is ON", for: .disabled)
         audioButton?.isEnabled = false
         morseCodeAutoPlay(direction: "right")
-        //setUpButtonScalable(button: autoplayButton, title: isAutoPlayOn == true ? "Stop Autoplay" : "Autoplay")
+        //setUpButtonScalable(button: autoplayButton, title: isAutoPlayOn == true ? "Stop Autoplay" : "Replay")
     }
     
     override func viewWillDisappear(_ animated: Bool) {

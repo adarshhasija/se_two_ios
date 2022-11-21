@@ -43,7 +43,7 @@
 		317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C12217EC76C0081B38B /* InterfaceController.swift */; };
 		317D4C15217EC76C0081B38B /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */; };
 		317D4C17217EC76D0081B38B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 317D4C16217EC76D0081B38B /* Assets.xcassets */; };
-		317D4C1B217EC76D0081B38B /* SunoDayko.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 317D4C01217EC76A0081B38B /* SunoDayko.app */; };
+		317D4C1B217EC76D0081B38B /* InfoByFeel.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 317D4C01217EC76A0081B38B /* InfoByFeel.app */; };
 		317D4C242188CCC50081B38B /* States.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C232188CCC50081B38B /* States.swift */; };
 		317D4C262188CCF00081B38B /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */; };
@@ -147,7 +147,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				317D4C1B217EC76D0081B38B /* SunoDayko.app in Embed Watch Content */,
+				317D4C1B217EC76D0081B38B /* InfoByFeel.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,7 +179,7 @@
 		31798DFC217B9E66008CF9C7 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		31798DFF217C61B5008CF9C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		317C71332540AFE100E6800B /* LibraryCustomActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCustomActions.swift; sourceTree = "<group>"; };
-		317D4C01217EC76A0081B38B /* SunoDayko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SunoDayko.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		317D4C01217EC76A0081B38B /* InfoByFeel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfoByFeel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		317D4C04217EC76A0081B38B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		317D4C06217EC76C0081B38B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		317D4C08217EC76C0081B38B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -241,7 +241,7 @@
 		31F57B70211A14D300777EA3 /* MacAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAppUITests.swift; sourceTree = "<group>"; };
 		31F57B72211A14D300777EA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C8A668BA37BAC8691CCD5D4 /* Pods-Suno-Mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Suno-Mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-Suno-Mac/Pods-Suno-Mac.release.xcconfig"; sourceTree = "<group>"; };
-		5EBF650E1F0AA47700BCD353 /* SunoDayko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SunoDayko.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EBF650E1F0AA47700BCD353 /* InfoByFeel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfoByFeel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EBF65111F0AA47700BCD353 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EBF65161F0AA47700BCD353 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5EBF65181F0AA47700BCD353 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -445,11 +445,11 @@
 		5EBF650F1F0AA47700BCD353 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5EBF650E1F0AA47700BCD353 /* SunoDayko.app */,
+				5EBF650E1F0AA47700BCD353 /* InfoByFeel.app */,
 				31F57B50211A14D100777EA3 /* Suno-Mac.app */,
 				31F57B61211A14D300777EA3 /* MacAppTests.xctest */,
 				31F57B6C211A14D300777EA3 /* MacAppUITests.xctest */,
-				317D4C01217EC76A0081B38B /* SunoDayko.app */,
+				317D4C01217EC76A0081B38B /* InfoByFeel.app */,
 				317D4C0D217EC76C0081B38B /* Suno-Watch Extension.appex */,
 			);
 			name = Products;
@@ -525,7 +525,7 @@
 			);
 			name = "Suno-Watch";
 			productName = "Suno-Watch";
-			productReference = 317D4C01217EC76A0081B38B /* SunoDayko.app */;
+			productReference = 317D4C01217EC76A0081B38B /* InfoByFeel.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
 		317D4C0C217EC76C0081B38B /* Suno-Watch Extension */ = {
@@ -617,7 +617,7 @@
 			);
 			name = Suno;
 			productName = testVision;
-			productReference = 5EBF650E1F0AA47700BCD353 /* SunoDayko.app */;
+			productReference = 5EBF650E1F0AA47700BCD353 /* InfoByFeel.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1005,15 +1005,15 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 51;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
-				PRODUCT_NAME = SunoDayko;
+				PRODUCT_NAME = InfoByFeel;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
@@ -1033,14 +1033,14 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 51;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
-				PRODUCT_NAME = SunoDayko;
+				PRODUCT_NAME = InfoByFeel;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
@@ -1357,14 +1357,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 51;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
-				PRODUCT_NAME = SunoDayko;
+				PRODUCT_NAME = InfoByFeel;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1376,14 +1376,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 51;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
-				PRODUCT_NAME = SunoDayko;
+				PRODUCT_NAME = InfoByFeel;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
