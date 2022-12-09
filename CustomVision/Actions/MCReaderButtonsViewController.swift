@@ -42,6 +42,8 @@ class MCReaderButtonsViewController : UIViewController {
     @IBOutlet weak var morseCodeLabel: UILabel!
     @IBOutlet weak var autoplayButton: UIButton!
     @IBOutlet weak var audioButton: UIButton! //Audio descriptions during autoplay
+    @IBOutlet weak var nextCharacterButton: UIButton!
+    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var middleStackView: UIStackView!
     @IBOutlet weak var appleWatchImageView: UIImageView!
     @IBOutlet weak var scrollMCLabel: UILabel!
@@ -66,6 +68,40 @@ class MCReaderButtonsViewController : UIViewController {
         }
     }
     
+    
+    @IBAction func nextCharacterButtontapped(_ sender: Any) {
+        resetButton?.isHidden = false
+        appleWatchImageView.isHidden = true
+        scrollMCLabel.isHidden = true
+        siriButton?.isHidden = true
+        for backTapLabel in backTapLabels {
+            backTapLabel.isHidden = true
+        }
+        mcScrollRight()
+    }
+    
+    
+    @IBAction func resetButtonTapped(_ sender: Any) {
+        resetButton?.isHidden = true
+        middleBigTextView?.isHidden = true
+        alphanumericStringIndex = -1
+        morseCodeStringIndex = -1
+        alphanumericLabel?.textColor = .label
+        morseCodeLabel?.textColor = .label
+        let morseCodeString = morseCodeLabel?.text ?? ""
+        morseCodeLabel?.text = morseCodeString //reset the size of any morse code characters that had been made green and bigger
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        "Reset Successful");
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        
+        appleWatchImageView.isHidden = false
+        scrollMCLabel.isHidden = false
+        siriButton?.isHidden = false
+        for backTapLabel in backTapLabels {
+            backTapLabel.isHidden = false
+        }
+    }
+    
     @IBAction func gestureLongPress(_ sender: Any) {
         if (sender as? UIGestureRecognizer)?.state == UIGestureRecognizer.State.recognized {
             //Not used right now
@@ -87,6 +123,7 @@ class MCReaderButtonsViewController : UIViewController {
     
     func stopAutoPlay() {
         autoPlayTimer?.invalidate()
+        isAutoPlayOn = false
         alphanumericStringIndex = -1
         morseCodeStringIndex = -1
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
@@ -96,6 +133,8 @@ class MCReaderButtonsViewController : UIViewController {
         morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes
         autoplayButton?.setTitle("Replay", for: .normal)
         autoplayButton?.setTitleColor(UIColor.blue, for: .normal)
+        nextCharacterButton?.isHidden = false
+        resetButton?.isHidden = true
         audioButton?.isEnabled = false //We were previously hiding it. We do not want to do that as VoiceOver may/may not lose focus of the element
         middleBigTextView.isHidden = true
         appleWatchImageView.isHidden = false
@@ -104,10 +143,11 @@ class MCReaderButtonsViewController : UIViewController {
         for backTapLabel in backTapLabels {
             backTapLabel.isHidden = false
         }
-        isAutoPlayOn = false
     }
     
     func morseCodeAutoPlay(direction: String) {
+        alphanumericStringIndex = -1
+        morseCodeStringIndex = -1
         isAutoPlayOn = true
         alphanumericLabel?.textColor = .none //Resetting the string colors at the start of autoplay
         let morseCodeString = morseCodeLabel?.text
@@ -115,6 +155,8 @@ class MCReaderButtonsViewController : UIViewController {
         morseCodeLabel?.textColor = .none
         autoplayButton?.setTitle("Stop Autoplay", for: .normal)
         autoplayButton?.setTitleColor(UIColor.red, for: .normal)
+        nextCharacterButton?.isHidden = true
+        resetButton?.isHidden = true
         if UIAccessibility.isVoiceOverRunning {
             audioButton?.setTitle(isAudioRequestedByUser == false ? "Play Audio" : "Stop Audio", for: .normal)
             audioButton?.setTitleColor(isAudioRequestedByUser == false ? UIColor.blue : UIColor.red, for: .normal)
@@ -467,7 +509,8 @@ class MCReaderButtonsViewController : UIViewController {
             },
                        completion: { _ in
                             //If its the start of morse code combination, we do not want it to fade out
-                            self.middleBigTextView.isHidden = localText == "morse code" ? false : true
+                            //If its autoplay, then we do want it to fade out
+                            //self.middleBigTextView.isHidden = localText == "morse code" ? false : true
                        })
     }
 }

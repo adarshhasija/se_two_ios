@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VqB-SC-3sd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VqB-SC-3sd">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +11,7 @@
         <!--Morse Code Editor View Controller-->
         <scene sceneID="kaO-YT-H9J">
             <objects>
-                <viewController storyboardIdentifier="MorseCodeEditorViewController" id="bbL-uY-60S" customClass="MorseCodeEditorViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MorseCodeEditorViewController" id="bbL-uY-60S" customClass="MorseCodeEditorViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Gfa-cJ-5yq"/>
                         <viewControllerLayoutGuide type="bottom" id="lNj-gg-1Um"/>
@@ -160,7 +160,7 @@
         <!--ActionsMC View Controller-->
         <scene sceneID="sUq-sy-fSQ">
             <objects>
-                <viewController storyboardIdentifier="ActionsMCViewController" id="ayT-RZ-t8z" customClass="ActionsMCViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ActionsMCViewController" id="ayT-RZ-t8z" customClass="ActionsMCViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HSm-UX-eB7"/>
                         <viewControllerLayoutGuide type="bottom" id="5RC-vY-IjW"/>
@@ -170,7 +170,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qt8-0O-eKm">
-                                <rect key="frame" x="26" y="54" width="268" height="60"/>
+                                <rect key="frame" x="26" y="60" width="268" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JiI-2c-7y9">
                                         <rect key="frame" x="0.0" y="0.0" width="268" height="24"/>
@@ -269,7 +269,7 @@
         <!--Reader Buttons View Controller-->
         <scene sceneID="P4L-T8-Q2j">
             <objects>
-                <viewController storyboardIdentifier="MCReaderButtonsViewController" id="dbP-WQ-myk" customClass="MCReaderButtonsViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MCReaderButtonsViewController" id="dbP-WQ-myk" customClass="MCReaderButtonsViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DH8-Ce-ce9"/>
                         <viewControllerLayoutGuide type="bottom" id="shr-8i-E6L"/>
@@ -288,16 +288,16 @@
                                 <rect key="frame" x="16" y="44" width="288" height="524"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y3U-tb-ggf">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="99"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="106"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdv-Kb-sRM">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="31.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="33.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSh-G6-6AY">
-                                                <rect key="frame" x="0.0" y="31.5" width="288" height="31.5"/>
+                                                <rect key="frame" x="0.0" y="33.5" width="288" height="33.5"/>
                                                 <accessibility key="accessibilityConfiguration">
                                                     <bool key="isElement" value="NO"/>
                                                 </accessibility>
@@ -306,7 +306,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8d-Ez-seD">
-                                                <rect key="frame" x="105.5" y="63" width="77" height="36"/>
+                                                <rect key="frame" x="102" y="67" width="84" height="39"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                 <state key="normal" title="Autoplay"/>
                                                 <connections>
@@ -314,11 +314,29 @@
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lv9-9I-e76">
-                                                <rect key="frame" x="98" y="99" width="92" height="0.0"/>
+                                                <rect key="frame" x="98" y="106" width="92" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                 <state key="normal" title="Play Audio"/>
                                                 <connections>
                                                     <action selector="audioButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="ZVJ-Y3-Wyt"/>
+                                                </connections>
+                                            </button>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="euY-vf-pIF" userLabel="Next Character">
+                                                <rect key="frame" x="56.5" y="106" width="175.5" height="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Play Next Character"/>
+                                                <connections>
+                                                    <action selector="nextCharacterButtontapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="5oE-49-dIw"/>
+                                                </connections>
+                                            </button>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-xK-4bF">
+                                                <rect key="frame" x="110.5" y="106" width="67.5" height="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Reset">
+                                                    <color key="baseForegroundColor" systemColor="systemRedColor"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="resetButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="qlJ-SH-xVG"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -398,6 +416,8 @@
                         <outlet property="middleBigTextView" destination="aYk-9M-WPq" id="TIq-ra-t2F"/>
                         <outlet property="middleStackView" destination="Vu2-4A-M8E" id="vbU-CT-aI3"/>
                         <outlet property="morseCodeLabel" destination="WSh-G6-6AY" id="gnJ-0I-Qf4"/>
+                        <outlet property="nextCharacterButton" destination="euY-vf-pIF" id="NdF-dI-2NM"/>
+                        <outlet property="resetButton" destination="kHP-xK-4bF" id="kI8-ls-wci"/>
                         <outlet property="scrollMCLabel" destination="Iko-Sp-hvm" id="XyB-90-QbS"/>
                         <outlet property="stackViewMain" destination="Y3U-tb-ggf" id="KDt-FI-b6D"/>
                     </connections>
