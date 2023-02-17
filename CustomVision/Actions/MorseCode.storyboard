@@ -288,7 +288,7 @@
                                 <rect key="frame" x="16" y="44" width="288" height="524"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y3U-tb-ggf">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="106"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="140.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdv-Kb-sRM">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="33.5"/>
@@ -302,6 +302,12 @@
                                                     <bool key="isElement" value="NO"/>
                                                 </accessibility>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEo-pR-Mcz" userLabel="Braille line">
+                                                <rect key="frame" x="144" y="67" width="0.0" height="0.0"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -339,6 +345,14 @@
                                                     <action selector="resetButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="qlJ-SH-xVG"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aj9-V5-CdE" userLabel="Switch Braille Direction">
+                                                <rect key="frame" x="25.5" y="106" width="237" height="34.5"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Switch to Reading Sideways"/>
+                                                <connections>
+                                                    <action selector="switchBrailleButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="Vew-J9-0b1"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="WSh-G6-6AY" firstAttribute="leading" secondItem="Y3U-tb-ggf" secondAttribute="leading" id="K5H-eX-2rd"/>
@@ -360,7 +374,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="tIO-xU-LEv"/>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vu2-4A-M8E">
-                                <rect key="frame" x="36" y="284" width="248" height="0.0"/>
+                                <rect key="frame" x="36" y="284" width="248" height="50"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nY7-i4-Baw">
                                 <rect key="frame" x="36" y="498" width="248" height="50"/>
@@ -413,6 +427,7 @@
                         <outlet property="appleWatchImageView" destination="kc9-R4-7Le" id="WG5-TS-UiP"/>
                         <outlet property="audioButton" destination="Lv9-9I-e76" id="skN-EV-B5b"/>
                         <outlet property="autoplayButton" destination="f8d-Ez-seD" id="jnv-hh-nlQ"/>
+                        <outlet property="braillelLabel" destination="dEo-pR-Mcz" id="tic-Hm-TWf"/>
                         <outlet property="middleBigTextView" destination="aYk-9M-WPq" id="TIq-ra-t2F"/>
                         <outlet property="middleStackView" destination="Vu2-4A-M8E" id="vbU-CT-aI3"/>
                         <outlet property="morseCodeLabel" destination="WSh-G6-6AY" id="gnJ-0I-Qf4"/>
@@ -420,6 +435,7 @@
                         <outlet property="resetButton" destination="kHP-xK-4bF" id="kI8-ls-wci"/>
                         <outlet property="scrollMCLabel" destination="Iko-Sp-hvm" id="XyB-90-QbS"/>
                         <outlet property="stackViewMain" destination="Y3U-tb-ggf" id="KDt-FI-b6D"/>
+                        <outlet property="switchBrailleDirectionButton" destination="Aj9-V5-CdE" id="AtY-6e-Y2z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FHW-gO-Y0y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -13,6 +13,10 @@
 		31108A91254808B9009E3DF1 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		31108A9825482EC6009E3DF1 /* ActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B61BC625336C6C00237602 /* ActionsCell.swift */; };
 		31108AA025483493009E3DF1 /* ActionsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31108A9F25483493009E3DF1 /* ActionsListCell.swift */; };
+		3117DB36299A899F00A54F1D /* Braille.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3117DB35299A899F00A54F1D /* Braille.swift */; };
+		3117DB37299A899F00A54F1D /* Braille.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3117DB35299A899F00A54F1D /* Braille.swift */; };
+		3117DB39299A98E200A54F1D /* BrailleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3117DB38299A98E200A54F1D /* BrailleCell.swift */; };
+		3117DB3A299A98E200A54F1D /* BrailleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3117DB38299A98E200A54F1D /* BrailleCell.swift */; };
 		311AEE3125D81BAA00E018FE /* SiriShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311AEE3025D81BAA00E018FE /* SiriShortcut.swift */; };
 		3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */; };
 		313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */; };
@@ -63,6 +67,11 @@
 		31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */; };
 		31A67B81235CAC6600F506BD /* FAQRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B80235CAC6600F506BD /* FAQRowController.swift */; };
 		31A67B83235CB55800F506BD /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B82235CB55800F506BD /* FAQCell.swift */; };
+		31B1B1C829740BE20048819E /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 31B1B1C729740BE20048819E /* Base.lproj */; };
+		31B1B1CA29740BED0048819E /* MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B1B1C929740BED0048819E /* MathUtilities.swift */; };
+		31B1B1CC29740BF70048819E /* MultipeerConnectivitySupport in Resources */ = {isa = PBXBuildFile; fileRef = 31B1B1CB29740BF60048819E /* MultipeerConnectivitySupport */; };
+		31B1B1CE29740C010048819E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B1B1CD29740C010048819E /* ViewController.swift */; };
+		31B1B1D02974184D0048819E /* MPCSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B1B1CF2974184D0048819E /* MPCSession.swift */; };
 		31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */; };
 		31B5A84723435F8300196E96 /* MorseCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84623435F8300196E96 /* MorseCodeCell.swift */; };
 		31B61BBC2532F86F00237602 /* ActionsList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31B61BBB2532F86F00237602 /* ActionsList.storyboard */; };
@@ -159,6 +168,8 @@
 		310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryRowController.swift; sourceTree = "<group>"; };
 		310D954F24B1C0BF00936A27 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		31108A9F25483493009E3DF1 /* ActionsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsListCell.swift; sourceTree = "<group>"; };
+		3117DB35299A899F00A54F1D /* Braille.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Braille.swift; sourceTree = "<group>"; };
+		3117DB38299A98E200A54F1D /* BrailleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrailleCell.swift; sourceTree = "<group>"; };
 		311AEE3025D81BAA00E018FE /* SiriShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcut.swift; sourceTree = "<group>"; };
 		3124D087240F9996006EB1CA /* MorseCodeEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeEditorViewController.swift; sourceTree = "<group>"; };
 		313D2C2823D8E2D60089F051 /* ThreeDTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDTouchView.swift; sourceTree = "<group>"; };
@@ -207,6 +218,11 @@
 		31A67B80235CAC6600F506BD /* FAQRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRowController.swift; sourceTree = "<group>"; };
 		31A67B82235CB55800F506BD /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
 		31A855142422A63A0064B29C /* MorseCodeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeUtils.swift; sourceTree = "<group>"; };
+		31B1B1C729740BE20048819E /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
+		31B1B1C929740BED0048819E /* MathUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathUtilities.swift; sourceTree = "<group>"; };
+		31B1B1CB29740BF60048819E /* MultipeerConnectivitySupport */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MultipeerConnectivitySupport; sourceTree = "<group>"; };
+		31B1B1CD29740C010048819E /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		31B1B1CF2974184D0048819E /* MPCSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCSession.swift; sourceTree = "<group>"; };
 		31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryInterfaceController.swift; sourceTree = "<group>"; };
 		31B5A84623435F8300196E96 /* MorseCodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCodeCell.swift; sourceTree = "<group>"; };
 		31B61BBB2532F86F00237602 /* ActionsList.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ActionsList.storyboard; sourceTree = "<group>"; };
@@ -364,6 +380,8 @@
 				31B61BC625336C6C00237602 /* ActionsCell.swift */,
 				31B61BC825336CB700237602 /* ActionsListRowController.swift */,
 				31CBAE7C261F13C7006563B8 /* ComplicationController.swift */,
+				3117DB35299A899F00A54F1D /* Braille.swift */,
+				3117DB38299A98E200A54F1D /* BrailleCell.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -380,6 +398,18 @@
 				31DCDFB026261E2100366DDD /* CameraViewController.swift */,
 			);
 			path = CameraSE;
+			sourceTree = "<group>";
+		};
+		31B1B1C62974093F0048819E /* NearbyInteraction */ = {
+			isa = PBXGroup;
+			children = (
+				31B1B1CF2974184D0048819E /* MPCSession.swift */,
+				31B1B1CD29740C010048819E /* ViewController.swift */,
+				31B1B1CB29740BF60048819E /* MultipeerConnectivitySupport */,
+				31B1B1C929740BED0048819E /* MathUtilities.swift */,
+				31B1B1C729740BE20048819E /* Base.lproj */,
+			);
+			path = NearbyInteraction;
 			sourceTree = "<group>";
 		};
 		31B61BBF2533374000237602 /* Actions */ = {
@@ -458,6 +488,7 @@
 		5EBF65101F0AA47700BCD353 /* CustomVision */ = {
 			isa = PBXGroup;
 			children = (
+				31B1B1C62974093F0048819E /* NearbyInteraction */,
 				31B61BBF2533374000237602 /* Actions */,
 				3142C8A12496373100B1257B /* Dictionary */,
 				3142C89E2495F32100B1257B /* Settings */,
@@ -741,6 +772,8 @@
 			files = (
 				3188A82F24789A080075B33E /* MainVision.storyboard in Resources */,
 				5EBF651C1F0AA47700BCD353 /* LaunchScreen.storyboard in Resources */,
+				31B1B1CC29740BF70048819E /* MultipeerConnectivitySupport in Resources */,
+				31B1B1C829740BE20048819E /* Base.lproj in Resources */,
 				31B61BBC2532F86F00237602 /* ActionsList.storyboard in Resources */,
 				3142C8A52496384D00B1257B /* Dictionary.storyboard in Resources */,
 				31798E00217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */,
@@ -834,6 +867,7 @@
 				31EC882823467AD50088051C /* MCTreeNode.swift in Sources */,
 				3142C8A92496694500B1257B /* MCDictionaryDetailController.swift in Sources */,
 				31EC882623467A600088051C /* MorseCode.swift in Sources */,
+				3117DB37299A899F00A54F1D /* Braille.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
 				31B61BC5253369AE00237602 /* ActionsListController.swift in Sources */,
 				315BF11025D94CF600A315FC /* SiriShortcut.swift in Sources */,
@@ -841,6 +875,7 @@
 				31B5A84723435F8300196E96 /* MorseCodeCell.swift in Sources */,
 				31D97F9C23BA7936000CFCF2 /* SettingDBController.swift in Sources */,
 				31B61BC725336C6C00237602 /* ActionsCell.swift in Sources */,
+				3117DB3A299A98E200A54F1D /* BrailleCell.swift in Sources */,
 				31A67B83235CB55800F506BD /* FAQCell.swift in Sources */,
 				31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */,
 				31108A91254808B9009E3DF1 /* Actions.swift in Sources */,
@@ -886,11 +921,13 @@
 				31BC651D24697FDD00D5D801 /* MCDictionaryCell.swift in Sources */,
 				3193F411253F6E45004940AE /* MCReaderButtonsViewController.swift in Sources */,
 				31DCDFB126261E2100366DDD /* CameraViewController.swift in Sources */,
+				3117DB36299A899F00A54F1D /* Braille.swift in Sources */,
 				31108AA025483493009E3DF1 /* ActionsListCell.swift in Sources */,
 				31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */,
 				311AEE3125D81BAA00E018FE /* SiriShortcut.swift in Sources */,
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */,
+				31B1B1CA29740BED0048819E /* MathUtilities.swift in Sources */,
 				31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */,
 				310D955024B1C0BF00936A27 /* UIFont.swift in Sources */,
 				317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */,
@@ -899,6 +936,8 @@
 				317D4C242188CCC50081B38B /* States.swift in Sources */,
 				31798DFD217B9E66008CF9C7 /* NetworkManager.swift in Sources */,
 				319D524E2466897400CBB1EB /* HapticManager.swift in Sources */,
+				31B1B1D02974184D0048819E /* MPCSession.swift in Sources */,
+				3117DB39299A98E200A54F1D /* BrailleCell.swift in Sources */,
 				31829CBB2493B671003C6153 /* ActionsMCViewController.swift in Sources */,
 				31862B7D225E11650058883D /* ChatListItem.swift in Sources */,
 				3142C8A72496390700B1257B /* MCDictionaryDetailViewController.swift in Sources */,
@@ -908,6 +947,7 @@
 				3124D088240F9996006EB1CA /* MorseCodeEditorViewController.swift in Sources */,
 				316BA194246D78F000869C89 /* UITextField.swift in Sources */,
 				317340A2246DB60C00F75B1B /* Collection.swift in Sources */,
+				31B1B1CE29740C010048819E /* ViewController.swift in Sources */,
 				3172732D247662FC003538F8 /* SettingsTableViewController.swift in Sources */,
 				31B61BBE253317C200237602 /* ActionsTableViewController.swift in Sources */,
 				3188A83624789CFD0075B33E /* BubbleLabelLayer.swift in Sources */,
@@ -1005,11 +1045,11 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 62;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				MARKETING_VERSION = 1.1.18;
+				MARKETING_VERSION = 1.1.20;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
@@ -1033,11 +1073,11 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 62;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
-				MARKETING_VERSION = 1.1.18;
+				MARKETING_VERSION = 1.1.20;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three.watchkitapp;
 				PRODUCT_NAME = InfoByFeel;
@@ -1357,12 +1397,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 62;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.18;
+				MARKETING_VERSION = 1.1.20;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
 				PRODUCT_NAME = InfoByFeel;
 				SWIFT_VERSION = 4.0;
@@ -1376,12 +1416,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 62;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.18;
+				MARKETING_VERSION = 1.1.20;
 				PRODUCT_BUNDLE_IDENTIFIER = com.starsearth.three;
 				PRODUCT_NAME = InfoByFeel;
 				SWIFT_VERSION = 4.0;

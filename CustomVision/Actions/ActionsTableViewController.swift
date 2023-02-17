@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import FirebaseAnalytics
+import NearbyInteraction
 
 class ActionsTableViewController : UITableViewController {
     
@@ -21,12 +22,13 @@ class ActionsTableViewController : UITableViewController {
     override func viewDidLoad() {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         
-        actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
-        actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
-        actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
-        actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
-        actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
-        actionsList.append(ActionsCell(action: "Morse Code Dictionary", forWho: "Blind and Deaf-blind", explanation: "To be used as reference when using Morse Code Typing feature in the Apple Watch app", cellType: Action.MC_DICTIONARY))
+        //actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
+        //actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
+        //actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
+        //actionsList.append(ActionsCell(action: "Find someone nearby", forWho: "Blind and Deaf-blind", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
+        actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter letters or numbers and we will translate it into braille vibrations", cellType: Action.MANUAL))
+        //actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
+        //actionsList.append(ActionsCell(action: "Morse Code Dictionary", forWho: "Blind and Deaf-blind", explanation: "To be used as reference when using Morse Code Typing feature in the Apple Watch app", cellType: Action.MC_DICTIONARY))
         
         
     }
@@ -76,6 +78,27 @@ class ActionsTableViewController : UITableViewController {
             UIDevice.current.isBatteryMonitoringEnabled = false
             openMorseCodeReadingScreen(alphanumericString: level, inputAction: actionItem.cellType)
         }
+        else if actionItem.cellType == Action.NEARBY_INTERACTION {
+            var isSupported: Bool
+            if #available(iOS 16.0, *) {
+                isSupported = NISession.deviceCapabilities.supportsPreciseDistanceMeasurement
+            } else {
+                isSupported = NISession.isSupported
+            }
+            if !isSupported {
+                print("unsupported device")
+                // Ensure that the device supports NearbyInteraction and present
+                //  an error message view controller, if not.
+                let storyboard = UIStoryboard(name: "ActionsList", bundle: nil)
+                let unsupportedDeviceViewController : UIViewController? = storyboard.instantiateViewController(withIdentifier: "unsupportedDeviceMessage")
+                if unsupportedDeviceViewController == nil { return }
+                self.navigationController?.pushViewController(unsupportedDeviceViewController!, animated: true)
+            }
+            else {
+                let viewController:UIViewController = UIStoryboard(name: "ActionsList", bundle: nil).instantiateViewController(withIdentifier: "NearbyInteractionsViewController") as UIViewController
+                self.present(viewController, animated: false, completion: nil)
+            }
+        }
         else {
             openMorseCodeReadingScreen(alphanumericString: nil, inputAction: actionItem.cellType)
         }
@@ -97,13 +120,13 @@ class ActionsTableViewController : UITableViewController {
     
     private func openManualEntryPopup() {
         let maxLength = 7
-        let alert = UIAlertController(title: "Enter a number", message: "Max " + String(maxLength) + " characters", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Enter text or numbers only", message: "Max " + String(maxLength) + " characters", preferredStyle: .alert)
 
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in
             textField.placeholder = "Enter here"
             textField.maxLength = maxLength
-            textField.keyboardType = .numberPad
+            //textField.keyboardType = .numberPad
             //textField.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged) //Currently controller by maxLength. Use this if needed
         }
 

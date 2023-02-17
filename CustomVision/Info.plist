@@ -58,5 +58,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSNearbyInteractionUsageDescription</key>
+	<string>To help you find your friends in a crowded location, if they are using an iPhone and have this app</string>
+	<key>NSNearbyInteractionAllowOnceUsageDescription</key>
+	<string>To help you find your friends in a crowded location, if they are using an iPhone and have this app</string>
 </dict>
 </plist>

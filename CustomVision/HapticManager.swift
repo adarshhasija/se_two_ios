@@ -77,11 +77,11 @@ class HapticManager {
     func playSelectedCharacterHaptic(inputString : String, inputIndex : Int) {
         let index = inputString.index(inputString.startIndex, offsetBy: inputIndex)
         let char = String(inputString[index])
-        if char == "." {
+        if char == "." || char == "x" {
             //try? hapticForMorseCode(isDash: false)
             generateHaptic(code: MC_DOT)
         }
-        if char == "-" {
+        if char == "-" || char == "o" {
             //try? hapticForMorseCode(isDash: true)
             generateHaptic(code: MC_DASH)
         }
@@ -137,6 +137,25 @@ class HapticManager {
             print("Generate haptic error is: \(error)")
         }
         
+    }
+    
+    func hapticsForEndofEntireAlphanumeric() {
+        if supportsHaptics == false {
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+            return
+        }
+        
+        var hapticPlayer : CHHapticPatternPlayer? = nil
+        do {
+            //hapticPlayer = try hapticForResult(success: true)
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            
+            try hapticPlayer?.start(atTime: CHHapticTimeImmediate)
+        } catch let error {
+            print("Generate haptic error is: \(error)")
+        }
+
     }
     
     

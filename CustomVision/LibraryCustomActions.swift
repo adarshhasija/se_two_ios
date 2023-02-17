@@ -199,4 +199,35 @@ class LibraryCustomActions {
         return text
     }
     
+    static func getInfoTextForBraille(brailleString : String, brailleStringIndex: Int) -> String? {
+        var text : String? = nil
+        let index = brailleString.index(brailleString.startIndex, offsetBy: brailleStringIndex)
+        
+        //Get the braille grid number
+        let b = brailleString.count > 10 ? Braille.mappingBrailleGridNumbersToStringIndex.filter {  $0.value == brailleStringIndex } : Braille.mappingBrailleGridToStringIndex.filter {$0.value == brailleStringIndex}
+        let brailleGridNumber = b.keys.first!
+        //
+        
+        let character = brailleString[index]
+        if character == "x" {
+            if brailleGridNumber >  6 {
+                let adjustedNumber = brailleGridNumber - 6
+                text = String(adjustedNumber) + " = No"
+            }
+            else {
+                text = String(brailleGridNumber) + " = No"
+            }
+        }
+        if character == "o" {
+            if brailleGridNumber >  6 {
+                let adjustedNumber = brailleGridNumber - 6
+                text = String(adjustedNumber) + " = Yes"
+            }
+            else {
+                text = String(brailleGridNumber) + " = Yes"
+            }
+        }
+        return text
+    }
+    
 }
