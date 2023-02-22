@@ -212,19 +212,19 @@ class LibraryCustomActions {
         if character == "x" {
             if brailleGridNumber >  6 {
                 let adjustedNumber = brailleGridNumber - 6
-                text = String(adjustedNumber) + " = No"
+                text = String(adjustedNumber) + " No"
             }
             else {
-                text = String(brailleGridNumber) + " = No"
+                text = String(brailleGridNumber) + " No"
             }
         }
         if character == "o" {
             if brailleGridNumber >  6 {
                 let adjustedNumber = brailleGridNumber - 6
-                text = String(adjustedNumber) + " = Yes"
+                text = String(adjustedNumber) + " Yes"
             }
             else {
-                text = String(brailleGridNumber) + " = Yes"
+                text = String(brailleGridNumber) + " Yes"
             }
         }
         return text

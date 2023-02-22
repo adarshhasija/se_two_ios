@@ -142,6 +142,12 @@ class Braille {
         brailleArray.append(BrailleCell(english: "8", brailleDots: "3456 125"))
         brailleArray.append(BrailleCell(english: "9", brailleDots: "3456 24"))
         brailleArray.append(BrailleCell(english: "0", brailleDots: "3456 245"))
+        brailleArray.append(BrailleCell(english: ",", brailleDots: "2"))
+        brailleArray.append(BrailleCell(english: ";", brailleDots: "23"))
+        brailleArray.append(BrailleCell(english: ":", brailleDots: "25"))
+        brailleArray.append(BrailleCell(english: "?", brailleDots: "26"))
+        brailleArray.append(BrailleCell(english: "!", brailleDots: "235"))
+        brailleArray.append(BrailleCell(english: "-", brailleDots: "36"))
         
         
         //Dunno why  we doing it this way but we keep it like this for now
@@ -204,6 +210,50 @@ class Braille {
         }
         return false
     }
+    
+    func convertAlphanumericToBraille(alphanumericString : String) -> [String]? {
+        var brailleStringArray : [String] = []
+        let english = alphanumericString.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890 ".contains).replacingOccurrences(of: " ", with: "␣")
+        var brailleCharacterString = ""
+        for character in english {
+            guard let brailleDotsString : String = alphabetToBrailleDictionary[String(character)] else {
+                return nil
+            }
+            let brailleDotsArray = brailleDotsString.components(separatedBy: " ") //if its for a number its 2 braille grids
+            if brailleDotsArray.count > 1 {
+                //means its a number, and it needs 2 braille grids
+                brailleCharacterString = "xx xx\nxx xx\nxx xx"
+            }
+            else {
+                brailleCharacterString = "xx\nxx\nxx"
+            }
+            if brailleDotsArray.count > 1 {
+                for number in brailleDotsArray[0] {
+                    let numberAsInt = number.wholeNumberValue!
+                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridNumbersToStringIndex[numberAsInt]!)
+                    brailleCharacterString.replaceSubrange(index...index, with: "o")
+                }
+                for number in brailleDotsArray[1] {
+                    let numberAsInt = number.wholeNumberValue!
+                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridNumbersToStringIndex[numberAsInt + 6]!) //Because it will be part of the second set of 6 in the string
+                    brailleCharacterString.replaceSubrange(index...index, with: "o")
+                }
+            }
+            else {
+                for number in brailleDotsArray[0] {
+                    let numberAsInt = number.wholeNumberValue!
+                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridToStringIndex[numberAsInt]!)
+                    brailleCharacterString.replaceSubrange(index...index, with: "o")
+                }
+            }
+            brailleCharacterString += "\n" //End of char
+            brailleStringArray.append(brailleCharacterString)
+        }
+        
+        return brailleStringArray
+    }
+    
+    
     
     
     

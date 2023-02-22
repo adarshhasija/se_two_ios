@@ -153,6 +153,7 @@ class MCReaderButtonsViewController : UIViewController {
         alphanumericStringIndex = -1
         alphanumericArrayIndex = -1
         morseCodeStringIndex = -1
+        morseCodeLabel.text = (alphanumericArrayForBraille?.first)! //Reset braille grid to first character
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
                     "Autoplay complete");
         alphanumericLabel?.textColor = .none
@@ -225,7 +226,7 @@ class MCReaderButtonsViewController : UIViewController {
             morseCodeLabel.text = brailleText
         }
         else {
-            alphanumericArrayForBraille?.append(contentsOf: convertAlphanumericToBraille(alphanumericString: inputAlphanumeric ?? "") ?? [])
+            alphanumericArrayForBraille?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: inputAlphanumeric ?? "") ?? [])
             brailleText = (alphanumericArrayForBraille?.first)!
             morseCodeLabel.text = brailleText
         }
@@ -283,47 +284,6 @@ class MCReaderButtonsViewController : UIViewController {
         return morseCodeString
     }
     
-    private func convertAlphanumericToBraille(alphanumericString : String) -> [String]? {
-        var brailleStringArray : [String] = []
-        let english = alphanumericString.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890 ".contains).replacingOccurrences(of: " ", with: "␣")
-        var brailleCharacterString = ""
-        for character in english {
-            guard let brailleDotsString : String = braille.alphabetToBrailleDictionary[String(character)] else {
-                return nil
-            }
-            let brailleDotsArray = brailleDotsString.components(separatedBy: " ") //if its for a number its 2 braille grids
-            if brailleDotsArray.count > 1 {
-                //means its a number, and it needs 2 braille grids
-                brailleCharacterString = "xx xx\nxx xx\nxx xx"
-            }
-            else {
-                brailleCharacterString = "xx\nxx\nxx"
-            }
-            if brailleDotsArray.count > 1 {
-                for number in brailleDotsArray[0] {
-                    let numberAsInt = number.wholeNumberValue!
-                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridNumbersToStringIndex[numberAsInt]!)
-                    brailleCharacterString.replaceSubrange(index...index, with: "o")
-                }
-                for number in brailleDotsArray[1] {
-                    let numberAsInt = number.wholeNumberValue!
-                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridNumbersToStringIndex[numberAsInt + 6]!) //Because it will be part of the second set of 6 in the string
-                    brailleCharacterString.replaceSubrange(index...index, with: "o")
-                }
-            }
-            else {
-                for number in brailleDotsArray[0] {
-                    let numberAsInt = number.wholeNumberValue!
-                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridToStringIndex[numberAsInt]!)
-                    brailleCharacterString.replaceSubrange(index...index, with: "o")
-                }
-            }
-            brailleCharacterString += "\n" //End of char
-            brailleStringArray.append(brailleCharacterString)
-        }
-        
-        return brailleStringArray
-    }
     
     func mcScrollLeft() {
         var alphanumericString = alphanumericLabel?.text ?? ""
