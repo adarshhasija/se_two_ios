@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17701" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="21225" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="watch38"/>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17500"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="21040"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="SunoDayko" customModuleProvider="target">
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="InfoByFeel" customModuleProvider="target">
                     <items>
                         <button width="1" alignment="left" title="New Message" id="XLI-c3-8H7">
                             <connections>
@@ -49,7 +48,21 @@
                         <group width="1" height="154" alignment="left" layout="vertical" id="dXO-f8-Ixc">
                             <items>
                                 <label alignment="left" hidden="YES" text="Label" numberOfLines="0" id="Bvs-FV-rgO"/>
-                                <label alignment="left" isAccessibilityElement="NO" numberOfLines="0" id="3xj-WN-big"/>
+                                <group width="1" alignment="left" id="MyI-Co-daT">
+                                    <items>
+                                        <label alignment="left" isAccessibilityElement="NO" numberOfLines="0" id="3xj-WN-big"/>
+                                        <group width="0.5" alignment="left" layout="vertical" id="WeT-n5-3tj">
+                                            <items>
+                                                <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="wRo-cs-xho">
+                                                    <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                                                </label>
+                                                <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="ehB-ed-bR5">
+                                                    <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                                                </label>
+                                            </items>
+                                        </group>
+                                    </items>
+                                </group>
                                 <imageView width="75" height="75" alignment="center" hidden="YES" image="dot.square" catalog="system" id="L9T-BG-efi">
                                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
@@ -58,12 +71,6 @@
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
                                 </label>
                                 <imageView width="70" height="75" alignment="center" hidden="YES" id="22b-8Y-zPj"/>
-                                <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="wRo-cs-xho">
-                                    <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
-                                </label>
-                                <label width="1" alignment="left" textAlignment="center" numberOfLines="0" id="ehB-ed-bR5">
-                                    <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
-                                </label>
                             </items>
                             <gestureRecognizers>
                                 <longPressGestureRecognizer enabled="NO" minimumPressDuration="0.20000000000000001" id="H2U-j5-DN5">
@@ -261,9 +268,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="book.fill" catalog="system" width="128" height="101"/>
+        <image name="book.fill" catalog="system" width="128" height="93"/>
         <image name="dot.square" catalog="system" width="128" height="114"/>
-        <image name="pencil" catalog="system" width="128" height="112"/>
+        <image name="pencil" catalog="system" width="128" height="116"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
     </resources>
 </document>
