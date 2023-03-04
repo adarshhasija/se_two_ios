@@ -618,6 +618,9 @@ extension MCInterfaceController : WKCrownDelegate {
                             alphanumericArrayIndex += 1
                             if alphanumericArrayIndex >= alphanumericArrayForBraille.count {
                                 WKInterfaceDevice.current().play(.success)
+                                englishTextLabel.setText(englishString) //removing highlights
+                                morseCodeTextLabel.setText(morseCodeString) //removing highlights
+                                resetBigText()
                                 return
                             }
                             morseCodeString = alphanumericArrayForBraille[alphanumericArrayIndex]
@@ -638,7 +641,7 @@ extension MCInterfaceController : WKCrownDelegate {
             morseCodeStringIndex -= 1
             if morseCodeStringIndex >= morseCodeString.count {
                 //user may have scrolled down so much its gone way below the string length so even doing -1 means index is still way too far out +ve
-                morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(alphanumericString: englishString, index: alphanumericArrayIndex)
+                morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(alphanumericString: englishString, index: alphanumericArrayForBraille.count - 1)
             }
             crownRotationalDelta = 0.0
             if isUserTyping == true {
@@ -667,6 +670,9 @@ extension MCInterfaceController : WKCrownDelegate {
                         alphanumericArrayIndex -= 1
                         if alphanumericArrayIndex <= -1 {
                             WKInterfaceDevice.current().play(.success)
+                            englishTextLabel.setText(englishString) //removing highlights
+                            morseCodeTextLabel.setText(morseCodeString) //removing highlights
+                            resetBigText()
                             return
                         }
                         morseCodeString = alphanumericArrayForBraille[alphanumericArrayIndex]
