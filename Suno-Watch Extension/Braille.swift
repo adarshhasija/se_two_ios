@@ -161,7 +161,7 @@ class Braille {
             if brailleStringLength > 10 {
                 return Braille.brailleIndexOrderForNumbersVerticalReading[currentIndex] ?? -1
             }
-            else if currentIndex <= 5 {
+            else {
                 return Braille.brailleIndexOrderForVerticalReading[currentIndex] ?? -1
             }
         }
@@ -169,11 +169,10 @@ class Braille {
             if brailleStringLength > 10 {
                 return Braille.brailleIndexOrderForNumbersHorizontalReading[currentIndex] ?? -1
             }
-            else if currentIndex <= 5 {
+            else {
                 return Braille.brailleIndexOrderForHorizontalReading[currentIndex] ?? -1
             }
         }
-        return -1
     }
     
     func isMidpointReachedForNumber(brailleStringLength: Int, brailleStringIndexForNextItem: Int) -> Bool {
@@ -251,6 +250,17 @@ class Braille {
         }
         
         return brailleStringArray
+    }
+    
+    func getIndexInStringOfLastCharacterInTheGrid(alphanumericString: String, index: Int) -> Int {
+        let index2 = alphanumericString.index(alphanumericString.startIndex, offsetBy: index)
+        let alphanumeric = alphanumericString[index2]
+        if alphanumeric.isWholeNumber {
+            return 11 //as per brailleIndexOrderForVerticalReading and brailleIndexOrderForHorizontalReading, this is the key of the last elemment in the grid
+        }
+        else {
+            return 5 //as per brailleIndexOrderForVerticalReading and brailleIndexOrderForHorizontalReading, this is the key of the last elemment in the grid
+        }
     }
     
     
