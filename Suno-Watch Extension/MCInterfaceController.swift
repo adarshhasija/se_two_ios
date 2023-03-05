@@ -573,10 +573,6 @@ extension MCInterfaceController : WKCrownDelegate {
                 return
             }
             morseCodeStringIndex += 1
-            if morseCodeStringIndex < 0 {
-                //user may have scrolled up so much its gone way below -1 so even doing +1 means its still -ve
-                morseCodeStringIndex = 0
-            }
             let endTime = DispatchTime.now()
             let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
             if diffNanos <= quickScrollTimeThreshold {
@@ -603,8 +599,11 @@ extension MCInterfaceController : WKCrownDelegate {
             else {
                 startTimeNanos = DispatchTime.now().uptimeNanoseconds //Update this so we can do a check on the next rotation
                 if isUserTyping == false {
-                    if alphanumericArrayIndex == -1 { //first character
-                        alphanumericArrayIndex += 1
+                    if alphanumericArrayIndex <= -1 { //first character
+                        alphanumericArrayIndex = 0//+= 1
+                        morseCodeString = alphanumericArrayForBraille[alphanumericArrayIndex]
+                        morseCodeTextLabel.setText(morseCodeString)
+                        morseCodeStringIndex = 0
                     }
                     else if alphanumericArrayIndex >= alphanumericArrayForBraille.count { //beyond the end
                         WKInterfaceDevice.current().play(.success)
@@ -639,10 +638,6 @@ extension MCInterfaceController : WKCrownDelegate {
         else if crownRotationalDelta > expectedMoveDelta {
             //upward scroll
             morseCodeStringIndex -= 1
-            if morseCodeStringIndex >= morseCodeString.count {
-                //user may have scrolled down so much its gone way below the string length so even doing -1 means index is still way too far out +ve
-                morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(alphanumericString: englishString, index: alphanumericArrayForBraille.count - 1)
-            }
             crownRotationalDelta = 0.0
             if isUserTyping == true {
                 //If we are in typing mode, an up swipe becomes a delete
@@ -657,6 +652,9 @@ extension MCInterfaceController : WKCrownDelegate {
                 //Autoplay is off, scroll to read last character
                 if alphanumericArrayIndex >= alphanumericArrayForBraille.count {
                     alphanumericArrayIndex = alphanumericArrayForBraille.count - 1
+                    morseCodeString = alphanumericArrayForBraille[alphanumericArrayIndex]
+                    morseCodeTextLabel.setText(morseCodeString)
+                    morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(alphanumericString: englishString, index: alphanumericArrayIndex)
                 }
                 else if alphanumericArrayIndex <= -1 {
                     WKInterfaceDevice.current().play(.success)
@@ -1248,7 +1246,6 @@ extension MCInterfaceController {
                 "state" : "scrolling",
                 "is_reading" : self.isReading()
             ])
-       //     animateMiddleText(text: String(brailleStringIndex)+" "+String(morseCodeStringIndex))
             setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
             //resetBigText()
             animateMiddleText(text: nil)

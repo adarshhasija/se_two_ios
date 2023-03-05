@@ -19,12 +19,12 @@ class ActionsListController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         WKInterfaceDevice.current().play(.success) //successfully launched app
         
-        actionsList.append(ActionsCell(action: "Time", explanation: "12 hour format", cellType: Action.TIME))
-                actionsList.append(ActionsCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
-        actionsList.append(ActionsCell(action: "Battery Level", explanation: "Of this watch as a percentage", cellType: Action.BATTERY_LEVEL))
-        actionsList.append(ActionsCell(action: "Manual", explanation: "Enter a number of at most 6 digits and we will translate it into vibrations", cellType: Action.MANUAL))
-        actionsList.append(ActionsCell(action: "Camera", explanation: "Get the text that was captured by the iPhone camera", cellType: Action.CAMERA_OCR))
-        actionsList.append(ActionsCell(action: "Morse Code Typing", explanation: "A vibration based typing mode for deaf-blind", cellType: Action.MC_TYPING))
+        //actionsList.append(ActionsCell(action: "Time", explanation: "12 hour format", cellType: Action.TIME))
+        //actionsList.append(ActionsCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
+        //actionsList.append(ActionsCell(action: "Battery Level", explanation: "Of this watch as a percentage", cellType: Action.BATTERY_LEVEL))
+        actionsList.append(ActionsCell(action: "Manual", explanation: "Enter letters or numbers and we will translate it into vibrations. Max 6 characters", cellType: Action.MANUAL))
+        //actionsList.append(ActionsCell(action: "Camera", explanation: "Get the text that was captured by the iPhone camera", cellType: Action.CAMERA_OCR))
+        //actionsList.append(ActionsCell(action: "Morse Code Typing", explanation: "A vibration based typing mode for deaf-blind", cellType: Action.MC_TYPING))
         
         
         actionsListTable.setNumberOfRows(actionsList.count, withRowType: "ActionRow")
@@ -77,14 +77,20 @@ extension ActionsListController {
     
     func pushManualTypingController() {
         presentTextInputController(withSuggestions: [
-            "24",
-            "16",
-            "17"
+            "YES",
+            "NO",
+            "HELP"
         ], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if var input = (result as [Any]?)?[0] as? String {
                 input = input.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains) //Remove anything that is not alphanumeric
                 if input.count < 1 {
+                    return
+                }
+                if input.count > 6 {
+                    self.presentAlert(withTitle: "Alert", message: "Too long. Max 6 characters.", preferredStyle: .alert, actions: [
+                        WKAlertAction(title: "OK", style: .default) {}
+                        ])
                     return
                 }
                 var params : [String:Any] = [:]
