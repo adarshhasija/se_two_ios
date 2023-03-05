@@ -71,6 +71,11 @@
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
                                 </label>
                                 <imageView width="70" height="75" alignment="center" hidden="YES" id="22b-8Y-zPj"/>
+                                <button width="1" alignment="left" title="Change Direction" id="ewQ-hM-2dr" userLabel="Switch Braille Reading Direction">
+                                    <connections>
+                                        <action selector="switchBrailleDirectionButtonTapped" destination="V63-br-2PY" id="Rew-Pu-fb9"/>
+                                    </connections>
+                                </button>
                             </items>
                             <gestureRecognizers>
                                 <longPressGestureRecognizer enabled="NO" minimumPressDuration="0.20000000000000001" id="H2U-j5-DN5">
@@ -151,6 +156,7 @@
                         <outlet property="iphoneImage" destination="22b-8Y-zPj" id="OmN-g7-Hgy"/>
                         <outlet property="mainImage" destination="L9T-BG-efi" id="0PH-ca-K4x"/>
                         <outlet property="morseCodeTextLabel" destination="3xj-WN-big" id="FdQ-gP-QKf"/>
+                        <outlet property="switchBrailleDirectionButton" destination="ewQ-hM-2dr" id="F3q-MW-G9V"/>
                     </connections>
                 </controller>
             </objects>

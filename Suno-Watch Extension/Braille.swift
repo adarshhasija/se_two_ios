@@ -245,7 +245,6 @@ class Braille {
                     brailleCharacterString.replaceSubrange(index...index, with: "o")
                 }
             }
-            brailleCharacterString += "\n" //End of char
             brailleStringArray.append(brailleCharacterString)
         }
         

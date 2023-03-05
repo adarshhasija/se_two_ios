@@ -40,6 +40,7 @@ class MCInterfaceController : WKInterfaceController {
     var synth : AVSpeechSynthesizer?
     var mode : String?
     var isAutoPlayOn : Bool = false
+    var isBrailleSwitchedToHorizontal = false
     var startTimeNanos : UInt64 = 0 //Used to calculate speed of crown rotation
     var isScreenActive = true
     var quickScrollTimeThreshold = 700000000 //If the digital crown is scrolled 30 degrees within this many nano seconds, we go into autoplay
@@ -53,7 +54,13 @@ class MCInterfaceController : WKInterfaceController {
     @IBOutlet weak var iphoneImage: WKInterfaceImage!
     @IBOutlet weak var bigTextLabel: WKInterfaceLabel!
     @IBOutlet weak var bigTextLabel2: WKInterfaceLabel!
+    @IBOutlet weak var switchBrailleDirectionButton: WKInterfaceButton!
     
+    
+    @IBAction func switchBrailleDirectionButtonTapped() {
+        isBrailleSwitchedToHorizontal = !isBrailleSwitchedToHorizontal
+        self.switchBrailleDirectionButton.setTitle(isBrailleSwitchedToHorizontal == false ? "Read Sideways" : "Read up down")
+    }
     
     //Disabled in storyboard. Do not want to assign things to tap gesture. Accidental taps are possible
     @IBAction func tapGesture(_ sender: Any) {
@@ -478,6 +485,7 @@ class MCInterfaceController : WKInterfaceController {
                 isUserTyping = false
                 self.defaultInstructions = dcScrollStart
                 self.instructionsLabel.setText(self.defaultInstructions)
+                self.switchBrailleDirectionButton.setTitle(isBrailleSwitchedToHorizontal == false ? "Read Sideways" : "Read up down")
                 morseCodeAutoPlay(direction: "down")
             }
             else if mode == Action.MC_TYPING.rawValue {
@@ -1162,6 +1170,7 @@ extension MCInterfaceController {
         englishTextLabel.setText(englishString)
         morseCodeString = alphanumericArrayForBraille.first!
         morseCodeTextLabel.setText(morseCodeString)
+        switchBrailleDirectionButton.setHidden(false)
                     //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
                     instructionsLabel?.setText(dcScrollStart)
                     resetBigText()
@@ -1175,6 +1184,7 @@ extension MCInterfaceController {
         morseCodeTextLabel.setText(morseCodeString)
         instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" :
                                     "Resetting, please wait...")
+        switchBrailleDirectionButton.setHidden(true)
         
         let dictionary = [
             "direction" : direction
@@ -1192,7 +1202,7 @@ extension MCInterfaceController {
             morseCodeStringIndex = -1
             return
         }
-        brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: false)
+        brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
         if direction == "down" {
             if morseCodeStringIndex >= morseCodeString.count {
                 sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
