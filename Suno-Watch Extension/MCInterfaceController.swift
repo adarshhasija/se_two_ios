@@ -681,7 +681,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     }
                 }
                 digitalCrownRotated(direction: "up")
-            }
+            }   
         }
     }
     
