@@ -251,10 +251,10 @@ class Braille {
         return brailleStringArray
     }
     
-    func getIndexInStringOfLastCharacterInTheGrid(alphanumericString: String, index: Int) -> Int {
-        let index2 = alphanumericString.index(alphanumericString.startIndex, offsetBy: index)
-        let alphanumeric = alphanumericString[index2]
-        if alphanumeric.isWholeNumber {
+    func getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: String) -> Int {
+        //let index2 = alphanumericString.index(alphanumericString.startIndex, offsetBy: index)
+        //let alphanumeric = alphanumericString[index2]
+        if brailleStringForCharacter.count >= 10 {
             return 11 //as per brailleIndexOrderForVerticalReading and brailleIndexOrderForHorizontalReading, this is the key of the last elemment in the grid
         }
         else {

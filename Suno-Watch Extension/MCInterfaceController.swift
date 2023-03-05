@@ -662,7 +662,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     alphanumericArrayIndex = alphanumericArrayForBraille.count - 1
                     morseCodeString = alphanumericArrayForBraille[alphanumericArrayIndex]
                     morseCodeTextLabel.setText(morseCodeString)
-                    morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(alphanumericString: englishString, index: alphanumericArrayIndex)
+                    morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
                 }
                 else if alphanumericArrayIndex <= -1 {
                     WKInterfaceDevice.current().play(.success)
@@ -683,7 +683,7 @@ extension MCInterfaceController : WKCrownDelegate {
                         }
                         morseCodeString = alphanumericArrayForBraille[alphanumericArrayIndex]
                         morseCodeTextLabel.setText(morseCodeString)
-                        morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(alphanumericString: englishString, index: alphanumericArrayIndex)
+                        morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
                     }
                 }
                 digitalCrownRotated(direction: "up")
