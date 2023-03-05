@@ -27,7 +27,7 @@ class ActionsTableViewController : UITableViewController {
         //actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
         //actionsList.append(ActionsCell(action: "Find someone nearby", forWho: "Blind and Deaf-blind", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
         actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter letters or numbers and we will translate it into braille vibrations", cellType: Action.MANUAL))
-        //actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you ", cellType: Action.CAMERA_OCR))
+        actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you", cellType: Action.CAMERA_OCR))
         //actionsList.append(ActionsCell(action: "Morse Code Dictionary", forWho: "Blind and Deaf-blind", explanation: "To be used as reference when using Morse Code Typing feature in the Apple Watch app", cellType: Action.MC_DICTIONARY))
         
         
