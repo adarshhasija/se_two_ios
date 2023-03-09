@@ -616,7 +616,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     if arrayWorldsInStringIndex <= -1
                         && arrayBrailleGridsForCharsInWordIndex <= -1 { //first character
                         arrayWorldsInStringIndex = 0
-                        arrayBrailleGridsForCharsInWordIndex = 0//+= 1
+                        arrayBrailleGridsForCharsInWordIndex = 0
                         arrayBrailleGridsForCharsInWord.removeAll()
                         arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[0] ) ?? [])
                         englishString = arrayWordsInString.first ?? ""
@@ -679,17 +679,52 @@ extension MCInterfaceController : WKCrownDelegate {
             }
             else {
                 //Autoplay is off, scroll to read last character
-                if arrayBrailleGridsForCharsInWordIndex >= arrayBrailleGridsForCharsInWord.count {
+                if  arrayWorldsInStringIndex >= (arrayWordsInString.count - 1)
+                    && arrayBrailleGridsForCharsInWordIndex >= (arrayBrailleGridsForCharsInWord.count - 1)
+                        && morseCodeStringIndex >= (morseCodeString.count - 1) {
+                    arrayWorldsInStringIndex = arrayWordsInString.count - 1
+                    englishString = arrayWordsInString[arrayWorldsInStringIndex]
+                    arrayBrailleGridsForCharsInWord.removeAll()
+                    arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWorldsInStringIndex] ) ?? [])
                     arrayBrailleGridsForCharsInWordIndex = arrayBrailleGridsForCharsInWord.count - 1
                     morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
                     morseCodeTextLabel.setText(morseCodeString)
                     morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
                 }
-                else if arrayBrailleGridsForCharsInWordIndex <= -1 {
+                else if
+                    arrayWorldsInStringIndex <= 0
+                    && arrayBrailleGridsForCharsInWordIndex <= 0
+                    && morseCodeStringIndex <= -1 {
                     WKInterfaceDevice.current().play(.success)
+                    arrayWorldsInStringIndex = -1
+                    arrayBrailleGridsForCharsInWordIndex = -1
+                    englishTextLabel.setText(englishString) //removing highlights
+                    morseCodeTextLabel.setText(morseCodeString) //removing highlights
                     return
                 }
-                else {
+                else if morseCodeStringIndex <= -1
+                            && arrayBrailleGridsForCharsInWordIndex <= 0 {
+                    //end of the word. move to the previous word
+                    //The last iteration will take us to item at count - 1
+                    arrayWorldsInStringIndex -= 1
+                    englishString = arrayWordsInString[arrayWorldsInStringIndex]
+                    englishTextLabel.setText(englishString)
+                    arrayBrailleGridsForCharsInWord.removeAll()
+                    arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWorldsInStringIndex] ) ?? [])
+                    arrayBrailleGridsForCharsInWordIndex = englishString.count - 1
+                    morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+                    morseCodeTextLabel.setText(morseCodeString)
+                    morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
+                }
+                else if morseCodeStringIndex <= -1 {
+                    //in the middle of a word. move to the previous character
+                    arrayBrailleGridsForCharsInWordIndex -= 1
+                    morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+                    morseCodeTextLabel.setText(morseCodeString)
+                    morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
+                }
+                
+         /*       else {
                     //complleted 1 character  and moving to the next one
                     let brailleIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: false)
                     if  brailleIndex == -1 && arrayBrailleGridsForCharsInWordIndex > -1
@@ -706,7 +741,7 @@ extension MCInterfaceController : WKCrownDelegate {
                         morseCodeTextLabel.setText(morseCodeString)
                         morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
                     }
-                }
+                }   */
                 digitalCrownRotated(direction: "up")
             }   
         }
