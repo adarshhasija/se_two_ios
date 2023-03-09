@@ -83,16 +83,16 @@ extension ActionsListController {
         ], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if var input = (result as [Any]?)?[0] as? String {
-                input = input.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains) //Remove anything that is not alphanumeric
+                input = input.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains) //Remove anything that is not alphanumeric
                 if input.count < 1 {
                     return
                 }
-                if input.count > 6 {
+           /*     if input.count > 6 {
                     self.presentAlert(withTitle: "Alert", message: "Too long. Max 6 characters.", preferredStyle: .alert, actions: [
                         WKAlertAction(title: "OK", style: .default) {}
                         ])
                     return
-                }
+                }   */
                 var params : [String:Any] = [:]
                 params["mode"] = Action.MANUAL.rawValue
                 params["alphanumeric"] = input

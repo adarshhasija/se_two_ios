@@ -71,7 +71,7 @@
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
                                 </label>
                                 <imageView width="70" height="75" alignment="center" hidden="YES" id="22b-8Y-zPj"/>
-                                <button width="1" alignment="left" title="Change Direction" id="ewQ-hM-2dr" userLabel="Switch Braille Reading Direction">
+                                <button width="1" alignment="left" hidden="YES" title="Change Direction" id="ewQ-hM-2dr" userLabel="Switch Braille Reading Direction">
                                     <connections>
                                         <action selector="switchBrailleDirectionButtonTapped" destination="V63-br-2PY" id="Rew-Pu-fb9"/>
                                     </connections>
