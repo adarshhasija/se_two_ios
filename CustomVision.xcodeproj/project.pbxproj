@@ -50,6 +50,7 @@
 		317D4C1B217EC76D0081B38B /* InfoByFeel.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 317D4C01217EC76A0081B38B /* InfoByFeel.app */; };
 		317D4C242188CCC50081B38B /* States.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C232188CCC50081B38B /* States.swift */; };
 		317D4C262188CCF00081B38B /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
+		317D7E2629BA5C8D00BDBD51 /* TextInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D7E2529BA5C8D00BDBD51 /* TextInterfaceController.swift */; };
 		317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */; };
 		31829CB724936D2B003C6153 /* MorseCodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A855142422A63A0064B29C /* MorseCodeUtils.swift */; };
 		31829CBB2493B671003C6153 /* ActionsMCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31829CBA2493B671003C6153 /* ActionsMCViewController.swift */; };
@@ -201,6 +202,7 @@
 		317D4C18217EC76D0081B38B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		317D4C232188CCC50081B38B /* States.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = States.swift; sourceTree = "<group>"; };
 		317D4C252188CCF00081B38B /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
+		317D7E2529BA5C8D00BDBD51 /* TextInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInterfaceController.swift; sourceTree = "<group>"; };
 		317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteSpeechViewController.swift; sourceTree = "<group>"; };
 		31829CBA2493B671003C6153 /* ActionsMCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMCViewController.swift; sourceTree = "<group>"; };
 		31829CBC2493B737003C6153 /* MorseCode.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MorseCode.storyboard; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				31CBAE7C261F13C7006563B8 /* ComplicationController.swift */,
 				3117DB35299A899F00A54F1D /* Braille.swift */,
 				3117DB38299A98E200A54F1D /* BrailleCell.swift */,
+				317D7E2529BA5C8D00BDBD51 /* TextInterfaceController.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -881,6 +884,7 @@
 				31108A91254808B9009E3DF1 /* Actions.swift in Sources */,
 				31CBAE7D261F13C7006563B8 /* ComplicationController.swift in Sources */,
 				31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */,
+				317D7E2629BA5C8D00BDBD51 /* TextInterfaceController.swift in Sources */,
 				317C713B2540B03800E6800B /* LibraryCustomActions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

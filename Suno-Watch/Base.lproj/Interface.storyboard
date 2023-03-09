@@ -76,6 +76,11 @@
                                         <action selector="switchBrailleDirectionButtonTapped" destination="V63-br-2PY" id="Rew-Pu-fb9"/>
                                     </connections>
                                 </button>
+                                <button width="1" alignment="left" hidden="YES" title="Full Text" id="PA7-ux-GDW">
+                                    <connections>
+                                        <action selector="fullTextButtonTapped" destination="V63-br-2PY" id="LXj-Gf-afm"/>
+                                    </connections>
+                                </button>
                             </items>
                             <gestureRecognizers>
                                 <longPressGestureRecognizer enabled="NO" minimumPressDuration="0.20000000000000001" id="H2U-j5-DN5">
@@ -152,6 +157,7 @@
                         <outlet property="bigTextLabel" destination="wRo-cs-xho" id="ath-ds-hbk"/>
                         <outlet property="bigTextLabel2" destination="ehB-ed-bR5" id="Y8j-xz-qEp"/>
                         <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
+                        <outlet property="fullTextButton" destination="PA7-ux-GDW" id="B74-nB-UYO"/>
                         <outlet property="instructionsLabel" destination="Reo-fp-Kjf" id="05H-kS-0jN"/>
                         <outlet property="iphoneImage" destination="22b-8Y-zPj" id="OmN-g7-Hgy"/>
                         <outlet property="mainImage" destination="L9T-BG-efi" id="0PH-ca-K4x"/>
@@ -213,6 +219,20 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="400" y="394"/>
+        </scene>
+        <!--TextInterfaceController-->
+        <scene sceneID="e2A-x0-JgX">
+            <objects>
+                <controller identifier="TextInterfaceController" id="bVU-8v-UBN" customClass="TextInterfaceController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <label alignment="left" text="Label" id="olg-IL-yi4"/>
+                    </items>
+                    <connections>
+                        <outlet property="label" destination="olg-IL-yi4" id="aSp-9i-z1g"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="400" y="794"/>
         </scene>
         <!--DictionaryDetail-->
         <scene sceneID="2iw-vT-hFk">

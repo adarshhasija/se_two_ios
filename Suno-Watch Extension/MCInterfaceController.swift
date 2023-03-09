@@ -57,7 +57,33 @@ class MCInterfaceController : WKInterfaceController {
     @IBOutlet weak var bigTextLabel: WKInterfaceLabel!
     @IBOutlet weak var bigTextLabel2: WKInterfaceLabel!
     @IBOutlet weak var switchBrailleDirectionButton: WKInterfaceButton!
+    @IBOutlet weak var fullTextButton: WKInterfaceButton!
     
+    
+    @IBAction func fullTextButtonTapped() {
+        var text = ""
+        var startIndexForHighlighting = 0
+        var endIndexForHighlighting = 0
+        for word in arrayWordsInString {
+            text += word
+            text += " "
+        }
+        text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        for (index, element) in arrayWordsInString.enumerated() {
+            if index < arrayWorldsInStringIndex {
+                startIndexForHighlighting += arrayWordsInString[index].count //Need to increment by length of  the word that was completed
+                startIndexForHighlighting += 1 //account for space after the word
+            }
+        }
+        startIndexForHighlighting += arrayBrailleGridsForCharsInWordIndex
+        endIndexForHighlighting = startIndexForHighlighting + 1
+        let params : [String: Any] = [
+            "text" : text,
+            "start_index" : startIndexForHighlighting,
+            "end_index" : endIndexForHighlighting
+        ]
+        pushController(withName: "TextInterfaceController", context: params)
+    }
     
     @IBAction func switchBrailleDirectionButtonTapped() {
         isBrailleSwitchedToHorizontal = !isBrailleSwitchedToHorizontal
@@ -489,6 +515,7 @@ class MCInterfaceController : WKInterfaceController {
                 self.defaultInstructions = dcScrollStart
                 self.instructionsLabel.setText(self.defaultInstructions)
                 self.switchBrailleDirectionButton.setTitle(isBrailleSwitchedToHorizontal == false ? "Read Sideways" : "Read up down")
+                self.fullTextButton.setHidden(arrayWordsInString.count > 1 ? false : true) //Only want this if there is text with spaces
                 morseCodeAutoPlay(direction: "down")
             }
             else if mode == Action.MC_TYPING.rawValue {
@@ -696,7 +723,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     && arrayBrailleGridsForCharsInWordIndex <= 0
                     && morseCodeStringIndex <= -1 {
                     WKInterfaceDevice.current().play(.success)
-                    arrayWorldsInStringIndex = -1
+                    arrayWorldsInStringIndex = -1 //This is so the indexes are set correctly when downward scroll
                     arrayBrailleGridsForCharsInWordIndex = -1
                     englishTextLabel.setText(englishString) //removing highlights
                     morseCodeTextLabel.setText(morseCodeString) //removing highlights
@@ -723,25 +750,6 @@ extension MCInterfaceController : WKCrownDelegate {
                     morseCodeTextLabel.setText(morseCodeString)
                     morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
                 }
-                
-         /*       else {
-                    //complleted 1 character  and moving to the next one
-                    let brailleIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: false)
-                    if  brailleIndex == -1 && arrayBrailleGridsForCharsInWordIndex > -1
-                     {
-                        arrayBrailleGridsForCharsInWordIndex -= 1
-                        if arrayBrailleGridsForCharsInWordIndex <= -1 {
-                            WKInterfaceDevice.current().play(.success)
-                            englishTextLabel.setText(englishString) //removing highlights
-                            morseCodeTextLabel.setText(morseCodeString) //removing highlights
-                            resetBigText()
-                            return
-                        }
-                        morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
-                        morseCodeTextLabel.setText(morseCodeString)
-                        morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
-                    }
-                }   */
                 digitalCrownRotated(direction: "up")
             }   
         }
@@ -1246,9 +1254,10 @@ extension MCInterfaceController {
         morseCodeString = arrayBrailleGridsForCharsInWord.first!
         morseCodeTextLabel.setText(morseCodeString)
         //switchBrailleDirectionButton.setHidden(false)
-                    //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
-                    instructionsLabel?.setText(dcScrollStart)
-                    resetBigText()
+        self.fullTextButton.setHidden(arrayWordsInString.count > 1 ? false : true) //Only want this if there is text with spaces
+        //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
+        instructionsLabel?.setText(dcScrollStart)
+        resetBigText()
         isAutoPlayOn = false
     }
     
@@ -1264,6 +1273,7 @@ extension MCInterfaceController {
         instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" :
                                     "Resetting, please wait...")
         switchBrailleDirectionButton.setHidden(true)
+        fullTextButton.setHidden(true)
         
         let dictionary = [
             "direction" : direction
