@@ -62,6 +62,7 @@ class MCReaderButtonsViewController : UIViewController {
 
     
     @IBAction func fullTextButtonTapped(_ sender: Any) {
+        //We do this to retain the state when we return from viewing the full text
         UserDefaults.standard.set(arrayWordsInStringIndex, forKey: "INDEX_IN_FULL_STRING")
         UserDefaults.standard.set(arrayBrailleGridsForCharsInWordIndex, forKey: "INDEX_IN_WORD")
         UserDefaults.standard.set(morseCodeStringIndex, forKey: "INDEX_IN_GRID")  //braille index is obtained from this
