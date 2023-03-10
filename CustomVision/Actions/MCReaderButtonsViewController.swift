@@ -62,6 +62,9 @@ class MCReaderButtonsViewController : UIViewController {
 
     
     @IBAction func fullTextButtonTapped(_ sender: Any) {
+        UserDefaults.standard.set(arrayWordsInStringIndex, forKey: "INDEX_IN_FULL_STRING")
+        UserDefaults.standard.set(arrayBrailleGridsForCharsInWordIndex, forKey: "INDEX_IN_WORD")
+        UserDefaults.standard.set(morseCodeStringIndex, forKey: "INDEX_IN_GRID")  //braille index is obtained from this
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let textViewController = storyBoard.instantiateViewController(withIdentifier: "TextViewController") as! TextViewController
         var text = ""
@@ -314,6 +317,33 @@ class MCReaderButtonsViewController : UIViewController {
         audioButton?.isEnabled = false
         morseCodeAutoPlay(direction: "right")
         //setUpButtonScalable(button: autoplayButton, title: isAutoPlayOn == true ? "Stop Autoplay" : "Replay")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let userDefault = UserDefaults.standard
+        guard let INDEX_IN_FULL_STRING : Int = userDefault.value(forKey: "INDEX_IN_FULL_STRING") as? Int else { return }
+        userDefault.removeObject(forKey: "INDEX_IN_FULL_STRING")
+        guard let INDEX_IN_WORD : Int = userDefault.value(forKey: "INDEX_IN_WORD") as? Int else { return }
+        userDefault.removeObject(forKey: "INDEX_IN_WORD")
+        guard let INDEX_IN_GRID : Int = userDefault.value(forKey: "INDEX_IN_GRID") as? Int else { return }
+        userDefault.removeObject(forKey: "INDEX_IN_GRID")
+        
+        //We do have values and we can process them
+        arrayWordsInStringIndex = INDEX_IN_FULL_STRING
+        arrayBrailleGridsForCharsInWordIndex = INDEX_IN_WORD
+        morseCodeStringIndex = INDEX_IN_GRID
+        let alphanumericString = arrayWordsInString[arrayWordsInStringIndex]
+        alphanumericLabel?.text = alphanumericString
+        arrayBrailleGridsForCharsInWord?.removeAll()
+        arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex]) ?? [])
+        let morseCodeString = arrayBrailleGridsForCharsInWord?[arrayBrailleGridsForCharsInWordIndex] ?? ""
+        morseCodeLabel?.text = morseCodeString
+        brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+        
+        //Could call mcScrollRight here but wont as that func plays a haptic, which we dont want
+        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
+        MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: arrayBrailleGridsForCharsInWordIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
+        animateMiddleText(text: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
