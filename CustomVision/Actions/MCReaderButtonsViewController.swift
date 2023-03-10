@@ -30,8 +30,10 @@ class MCReaderButtonsViewController : UIViewController {
     var alphanumericStringIndex = -1
     var morseCodeStringIndex = -1
     var brailleStringIndex = -1
-    var alphanumericArrayIndex = -1 //in the case of braille
-    var alphanumericArrayForBraille : [String]? = []
+    var arrayBrailleGridsForCharsInWord : [String]? = []
+    var arrayBrailleGridsForCharsInWordIndex = -1 //in the case of braille
+    var arrayWordsInString : [String] = []
+    var arrayWordsInStringIndex = -1
     var morseCode = MorseCode()
     var braille = Braille()
     var synth = AVSpeechSynthesizer()
@@ -95,34 +97,33 @@ class MCReaderButtonsViewController : UIViewController {
         for backTapLabel in backTapLabels {
             backTapLabel.isHidden = true
         }
-        if braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeLabel.text!.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal) == -1 && alphanumericArrayIndex >= alphanumericArrayForBraille!.count {
+        let brailleIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeLabel.text!.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+        if brailleIndex == -1
+            && arrayBrailleGridsForCharsInWordIndex >= arrayBrailleGridsForCharsInWord!.count
+            && arrayWordsInStringIndex >= (arrayWordsInString.count - 1) {
             hapticManager?.hapticsForEndofEntireAlphanumeric()
             return
+        }
+        else if brailleIndex == -1
+                    && arrayBrailleGridsForCharsInWordIndex >= arrayBrailleGridsForCharsInWord!.count {
+            //end of word. move to next word
+            setupNextWord()
         }
         mcScrollRight()
     }
     
     
     @IBAction func resetButtonTapped(_ sender: Any) {
-        resetButton?.isHidden = true
-        middleBigTextView?.isHidden = true
-        alphanumericStringIndex = -1
-        alphanumericArrayIndex = -1
-        morseCodeStringIndex = -1
-        alphanumericLabel?.textColor = .label
-        morseCodeLabel?.textColor = .label
-        let morseCodeString = morseCodeLabel?.text ?? ""
-        morseCodeLabel?.text = morseCodeString //reset the size of any morse code characters that had been made green and bigger
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
-        "Reset Successful");
-        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-        
-        appleWatchImageView.isHidden = false
+      /*appleWatchImageView.isHidden = false
         scrollMCLabel.isHidden = false
         siriButton?.isHidden = false
         for backTapLabel in backTapLabels {
             backTapLabel.isHidden = false
-        }
+        }   */
+        stopAutoPlay()
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        "Reset Successful");
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
     }
     
     @IBAction func gestureLongPress(_ sender: Any) {
@@ -138,8 +139,16 @@ class MCReaderButtonsViewController : UIViewController {
         if direction == "right" { mcScrollRight() } else { mcScrollLeft() }
 
         let count = morseCodeLabel.text?.count ?? -1
-        if braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeLabel.text!.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal) == -1 && alphanumericArrayIndex >= alphanumericArrayForBraille!.count {
+        let brailleIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeLabel.text!.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+        if brailleIndex == -1
+            && arrayBrailleGridsForCharsInWordIndex >= arrayBrailleGridsForCharsInWord!.count
+            && arrayWordsInStringIndex >= (arrayWordsInString.count - 1) {
             stopAutoPlay()
+        }
+        else if brailleIndex == -1
+                    && arrayBrailleGridsForCharsInWordIndex >= arrayBrailleGridsForCharsInWord!.count {
+            //end of word. move to next word
+            setupNextWord()
         }
         else if braille.isMidpointReachedForNumber(brailleStringLength: count, brailleStringIndexForNextItem: brailleStringIndex) {
             //Want a pause between first and second half of number
@@ -147,16 +156,30 @@ class MCReaderButtonsViewController : UIViewController {
         }
     }
     
+    func setupNextWord() {
+        arrayWordsInStringIndex += 1
+        arrayBrailleGridsForCharsInWordIndex = 0
+        alphanumericLabel.text = arrayWordsInString[arrayWordsInStringIndex]
+        arrayBrailleGridsForCharsInWord?.removeAll()
+        arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) ?? []) //get the braille grids for the next word
+        morseCodeLabel?.text = arrayBrailleGridsForCharsInWord?.first ?? "" //set the braille grid for the first character in the word
+        morseCodeStringIndex = -1
+    }
+    
     func stopAutoPlay() {
         autoPlayTimer?.invalidate()
         isAutoPlayOn = false
+        arrayWordsInStringIndex = 0
+        arrayBrailleGridsForCharsInWordIndex = -1
         alphanumericStringIndex = -1
-        alphanumericArrayIndex = -1
         morseCodeStringIndex = -1
-        morseCodeLabel.text = (alphanumericArrayForBraille?.first)! //Reset braille grid to first character
+        alphanumericLabel?.text = arrayWordsInString.first
+        alphanumericLabel?.textColor = .none
+        arrayBrailleGridsForCharsInWord?.removeAll()
+        arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[0] ) ?? [])
+        morseCodeLabel.text = (arrayBrailleGridsForCharsInWord?.first)! //Reset braille grid to first character
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
                     "Autoplay complete");
-        alphanumericLabel?.textColor = .none
         let moreCodeString = morseCodeLabel.text
         morseCodeLabel.text = moreCodeString //This is to remove any highlighted charaacter
         morseCodeLabel?.textColor = .none
@@ -164,7 +187,7 @@ class MCReaderButtonsViewController : UIViewController {
         autoplayButton?.setTitle("Replay", for: .normal)
         autoplayButton?.setTitleColor(UIColor.blue, for: .normal)
         nextCharacterButton?.isHidden = false
-        switchBrailleDirectionButton?.isHidden = false
+        //switchBrailleDirectionButton?.isHidden = false
         resetButton?.isHidden = true
         audioButton?.isEnabled = false //We were previously hiding it. We do not want to do that as VoiceOver may/may not lose focus of the element
         middleBigTextView.isHidden = true
@@ -177,14 +200,18 @@ class MCReaderButtonsViewController : UIViewController {
     }
     
     func morseCodeAutoPlay(direction: String) {
-        alphanumericStringIndex = -1
-        alphanumericArrayIndex = -1
-        morseCodeStringIndex = -1
         isAutoPlayOn = true
+        alphanumericLabel?.text = arrayWordsInString.first
         alphanumericLabel?.textColor = .none //Resetting the string colors at the start of autoplay
-        let morseCodeString = morseCodeLabel?.text
+        arrayBrailleGridsForCharsInWord?.removeAll()
+        arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "" ) ?? [])
+        let morseCodeString = arrayBrailleGridsForCharsInWord?.first
         morseCodeLabel?.text = morseCodeString?.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
         morseCodeLabel?.textColor = .none
+        arrayWordsInStringIndex = 0
+        arrayBrailleGridsForCharsInWordIndex = -1
+        alphanumericStringIndex = -1
+        morseCodeStringIndex = -1
         autoplayButton?.setTitle("Stop Autoplay", for: .normal)
         autoplayButton?.setTitleColor(UIColor.red, for: .normal)
         nextCharacterButton?.isHidden = true
@@ -226,8 +253,9 @@ class MCReaderButtonsViewController : UIViewController {
             morseCodeLabel.text = brailleText
         }
         else {
-            alphanumericArrayForBraille?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: inputAlphanumeric ?? "") ?? [])
-            brailleText = (alphanumericArrayForBraille?.first)!
+            arrayWordsInString.append(contentsOf: inputAlphanumeric?.components(separatedBy: " ") ?? [])
+            arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
+            brailleText = (arrayBrailleGridsForCharsInWord?.first)!
             morseCodeLabel.text = brailleText
         }
         sendEnglishAndMCToWatch(alphanumeric: inputAlphanumeric ?? "", morseCode: brailleText) //The Watch may already be waiting for camera input.
@@ -362,18 +390,18 @@ class MCReaderButtonsViewController : UIViewController {
             
             //If its braaille, lets go to the next character
             morseCodeStringIndex = -1 //As we are now analzing new brialle grid for new charaacter
-            alphanumericArrayIndex += 1
-            if alphanumericArrayIndex < alphanumericArrayForBraille!.count {
+            arrayBrailleGridsForCharsInWordIndex += 1
+            if arrayBrailleGridsForCharsInWordIndex < arrayBrailleGridsForCharsInWord!.count {
                 Thread.sleep(forTimeInterval: 0.5)
-                morseCodeString = alphanumericArrayForBraille![alphanumericArrayIndex]
+                morseCodeString = arrayBrailleGridsForCharsInWord![arrayBrailleGridsForCharsInWordIndex]
                 morseCodeLabel.text = morseCodeString
                 animateBrailleGrid()
                 
-                MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: alphanumericArrayIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
+                MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: arrayBrailleGridsForCharsInWordIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
             }
             else {
                 //Its likely the last character
-                morseCodeLabel.text = (alphanumericArrayForBraille?.first)! //Reset braille grid to first character
+                morseCodeLabel.text = (arrayBrailleGridsForCharsInWord?.first)! //Reset braille grid to first character
             }
             return
         }
@@ -381,9 +409,9 @@ class MCReaderButtonsViewController : UIViewController {
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: /*morseCodeStringIndex*/ brailleStringIndex)
         
         //means its the first character in the grid and the first alphanumeric
-        if brailleStringIndex == 0 && alphanumericArrayIndex == -1 {
-            alphanumericArrayIndex+=1
-            MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: alphanumericArrayIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
+        if brailleStringIndex == 0 && arrayBrailleGridsForCharsInWordIndex == -1 {
+            arrayBrailleGridsForCharsInWordIndex+=1
+            MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: arrayBrailleGridsForCharsInWordIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
         }
         
         animateMiddleText(text: inputMCExplanation[safe: morseCodeStringIndex])

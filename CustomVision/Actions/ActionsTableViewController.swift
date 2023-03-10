@@ -120,12 +120,12 @@ class ActionsTableViewController : UITableViewController {
     
     private func openManualEntryPopup() {
         let maxLength = 7
-        let alert = UIAlertController(title: "Enter text or numbers only", message: "Max " + String(maxLength) + " characters", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Enter letters or numbers only", message: "No special characters", preferredStyle: .alert)
 
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in
             textField.placeholder = "Enter here"
-            textField.maxLength = maxLength
+            //textField.maxLength = maxLength
             //textField.keyboardType = .numberPad
             //textField.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged) //Currently controller by maxLength. Use this if needed
         }
@@ -136,7 +136,7 @@ class ActionsTableViewController : UITableViewController {
             if textField?.text?.isEmpty == false {
                 let text : String = textField!.text!
                 Analytics.logEvent("se3_manual_success", parameters: [:]) //returned from camera
-                let textFiltered = text.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
+                let textFiltered = text.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
                 self.openMorseCodeReadingScreen(alphanumericString: textFiltered, inputAction: Action.MANUAL)
                 alert?.dismiss(animated: true, completion: nil)
             }
