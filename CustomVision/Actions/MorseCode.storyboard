@@ -288,7 +288,7 @@
                                 <rect key="frame" x="16" y="44" width="288" height="524"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y3U-tb-ggf">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="106"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="139"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdv-Kb-sRM">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="33.5"/>
@@ -312,15 +312,16 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8d-Ez-seD">
-                                                <rect key="frame" x="102" y="67" width="84" height="39"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                <rect key="frame" x="105.5" y="67" width="77" height="36"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Autoplay"/>
                                                 <connections>
                                                     <action selector="autoplayButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="xtM-4V-HWo"/>
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lv9-9I-e76">
-                                                <rect key="frame" x="98" y="106" width="92" height="0.0"/>
+                                                <rect key="frame" x="98" y="103" width="92" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                 <state key="normal" title="Play Audio"/>
                                                 <connections>
@@ -328,29 +329,41 @@
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="euY-vf-pIF" userLabel="Next Character">
-                                                <rect key="frame" x="56.5" y="106" width="175.5" height="0.0"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Play Next Character"/>
+                                                <rect key="frame" x="57" y="103" width="174" height="0.0"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Play Next Character"/>
                                                 <connections>
                                                     <action selector="nextCharacterButtontapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="5oE-49-dIw"/>
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-xK-4bF">
-                                                <rect key="frame" x="110.5" y="106" width="67.5" height="0.0"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Reset">
-                                                    <color key="baseForegroundColor" systemColor="systemRedColor"/>
-                                                </buttonConfiguration>
+                                                <rect key="frame" x="119" y="103" width="50" height="0.0"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Reset">
+                                                    <color key="titleColor" systemColor="systemRedColor"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="resetButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="qlJ-SH-xVG"/>
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aj9-V5-CdE" userLabel="Switch Braille Direction">
-                                                <rect key="frame" x="25.5" y="106" width="237" height="0.0"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Switch to Reading Sideways"/>
+                                                <rect key="frame" x="21" y="103" width="246" height="0.0"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Switch to Reading Sideways"/>
                                                 <connections>
                                                     <action selector="switchBrailleButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="Vew-J9-0b1"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y1a-s5-Ysu">
+                                                <rect key="frame" x="88.5" y="103" width="111" height="36"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="See Full Text"/>
+                                                <connections>
+                                                    <action selector="fullTextButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="gEF-iJ-PNX"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -428,6 +441,7 @@
                         <outlet property="audioButton" destination="Lv9-9I-e76" id="skN-EV-B5b"/>
                         <outlet property="autoplayButton" destination="f8d-Ez-seD" id="jnv-hh-nlQ"/>
                         <outlet property="braillelLabel" destination="dEo-pR-Mcz" id="tic-Hm-TWf"/>
+                        <outlet property="fullTextButton" destination="Y1a-s5-Ysu" id="5xN-8E-Cx1"/>
                         <outlet property="middleBigTextView" destination="aYk-9M-WPq" id="TIq-ra-t2F"/>
                         <outlet property="middleStackView" destination="Vu2-4A-M8E" id="vbU-CT-aI3"/>
                         <outlet property="morseCodeLabel" destination="WSh-G6-6AY" id="gnJ-0I-Qf4"/>
@@ -447,13 +461,61 @@
             </objects>
             <point key="canvasLocation" x="3785.625" y="-2167.605633802817"/>
         </scene>
+        <!--Text View Controller-->
+        <scene sceneID="0ce-1L-THs">
+            <objects>
+                <viewController storyboardIdentifier="TextViewController" id="wHB-1o-zmR" customClass="TextViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dnB-KH-fhU"/>
+                        <viewControllerLayoutGuide type="bottom" id="51f-LG-dqV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="W9V-om-fJJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RZl-Wa-H9F">
+                                <rect key="frame" x="40" y="20" width="240" height="128"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsl-Pd-jYS">
+                                        <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="vsl-Pd-jYS" firstAttribute="top" secondItem="YHx-3r-QB8" secondAttribute="top" id="dd1-id-Ojg"/>
+                                    <constraint firstItem="vsl-Pd-jYS" firstAttribute="leading" secondItem="RZl-Wa-H9F" secondAttribute="leading" id="zvL-gu-SuK"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="qfU-Oi-O8u"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="YHx-3r-QB8"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="RZl-Wa-H9F" firstAttribute="centerX" secondItem="W9V-om-fJJ" secondAttribute="centerX" id="4jK-Ga-sA4"/>
+                            <constraint firstItem="RZl-Wa-H9F" firstAttribute="leading" secondItem="W9V-om-fJJ" secondAttribute="leadingMargin" constant="20" id="Da3-8T-nwl"/>
+                            <constraint firstItem="51f-LG-dqV" firstAttribute="top" secondItem="RZl-Wa-H9F" secondAttribute="bottom" constant="50" id="JRM-dh-gyC"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="RZl-Wa-H9F" secondAttribute="trailing" constant="20" id="MXY-YN-3dg"/>
+                            <constraint firstItem="RZl-Wa-H9F" firstAttribute="top" secondItem="dnB-KH-fhU" secondAttribute="bottom" constant="50" id="aA6-Y4-nbw"/>
+                            <constraint firstItem="RZl-Wa-H9F" firstAttribute="centerY" secondItem="W9V-om-fJJ" secondAttribute="centerY" id="s49-Zb-xSn"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mainLabel" destination="vsl-Pd-jYS" id="Hl6-Nc-Hja"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nMU-Tr-1h3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4765" y="-2179"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="hwN-Ld-0iH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VqB-SC-3sd" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="g9W-p7-7Jz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

@@ -53,12 +53,38 @@ class MCReaderButtonsViewController : UIViewController {
     @IBOutlet weak var nextCharacterButton: UIButton!
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var switchBrailleDirectionButton: UIButton!
+    @IBOutlet weak var fullTextButton: UIButton!
     @IBOutlet weak var middleStackView: UIStackView!
     @IBOutlet weak var appleWatchImageView: UIImageView!
     @IBOutlet weak var scrollMCLabel: UILabel!
     var siriButton : INUIAddVoiceShortcutButton!
     var backTapLabels : [UILabel] = []
 
+    
+    @IBAction func fullTextButtonTapped(_ sender: Any) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
+        let textViewController = storyBoard.instantiateViewController(withIdentifier: "TextViewController") as! TextViewController
+        var text = ""
+        var startIndexForHighlighting = 0
+        var endIndexForHighlighting = 0
+        for word in arrayWordsInString {
+            text += word
+            text += " "
+        }
+        text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        for (index, element) in arrayWordsInString.enumerated() {
+            if index < arrayWordsInStringIndex {
+                startIndexForHighlighting += arrayWordsInString[index].count //Need to increment by length of  the word that was completed
+                startIndexForHighlighting += 1 //account for space after the word
+            }
+        }
+        startIndexForHighlighting += arrayBrailleGridsForCharsInWordIndex
+        endIndexForHighlighting = startIndexForHighlighting + 1
+        textViewController.mText = text
+        textViewController.mStartIndexForHighlighting = startIndexForHighlighting
+        textViewController.mEndIndexForHighlighting = endIndexForHighlighting
+        self.navigationController?.pushViewController(textViewController, animated: true)
+    }
     
     @IBAction func audioButtonTapped(_ sender: Any) {
         Analytics.logEvent("se3_ios_audio_btn", parameters: [:])
@@ -185,9 +211,10 @@ class MCReaderButtonsViewController : UIViewController {
         morseCodeLabel?.textColor = .none
         //morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes //DOES NOT APPLY TO BRAILLE
         autoplayButton?.setTitle("Replay", for: .normal)
-        autoplayButton?.setTitleColor(UIColor.blue, for: .normal)
+        autoplayButton?.setTitleColor(UIColor.systemBlue, for: .normal)
         nextCharacterButton?.isHidden = false
         //switchBrailleDirectionButton?.isHidden = false
+        fullTextButton.isHidden = arrayWordsInString.count > 1 ? false : true
         resetButton?.isHidden = true
         audioButton?.isEnabled = false //We were previously hiding it. We do not want to do that as VoiceOver may/may not lose focus of the element
         middleBigTextView.isHidden = true
@@ -216,6 +243,7 @@ class MCReaderButtonsViewController : UIViewController {
         autoplayButton?.setTitleColor(UIColor.red, for: .normal)
         nextCharacterButton?.isHidden = true
         switchBrailleDirectionButton?.isHidden = true
+        fullTextButton?.isHidden = true
         resetButton?.isHidden = true
         if UIAccessibility.isVoiceOverRunning {
             audioButton?.setTitle(isAudioRequestedByUser == false ? "Play Audio" : "Stop Audio", for: .normal)
@@ -255,6 +283,7 @@ class MCReaderButtonsViewController : UIViewController {
         else {
             arrayWordsInString.append(contentsOf: inputAlphanumeric?.components(separatedBy: " ") ?? [])
             arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
+            fullTextButton.isHidden = arrayWordsInString.count > 1 ? false : true
             brailleText = (arrayBrailleGridsForCharsInWord?.first)!
             morseCodeLabel.text = brailleText
         }
