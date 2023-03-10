@@ -184,12 +184,12 @@ class MCReaderButtonsViewController : UIViewController {
     
     func setupNextWord() {
         arrayWordsInStringIndex += 1
-        arrayBrailleGridsForCharsInWordIndex = 0
         alphanumericLabel.text = arrayWordsInString[arrayWordsInStringIndex]
         arrayBrailleGridsForCharsInWord?.removeAll()
         arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) ?? []) //get the braille grids for the next word
         morseCodeLabel?.text = arrayBrailleGridsForCharsInWord?.first ?? "" //set the braille grid for the first character in the word
         morseCodeStringIndex = -1
+        arrayBrailleGridsForCharsInWordIndex = -1
     }
     
     func stopAutoPlay() {
