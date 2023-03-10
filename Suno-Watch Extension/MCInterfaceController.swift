@@ -696,16 +696,20 @@ extension MCInterfaceController : WKCrownDelegate {
             //upward scroll
             morseCodeStringIndex -= 1
             crownRotationalDelta = 0.0
+            let endTime = DispatchTime.now()
+            let diffNanos = endTime.uptimeNanoseconds - startTimeNanos
+            
             if isUserTyping == true {
                 //If we are in typing mode, an up swipe becomes a delete
                 leftSwipe(1) //Dummy parameter
             }
-            else if isAutoPlayOn == true {
+            else if isAutoPlayOn == true || diffNanos <= quickScrollTimeThreshold { //autoplay or quick scroll up
                 WKInterfaceDevice.current().play(.success)
                 stopAutoPlay()
                 return
             }
             else {
+                startTimeNanos = DispatchTime.now().uptimeNanoseconds //Update this so we can do a check on the next rotation
                 //Autoplay is off, scroll to read last character
                 if  arrayWordsInStringIndex >= (arrayWordsInString.count - 1)
                     && arrayBrailleGridsForCharsInWordIndex >= (arrayBrailleGridsForCharsInWord.count - 1)
