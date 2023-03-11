@@ -703,13 +703,21 @@ extension MCInterfaceController : WKCrownDelegate {
                 //If we are in typing mode, an up swipe becomes a delete
                 leftSwipe(1) //Dummy parameter
             }
-            else if isAutoPlayOn == true || diffNanos <= quickScrollTimeThreshold { //autoplay or quick scroll up
+            else if /*isAutoPlayOn == true ||*/ diffNanos <= quickScrollTimeThreshold { //a quick up scroll means reset
                 WKInterfaceDevice.current().play(.success)
                 stopAutoPlay()
                 return
             }
             else {
                 startTimeNanos = DispatchTime.now().uptimeNanoseconds //Update this so we can do a check on the next rotation
+                if isAutoPlayOn == true {
+                    //Only pausing autoplay
+                    isAutoPlayOn = false
+                    autoPlayTimer?.invalidate()
+                    setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters.\nScroll fast for autoplay", readingString: stopReadingString, writingString: keepTypingString, isError: false)
+                    morseCodeStringIndex += 1 //This is the negate the decrement of index that happened above when upward scroll was detected. As that decrement will not be acted on below
+                    return
+                }
                 //Autoplay is off, scroll to read last character
                 if  arrayWordsInStringIndex >= (arrayWordsInString.count - 1)
                     && arrayBrailleGridsForCharsInWordIndex >= (arrayBrailleGridsForCharsInWord.count - 1)
@@ -1307,18 +1315,17 @@ extension MCInterfaceController {
         englishTextLabel.setText(englishString) //Resetting the string colors at the start of autoplay
         morseCodeString = morseCodeString.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
         morseCodeTextLabel.setText(morseCodeString)
-        instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" :
-                                    "Resetting, please wait...")
-        switchBrailleDirectionButton.setHidden(true)
-        fullTextButton.setHidden(true)
         
-        let dictionary = [
-            "direction" : direction
-        ]
         englishStringIndex = direction == "down" ? -1 : englishString.count //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
         arrayBrailleGridsForCharsInWordIndex = direction == "down" ? 0 : arrayBrailleGridsForCharsInWord.count - 1
         arrayWordsInStringIndex = direction == "down" ? 0 : arrayWordsInString.count - 1
         morseCodeStringIndex = direction == "down" ? -1 : morseCodeString.count
+        let dictionary = [
+            "direction" : direction
+        ]
+        instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" : "Resetting, please wait...")
+        switchBrailleDirectionButton.setHidden(true)
+        fullTextButton.setHidden(true)
         let timeInterval = direction == "down" ? 1 : 0.5
         autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
