@@ -1139,10 +1139,10 @@ extension MCInterfaceController {
     }
     
     func receivedMessageFromPhone(message : [String : Any]) {
-        if (message["mode"] as? String) != mode {
+     /*   if (message["mode"] as? String) != mode {
             //The modes on watch and iOS must be the same. eg: INPUT FROM CAMERA
             return
-        }
+        }   */
         if message["english"] != nil && message["morse_code"] != nil {
             let english = message["english"] as? String
             let morseCode = message["morse_code"] as? String
@@ -1167,6 +1167,38 @@ extension MCInterfaceController {
             iphoneImage?.setHidden(true)
             setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
             WKInterfaceDevice.current().play(.success)
+        }
+        else if message["is_autoplay_on"] != nil {
+            let iPhoneAutoplay = message["is_autoplay_on"] as? Bool
+            if iPhoneAutoplay == true {
+                WKInterfaceDevice.current().play(.failure)
+                setInstructionLabelForMode(mainString: "Autoplay is active on the iPhone app.\n\nTransfer is only possible when autoplay is not happening", readingString: "", writingString: "", isError: true)
+                instructionsLabel?.setTextColor(.red)
+                iphoneImage?.setHidden(true)
+            }
+        }
+        else if message["array_words_in_string"] != nil
+                && message["array_words_in_string_index"] != nil
+                && message["array_braille_grids_for_chars_in_word"] != nil
+                && message["array_braille_grids_for_chars_in_word_index"] != nil {
+            arrayWordsInString.removeAll()
+            arrayWordsInString = message["array_words_in_string"] as? [String] ?? []
+            arrayWordsInStringIndex = message["array_words_in_string_index"] as? Int ?? 0
+            morseCodeStringIndex = message["morse_code_string_index"] as? Int ?? 0
+            arrayBrailleGridsForCharsInWord.removeAll()
+            arrayBrailleGridsForCharsInWord.append(contentsOf: message["array_braille_grids_for_chars_in_word"] as? [String] ?? [])
+            arrayBrailleGridsForCharsInWordIndex = message["array_braille_grids_for_chars_in_word_index"] as? Int ?? 0
+            englishString = arrayWordsInString[arrayWordsInStringIndex]
+            englishTextLabel.setText(englishString)
+            englishTextLabel.setHidden(false)
+            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
+            morseCodeString = (arrayBrailleGridsForCharsInWord.first)!
+            self.morseCodeTextLabel.setText(self.morseCodeString)
+            self.morseCodeTextLabel.setHidden(false)
+            setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters.\nScroll fast for autoplay", readingString: stopReadingString, writingString: keepTypingString, isError: false)
+            fullTextButton.setHidden(arrayWordsInString.count > 1 ? false : true)
+            iphoneImage?.setHidden(true)
+            digitalCrownRotated(direction: "down") //just to do the highlights
         }
         else {
             WKInterfaceDevice.current().play(.failure)

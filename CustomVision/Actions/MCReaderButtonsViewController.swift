@@ -291,7 +291,8 @@ class MCReaderButtonsViewController : UIViewController {
             brailleText = (arrayBrailleGridsForCharsInWord?.first)!
             morseCodeLabel.text = brailleText
         }
-        sendEnglishAndMCToWatch(alphanumeric: inputAlphanumeric ?? "", morseCode: brailleText) //The Watch may already be waiting for camera input.
+        //sendEnglishAndMCToWatch(alphanumeric: inputAlphanumeric ?? "", morseCode: brailleText) //The Watch may already be waiting for camera input.
+        sendEnglishAndBrailleToWatch()
         if WCSession.isSupported() {
             let session = WCSession.default
             if session.isWatchAppInstalled {
@@ -502,13 +503,13 @@ class MCReaderButtonsViewController : UIViewController {
     }
     
     func receivedRequestForAlphanumericsAndMCFromWatch(mode: String?) {
-        if mode == inputMode?.rawValue {
+      /*  if mode == inputMode?.rawValue {
             //Mode requested by the watch has to match mode currently being viewed
             let alphanumericString = alphanumericLabel?.text ?? ""
             let morseCodeString = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") ?? "" //If it is on autoplay mode, there maybe no pipes. When its sent to the watch, its NOT on autoplay mode
             sendEnglishAndMCToWatch(alphanumeric: alphanumericString, morseCode: morseCodeString)
-        }
-        
+        }   */
+        sendEnglishAndBrailleToWatch()
     }
     
     func sendEnglishAndMCToWatch(alphanumeric: String, morseCode: String) {
@@ -520,6 +521,24 @@ class MCReaderButtonsViewController : UIViewController {
                                         "mode" : inputMode?.rawValue,
                                         "english": alphanumeric,
                                         "morse_code": morseCode
+                                    ], replyHandler: nil, errorHandler: nil)
+            }
+        }
+    }
+    
+    func sendEnglishAndBrailleToWatch() {
+        //If autoplay is on, we only send that. If its not on, we send all the indices to replicate on the watch
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            if session.isWatchAppInstalled && session.isReachable {
+                session.sendMessage(isAutoPlayOn == true ?
+                                    ["is_autoplay_on" : true ] :
+                                    [
+                                        "array_words_in_string": arrayWordsInString,
+                                        "array_words_in_string_index": arrayWordsInStringIndex,
+                                        "morse_code_string_index": morseCodeStringIndex,
+                                        "array_braille_grids_for_chars_in_word": arrayBrailleGridsForCharsInWord,
+                                        "array_braille_grids_for_chars_in_word_index": arrayBrailleGridsForCharsInWordIndex,
                                     ], replyHandler: nil, errorHandler: nil)
             }
         }

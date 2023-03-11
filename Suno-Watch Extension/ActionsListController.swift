@@ -23,6 +23,7 @@ class ActionsListController : WKInterfaceController {
         //actionsList.append(ActionsCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
         //actionsList.append(ActionsCell(action: "Battery Level", explanation: "Of this watch as a percentage", cellType: Action.BATTERY_LEVEL))
         actionsList.append(ActionsCell(action: "Manual", explanation: "Enter letters or numbers and we will translate it into vibrations", cellType: Action.MANUAL))
+        actionsList.append(ActionsCell(action: "Get from iPhone", explanation: "If there is braille on the iPhone app, you can read it here if you prefer", cellType: Action.GET_IOS))
         //actionsList.append(ActionsCell(action: "Camera", explanation: "Get the text that was captured by the iPhone camera", cellType: Action.CAMERA_OCR))
         //actionsList.append(ActionsCell(action: "Morse Code Typing", explanation: "A vibration based typing mode for deaf-blind", cellType: Action.MC_TYPING))
         
