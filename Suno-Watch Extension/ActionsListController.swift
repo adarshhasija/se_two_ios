@@ -84,7 +84,7 @@ extension ActionsListController {
         ], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if var input = (result as [Any]?)?[0] as? String {
-                input = input.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains) //Remove anything that is not alphanumeric
+                input = input.trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ".contains) //Remove anything that is not alphanumeric
                 if input.count < 1 {
                     return
                 }

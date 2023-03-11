@@ -189,6 +189,7 @@ class MCReaderButtonsViewController : UIViewController {
     func setupNextWord() {
         arrayWordsInStringIndex += 1
         alphanumericLabel.text = arrayWordsInString[arrayWordsInStringIndex]
+        alphanumericLabel.textColor = .label
         arrayBrailleGridsForCharsInWord?.removeAll()
         arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) ?? []) //get the braille grids for the next word
         morseCodeLabel?.text = arrayBrailleGridsForCharsInWord?.first ?? "" //set the braille grid for the first character in the word
@@ -338,11 +339,15 @@ class MCReaderButtonsViewController : UIViewController {
         alphanumericLabel?.text = alphanumericString
         arrayBrailleGridsForCharsInWord?.removeAll()
         arrayBrailleGridsForCharsInWord?.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex]) ?? [])
-        let morseCodeString = arrayBrailleGridsForCharsInWord?[arrayBrailleGridsForCharsInWordIndex] ?? ""
+        let morseCodeString = (arrayBrailleGridsForCharsInWordIndex < 0 ? arrayBrailleGridsForCharsInWord?[0] :  arrayBrailleGridsForCharsInWord?[arrayBrailleGridsForCharsInWordIndex]) ?? ""
         morseCodeLabel?.text = morseCodeString
         brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
         
         //Could call mcScrollRight here but wont as that func plays a haptic, which we dont want
+        if morseCodeStringIndex == -1 {
+            return //Means nothing was highlighted. Doing a highlighting will crash the app
+        }
+        resetButton?.isHidden = false
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: arrayBrailleGridsForCharsInWordIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
         animateMiddleText(text: nil)

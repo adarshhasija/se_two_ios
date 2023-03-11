@@ -136,7 +136,7 @@ class ActionsTableViewController : UITableViewController {
             if textField?.text?.isEmpty == false {
                 let text : String = textField!.text!
                 Analytics.logEvent("se3_manual_success", parameters: [:]) //returned from camera
-                let textFiltered = text.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains)
+                let textFiltered = text.trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ".contains)
                 self.openMorseCodeReadingScreen(alphanumericString: textFiltered, inputAction: Action.MANUAL)
                 alert?.dismiss(animated: true, completion: nil)
             }

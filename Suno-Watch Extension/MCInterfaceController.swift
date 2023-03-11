@@ -1329,6 +1329,9 @@ extension MCInterfaceController {
             morseCodeStringIndex = -1
             return
         }
+        if morseCodeStringIndex == -1 {
+            return
+        }
         brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
         if direction == "down" {
             if morseCodeStringIndex >= morseCodeString.count {

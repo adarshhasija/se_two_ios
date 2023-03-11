@@ -225,7 +225,7 @@
             <objects>
                 <controller identifier="TextInterfaceController" id="bVU-8v-UBN" customClass="TextInterfaceController" customModule="Suno_Watch_Extension">
                     <items>
-                        <label alignment="left" text="Label" id="olg-IL-yi4"/>
+                        <label alignment="left" text="Label" numberOfLines="0" id="olg-IL-yi4"/>
                     </items>
                     <connections>
                         <outlet property="label" destination="olg-IL-yi4" id="aSp-9i-z1g"/>
