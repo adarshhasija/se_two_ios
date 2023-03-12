@@ -714,6 +714,7 @@ extension MCInterfaceController : WKCrownDelegate {
                     //Only pausing autoplay
                     isAutoPlayOn = false
                     autoPlayTimer?.invalidate()
+                    self.fullTextButton.setHidden(false)
                     setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters.\nScroll fast for autoplay", readingString: stopReadingString, writingString: keepTypingString, isError: false)
                     morseCodeStringIndex += 1 //This is the negate the decrement of index that happened above when upward scroll was detected. As that decrement will not be acted on below
                     return
@@ -1299,7 +1300,7 @@ extension MCInterfaceController {
         morseCodeString = arrayBrailleGridsForCharsInWord.first!
         morseCodeTextLabel.setText(morseCodeString)
         //switchBrailleDirectionButton.setHidden(false)
-        self.fullTextButton.setHidden(arrayWordsInString.count > 1 ? false : true) //Only want this if there is text with spaces
+        self.fullTextButton.setHidden(false)
         //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
         instructionsLabel?.setText(dcScrollStart)
         resetBigText()
