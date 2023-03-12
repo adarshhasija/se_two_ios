@@ -47,7 +47,21 @@
                     <items>
                         <group width="1" height="154" alignment="left" layout="vertical" id="dXO-f8-Ixc">
                             <items>
-                                <label alignment="left" hidden="YES" text="Label" numberOfLines="0" id="Bvs-FV-rgO"/>
+                                <group width="1" alignment="left" id="Nwg-SR-y3B">
+                                    <items>
+                                        <label width="0.84999999999999998" alignment="left" hidden="YES" text="Label" numberOfLines="0" id="Bvs-FV-rgO"/>
+                                        <button alignment="left" hidden="YES" id="PA7-ux-GDW">
+                                            <group key="contentGroup" alignment="left" isAccessibilityElement="YES" accessibilityLabel="View Full Text Button" accessibilityHint="View Full Text Button" id="7Ez-2F-h6y">
+                                                <items>
+                                                    <imageView alignment="left" image="text.alignleft" catalog="system" id="Wu8-bC-f9y"/>
+                                                </items>
+                                            </group>
+                                            <connections>
+                                                <action selector="fullTextButtonTapped" destination="V63-br-2PY" id="LXj-Gf-afm"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                </group>
                                 <group width="1" alignment="left" id="MyI-Co-daT">
                                     <items>
                                         <label alignment="left" isAccessibilityElement="NO" numberOfLines="0" id="3xj-WN-big"/>
@@ -74,11 +88,6 @@
                                 <button width="1" alignment="left" hidden="YES" title="Change Direction" id="ewQ-hM-2dr" userLabel="Switch Braille Reading Direction">
                                     <connections>
                                         <action selector="switchBrailleDirectionButtonTapped" destination="V63-br-2PY" id="Rew-Pu-fb9"/>
-                                    </connections>
-                                </button>
-                                <button width="1" alignment="left" hidden="YES" title="Full Text" id="PA7-ux-GDW">
-                                    <connections>
-                                        <action selector="fullTextButtonTapped" destination="V63-br-2PY" id="LXj-Gf-afm"/>
                                     </connections>
                                 </button>
                             </items>
@@ -298,5 +307,6 @@
         <image name="dot.square" catalog="system" width="128" height="114"/>
         <image name="pencil" catalog="system" width="128" height="116"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="text.alignleft" catalog="system" width="128" height="102"/>
     </resources>
 </document>
