@@ -649,8 +649,6 @@ class MCInterfaceController : WKInterfaceController {
             }
             else if mode == Action.MANUAL.rawValue {
                 self.englishString = dictionary!["alphanumeric"] as? String ?? ""
-                self.englishTextLabel.setText(self.englishString)
-                self.englishTextLabel.setHidden(false)
             /*    for char in englishString {
                     let charAsString : String = String(char)
                     if let morseCode = self.alphabetToMcDictionary[charAsString] {
@@ -662,6 +660,8 @@ class MCInterfaceController : WKInterfaceController {
                     self.morseCodeString += "|"
                 }   */
                 arrayWordsInString.append(contentsOf: englishString.components(separatedBy: " "))
+                self.englishTextLabel.setText(arrayWordsInString.first)
+                self.englishTextLabel.setHidden(false)
                 arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
                 morseCodeString = (arrayBrailleGridsForCharsInWord.first)!
                 self.morseCodeTextLabel.setText(self.morseCodeString)
@@ -671,7 +671,7 @@ class MCInterfaceController : WKInterfaceController {
                 self.instructionsLabel.setText(self.defaultInstructions)
                 self.switchBrailleDirectionButton.setTitle(isBrailleSwitchedToHorizontal == false ? "Read Sideways" : "Read up down")
                 self.fullTextButton.setHidden(false)
-                playPauseButtonTapped()
+                //playPauseButtonTapped()
             }
             else if mode == Action.MC_TYPING.rawValue {
                 isUserTyping = true

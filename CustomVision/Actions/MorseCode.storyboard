@@ -287,8 +287,8 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4iX-QT-oJS">
                                 <rect key="frame" x="16" y="44" width="288" height="524"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y3U-tb-ggf">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="139"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Y3U-tb-ggf">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="163"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alphanumeric" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdv-Kb-sRM">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="33.5"/>
@@ -297,7 +297,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morse Code" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSh-G6-6AY">
-                                                <rect key="frame" x="0.0" y="33.5" width="288" height="33.5"/>
+                                                <rect key="frame" x="0.0" y="43.5" width="288" height="33.5"/>
                                                 <accessibility key="accessibilityConfiguration">
                                                     <bool key="isElement" value="NO"/>
                                                 </accessibility>
@@ -306,42 +306,72 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEo-pR-Mcz" userLabel="Braille line">
-                                                <rect key="frame" x="144" y="67" width="0.0" height="0.0"/>
+                                                <rect key="frame" x="144" y="87" width="0.0" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8d-Ez-seD">
-                                                <rect key="frame" x="105.5" y="67" width="77" height="36"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Autoplay"/>
-                                                <connections>
-                                                    <action selector="autoplayButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="xtM-4V-HWo"/>
-                                                </connections>
-                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="MNP-56-Ro4">
+                                                <rect key="frame" x="72.5" y="97" width="143.5" height="34"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Nc-K7-cKj" userLabel="Previous ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="40" height="34"/>
+                                                        <accessibility key="accessibilityConfiguration" hint="Previous Character Button" label="Previous Character Button"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" image="chevron.left" catalog="system"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="chevron.left" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="previousCharacterButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="yRJ-i0-bKf"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8d-Ez-seD" userLabel="Play/Pause">
+                                                        <rect key="frame" x="50" y="0.0" width="43.5" height="34"/>
+                                                        <accessibility key="accessibilityConfiguration" hint="Pause Button" label="Pause Button"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" image="play.fill" catalog="system"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="play.fill" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="playPauseButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="nIB-gU-sOH"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="euY-vf-pIF" userLabel="Next">
+                                                        <rect key="frame" x="103.5" y="0.0" width="40" height="34"/>
+                                                        <accessibility key="accessibilityConfiguration" hint="Next Character Button" label="Next Character Button"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" image="chevron.right" catalog="system"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="nextCharacterButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="pr0-Ob-qrd"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lv9-9I-e76">
-                                                <rect key="frame" x="98" y="103" width="92" height="0.0"/>
+                                                <rect key="frame" x="98" y="136" width="92" height="0.0"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Audio Button" label="Audio Button"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                 <state key="normal" title="Play Audio"/>
                                                 <connections>
                                                     <action selector="audioButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="ZVJ-Y3-Wyt"/>
                                                 </connections>
                                             </button>
-                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="euY-vf-pIF" userLabel="Next Character">
-                                                <rect key="frame" x="57" y="103" width="174" height="0.0"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y1a-s5-Ysu">
+                                                <rect key="frame" x="100" y="141" width="88" height="22"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Full Text Button" label="Full Text Button"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Play Next Character"/>
+                                                <state key="normal" title="Full Text" image="text.alignleft" catalog="system">
+                                                    <color key="titleColor" systemColor="linkColor"/>
+                                                </state>
                                                 <connections>
-                                                    <action selector="nextCharacterButtontapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="5oE-49-dIw"/>
+                                                    <action selector="fullTextButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="gEF-iJ-PNX"/>
                                                 </connections>
                                             </button>
-                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-xK-4bF">
-                                                <rect key="frame" x="119" y="103" width="50" height="0.0"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-xK-4bF">
+                                                <rect key="frame" x="112.5" y="163" width="63" height="0.0"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Reset Button" label="Reset Button"/>
+                                                <color key="tintColor" systemColor="systemRedColor"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Reset">
+                                                <state key="normal" title="Reset" image="backward.end" catalog="system">
                                                     <color key="titleColor" systemColor="systemRedColor"/>
                                                 </state>
                                                 <connections>
@@ -349,21 +379,13 @@
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aj9-V5-CdE" userLabel="Switch Braille Direction">
-                                                <rect key="frame" x="21" y="103" width="246" height="0.0"/>
+                                                <rect key="frame" x="21" y="163" width="246" height="0.0"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Switch Braille Direction Button" label="Switch Braille Direction Button"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Switch to Reading Sideways"/>
                                                 <connections>
                                                     <action selector="switchBrailleButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="Vew-J9-0b1"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y1a-s5-Ysu">
-                                                <rect key="frame" x="88.5" y="103" width="111" height="36"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="See Full Text"/>
-                                                <connections>
-                                                    <action selector="fullTextButtonTapped:" destination="dbP-WQ-myk" eventType="touchUpInside" id="gEF-iJ-PNX"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -439,13 +461,14 @@
                         <outlet property="alphanumericLabel" destination="sdv-Kb-sRM" id="pRB-c1-kP4"/>
                         <outlet property="appleWatchImageView" destination="kc9-R4-7Le" id="WG5-TS-UiP"/>
                         <outlet property="audioButton" destination="Lv9-9I-e76" id="skN-EV-B5b"/>
-                        <outlet property="autoplayButton" destination="f8d-Ez-seD" id="jnv-hh-nlQ"/>
                         <outlet property="braillelLabel" destination="dEo-pR-Mcz" id="tic-Hm-TWf"/>
                         <outlet property="fullTextButton" destination="Y1a-s5-Ysu" id="5xN-8E-Cx1"/>
                         <outlet property="middleBigTextView" destination="aYk-9M-WPq" id="TIq-ra-t2F"/>
                         <outlet property="middleStackView" destination="Vu2-4A-M8E" id="vbU-CT-aI3"/>
                         <outlet property="morseCodeLabel" destination="WSh-G6-6AY" id="gnJ-0I-Qf4"/>
-                        <outlet property="nextCharacterButton" destination="euY-vf-pIF" id="NdF-dI-2NM"/>
+                        <outlet property="nextCharacterButton" destination="euY-vf-pIF" id="CKu-N5-sgX"/>
+                        <outlet property="playPauseButton" destination="f8d-Ez-seD" id="epQ-V6-APa"/>
+                        <outlet property="previousCharacterButton" destination="3Nc-K7-cKj" id="P9P-uI-GTi"/>
                         <outlet property="resetButton" destination="kHP-xK-4bF" id="kI8-ls-wci"/>
                         <outlet property="scrollMCLabel" destination="Iko-Sp-hvm" id="XyB-90-QbS"/>
                         <outlet property="stackViewMain" destination="Y3U-tb-ggf" id="KDt-FI-b6D"/>
@@ -514,7 +537,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VqB-SC-3sd" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="g9W-p7-7Jz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -528,6 +551,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="backward.end" catalog="system" width="128" height="120"/>
+        <image name="chevron.left" catalog="system" width="97" height="128"/>
+        <image name="chevron.right" catalog="system" width="97" height="128"/>
+        <image name="play.fill" catalog="system" width="117" height="128"/>
+        <image name="text.alignleft" catalog="system" width="128" height="99"/>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
