@@ -80,7 +80,56 @@
                                 <imageView width="75" height="75" alignment="center" hidden="YES" image="dot.square" catalog="system" id="L9T-BG-efi">
                                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
-                                <label width="1" alignment="left" text="Instruction Label" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
+                                <group alignment="center" spacing="20" id="2h2-NE-4nL">
+                                    <items>
+                                        <button alignment="left" accessibilityLabel="Previous character button" accessibilityHint="Previous character button" id="UBI-yf-2aG">
+                                            <group key="contentGroup" alignment="left" contentMode="scaleAspectFit" id="kli-mH-k5I">
+                                                <items>
+                                                    <imageView alignment="left" image="chevron.left" catalog="system" contentMode="scaleAspectFit" id="YHe-Nf-qBV"/>
+                                                </items>
+                                            </group>
+                                            <connections>
+                                                <action selector="previousCharacterButtonTapped" destination="V63-br-2PY" id="1KE-bi-viC"/>
+                                            </connections>
+                                        </button>
+                                        <button alignment="left" accessibilityLabel="Play Button" accessibilityHint="Play Button" id="vTs-Qe-Ne6">
+                                            <group key="contentGroup" alignment="left" id="gs1-mB-y78">
+                                                <items>
+                                                    <imageView alignment="left" image="play.fill" catalog="system" id="Trk-0H-LwN"/>
+                                                </items>
+                                            </group>
+                                            <connections>
+                                                <action selector="playPauseButtonTapped" destination="V63-br-2PY" id="NtG-vJ-AFw"/>
+                                            </connections>
+                                        </button>
+                                        <button alignment="left" accessibilityLabel="Next Character Button" accessibilityHint="Next Character Button" id="jwg-u5-gvI">
+                                            <group key="contentGroup" alignment="left" contentMode="scaleAspectFit" id="0cB-Ty-hZN">
+                                                <items>
+                                                    <imageView alignment="left" image="chevron.right" catalog="system" contentMode="scaleAspectFit" id="tWE-dG-Lyk"/>
+                                                </items>
+                                            </group>
+                                            <connections>
+                                                <action selector="nextCharacterButtonTapped" destination="V63-br-2PY" id="5DT-Pw-Ykz"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                </group>
+                                <button alignment="center" accessibilityLabel="Reset Button" accessibilityHint="Reset Button" id="Y3h-Nd-Wt0">
+                                    <group key="contentGroup" alignment="left" id="4Gr-kX-A1l">
+                                        <items>
+                                            <imageView alignment="left" image="backward.end" catalog="system" id="F4m-kR-vI8">
+                                                <color key="tintColor" red="0.33333334329999997" green="0.03661756419" blue="0.042610244720000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </imageView>
+                                            <label alignment="left" text="Reset" id="ELm-UX-EAe">
+                                                <color key="textColor" red="0.33333334329999997" green="0.03661756419" blue="0.042610244720000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <action selector="resetButtonTapped" destination="V63-br-2PY" id="g3p-Sp-lqw"/>
+                                    </connections>
+                                </button>
+                                <label width="1" alignment="left" hidden="YES" text="Instruction Label" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
                                     <color key="textColor" red="0.23137254901960785" green="0.83495825639444188" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
                                 </label>
@@ -171,6 +220,11 @@
                         <outlet property="iphoneImage" destination="22b-8Y-zPj" id="OmN-g7-Hgy"/>
                         <outlet property="mainImage" destination="L9T-BG-efi" id="0PH-ca-K4x"/>
                         <outlet property="morseCodeTextLabel" destination="3xj-WN-big" id="FdQ-gP-QKf"/>
+                        <outlet property="nextCharacterButton" destination="jwg-u5-gvI" id="dzl-Na-9pV"/>
+                        <outlet property="playPauseButton" destination="vTs-Qe-Ne6" id="eru-bL-1nz"/>
+                        <outlet property="playPauseImage" destination="Trk-0H-LwN" id="DAF-pf-hEr"/>
+                        <outlet property="previousCharacterButton" destination="UBI-yf-2aG" id="U6l-hw-F8D"/>
+                        <outlet property="resetButton" destination="Y3h-Nd-Wt0" id="sOh-9W-M5M"/>
                         <outlet property="switchBrailleDirectionButton" destination="ewQ-hM-2dr" id="F3q-MW-G9V"/>
                     </connections>
                 </controller>
@@ -303,10 +357,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="backward.end" catalog="system" width="128" height="116"/>
         <image name="book.fill" catalog="system" width="128" height="93"/>
+        <image name="chevron.left" catalog="system" width="96" height="128"/>
+        <image name="chevron.right" catalog="system" width="96" height="128"/>
         <image name="dot.square" catalog="system" width="128" height="114"/>
         <image name="pencil" catalog="system" width="128" height="116"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="play.fill" catalog="system" width="115" height="128"/>
         <image name="text.alignleft" catalog="system" width="128" height="102"/>
     </resources>
 </document>
