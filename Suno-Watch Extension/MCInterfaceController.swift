@@ -148,12 +148,11 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func playPauseButtonTapped() {
-        if isAutoPlayOn == false {
-            isAutoPlayOn = true
+        isAutoPlayOn = !isAutoPlayOn
+        if isAutoPlayOn == true {
             morseCodeAutoPlay(direction: "down")
         }
         else {
-            isAutoPlayOn = false
             pauseAutoPlay()
         }
         playPauseButtonTappedUIChange()

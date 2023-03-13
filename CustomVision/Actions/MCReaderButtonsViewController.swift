@@ -110,12 +110,11 @@ class MCReaderButtonsViewController : UIViewController {
     
     
     @IBAction func playPauseButtonTapped(_ sender: Any) {
-        if isAutoPlayOn == false {
-            isAutoPlayOn = true
+        isAutoPlayOn = !isAutoPlayOn
+        if isAutoPlayOn == true {
             morseCodeAutoPlay(direction: "right")
         }
         else {
-            isAutoPlayOn = false
             pauseAutoPlay()
         }
         playPauseButtonTappedUIChange()
