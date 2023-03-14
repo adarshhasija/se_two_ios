@@ -64,6 +64,103 @@ class MCInterfaceController : WKInterfaceController {
     @IBOutlet weak var switchBrailleDirectionButton: WKInterfaceButton!
     @IBOutlet weak var fullTextButton: WKInterfaceButton!
     
+    override func awake(withContext context: Any?) {
+        super.awake(withContext: context)
+        WKInterfaceDevice.current().play(.success) //successfully launched app
+        let dictionary = context as? NSDictionary
+        if dictionary != nil {
+            mode = dictionary!["mode"] as? String
+        }
+        
+        //UserDefaults.standard.removeObject(forKey: "SE3_WATCHOS_USER_TYPE")
+      /*  let se3UserType = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
+        if se3UserType == nil {
+            pushController(withName: "SettingsDeafBlind", context: self)
+        }
+        else {
+            if se3UserType == "_2" {
+                defaultInstructions = deafBlindInstructions
+            }
+            if se3UserType == "_1" {
+                defaultInstructions = notDeafBlindInstructions
+            }
+            instructionsLabel.setText(defaultInstructions)
+        }   */
+        
+        if mode == Action.MC_TYPING.rawValue {
+            mainImage.setHidden(true)
+            if let talkTypeImage = UIImage(systemName: "pencil") {
+                addMenuItem(with: talkTypeImage, title: "Talk/Type", action: #selector(tappedTalkType))
+            }
+            if let bookImage = UIImage(systemName: "book.fill") {
+                addMenuItem(with: bookImage, title: "Morse Code Dictionary", action: #selector(tappedDictionary))
+            }
+        }
+        else {
+            //mainImage.setHidden(false)
+            //addMenuItem(with: WKMenuItemIcon.info, title: "Actions", action: #selector(tappedActionsDictionary))
+        }
+        
+        //This is needed in multiple modes
+        //eg: MANUAL, MC_TYPING
+        if alphabetToMcDictionary.count < 1 {
+            //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
+            morseCode = MorseCode(operatingSystem: "watchOS")
+            for morseCodeCell in morseCode.mcArray {
+                if morseCodeCell.morseCode == "......." {
+                    //space
+                    alphabetToMcDictionary[" "] = morseCodeCell.morseCode
+                }
+                else {
+                    alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
+                }
+                
+            }
+        }
+        
+        if mode != nil {
+            if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
+                //these modes get data from connected iOS device
+                downSwipe(1) //just a dummy parameter
+            }
+            else if mode == Action.MANUAL.rawValue {
+                self.englishString = dictionary!["alphanumeric"] as? String ?? ""
+            /*    for char in englishString {
+                    let charAsString : String = String(char)
+                    if let morseCode = self.alphabetToMcDictionary[charAsString] {
+                        self.morseCodeString += morseCode
+                    }
+                    else if char.isWholeNumber {
+                        self.morseCodeString += LibraryCustomActions.getIntegerInDotsAndDashes(integer: char.wholeNumberValue ?? 0)
+                    }
+                    self.morseCodeString += "|"
+                }   */
+                arrayWordsInString.append(contentsOf: englishString.components(separatedBy: " "))
+                self.englishTextLabel.setText(arrayWordsInString.first)
+                self.englishTextLabel.setHidden(false)
+                arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
+                morseCodeString = (arrayBrailleGridsForCharsInWord.first)!
+                self.morseCodeTextLabel.setText(self.morseCodeString)
+                self.morseCodeTextLabel.setHidden(false)
+                isUserTyping = false
+                self.defaultInstructions = dcScrollStart
+                self.instructionsLabel.setText(self.defaultInstructions)
+                self.switchBrailleDirectionButton.setTitle(isBrailleSwitchedToHorizontal == false ? "Read Sideways" : "Read up down")
+                self.fullTextButton.setHidden(false)
+                //playPauseButtonTapped()
+            }
+            else if mode == Action.MC_TYPING.rawValue {
+                isUserTyping = true
+                defaultInstructions = mcTypingInstructions
+                instructionsLabel.setText(defaultInstructions)
+            }
+            else {
+                //Only applies if it is TIME or DATE for now
+                upSwipe(1) //just a dummy parameter
+            }
+        }
+    }
+    
     
     @IBAction func fullTextButtonTapped() {
         var text = ""
@@ -587,102 +684,6 @@ class MCInterfaceController : WKInterfaceController {
         pushController(withName: "Dictionary", context: params)
     }
     
-    override func awake(withContext context: Any?) {
-        super.awake(withContext: context)
-        WKInterfaceDevice.current().play(.success) //successfully launched app
-        let dictionary = context as? NSDictionary
-        if dictionary != nil {
-            mode = dictionary!["mode"] as? String
-        }
-        
-        //UserDefaults.standard.removeObject(forKey: "SE3_WATCHOS_USER_TYPE")
-      /*  let se3UserType = UserDefaults.standard.string(forKey: "SE3_WATCHOS_USER_TYPE")
-        if se3UserType == nil {
-            pushController(withName: "SettingsDeafBlind", context: self)
-        }
-        else {
-            if se3UserType == "_2" {
-                defaultInstructions = deafBlindInstructions
-            }
-            if se3UserType == "_1" {
-                defaultInstructions = notDeafBlindInstructions
-            }
-            instructionsLabel.setText(defaultInstructions)
-        }   */
-        
-        if mode == Action.MC_TYPING.rawValue {
-            mainImage.setHidden(true)
-            if let talkTypeImage = UIImage(systemName: "pencil") {
-                addMenuItem(with: talkTypeImage, title: "Talk/Type", action: #selector(tappedTalkType))
-            }
-            if let bookImage = UIImage(systemName: "book.fill") {
-                addMenuItem(with: bookImage, title: "Morse Code Dictionary", action: #selector(tappedDictionary))
-            }
-        }
-        else {
-            //mainImage.setHidden(false)
-            //addMenuItem(with: WKMenuItemIcon.info, title: "Actions", action: #selector(tappedActionsDictionary))
-        }
-        
-        //This is needed in multiple modes
-        //eg: MANUAL, MC_TYPING
-        if alphabetToMcDictionary.count < 1 {
-            //let morseCode : MorseCode = MorseCode(type: mode ?? "actions", operatingSystem: "watchOS")
-            morseCode = MorseCode(operatingSystem: "watchOS")
-            for morseCodeCell in morseCode.mcArray {
-                if morseCodeCell.morseCode == "......." {
-                    //space
-                    alphabetToMcDictionary[" "] = morseCodeCell.morseCode
-                }
-                else {
-                    alphabetToMcDictionary[morseCodeCell.english] = morseCodeCell.morseCode
-                }
-                
-            }
-        }
-        
-        if mode != nil {
-            if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
-                //these modes get data from connected iOS device
-                downSwipe(1) //just a dummy parameter
-            }
-            else if mode == Action.MANUAL.rawValue {
-                self.englishString = dictionary!["alphanumeric"] as? String ?? ""
-            /*    for char in englishString {
-                    let charAsString : String = String(char)
-                    if let morseCode = self.alphabetToMcDictionary[charAsString] {
-                        self.morseCodeString += morseCode
-                    }
-                    else if char.isWholeNumber {
-                        self.morseCodeString += LibraryCustomActions.getIntegerInDotsAndDashes(integer: char.wholeNumberValue ?? 0)
-                    }
-                    self.morseCodeString += "|"
-                }   */
-                arrayWordsInString.append(contentsOf: englishString.components(separatedBy: " "))
-                self.englishTextLabel.setText(arrayWordsInString.first)
-                self.englishTextLabel.setHidden(false)
-                arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
-                morseCodeString = (arrayBrailleGridsForCharsInWord.first)!
-                self.morseCodeTextLabel.setText(self.morseCodeString)
-                self.morseCodeTextLabel.setHidden(false)
-                isUserTyping = false
-                self.defaultInstructions = dcScrollStart
-                self.instructionsLabel.setText(self.defaultInstructions)
-                self.switchBrailleDirectionButton.setTitle(isBrailleSwitchedToHorizontal == false ? "Read Sideways" : "Read up down")
-                self.fullTextButton.setHidden(false)
-                //playPauseButtonTapped()
-            }
-            else if mode == Action.MC_TYPING.rawValue {
-                isUserTyping = true
-                defaultInstructions = mcTypingInstructions
-                instructionsLabel.setText(defaultInstructions)
-            }
-            else {
-                //Only applies if it is TIME or DATE for now
-                upSwipe(1) //just a dummy parameter
-            }
-        }
-    }
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user.

@@ -30,9 +30,9 @@ class MCReaderButtonsViewController : UIViewController {
     var alphanumericStringIndex = -1
     var morseCodeStringIndex = -1
     var arrayBrailleGridsForCharsInWord : [String] = []
-    var arrayBrailleGridsForCharsInWordIndex = -1 //in the case of braille
+    var arrayBrailleGridsForCharsInWordIndex = 0 //in the case of braille
     var arrayWordsInString : [String] = []
-    var arrayWordsInStringIndex = -1
+    var arrayWordsInStringIndex = 0
     var morseCode = MorseCode()
     var braille = Braille()
     var synth = AVSpeechSynthesizer()
@@ -61,6 +61,61 @@ class MCReaderButtonsViewController : UIViewController {
     var backTapLabels : [UILabel] = []
 
     
+    
+    override func viewDidLoad() {
+        hapticManager = HapticManager(supportsHaptics: supportsHaptics)
+        if inputAlphanumeric == nil {
+            alphanumericLabel?.text = "Error\nSomething went wrong"
+            alphanumericLabel?.textColor = .red
+            morseCodeLabel?.isHidden = true
+            playPauseButton?.isHidden = true
+            return
+        }
+        alphanumericLabel.text = inputAlphanumeric
+        //let morseCodeText = inputMorseCode != nil ? inputMorseCode : convertAlphanumericToMC(alphanumericString: inputAlphanumeric ?? "")
+        var brailleText = ""
+        if inputMorseCode != nil {
+            brailleText = inputMorseCode!
+            morseCodeLabel.text = brailleText
+        }
+        else {
+            arrayWordsInString.append(contentsOf: inputAlphanumeric?.components(separatedBy: " ") ?? [])
+            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
+            fullTextButton.isHidden = false
+            alphanumericLabel.text = arrayWordsInString.first
+            brailleText = (arrayBrailleGridsForCharsInWord.first)!
+            morseCodeLabel.text = brailleText
+        }
+        //sendEnglishAndMCToWatch(alphanumeric: inputAlphanumeric ?? "", morseCode: brailleText) //The Watch may already be waiting for camera input.
+        sendEnglishAndBrailleToWatch()
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            if session.isWatchAppInstalled {
+                appleWatchImageView.image = UIImage(systemName: "applewatch.watchface")
+                appleWatchImageView.isHidden = false
+                scrollMCLabel.text = "You can also try it on your Apple Watch app"
+                scrollMCLabel.isHidden = false
+            }
+            else {
+                appleWatchImageView.image = UIImage(systemName: "applewatch.slash")
+                appleWatchImageView.isHidden = false
+                scrollMCLabel.text = "You can try it on your Apple Watch\nYou must install the watch app"
+                scrollMCLabel.isHidden = false
+            }
+        }
+        if siriShortcut != nil { addSiriButton(shortcutForButton: siriShortcut!, to: middleStackView) }
+        alphanumericStringIndex = -1
+        morseCodeStringIndex = -1
+        audioButton?.setTitleColor(.gray, for: .disabled)
+        audioButton?.isHidden = UIAccessibility.isVoiceOverRunning == false ? true : false
+        audioButton?.titleLabel?.numberOfLines = 0
+        audioButton?.titleLabel?.textAlignment = .center
+        audioButton?.setTitle("Play Audio.\nEnabled when autoplay is ON", for: .disabled)
+        audioButton?.isEnabled = false
+        //playPauseButtonTapped(1) //dummy parameter
+        //setUpButtonScalable(button: autoplayButton, title: isAutoPlayOn == true ? "Stop Autoplay" : "Replay")
+    }
+    
     @IBAction func fullTextButtonTapped(_ sender: Any) {
         //We do this to retain the state when we return from viewing the full text
         UserDefaults.standard.set(arrayWordsInStringIndex, forKey: "INDEX_IN_FULL_STRING")
@@ -83,7 +138,7 @@ class MCReaderButtonsViewController : UIViewController {
             }
         }
         startIndexForHighlighting += arrayBrailleGridsForCharsInWordIndex
-        endIndexForHighlighting = startIndexForHighlighting + 1
+        endIndexForHighlighting = morseCodeStringIndex > -1 ? startIndexForHighlighting + 1 : startIndexForHighlighting //If we have not started traversing the grid, we dont want to highlight
         textViewController.mText = text
         textViewController.mStartIndexForHighlighting = startIndexForHighlighting
         textViewController.mEndIndexForHighlighting = endIndexForHighlighting
@@ -379,59 +434,6 @@ class MCReaderButtonsViewController : UIViewController {
         autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCReaderButtonsViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
     
-    override func viewDidLoad() {
-        hapticManager = HapticManager(supportsHaptics: supportsHaptics)
-        if inputAlphanumeric == nil {
-            alphanumericLabel?.text = "Error\nSomething went wrong"
-            alphanumericLabel?.textColor = .red
-            morseCodeLabel?.isHidden = true
-            playPauseButton?.isHidden = true
-            return
-        }
-        alphanumericLabel.text = inputAlphanumeric
-        //let morseCodeText = inputMorseCode != nil ? inputMorseCode : convertAlphanumericToMC(alphanumericString: inputAlphanumeric ?? "")
-        var brailleText = ""
-        if inputMorseCode != nil {
-            brailleText = inputMorseCode!
-            morseCodeLabel.text = brailleText
-        }
-        else {
-            arrayWordsInString.append(contentsOf: inputAlphanumeric?.components(separatedBy: " ") ?? [])
-            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
-            fullTextButton.isHidden = false
-            alphanumericLabel.text = arrayWordsInString.first
-            brailleText = (arrayBrailleGridsForCharsInWord.first)!
-            morseCodeLabel.text = brailleText
-        }
-        //sendEnglishAndMCToWatch(alphanumeric: inputAlphanumeric ?? "", morseCode: brailleText) //The Watch may already be waiting for camera input.
-        sendEnglishAndBrailleToWatch()
-        if WCSession.isSupported() {
-            let session = WCSession.default
-            if session.isWatchAppInstalled {
-                appleWatchImageView.image = UIImage(systemName: "applewatch.watchface")
-                appleWatchImageView.isHidden = false
-                scrollMCLabel.text = "You can also try it on your Apple Watch app"
-                scrollMCLabel.isHidden = false
-            }
-            else {
-                appleWatchImageView.image = UIImage(systemName: "applewatch.slash")
-                appleWatchImageView.isHidden = false
-                scrollMCLabel.text = "You can try it on your Apple Watch\nYou must install the watch app"
-                scrollMCLabel.isHidden = false
-            }
-        }
-        if siriShortcut != nil { addSiriButton(shortcutForButton: siriShortcut!, to: middleStackView) }
-        alphanumericStringIndex = -1
-        morseCodeStringIndex = -1
-        audioButton?.setTitleColor(.gray, for: .disabled)
-        audioButton?.isHidden = UIAccessibility.isVoiceOverRunning == false ? true : false
-        audioButton?.titleLabel?.numberOfLines = 0
-        audioButton?.titleLabel?.textAlignment = .center
-        audioButton?.setTitle("Play Audio.\nEnabled when autoplay is ON", for: .disabled)
-        audioButton?.isEnabled = false
-        //playPauseButtonTapped(1) //dummy parameter
-        //setUpButtonScalable(button: autoplayButton, title: isAutoPlayOn == true ? "Stop Autoplay" : "Replay")
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         let userDefault = UserDefaults.standard
