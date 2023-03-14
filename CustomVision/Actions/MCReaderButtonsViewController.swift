@@ -107,7 +107,7 @@ class MCReaderButtonsViewController : UIViewController {
         alphanumericStringIndex = -1
         morseCodeStringIndex = -1
         audioButton?.setTitleColor(.gray, for: .disabled)
-        audioButton?.isHidden = UIAccessibility.isVoiceOverRunning == false ? true : false
+        audioButton?.isHidden = true //UIAccessibility.isVoiceOverRunning == false ? true : false
         audioButton?.titleLabel?.numberOfLines = 0
         audioButton?.titleLabel?.textAlignment = .center
         audioButton?.setTitle("Play Audio.\nEnabled when autoplay is ON", for: .disabled)
@@ -469,7 +469,7 @@ class MCReaderButtonsViewController : UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        pauseAutoPlayAndReset()
+        pauseAutoPlayAndReset() //For when the user leaves the screen via back button
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -680,7 +680,9 @@ class MCReaderButtonsViewController : UIViewController {
             //If we are in the middle of playing a morse code character, we do not want to change the label
             return
         }
-        if isAudioRequestedByUser == true {
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+        localText);
+     /*   if isAudioRequestedByUser == true {
             if localText == "✓" {
                 UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
                                     "Done");
@@ -689,7 +691,7 @@ class MCReaderButtonsViewController : UIViewController {
                 UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
                                     localText);
             }
-        }
+        }   */
         self.middleBigTextView.text = localText
         self.middleBigTextView.isHidden = false
         self.middleBigTextView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
