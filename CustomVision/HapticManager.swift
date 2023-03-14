@@ -29,6 +29,10 @@ class HapticManager {
         }
     }
     
+    func stopEngine() {
+        self.chHapticEngine?.stop()
+    }
+    
     private func createAndStartHapticEngine() {
         // Create and configure a haptic engine.
         do {

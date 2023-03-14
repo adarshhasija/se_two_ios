@@ -25,7 +25,7 @@ class MCReaderButtonsViewController : UIViewController {
     lazy var supportsHaptics: Bool = {
             return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
         }()
-    var hapticManager : HapticManager?
+    //var hapticManager : HapticManager?  //This global variable caused a bug. If the phone locked and then we unlocked, haaptics stopped working. So this is now a local variable in this screen
     
     var alphanumericStringIndex = -1
     var morseCodeStringIndex = -1
@@ -63,7 +63,7 @@ class MCReaderButtonsViewController : UIViewController {
     
     
     override func viewDidLoad() {
-        hapticManager = HapticManager(supportsHaptics: supportsHaptics)
+        //hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         if inputAlphanumeric == nil {
             alphanumericLabel?.text = "Error\nSomething went wrong"
             alphanumericLabel?.textColor = .red
@@ -242,7 +242,8 @@ class MCReaderButtonsViewController : UIViewController {
             alphanumericLabel?.text = alphanumericLabel?.text //remove highlights
             alphanumericLabel?.textColor = .label
             morseCodeLabel?.text = morseCodeLabel?.text
-            hapticManager?.hapticsForEndofEntireAlphanumeric()
+            let hapticManager = HapticManager(supportsHaptics: supportsHaptics)
+            hapticManager.hapticsForEndofEntireAlphanumeric()
             resetButton?.isHidden = true
             return
         }
@@ -288,7 +289,8 @@ class MCReaderButtonsViewController : UIViewController {
             alphanumericLabel?.text = alphanumericLabel?.text //remove highlights
             alphanumericLabel?.textColor = .label
             morseCodeLabel?.text = morseCodeLabel?.text
-            hapticManager?.hapticsForEndofEntireAlphanumeric()
+            let hapticManager = HapticManager(supportsHaptics: supportsHaptics)
+            hapticManager.hapticsForEndofEntireAlphanumeric()
             return
         }
         else if brailleStringIndex == -1
@@ -452,7 +454,7 @@ class MCReaderButtonsViewController : UIViewController {
         alphanumericLabel?.text = alphanumericString
         arrayBrailleGridsForCharsInWord.removeAll()
         arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex]) ?? [])
-        let morseCodeString = (arrayBrailleGridsForCharsInWordIndex < 0 ? arrayBrailleGridsForCharsInWord[0] :  arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]) ?? ""
+        let morseCodeString = (arrayBrailleGridsForCharsInWordIndex < 0 ? arrayBrailleGridsForCharsInWord[0] :  arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex])
         morseCodeLabel?.text = morseCodeString
         let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
         
@@ -496,21 +498,6 @@ class MCReaderButtonsViewController : UIViewController {
         let alphanumericString = alphanumericLabel?.text ?? ""
         let morseCodeString = morseCodeLabel?.text ?? ""
         let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
-        if morseCodeStringIndex < 0 {
-                Analytics.logEvent("se3_ios_mc_left", parameters: [
-                    "state" : "index_less_0"
-                ])
-                //try? hapticManager?.hapticForResult(success: false)
-                hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
-               
-               if morseCodeStringIndex < 0 {
-                   morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
-                   alphanumericStringIndex = -1
-                   alphanumericLabel.text = alphanumericString
-               }
-               morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
-               return
-           }
 
         Analytics.logEvent("se3_ios_mc_left", parameters: [
                 "state" : "scrolling"
@@ -522,18 +509,7 @@ class MCReaderButtonsViewController : UIViewController {
         let alphanumericString = alphanumericLabel?.text ?? ""
         let morseCodeString = morseCodeLabel?.text ?? ""
         let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
-        if morseCodeStringIndex >= morseCodeString.count || brailleStringIndex == -1 {
-            Analytics.logEvent("se3_ios_mc_right", parameters: [
-                "state" : "index_greater_equal_0"
-            ])
-            morseCodeLabel.text = morseCodeString //If there is still anything highlighted green, remove the highlight and return everything to default color
-            alphanumericLabel.text = alphanumericString
-            //WKInterfaceDevice.current().play(.success)
-            morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
-            alphanumericStringIndex = alphanumericString.count
 
-            return
-        }
         highlightContent(alphanumericString: alphanumericString, morseCodeString: morseCodeString, brailleStringIndex: brailleStringIndex)
 
         return
@@ -541,7 +517,8 @@ class MCReaderButtonsViewController : UIViewController {
     
     private func highlightContent(alphanumericString: String, morseCodeString: String, brailleStringIndex: Int) {
         MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
-        hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: /*morseCodeStringIndex*/brailleStringIndex)
+        let hapticManager = HapticManager(supportsHaptics: supportsHaptics)
+        hapticManager.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: /*morseCodeStringIndex*/brailleStringIndex)
    
         MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: /*alphanumericStringIndex*/arrayBrailleGridsForCharsInWordIndex, label: alphanumericLabel, isMorseCode: false, color: UIColor.green)
         

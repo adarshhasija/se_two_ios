@@ -1412,22 +1412,6 @@ extension MCInterfaceController {
         }
         brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
         if direction == "down" {
-            if morseCodeStringIndex >= morseCodeString.count {
-                sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
-                    "state" : "index_greater_equal_0",
-                    "is_reading" : self.isReading()
-                ])
-                morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
-                englishTextLabel.setText(englishString)
-                WKInterfaceDevice.current().play(.success)
-                //setInstructionLabelForMode(mainString: "Rotate the crown upwards to scroll back", readingString: stopReadingString, writingString: keepTypingString, isError: false)
-                instructionsLabel?.setText(dcScrollReverse)
-                resetBigText()
-                morseCodeStringIndex = morseCodeString.count //If the index has overshot the string length by some distance, bring it back to string length
-                englishStringIndex = englishString.count
-                return
-            }
-            
             sendAnalytics(eventName: "se3_watch_scroll_down", parameters: [
                 "state" : "scrolling",
                 "isReading" : self.isReading()
@@ -1444,21 +1428,6 @@ extension MCInterfaceController {
             
         }
         else if direction == "up" {
-            if morseCodeStringIndex < 0 {
-                sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
-                    "state" : "index_less_0",
-                    "is_reading" : self.isReading()
-                ])
-                WKInterfaceDevice.current().play(.failure)
-                setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
-                morseCodeTextLabel.setText(morseCodeString) //If there is still anything highlighted green, remove the highlight and return everything to default color
-                morseCodeStringIndex = -1 //If the index has gone behind the string by some distance, bring it back to -1
-                englishStringIndex = -1
-                englishTextLabel.setText(englishString)
-                resetBigText()
-                return
-            }
-            
             sendAnalytics(eventName: "se3_watch_scroll_up", parameters: [
                 "state" : "scrolling",
                 "is_reading" : self.isReading()
