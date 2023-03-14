@@ -23,7 +23,7 @@ class ActionsTableViewController : UITableViewController {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         
         //actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
-        //actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
+        actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
         //actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
         //actionsList.append(ActionsCell(action: "Find someone nearby", forWho: "Blind and Deaf-blind", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
         actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter letters or numbers and we will translate it into braille vibrations", cellType: Action.MANUAL))
@@ -98,6 +98,15 @@ class ActionsTableViewController : UITableViewController {
                 let viewController:UIViewController = UIStoryboard(name: "ActionsList", bundle: nil).instantiateViewController(withIdentifier: "NearbyInteractionsViewController") as UIViewController
                 self.present(viewController, animated: false, completion: nil)
             }
+        }
+        else if actionItem.cellType == Action.DATE {
+            let day = (Calendar.current.component(.day, from: Date()))
+            let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
+            let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
+            //let alphanumericString = String(day) + weekdayString.prefix(2).uppercased() //Use this if converting it to morse code as wel want a shorter string
+            let alphanumericString = String(day) + " " + weekdayString.uppercased() //Use this if converting it to customized dots and dashes
+            let textFiltered = alphanumericString.trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ".contains)
+            self.openMorseCodeReadingScreen(alphanumericString: textFiltered, inputAction: Action.MANUAL)
         }
         else {
             openMorseCodeReadingScreen(alphanumericString: nil, inputAction: actionItem.cellType)

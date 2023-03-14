@@ -20,7 +20,7 @@ class ActionsListController : WKInterfaceController {
         WKInterfaceDevice.current().play(.success) //successfully launched app
         
         //actionsList.append(ActionsCell(action: "Time", explanation: "12 hour format", cellType: Action.TIME))
-        //actionsList.append(ActionsCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
+        actionsList.append(ActionsCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
         //actionsList.append(ActionsCell(action: "Battery Level", explanation: "Of this watch as a percentage", cellType: Action.BATTERY_LEVEL))
         actionsList.append(ActionsCell(action: "Manual", explanation: "Enter letters or numbers and we will translate it into vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Get from iPhone", explanation: "If there is braille on the iPhone app, you can read it here if you prefer", cellType: Action.GET_IOS))
@@ -55,6 +55,17 @@ extension ActionsListController {
     func selectedAction(action : String) {
         if action == Action.MANUAL.rawValue {
             pushManualTypingController()
+        }
+        else if action == Action.DATE.rawValue {
+            let day = (Calendar.current.component(.day, from: Date()))
+            let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
+            let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
+            //let alphanumericString = String(day) + weekdayString.prefix(2).uppercased() //Use this if converting it to morse code as wel want a shorter string
+            let alphanumericString = String(day) + " " + weekdayString.uppercased() //Use this if converting it to customized dots and dashes
+            var params : [String:Any] = [:]
+            params["mode"] = Action.MANUAL.rawValue
+            params["alphanumeric"] = alphanumericString
+            self.pushController(withName: "MCInterfaceController", context: params)
         }
         else {
             let params = (WKExtension.shared().delegate as? ExtensionDelegate)?.getParamsForMCInterfaceController(action: Action(rawValue: action) ?? Action.UNKNOWN)
