@@ -36,6 +36,7 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     func handle(_ userActivity: NSUserActivity) {
         let action = SiriShortcut.intentToActionMap[userActivity.activityType] ?? Action.UNKNOWN
         var params = getParamsForMCInterfaceController(action: action)
+        params["is_from_siri"] = true
         WKExtension.shared().rootInterfaceController?.popToRootController()
         WKExtension.shared().rootInterfaceController?.pushController(withName: "MCInterfaceController", context: params)
     }

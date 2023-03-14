@@ -162,6 +162,16 @@ class ActionsTableViewController : UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    func showDialog(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { [weak alert] (_) in
+            alert?.dismiss(animated: true, completion: nil)
+        }))
+
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     private func openMorseCodeReadingScreen(alphanumericString : String?, inputAction: Action) {
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         guard let mcReaderButtonsViewController = (UIApplication.shared.delegate as? AppDelegate)?.getMorseCodeReadingScreen(inputAction: inputAction, alphanumericString: alphanumericString) else { return }

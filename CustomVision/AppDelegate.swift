@@ -33,8 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let navigationController = window?.rootViewController as! UINavigationController
         navigationController.popToRootViewController(animated: false) //Pop everything. We do not want an endless list of controllers
+        let actionsTableViewController = navigationController.topViewController as? ActionsTableViewController
+        actionsTableViewController?.showDialog(title: "Sorry", message: "This shortcut is not currently supported")
         
-        let action = SiriShortcut.intentToActionMap[userActivity.activityType] ?? Action.UNKNOWN
+        //removing support for existing shortcuts for now
+    /*    let action = SiriShortcut.intentToActionMap[userActivity.activityType] ?? Action.UNKNOWN
         let siriShortcut = SiriShortcut.shortcutsDictionary[action]
         if action == Action.CAMERA_OCR {
             let storyBoard : UIStoryboard = UIStoryboard(name: "MainVision", bundle:nil)
@@ -47,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             var inputAlphanumeric : String? = nil
             let mcReaderViewController = getMorseCodeReadingScreen(inputAction: action, alphanumericString: inputAlphanumeric)
             navigationController.pushViewController(mcReaderViewController, animated: true)
-        }
+        }   */
         
      //   self.window?.makeKeyAndVisible() //This assumes root view controller is VisionMLViewController
         

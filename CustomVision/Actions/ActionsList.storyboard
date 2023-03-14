@@ -11,7 +11,7 @@
         <!--Actions Table View Controller-->
         <scene sceneID="Tau-hm-nDH">
             <objects>
-                <tableViewController id="1gz-Yr-vSG" customClass="ActionsTableViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ActionsTableViewController" id="1gz-Yr-vSG" customClass="ActionsTableViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="dLM-jB-PkA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -95,7 +95,7 @@
         <!--View Controller-->
         <scene sceneID="eDp-nk-tyb">
             <objects>
-                <viewController storyboardIdentifier="NearbyInteractionsViewController" id="rlF-3u-R90" customClass="ViewController" customModule="NIPeekaboo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NearbyInteractionsViewController" id="rlF-3u-R90" customClass="ViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VSe-Rn-UoW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

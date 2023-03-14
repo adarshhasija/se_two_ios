@@ -47,6 +47,7 @@ class MCInterfaceController : WKInterfaceController {
     var isScreenActive = true
     var quickScrollTimeThreshold = 700000000 //If the digital crown is scrolled 30 degrees within this many nano seconds, we go into autoplay
     var isNormalMorse : Bool? = nil //Some functions, like TIME and DATE, can use customized vibrations and not normal morse code
+    var isFromSiri = false
     var autoPlayTimer : Timer? = nil
     
     @IBOutlet weak var mainImage: WKInterfaceImage! //The default 'home' image of the application
@@ -70,6 +71,9 @@ class MCInterfaceController : WKInterfaceController {
         let dictionary = context as? NSDictionary
         if dictionary != nil {
             mode = dictionary!["mode"] as? String
+            if dictionary!["is_from_siri"] != nil {
+                isFromSiri = (dictionary!["is_from_siri"] as? Bool)!
+            }
         }
         
         //UserDefaults.standard.removeObject(forKey: "SE3_WATCHOS_USER_TYPE")
@@ -116,6 +120,12 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 
             }
+        }
+        
+        if isFromSiri == true {
+            presentAlert(withTitle: "Sorry", message: "This shortcut is not currently supported", preferredStyle: .alert, actions: [
+              WKAlertAction(title: "OK", style: .default) {}
+              ])
         }
         
         if mode != nil {
@@ -1270,7 +1280,7 @@ extension MCInterfaceController {
             setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters.\nScroll fast for autoplay", readingString: stopReadingString, writingString: keepTypingString, isError: false)
             fullTextButton.setHidden(false)
             iphoneImage?.setHidden(true)
-            digitalCrownRotated(direction: "down") //just to do the highlights
+            if morseCodeStringIndex > -1 { digitalCrownRotated(direction: "down") } //just to do the highlights
         }
         else {
             WKInterfaceDevice.current().play(.failure)
