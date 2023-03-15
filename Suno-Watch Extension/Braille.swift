@@ -212,7 +212,7 @@ class Braille {
     
     func convertAlphanumericToBraille(alphanumericString : String) -> [String]? {
         var brailleStringArray : [String] = []
-        let english = alphanumericString.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890 ".contains).replacingOccurrences(of: " ", with: "␣")
+        let english = alphanumericString.uppercased().replacingOccurrences(of: " ", with: "␣")
         var brailleCharacterString = ""
         for character in english {
             guard let brailleDotsString : String = alphabetToBrailleDictionary[String(character)] else {

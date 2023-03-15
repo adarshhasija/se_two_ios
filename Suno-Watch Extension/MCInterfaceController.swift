@@ -72,8 +72,14 @@ class MCInterfaceController : WKInterfaceController {
         if dictionary != nil {
             mode = dictionary!["mode"] as? String
             if dictionary!["is_from_siri"] != nil {
-                isFromSiri = (dictionary!["is_from_siri"] as? Bool)!
+                isFromSiri = (dictionary!["is_from_siri"] as? Bool) ?? true
             }
+        }
+        
+        if isFromSiri == true {
+            presentAlert(withTitle: "Sorry", message: "This shortcut is not currently supported", preferredStyle: .alert, actions: [
+              WKAlertAction(title: "OK", style: .default) {}
+              ])
         }
         
         //UserDefaults.standard.removeObject(forKey: "SE3_WATCHOS_USER_TYPE")
@@ -120,12 +126,6 @@ class MCInterfaceController : WKInterfaceController {
                 }
                 
             }
-        }
-        
-        if isFromSiri == true {
-            presentAlert(withTitle: "Sorry", message: "This shortcut is not currently supported", preferredStyle: .alert, actions: [
-              WKAlertAction(title: "OK", style: .default) {}
-              ])
         }
         
         if mode != nil {

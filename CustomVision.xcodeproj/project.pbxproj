@@ -52,6 +52,8 @@
 		317D4C262188CCF00081B38B /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D4C252188CCF00081B38B /* Actions.swift */; };
 		317D7E2629BA5C8D00BDBD51 /* TextInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D7E2529BA5C8D00BDBD51 /* TextInterfaceController.swift */; };
 		317D7E2829BB0C1A00BDBD51 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D7E2729BB0C1A00BDBD51 /* TextViewController.swift */; };
+		317D7E2B29C1780400BDBD51 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D7E2A29C1780400BDBD51 /* String.swift */; };
+		317D7E2C29C1780400BDBD51 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D7E2A29C1780400BDBD51 /* String.swift */; };
 		317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */; };
 		31829CB724936D2B003C6153 /* MorseCodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A855142422A63A0064B29C /* MorseCodeUtils.swift */; };
 		31829CBB2493B671003C6153 /* ActionsMCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31829CBA2493B671003C6153 /* ActionsMCViewController.swift */; };
@@ -205,6 +207,7 @@
 		317D4C252188CCF00081B38B /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		317D7E2529BA5C8D00BDBD51 /* TextInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInterfaceController.swift; sourceTree = "<group>"; };
 		317D7E2729BB0C1A00BDBD51 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
+		317D7E2A29C1780400BDBD51 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteSpeechViewController.swift; sourceTree = "<group>"; };
 		31829CBA2493B671003C6153 /* ActionsMCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMCViewController.swift; sourceTree = "<group>"; };
 		31829CBC2493B737003C6153 /* MorseCode.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MorseCode.storyboard; sourceTree = "<group>"; };
@@ -529,6 +532,7 @@
 				317C71332540AFE100E6800B /* LibraryCustomActions.swift */,
 				311AEE3025D81BAA00E018FE /* SiriShortcut.swift */,
 				317D7E2729BB0C1A00BDBD51 /* TextViewController.swift */,
+				317D7E2A29C1780400BDBD51 /* String.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -872,6 +876,7 @@
 				31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */,
 				31EC882823467AD50088051C /* MCTreeNode.swift in Sources */,
 				3142C8A92496694500B1257B /* MCDictionaryDetailController.swift in Sources */,
+				317D7E2C29C1780400BDBD51 /* String.swift in Sources */,
 				31EC882623467A600088051C /* MorseCode.swift in Sources */,
 				3117DB37299A899F00A54F1D /* Braille.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
@@ -963,6 +968,7 @@
 				313D2C2923D8E2D60089F051 /* ThreeDTouchView.swift in Sources */,
 				3179722D2156B3C7006495E3 /* HelpTopicsTableViewCell.swift in Sources */,
 				3179722B2156ABBC006495E3 /* HelpTopicViewController.swift in Sources */,
+				317D7E2B29C1780400BDBD51 /* String.swift in Sources */,
 				315A776623EDBE9300FC75E3 /* TwoPeopleSettingsViewController.swift in Sources */,
 				5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */,
 				3188A83824789FA00075B33E /* ShortcutListItem.swift in Sources */,
@@ -1053,7 +1059,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 70;
+				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
@@ -1081,7 +1087,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 70;
+				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				IBSC_MODULE = Suno_Watch_Extension;
 				INFOPLIST_FILE = "Suno-Watch/Info.plist";
@@ -1405,7 +1411,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 70;
+				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1424,7 +1430,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COREML_CODEGEN_LANGUAGE = Swift;
-				CURRENT_PROJECT_VERSION = 70;
+				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
 				INFOPLIST_FILE = CustomVision/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

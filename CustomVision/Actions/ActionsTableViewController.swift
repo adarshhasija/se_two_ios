@@ -105,8 +105,7 @@ class ActionsTableViewController : UITableViewController {
             let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
             //let alphanumericString = String(day) + weekdayString.prefix(2).uppercased() //Use this if converting it to morse code as wel want a shorter string
             let alphanumericString = String(day) + " " + weekdayString.uppercased() //Use this if converting it to customized dots and dashes
-            let textFiltered = alphanumericString.trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ".contains)
-            self.openMorseCodeReadingScreen(alphanumericString: textFiltered, inputAction: Action.MANUAL)
+            self.openMorseCodeReadingScreen(alphanumericString: alphanumericString, inputAction: Action.MANUAL)
         }
         else {
             openMorseCodeReadingScreen(alphanumericString: nil, inputAction: actionItem.cellType)
@@ -148,8 +147,7 @@ class ActionsTableViewController : UITableViewController {
             if textField?.text?.isEmpty == false {
                 let text : String = textField!.text!
                 Analytics.logEvent("se3_manual_success", parameters: [:]) //returned from camera
-                let textFiltered = text.trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ".contains)
-                self.openMorseCodeReadingScreen(alphanumericString: textFiltered, inputAction: Action.MANUAL)
+                self.openMorseCodeReadingScreen(alphanumericString: text, inputAction: Action.MANUAL)
                 alert?.dismiss(animated: true, completion: nil)
             }
             //print("Text field: \(textField.text)")
@@ -173,8 +171,22 @@ class ActionsTableViewController : UITableViewController {
     }
     
     private func openMorseCodeReadingScreen(alphanumericString : String?, inputAction: Action) {
+        guard let alphanumericStringFiltered = alphanumericString?.trimmingCharacters(in: .whitespacesAndNewlines)
+            .filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ".contains).removeExtraSpaces() else {
+            showDialog(title: "Error", message: "Sorry an error occured, please try again")
+            return
+        }
+        
+        guard let mcReaderButtonsViewController = (UIApplication.shared.delegate as? AppDelegate)?.getMorseCodeReadingScreen(inputAction: inputAction, alphanumericString: alphanumericStringFiltered) else {
+            showDialog(title: "Error", message: "There was an issue opening the next screen. Please try again")
+            return
+        }
+        
+        if alphanumericStringFiltered.count < 1 {
+            showDialog(title: "Error", message: "There was an issue with the text. Letters and numbers only. No special characters")
+            return
+        }
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
-        guard let mcReaderButtonsViewController = (UIApplication.shared.delegate as? AppDelegate)?.getMorseCodeReadingScreen(inputAction: inputAction, alphanumericString: alphanumericString) else { return }
         self.navigationController?.pushViewController(mcReaderButtonsViewController, animated: true)
     }
 }
@@ -199,8 +211,7 @@ extension ActionsTableViewController : ActionsTableViewControllerProtocol {
         if english.count > 0 {
             //self.navigationController?.popViewController(animated: false) //We are not popping here as it breaks VoiceOver. VoiceOver picks elements from this page instead of from the next page. Therefore we will be popping the camera view on the return. See viewDidAppear in CameraViewController
             Analytics.logEvent("se3_ios_cam_success", parameters: [:]) //returned from camera
-            let englishFiltered = english.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains)
-            openMorseCodeReadingScreen(alphanumericString: englishFiltered, inputAction: Action.CAMERA_OCR)
+            openMorseCodeReadingScreen(alphanumericString: english, inputAction: Action.CAMERA_OCR)
         }
     }
 

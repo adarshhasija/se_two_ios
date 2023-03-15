@@ -130,7 +130,7 @@ class MCReaderButtonsViewController : UIViewController {
             text += word
             text += " "
         }
-        text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        text = text.trimmingCharacters(in: .whitespacesAndNewlines) //Trim the last space at the end from the for loop above
         for (index, element) in arrayWordsInString.enumerated() {
             if index < arrayWordsInStringIndex {
                 startIndexForHighlighting += arrayWordsInString[index].count //Need to increment by length of  the word that was completed
@@ -477,7 +477,7 @@ class MCReaderButtonsViewController : UIViewController {
     }
     
     private func convertAlphanumericToMC(alphanumericString : String) -> String {
-        let english = alphanumericString.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains).replacingOccurrences(of: " ", with: "␣")
+        let english = alphanumericString.uppercased().replacingOccurrences(of: " ", with: "␣")
         var morseCodeString = ""
         var index = 0
         indicesOfPipes.removeAll()
