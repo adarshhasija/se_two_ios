@@ -78,6 +78,14 @@ class HapticManager {
         }
     }
     
+    func generateStandardResponseHaptic() {
+        generateHaptic(code: MC_DOT)
+    }
+    
+    func generateErrorHaptic() {
+        generateHaptic(code: RESULT_FAILURE)
+    }
+    
     func playSelectedCharacterHaptic(inputString : String, inputIndex : Int) {
         let index = inputString.index(inputString.startIndex, offsetBy: inputIndex)
         let char = String(inputString[index])

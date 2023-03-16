@@ -30,7 +30,25 @@ class ActionsTableViewController : UITableViewController {
         actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you", cellType: Action.CAMERA_OCR))
         //actionsList.append(ActionsCell(action: "Morse Code Dictionary", forWho: "Blind and Deaf-blind", explanation: "To be used as reference when using Morse Code Typing feature in the Apple Watch app", cellType: Action.MC_DICTIONARY))
         
-        
+        setupNavBar()
+    }
+    
+    @IBAction func settingsButtonTapped(_ sender: Any) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Settings", bundle:nil)
+        let settingsTableViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsTableViewController") as! SettingsTableViewController
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(settingsTableViewController, animated: true)
+        }
+    }
+    
+    private func setupNavBar() {
+        let settingsButton = UIButton(type: .custom)
+            settingsButton.setImage(UIImage(systemName: "gear"), for: .normal)
+            settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+        let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
+        settingsBarButtonItem.accessibilityLabel = "Settings Button"
+        settingsBarButtonItem.accessibilityHint = "Settings Button"
+        self.navigationItem.setRightBarButtonItems([settingsBarButtonItem], animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

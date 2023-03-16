@@ -11,7 +11,7 @@
         <!--Morse Code Editor View Controller-->
         <scene sceneID="kaO-YT-H9J">
             <objects>
-                <viewController storyboardIdentifier="MorseCodeEditorViewController" id="bbL-uY-60S" customClass="MorseCodeEditorViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MorseCodeEditorViewController" id="bbL-uY-60S" customClass="MorseCodeEditorViewController" customModule="BrailleByVibrations" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Gfa-cJ-5yq"/>
                         <viewControllerLayoutGuide type="bottom" id="lNj-gg-1Um"/>
@@ -160,7 +160,7 @@
         <!--ActionsMC View Controller-->
         <scene sceneID="sUq-sy-fSQ">
             <objects>
-                <viewController storyboardIdentifier="ActionsMCViewController" id="ayT-RZ-t8z" customClass="ActionsMCViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ActionsMCViewController" id="ayT-RZ-t8z" customClass="ActionsMCViewController" customModule="BrailleByVibrations" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HSm-UX-eB7"/>
                         <viewControllerLayoutGuide type="bottom" id="5RC-vY-IjW"/>
@@ -269,7 +269,7 @@
         <!--Reader Buttons View Controller-->
         <scene sceneID="P4L-T8-Q2j">
             <objects>
-                <viewController storyboardIdentifier="MCReaderButtonsViewController" id="dbP-WQ-myk" customClass="MCReaderButtonsViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MCReaderButtonsViewController" id="dbP-WQ-myk" customClass="MCReaderButtonsViewController" customModule="BrailleByVibrations" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DH8-Ce-ce9"/>
                         <viewControllerLayoutGuide type="bottom" id="shr-8i-E6L"/>
@@ -487,7 +487,7 @@
         <!--Text View Controller-->
         <scene sceneID="0ce-1L-THs">
             <objects>
-                <viewController storyboardIdentifier="TextViewController" id="wHB-1o-zmR" customClass="TextViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TextViewController" id="wHB-1o-zmR" customClass="TextViewController" customModule="BrailleByVibrations" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dnB-KH-fhU"/>
                         <viewControllerLayoutGuide type="bottom" id="51f-LG-dqV"/>
@@ -531,6 +531,82 @@
             </objects>
             <point key="canvasLocation" x="4765" y="-2179"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="5kW-gi-wsH">
+            <objects>
+                <viewController id="mP2-sG-IMg" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Lgn-Lh-830"/>
+                        <viewControllerLayoutGuide type="bottom" id="AJ4-ZF-nnh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aBS-16-t8Q">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TEP-ra-lXI">
+                                <rect key="frame" x="36" y="108" width="248" height="128"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NVB-nI-JfJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="273.5" height="54.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time between vibrations in autoplay" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ilf-Ax-bxl">
+                                                <rect key="frame" x="0.0" y="0.0" width="273.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="left" translatesAutoresizingMaskIntoConstraints="NO" id="3v0-0r-FiO">
+                                                <rect key="frame" x="0.0" y="20.5" width="273.5" height="34"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FXi-UA-cN2">
+                                                        <rect key="frame" x="0.0" y="0.0" width="182" height="34"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="minus.circle" catalog="system"/>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mH2-YI-GWU">
+                                                        <rect key="frame" x="182" y="0.0" width="50" height="34"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="plus.circle" catalog="system"/>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T3a-cx-s98">
+                                                        <rect key="frame" x="232" y="0.0" width="41.5" height="34"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="3v0-0r-FiO" firstAttribute="leading" secondItem="NVB-nI-JfJ" secondAttribute="leading" id="6UH-Zc-U37"/>
+                                            <constraint firstAttribute="trailing" secondItem="3v0-0r-FiO" secondAttribute="trailing" id="9Df-Qy-kUe"/>
+                                            <constraint firstAttribute="trailing" secondItem="Ilf-Ax-bxl" secondAttribute="trailing" id="FAV-Q9-AEb"/>
+                                            <constraint firstItem="Ilf-Ax-bxl" firstAttribute="top" secondItem="NVB-nI-JfJ" secondAttribute="top" id="psp-5z-5JI"/>
+                                            <constraint firstItem="Ilf-Ax-bxl" firstAttribute="leading" secondItem="NVB-nI-JfJ" secondAttribute="leading" id="t5N-tt-nWa"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="NVB-nI-JfJ" firstAttribute="top" secondItem="TEP-ra-lXI" secondAttribute="top" id="Vkx-pc-nwz"/>
+                                    <constraint firstAttribute="trailing" secondItem="NVB-nI-JfJ" secondAttribute="trailing" id="b2X-nJ-d41"/>
+                                    <constraint firstItem="NVB-nI-JfJ" firstAttribute="leading" secondItem="TEP-ra-lXI" secondAttribute="leading" id="mke-8C-Thg"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="MiO-er-VTN"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="GGn-YJ-Iqj"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="TEP-ra-lXI" firstAttribute="leading" secondItem="aBS-16-t8Q" secondAttribute="leadingMargin" constant="20" id="0kv-20-wyk"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="TEP-ra-lXI" secondAttribute="trailing" constant="20" id="AO1-oS-cuX"/>
+                            <constraint firstItem="TEP-ra-lXI" firstAttribute="top" secondItem="Lgn-Lh-830" secondAttribute="bottom" constant="50" id="B8Y-xF-NR8"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HoI-xk-3Up" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5653" y="-2179"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="hwN-Ld-0iH">
             <objects>
@@ -554,7 +630,9 @@
         <image name="backward.end" catalog="system" width="128" height="120"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
+        <image name="minus.circle" catalog="system" width="128" height="123"/>
         <image name="play.fill" catalog="system" width="117" height="128"/>
+        <image name="plus.circle" catalog="system" width="128" height="123"/>
         <image name="text.alignleft" catalog="system" width="128" height="99"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

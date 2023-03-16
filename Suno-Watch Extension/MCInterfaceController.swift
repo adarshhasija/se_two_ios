@@ -58,6 +58,7 @@ class MCInterfaceController : WKInterfaceController {
     @IBOutlet weak var playPauseImage: WKInterfaceImage!
     @IBOutlet weak var nextCharacterButton: WKInterfaceButton!
     @IBOutlet weak var resetButton: WKInterfaceButton!
+    @IBOutlet weak var timeSettingsButton: WKInterfaceButton!
     @IBOutlet weak var instructionsLabel: WKInterfaceLabel!
     @IBOutlet weak var iphoneImage: WKInterfaceImage!
     @IBOutlet weak var bigTextLabel: WKInterfaceLabel!
@@ -172,6 +173,12 @@ class MCInterfaceController : WKInterfaceController {
     }
     
     
+    @IBAction func timeSettingsButtonTapped() {
+        let params : [String: Any] = [:]
+        pushController(withName: "ValuePlusMinusInterfaceController", context: params)
+    }
+    
+    
     @IBAction func fullTextButtonTapped() {
         var text = ""
         var startIndexForHighlighting = 0
@@ -276,6 +283,7 @@ class MCInterfaceController : WKInterfaceController {
             resetButton?.setHidden(true)
             fullTextButton?.setHidden(true)
             switchBrailleDirectionButton?.setHidden(true)
+            //timeSettingsButton?.setHidden(true)
         }
         else {
             let image = UIImage(systemName: "play.fill")
@@ -287,6 +295,7 @@ class MCInterfaceController : WKInterfaceController {
             resetButton?.setHidden(false)
             fullTextButton?.setHidden(false)
             //switchBrailleDirectionButton?.setHidden(false)
+            //timeSettingsButton?.setHidden(false)
         }
     }
     
@@ -1410,7 +1419,9 @@ extension MCInterfaceController {
             "direction" : direction
         ]
         instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" : "Resetting, please wait...")
-        let timeInterval = direction == "down" ? 1 : 0.5
+        let userDefault = UserDefaults.standard
+        let TIME_DIFF_MILLIS : Double = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
+        let timeInterval = TIME_DIFF_MILLIS/1000 //direction == "down" ? 1 : 0.5
         autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
     

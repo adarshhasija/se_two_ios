@@ -1,41 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Settings Table View Controller-->
         <scene sceneID="fdp-Af-2QW">
             <objects>
-                <tableViewController storyboardIdentifier="SettingsTableViewController" id="Djh-SX-uHS" customClass="SettingsTableViewController" customModule="SunoDayko" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SettingsTableViewController" id="Djh-SX-uHS" customClass="SettingsTableViewController" customModule="BrailleByVibrations" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="VnS-Fo-lAs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
-                            <tableViewSection headerTitle="Apple Watch App" id="6H0-0Y-mom">
+                            <tableViewSection headerTitle="Time between vibrations in autoplay" id="6H0-0Y-mom">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="w6X-Hs-vTt">
-                                        <rect key="frame" x="20" y="55.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="55.5" width="374" height="89.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w6X-Hs-vTt" id="h6X-Pb-3Sx">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="4FU-Bf-47G">
-                                                    <rect key="frame" x="20" y="20" width="334" height="3.5"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="4FU-Bf-47G">
+                                                    <rect key="frame" x="20" y="20" width="334" height="49.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Is Watch app installed?" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qDr-fz-PeS">
-                                                            <rect key="frame" x="0.0" y="0.0" width="334" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send to Watch explanation" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVC-ZC-KfM">
-                                                            <rect key="frame" x="0.0" y="3.5" width="334" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <nil key="textColor"/>
+                                                        <stackView opaque="NO" contentMode="left" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="10j-CE-tdG">
+                                                            <rect key="frame" x="0.0" y="0.0" width="334" height="22.5"/>
+                                                            <subviews>
+                                                                <button opaque="NO" contentMode="left" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-9u-Kfi">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="68" height="22"/>
+                                                                    <accessibility key="accessibilityConfiguration" hint="Minus Button" label="Minus Button"/>
+                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                    <state key="normal" image="minus.circle" catalog="system"/>
+                                                                    <connections>
+                                                                        <action selector="minusButtonTapped:" destination="Djh-SX-uHS" eventType="touchUpInside" id="VnC-1l-3bB"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Omu-9u-Ktb">
+                                                                    <rect key="frame" x="78" y="0.0" width="68.5" height="22"/>
+                                                                    <accessibility key="accessibilityConfiguration" hint="Plus Button" label="Plus Button"/>
+                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                    <state key="normal" image="plus.circle" catalog="system"/>
+                                                                    <connections>
+                                                                        <action selector="plusButtonTapped:" destination="Djh-SX-uHS" eventType="touchUpInside" id="JsT-yt-geJ"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3wO-aV-sDG">
+                                                                    <rect key="frame" x="156.5" y="1" width="177.5" height="20.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LeA-ED-Hoa">
+                                                            <rect key="frame" x="0.0" y="27.5" width="334" height="22"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" systemColor="systemRedColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -43,49 +68,14 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="4FU-Bf-47G" secondAttribute="bottom" constant="20" id="6Ed-cF-3pu"/>
+                                                <constraint firstItem="4FU-Bf-47G" firstAttribute="trailing" secondItem="h6X-Pb-3Sx" secondAttribute="trailingMargin" id="HdR-l1-lyK"/>
                                                 <constraint firstItem="4FU-Bf-47G" firstAttribute="centerY" secondItem="h6X-Pb-3Sx" secondAttribute="centerY" id="KVa-Sb-gSe"/>
+                                                <constraint firstItem="4FU-Bf-47G" firstAttribute="leading" secondItem="h6X-Pb-3Sx" secondAttribute="leadingMargin" id="Yvj-x6-aRX"/>
+                                                <constraint firstItem="4FU-Bf-47G" firstAttribute="top" secondItem="h6X-Pb-3Sx" secondAttribute="topMargin" id="cVV-Iy-slJ"/>
                                                 <constraint firstItem="4FU-Bf-47G" firstAttribute="leading" secondItem="h6X-Pb-3Sx" secondAttribute="leading" constant="20" id="nir-oW-GRK"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="4FU-Bf-47G" secondAttribute="bottom" constant="9" id="reS-dl-gUn"/>
                                                 <constraint firstAttribute="trailing" secondItem="4FU-Bf-47G" secondAttribute="trailing" constant="20" id="vaB-Ll-HkV"/>
                                                 <constraint firstItem="4FU-Bf-47G" firstAttribute="top" secondItem="h6X-Pb-3Sx" secondAttribute="top" constant="20" id="ylt-sK-ksu"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="Camera" id="UBN-mq-RXf">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rBk-x5-Dwh">
-                                        <rect key="frame" x="20" y="155" width="374" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rBk-x5-Dwh" id="MG7-tp-csa">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="DoM-RX-M2q">
-                                                    <rect key="frame" x="20" y="20" width="334" height="3.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Read signs on doors" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iN9-rk-XpU">
-                                                            <rect key="frame" x="0.0" y="0.0" width="334" height="0.0"/>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Eu-SC-gkD">
-                                                            <rect key="frame" x="0.0" y="3.5" width="334" height="0.0"/>
-                                                            <string key="text">You can read signs on doors using our camera. Point the camera at the door. We will get the text for you. You can then play the audio or read the morse code</string>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="DoM-RX-M2q" secondAttribute="trailing" constant="20" id="AvE-qF-KOn"/>
-                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="centerY" secondItem="MG7-tp-csa" secondAttribute="centerY" id="aU1-zN-RAN"/>
-                                                <constraint firstAttribute="bottom" secondItem="DoM-RX-M2q" secondAttribute="bottom" constant="20" id="iR0-2A-Xfo"/>
-                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="leading" secondItem="MG7-tp-csa" secondAttribute="leading" constant="20" id="jFE-q9-kVY"/>
-                                                <constraint firstItem="DoM-RX-M2q" firstAttribute="top" secondItem="MG7-tp-csa" secondAttribute="top" constant="20" id="lFb-Of-Oh6"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -99,8 +89,10 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="7wf-Vm-FOh"/>
                     <connections>
-                        <outlet property="isAppInstalledLabel" destination="qDr-fz-PeS" id="Mlr-vl-kUF"/>
-                        <outlet property="sendToWatchExplanationLabel" destination="dVC-ZC-KfM" id="ltH-hP-5Bo"/>
+                        <outlet property="errorLabel" destination="LeA-ED-Hoa" id="CBP-BV-Xzt"/>
+                        <outlet property="minusButton" destination="d2t-9u-Kfi" id="kX9-zt-pmQ"/>
+                        <outlet property="plusButton" destination="Omu-9u-Ktb" id="E7B-M1-hBA"/>
+                        <outlet property="timeLabel" destination="3wO-aV-sDG" id="Ny7-sy-fVP"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBT-7U-EeI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -113,7 +105,7 @@
                 <navigationController storyboardIdentifier="SettingsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="YLZ-ae-j3X" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RCL-AT-yoq">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -126,4 +118,11 @@
             <point key="canvasLocation" x="1989.8550724637682" y="-4274.3303571428569"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="minus.circle" catalog="system" width="128" height="123"/>
+        <image name="plus.circle" catalog="system" width="128" height="123"/>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

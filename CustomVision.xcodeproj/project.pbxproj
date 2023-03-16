@@ -95,6 +95,7 @@
 		31D97F9C23BA7936000CFCF2 /* SettingDBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */; };
 		31DCDFB126261E2100366DDD /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DCDFB026261E2100366DDD /* CameraViewController.swift */; };
 		31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */; };
+		31E8047C29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E8047B29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift */; };
 		31EC882623467A600088051C /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
 		31EC882823467AD50088051C /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
@@ -246,6 +247,7 @@
 		31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDBController.swift; sourceTree = "<group>"; };
 		31DCDFB026261E2100366DDD /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewController.swift; sourceTree = "<group>"; };
+		31E8047B29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValuePlusMinusInterfaceController.swift; sourceTree = "<group>"; };
 		31EC882523467A600088051C /* MorseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCode.swift; sourceTree = "<group>"; };
 		31EC882723467AD50088051C /* MCTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCTreeNode.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 				3117DB35299A899F00A54F1D /* Braille.swift */,
 				3117DB38299A98E200A54F1D /* BrailleCell.swift */,
 				317D7E2529BA5C8D00BDBD51 /* TextInterfaceController.swift */,
+				31E8047B29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -878,6 +881,7 @@
 				3142C8A92496694500B1257B /* MCDictionaryDetailController.swift in Sources */,
 				317D7E2C29C1780400BDBD51 /* String.swift in Sources */,
 				31EC882623467A600088051C /* MorseCode.swift in Sources */,
+				31E8047C29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift in Sources */,
 				3117DB37299A899F00A54F1D /* Braille.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
 				31B61BC5253369AE00237602 /* ActionsListController.swift in Sources */,

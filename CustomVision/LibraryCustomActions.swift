@@ -11,6 +11,8 @@ import Foundation
 
 class LibraryCustomActions {
     
+    static let STRING_FOR_USER_DEFAULTS = "SE_TWO_IOS_AUTOPLAY_TIME_DIFF"
+    
     static func getCurrentTimeInAlphanumeric(format : String) -> String {
         var hh = (Calendar.current.component(.hour, from: Date()))
         let mm = (Calendar.current.component(.minute, from: Date()))

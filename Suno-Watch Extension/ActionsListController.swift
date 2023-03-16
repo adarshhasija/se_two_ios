@@ -19,6 +19,7 @@ class ActionsListController : WKInterfaceController {
     override func awake(withContext context: Any?) {
         WKInterfaceDevice.current().play(.success) //successfully launched app
         
+        actionsList.append(ActionsCell(action: "Settings", cellType: Action.SETTINGS))
         //actionsList.append(ActionsCell(action: "Time", explanation: "12 hour format", cellType: Action.TIME))
         actionsList.append(ActionsCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
         //actionsList.append(ActionsCell(action: "Battery Level", explanation: "Of this watch as a percentage", cellType: Action.BATTERY_LEVEL))
@@ -53,7 +54,11 @@ class ActionsListController : WKInterfaceController {
 extension ActionsListController {
     
     func selectedAction(action : String) {
-        if action == Action.MANUAL.rawValue {
+        if action == Action.SETTINGS.rawValue {
+            let params : [String: Any] = [:]
+            pushController(withName: "ValuePlusMinusInterfaceController", context: params)
+        }
+        else if action == Action.MANUAL.rawValue {
             pushManualTypingController()
         }
         else if action == Action.DATE.rawValue {

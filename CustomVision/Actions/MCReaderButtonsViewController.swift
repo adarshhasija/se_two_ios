@@ -432,7 +432,9 @@ class MCReaderButtonsViewController : UIViewController {
         let dictionary = [
             "direction" : direction
         ]
-        let timeInterval = direction == "right" ? 1 : 0.5
+        let userDefault = UserDefaults.standard
+        let TIME_DIFF_MILLIS : Double = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
+        let timeInterval = TIME_DIFF_MILLIS/1000 //direction == "down" ? 1 : 0.5
         autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCReaderButtonsViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
     

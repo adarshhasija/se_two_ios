@@ -9,7 +9,7 @@
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="InfoByFeel" customModuleProvider="target">
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="BrailleByVibrations" customModuleProvider="target">
                     <items>
                         <button width="1" alignment="left" title="New Message" id="XLI-c3-8H7">
                             <connections>
@@ -129,6 +129,18 @@
                                         <action selector="resetButtonTapped" destination="V63-br-2PY" id="g3p-Sp-lqw"/>
                                     </connections>
                                 </button>
+                                <button alignment="left" hidden="YES" id="9WZ-n4-ILw">
+                                    <group key="contentGroup" width="1" alignment="left" id="eIe-Cg-t6m">
+                                        <items>
+                                            <label alignment="center" text="Time Settings" id="ipk-7G-B0s">
+                                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <action selector="timeSettingsButtonTapped" destination="V63-br-2PY" id="342-Hl-ToU"/>
+                                    </connections>
+                                </button>
                                 <label width="1" alignment="left" hidden="YES" text="Instruction Label" textAlignment="center" numberOfLines="0" id="Reo-fp-Kjf">
                                     <color key="textColor" red="0.23137254901960785" green="0.83495825639444188" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
@@ -226,6 +238,7 @@
                         <outlet property="previousCharacterButton" destination="UBI-yf-2aG" id="U6l-hw-F8D"/>
                         <outlet property="resetButton" destination="Y3h-Nd-Wt0" id="sOh-9W-M5M"/>
                         <outlet property="switchBrailleDirectionButton" destination="ewQ-hM-2dr" id="F3q-MW-G9V"/>
+                        <outlet property="timeSettingsButton" destination="9WZ-n4-ILw" id="DhR-ap-9pP"/>
                     </connections>
                 </controller>
             </objects>
@@ -297,6 +310,53 @@
             </objects>
             <point key="canvasLocation" x="400" y="794"/>
         </scene>
+        <!--ValuePlusMinusInterfaceController-->
+        <scene sceneID="scx-gi-afE">
+            <objects>
+                <controller identifier="ValuePlusMinusInterfaceController" id="F3D-R2-LBl" customClass="ValuePlusMinusInterfaceController" customModule="Suno_Watch_Extension">
+                    <items>
+                        <label alignment="left" text="Time between vibrations in autoplay" numberOfLines="0" id="d6n-7Q-yul"/>
+                        <group width="1" alignment="left" spacing="10" id="vQU-qu-2EC">
+                            <items>
+                                <button alignment="left" accessibilityLabel="Minus Button" accessibilityHint="Minus Button" id="xiW-Bj-z1B">
+                                    <group key="contentGroup" width="0.29999999999999999" alignment="left" id="5X7-mL-te3">
+                                        <items>
+                                            <imageView alignment="left" image="minus.circle" catalog="system" id="O9G-hM-yL8"/>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <action selector="minusButtonTapped" destination="F3D-R2-LBl" id="138-Vb-hNZ"/>
+                                    </connections>
+                                </button>
+                                <button alignment="left" accessibilityLabel="Plus Button" accessibilityHint="Plus Button" id="fP7-ae-fwD">
+                                    <group key="contentGroup" width="0.29999999999999999" alignment="left" contentMode="scaleAspectFit" id="0qb-XI-9Lp">
+                                        <items>
+                                            <imageView alignment="right" image="plus.circle" catalog="system" id="G3R-es-uSZ"/>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <action selector="plusButtonTapped" destination="F3D-R2-LBl" id="X20-Mm-Yna"/>
+                                    </connections>
+                                </button>
+                                <label width="0.5" alignment="center" text="Time" id="Smf-bI-XVN"/>
+                            </items>
+                        </group>
+                        <label alignment="center" text="Time cannot go lower" textAlignment="center" id="FRS-J5-pXV">
+                            <color key="textColor" red="0.33333334329999997" green="0.03661756419" blue="0.042610244720000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                    </items>
+                    <connections>
+                        <outlet property="errorLabel" destination="FRS-J5-pXV" id="Zm0-jc-lTZ"/>
+                        <outlet property="minusButton" destination="xiW-Bj-z1B" id="hLs-Pu-dp1"/>
+                        <outlet property="plusButton" destination="fP7-ae-fwD" id="uSA-rT-Rop"/>
+                        <outlet property="timeLabel" destination="Smf-bI-XVN" id="WRM-P3-SQG"/>
+                        <outlet property="topLabel" destination="d6n-7Q-yul" id="eXm-cM-Vhw"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="720" y="775"/>
+        </scene>
         <!--DictionaryDetail-->
         <scene sceneID="2iw-vT-hFk">
             <objects>
@@ -362,9 +422,11 @@
         <image name="chevron.left" catalog="system" width="96" height="128"/>
         <image name="chevron.right" catalog="system" width="96" height="128"/>
         <image name="dot.square" catalog="system" width="128" height="114"/>
+        <image name="minus.circle" catalog="system" width="128" height="121"/>
         <image name="pencil" catalog="system" width="128" height="116"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="play.fill" catalog="system" width="115" height="128"/>
+        <image name="plus.circle" catalog="system" width="128" height="121"/>
         <image name="text.alignleft" catalog="system" width="128" height="102"/>
     </resources>
 </document>
