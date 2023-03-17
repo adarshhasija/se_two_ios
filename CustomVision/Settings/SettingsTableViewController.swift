@@ -39,8 +39,8 @@ class SettingsTableViewController : UITableViewController {
         errorLabel?.text = ""
         TIME_DIFF_MILLIS -= 1000
         setTimeLabel()
-        //UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) //Using App Group instead as that will keep the value in sync between phone and  watch
-        updateUserDefaults()
+        UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        //updateUserDefaults()
         sendUpdateToWatch()
     }
     
@@ -51,8 +51,8 @@ class SettingsTableViewController : UITableViewController {
         errorLabel?.text = ""
         TIME_DIFF_MILLIS += 1000
         setTimeLabel()
-        //UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) //Using App Group instead as that will keep the value in sync between phone and  watch
-        updateUserDefaults()
+        UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) //Using App Group instead as that will keep the value in sync between phone and  watch
+        //updateUserDefaults()
         sendUpdateToWatch()
     }
     
@@ -81,6 +81,7 @@ class SettingsTableViewController : UITableViewController {
         timeLabel?.text = finalString
     }
     
+    //This was used when trying App Groups. And it didnt work
     private func updateUserDefaults() {
         let appGroupName = LibraryCustomActions.APP_GROUP_NAME
         let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!

@@ -38,8 +38,8 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
         errorLabel?.setHidden(true)
         TIME_DIFF_MILLIS -= 1000
         setTimeLabel()
-        //UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
-        updateUserDefaults()
+        UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        //updateUserDefaults()
         sendUpdateToPhone()
         
     }
@@ -50,8 +50,8 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
         errorLabel.setHidden(true)
         TIME_DIFF_MILLIS += 1000
         setTimeLabel()
-        //UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
-        updateUserDefaults()
+        UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        //updateUserDefaults()
         sendUpdateToPhone()
     }
     
@@ -82,6 +82,7 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
         timeLabel?.setText(minsString + " " + secsString)
     }
     
+    //This was used when trying App Groups. And it didnt work
     private func updateUserDefaults() {
         let appGroupName = LibraryCustomActions.APP_GROUP_NAME
         let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
