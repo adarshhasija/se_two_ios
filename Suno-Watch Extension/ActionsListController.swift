@@ -94,9 +94,9 @@ extension ActionsListController {
     
     func pushManualTypingController() {
         presentTextInputController(withSuggestions: [
-            "HI", //2 character words are priority as Watch can get through 2 chars before screen dim
-            "NO",
-            "YES" //This word is part of the screenshots so this stays
+            "Hi", //2 character words are priority as Watch can get through 2 chars before screen dim
+            "No",
+            "Yes" //This word is part of the screenshots so this stays
         ], allowedInputMode: WKTextInputMode.plain, completion: { (result) -> Void in
             
             if var input = (result as [Any]?)?[0] as? String {

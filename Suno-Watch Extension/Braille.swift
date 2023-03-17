@@ -106,32 +106,32 @@ class Braille {
     
     
     func populateBrailleAlphanumeric() {
-        brailleArray.append(BrailleCell(english: "A", brailleDots: "1"))
-        brailleArray.append(BrailleCell(english: "B", brailleDots: "12"))
-        brailleArray.append(BrailleCell(english: "C", brailleDots: "14"))
-        brailleArray.append(BrailleCell(english: "D", brailleDots: "145"))
-        brailleArray.append(BrailleCell(english: "E", brailleDots: "15"))
-        brailleArray.append(BrailleCell(english: "F", brailleDots: "124"))
-        brailleArray.append(BrailleCell(english: "G", brailleDots: "1245"))
-        brailleArray.append(BrailleCell(english: "H", brailleDots: "125"))
-        brailleArray.append(BrailleCell(english: "I", brailleDots: "24"))
-        brailleArray.append(BrailleCell(english: "J", brailleDots: "245"))
-        brailleArray.append(BrailleCell(english: "K", brailleDots: "13"))
-        brailleArray.append(BrailleCell(english: "L", brailleDots: "123"))
-        brailleArray.append(BrailleCell(english: "M", brailleDots: "134"))
-        brailleArray.append(BrailleCell(english: "N", brailleDots: "1345"))
-        brailleArray.append(BrailleCell(english: "O", brailleDots: "135"))
-        brailleArray.append(BrailleCell(english: "P", brailleDots: "1234"))
-        brailleArray.append(BrailleCell(english: "Q", brailleDots: "12345"))
-        brailleArray.append(BrailleCell(english: "R", brailleDots: "1235"))
-        brailleArray.append(BrailleCell(english: "S", brailleDots: "234"))
-        brailleArray.append(BrailleCell(english: "T", brailleDots: "2345"))
-        brailleArray.append(BrailleCell(english: "U", brailleDots: "136"))
-        brailleArray.append(BrailleCell(english: "V", brailleDots: "1236"))
-        brailleArray.append(BrailleCell(english: "W", brailleDots: "2456"))
-        brailleArray.append(BrailleCell(english: "X", brailleDots: "1346"))
-        brailleArray.append(BrailleCell(english: "Y", brailleDots: "13456"))
-        brailleArray.append(BrailleCell(english: "Z", brailleDots: "1356"))
+        brailleArray.append(BrailleCell(english: "a", brailleDots: "1"))
+        brailleArray.append(BrailleCell(english: "b", brailleDots: "12"))
+        brailleArray.append(BrailleCell(english: "c", brailleDots: "14"))
+        brailleArray.append(BrailleCell(english: "d", brailleDots: "145"))
+        brailleArray.append(BrailleCell(english: "e", brailleDots: "15"))
+        brailleArray.append(BrailleCell(english: "f", brailleDots: "124"))
+        brailleArray.append(BrailleCell(english: "g", brailleDots: "1245"))
+        brailleArray.append(BrailleCell(english: "h", brailleDots: "125"))
+        brailleArray.append(BrailleCell(english: "i", brailleDots: "24"))
+        brailleArray.append(BrailleCell(english: "j", brailleDots: "245"))
+        brailleArray.append(BrailleCell(english: "k", brailleDots: "13"))
+        brailleArray.append(BrailleCell(english: "l", brailleDots: "123"))
+        brailleArray.append(BrailleCell(english: "m", brailleDots: "134"))
+        brailleArray.append(BrailleCell(english: "n", brailleDots: "1345"))
+        brailleArray.append(BrailleCell(english: "o", brailleDots: "135"))
+        brailleArray.append(BrailleCell(english: "p", brailleDots: "1234"))
+        brailleArray.append(BrailleCell(english: "q", brailleDots: "12345"))
+        brailleArray.append(BrailleCell(english: "r", brailleDots: "1235"))
+        brailleArray.append(BrailleCell(english: "s", brailleDots: "234"))
+        brailleArray.append(BrailleCell(english: "t", brailleDots: "2345"))
+        brailleArray.append(BrailleCell(english: "u", brailleDots: "136"))
+        brailleArray.append(BrailleCell(english: "v", brailleDots: "1236"))
+        brailleArray.append(BrailleCell(english: "w", brailleDots: "2456"))
+        brailleArray.append(BrailleCell(english: "x", brailleDots: "1346"))
+        brailleArray.append(BrailleCell(english: "y", brailleDots: "13456"))
+        brailleArray.append(BrailleCell(english: "z", brailleDots: "1356"))
         brailleArray.append(BrailleCell(english: "1", brailleDots: "3456 1"))
         brailleArray.append(BrailleCell(english: "2", brailleDots: "3456 12"))
         brailleArray.append(BrailleCell(english: "3", brailleDots: "3456 14"))
@@ -212,12 +212,13 @@ class Braille {
     
     func convertAlphanumericToBraille(alphanumericString : String) -> [String]? {
         var brailleStringArray : [String] = []
-        let english = alphanumericString.uppercased().replacingOccurrences(of: " ", with: "␣")
+        let english = alphanumericString.replacingOccurrences(of: " ", with: "␣") //we are not marking everything uppercased as uppercase and lowercase are treated differently in braille
         var brailleCharacterString = ""
         for character in english {
-            guard let brailleDotsString : String = alphabetToBrailleDictionary[String(character)] else {
+            guard var brailleDotsString : String = alphabetToBrailleDictionary[String(character).lowercased()] else {
                 return nil
             }
+            if character.isUppercase { brailleDotsString = "6 " + brailleDotsString }
             let brailleDotsArray = brailleDotsString.components(separatedBy: " ") //if its for a number its 2 braille grids
             if brailleDotsArray.count > 1 {
                 //means its a number, and it needs 2 braille grids
