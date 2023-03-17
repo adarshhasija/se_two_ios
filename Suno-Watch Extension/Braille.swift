@@ -11,8 +11,10 @@ import Foundation
 class Braille {
     
     
-    var brailleArray: [BrailleCell] = []
-    var alphabetToBrailleDictionary : [String : String] = [:]
+    var brailleArray: [BrailleCell] = [] //incase we want it in order, for a list
+    var brailleArrayContractions: [BrailleCell] = []
+    var alphabetToBrailleDictionary : [String : String] = [:] //used for quick access
+    var alphabetToBrailleContractionsDictionary : [String : String] = [:]
     
     //Braille grid
     //1 4
@@ -132,16 +134,17 @@ class Braille {
         brailleArray.append(BrailleCell(english: "x", brailleDots: "1346"))
         brailleArray.append(BrailleCell(english: "y", brailleDots: "13456"))
         brailleArray.append(BrailleCell(english: "z", brailleDots: "1356"))
-        brailleArray.append(BrailleCell(english: "1", brailleDots: "3456 1"))
-        brailleArray.append(BrailleCell(english: "2", brailleDots: "3456 12"))
-        brailleArray.append(BrailleCell(english: "3", brailleDots: "3456 14"))
-        brailleArray.append(BrailleCell(english: "4", brailleDots: "3456 145"))
-        brailleArray.append(BrailleCell(english: "5", brailleDots: "3456 15"))
-        brailleArray.append(BrailleCell(english: "6", brailleDots: "3456 124"))
-        brailleArray.append(BrailleCell(english: "7", brailleDots: "3456 1245"))
-        brailleArray.append(BrailleCell(english: "8", brailleDots: "3456 125"))
-        brailleArray.append(BrailleCell(english: "9", brailleDots: "3456 24"))
-        brailleArray.append(BrailleCell(english: "0", brailleDots: "3456 245"))
+        brailleArray.append(BrailleCell(english: "1", brailleDots: "1")) //3456 nummber extension is added in the function
+        brailleArray.append(BrailleCell(english: "2", brailleDots: "12"))
+        brailleArray.append(BrailleCell(english: "3", brailleDots: "14"))
+        brailleArray.append(BrailleCell(english: "4", brailleDots: "145"))
+        brailleArray.append(BrailleCell(english: "5", brailleDots: "15"))
+        brailleArray.append(BrailleCell(english: "6", brailleDots: "124"))
+        brailleArray.append(BrailleCell(english: "7", brailleDots: "1245"))
+        brailleArray.append(BrailleCell(english: "8", brailleDots: "125"))
+        brailleArray.append(BrailleCell(english: "9", brailleDots: "24"))
+        brailleArray.append(BrailleCell(english: "0", brailleDots: "245"))
+        brailleArray.append(BrailleCell(english: ".", brailleDots: "256"))
         brailleArray.append(BrailleCell(english: ",", brailleDots: "2"))
         brailleArray.append(BrailleCell(english: ";", brailleDots: "23"))
         brailleArray.append(BrailleCell(english: ":", brailleDots: "25"))
@@ -149,11 +152,20 @@ class Braille {
         brailleArray.append(BrailleCell(english: "!", brailleDots: "235"))
         brailleArray.append(BrailleCell(english: "-", brailleDots: "36"))
         
+        brailleArrayContractions.append(BrailleCell(english: "can", brailleDots: "14"))
+        brailleArrayContractions.append(BrailleCell(english: "ing", brailleDots: "346"))
+        brailleArrayContractions.append(BrailleCell(english: "com", brailleDots: "36"))
         
-        //Dunno why  we doing it this way but we keep it like this for now
+        
+        //We actually need it in dictionary form for easy retrieval
         for brailleCell in brailleArray {
             alphabetToBrailleDictionary[brailleCell.english] = brailleCell.brailleDots
         }
+        for brailleCell in brailleArrayContractions {
+            alphabetToBrailleDictionary[brailleCell.english] = brailleCell.brailleDots
+        }
+        
+        
     }
     
     func getNextIndexForBrailleTraversal(brailleStringLength: Int, currentIndex : Int, isDirectionHorizontal : Bool) -> Int {
@@ -212,13 +224,17 @@ class Braille {
     
     func convertAlphanumericToBraille(alphanumericString : String) -> [String]? {
         var brailleStringArray : [String] = []
-        let english = alphanumericString.replacingOccurrences(of: " ", with: "␣") //we are not marking everything uppercased as uppercase and lowercase are treated differently in braille
         var brailleCharacterString = ""
-        for character in english {
+        let isStringANumber = alphanumericString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+        for (index, character) in alphanumericString.enumerated() {
             guard var brailleDotsString : String = alphabetToBrailleDictionary[String(character).lowercased()] else {
                 return nil
             }
             if character.isUppercase { brailleDotsString = "6 " + brailleDotsString }
+            if (isStringANumber && index == 0) //This is the first character in a number
+                || (isStringANumber == false && character.isNumber) { //This is a number in an  alphanumeric string
+                brailleDotsString = "3456 " + brailleDotsString
+            }
             let brailleDotsArray = brailleDotsString.components(separatedBy: " ") //if its for a number its 2 braille grids
             if brailleDotsArray.count > 1 {
                 //means its a number, and it needs 2 braille grids
