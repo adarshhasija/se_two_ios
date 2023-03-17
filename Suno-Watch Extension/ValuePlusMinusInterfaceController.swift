@@ -12,6 +12,8 @@ import WatchConnectivity
 
 class ValuePlusMinusInterfaceController : WKInterfaceController {
     
+    //equivalent of SettingsTableViewController on the iOS side
+    
     var TIME_DIFF_MILLIS : Int = -1
     let expectedMoveDelta = 0.523599 //Here, current delta value = 30° Degree, Set delta value according requirement.
     var crownRotationalDelta = 0.0
@@ -36,7 +38,10 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
         errorLabel?.setHidden(true)
         TIME_DIFF_MILLIS -= 1000
         setTimeLabel()
-        UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        //UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        updateUserDefaults()
+        sendUpdateToPhone()
+        
     }
     
     
@@ -45,13 +50,13 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
         errorLabel.setHidden(true)
         TIME_DIFF_MILLIS += 1000
         setTimeLabel()
-        UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        //UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        updateUserDefaults()
+        sendUpdateToPhone()
     }
     
     override func awake(withContext context: Any?) {
-        let userDefault = UserDefaults.standard
-        TIME_DIFF_MILLIS = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Int ?? 1000
-        setTimeLabel()
+        updateTime()
         errorLabel.setHidden(true)
      }
     
@@ -60,12 +65,28 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
         self.crownSequencer.focus()
     }
     
+    func updateTime() {
+        let userDefault = UserDefaults.standard
+        TIME_DIFF_MILLIS = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Int ?? 1000
+        //let appGroupName = LibraryCustomActions.APP_GROUP_NAME
+        //let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
+        //TIME_DIFF_MILLIS = appGroupUserDefaults.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Int ?? 1000
+        setTimeLabel()
+    }
+    
     private func setTimeLabel() {
         let mins = ((TIME_DIFF_MILLIS/1000)/60)
         let secs = ((TIME_DIFF_MILLIS/1000)%60)
         let minsString = mins > 0 ? String(mins) + "m" : ""
         let secsString = secs > 0 ? String(secs) + "s" : ""
         timeLabel?.setText(minsString + " " + secsString)
+    }
+    
+    private func updateUserDefaults() {
+        let appGroupName = LibraryCustomActions.APP_GROUP_NAME
+        let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
+        appGroupUserDefaults.set(NSNumber(value: TIME_DIFF_MILLIS), forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        appGroupUserDefaults.synchronize()
     }
     
 }
@@ -96,4 +117,27 @@ extension ValuePlusMinusInterfaceController : WKCrownDelegate {
             }
         }
     }
+}
+
+extension ValuePlusMinusInterfaceController : WCSessionDelegate {
+    
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        
+    }
+    
+    
+    private func sendUpdateToPhone() {
+        if WCSession.isSupported() { //makes sure it's not an iPad or iPod
+            let watchSession = WCSession.default
+            watchSession.delegate = self
+            watchSession.activate()
+            do {
+                try watchSession.updateApplicationContext(["TIME_DIFF_MILLIS": TIME_DIFF_MILLIS])
+            } catch let error as NSError {
+                print(error.description)
+            }
+        }
+    }
+    
+    
 }

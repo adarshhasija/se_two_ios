@@ -248,6 +248,7 @@
 		31DCDFB026261E2100366DDD /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewController.swift; sourceTree = "<group>"; };
 		31E8047B29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValuePlusMinusInterfaceController.swift; sourceTree = "<group>"; };
+		31E8047D29C424A800C80F57 /* Suno-Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Suno-Watch.entitlements"; sourceTree = "<group>"; };
 		31EC882523467A600088051C /* MorseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCode.swift; sourceTree = "<group>"; };
 		31EC882723467AD50088051C /* MCTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCTreeNode.swift; sourceTree = "<group>"; };
 		31EED010211CBA740099066C /* Suno.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Suno.entitlements; sourceTree = "<group>"; };
@@ -358,6 +359,7 @@
 		317D4C02217EC76A0081B38B /* Suno-Watch */ = {
 			isa = PBXGroup;
 			children = (
+				31E8047D29C424A800C80F57 /* Suno-Watch.entitlements */,
 				317D4C03217EC76A0081B38B /* Interface.storyboard */,
 				317D4C06217EC76C0081B38B /* Assets.xcassets */,
 				317D4C08217EC76C0081B38B /* Info.plist */,
@@ -1063,6 +1065,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_ENTITLEMENTS = "Suno-Watch/Suno-Watch.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
@@ -1092,6 +1095,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CODE_SIGN_ENTITLEMENTS = "Suno-Watch/Suno-Watch.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
@@ -1417,6 +1421,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = Suno.entitlements;
 				COREML_CODEGEN_LANGUAGE = Swift;
 				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = B66JCRW7R4;
@@ -1437,6 +1442,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = Suno.entitlements;
 				COREML_CODEGEN_LANGUAGE = Swift;
 				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = B66JCRW7R4;

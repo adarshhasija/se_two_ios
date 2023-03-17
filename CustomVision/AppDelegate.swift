@@ -117,6 +117,14 @@ extension AppDelegate : WCSessionDelegate {
         }
     }
     
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        let TIME_DIFF_MILLIS : Int? = applicationContext["TIME_DIFF_MILLIS"] as? Int
+        if TIME_DIFF_MILLIS != nil {
+            UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+            //((self.window?.rootViewController as? UINavigationController)?.topViewController as? SettingsTableViewController)?.updateTime() //not working 100%
+        }
+    }
+    
     func getMorseCodeReadingScreen(inputAction: Action, alphanumericString : String?) -> MCReaderButtonsViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController

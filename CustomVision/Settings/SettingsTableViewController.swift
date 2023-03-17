@@ -39,7 +39,9 @@ class SettingsTableViewController : UITableViewController {
         errorLabel?.text = ""
         TIME_DIFF_MILLIS -= 1000
         setTimeLabel()
-        UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        //UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) //Using App Group instead as that will keep the value in sync between phone and  watch
+        updateUserDefaults()
+        sendUpdateToWatch()
     }
     
     
@@ -49,15 +51,24 @@ class SettingsTableViewController : UITableViewController {
         errorLabel?.text = ""
         TIME_DIFF_MILLIS += 1000
         setTimeLabel()
-        UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        //UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) //Using App Group instead as that will keep the value in sync between phone and  watch
+        updateUserDefaults()
+        sendUpdateToWatch()
     }
     
     
     override func viewDidLoad() {
-        let userDefault = UserDefaults.standard
-        TIME_DIFF_MILLIS = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Int ?? 1000
-        setTimeLabel()
+        updateTime()
         errorLabel?.text = ""
+    }
+    
+    func updateTime() {
+        let userDefault = UserDefaults.standard
+        TIME_DIFF_MILLIS = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Int ?? 1000 //Using App Group instead as that will keep the value in sync between phone and  watch
+        //let appGroupName = LibraryCustomActions.APP_GROUP_NAME
+        //let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
+        //TIME_DIFF_MILLIS = appGroupUserDefaults.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Int ?? 1000
+        setTimeLabel()
     }
     
     private func setTimeLabel() {
@@ -65,7 +76,16 @@ class SettingsTableViewController : UITableViewController {
         let secs = ((TIME_DIFF_MILLIS/1000)%60)
         let minsString = mins > 0 ? String(mins) + "m" : ""
         let secsString = secs > 0 ? String(secs) + "s" : ""
-        timeLabel?.text = minsString + " " + secsString
+        let finalString = minsString + " " + secsString
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, finalString)
+        timeLabel?.text = finalString
+    }
+    
+    private func updateUserDefaults() {
+        let appGroupName = LibraryCustomActions.APP_GROUP_NAME
+        let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
+        appGroupUserDefaults.set(NSNumber(value: TIME_DIFF_MILLIS), forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+        appGroupUserDefaults.synchronize()
     }
     
     private func setupSectionSendToWatch() {
@@ -92,5 +112,35 @@ class SettingsTableViewController : UITableViewController {
             }
         }
         return false
+    }
+}
+
+extension SettingsTableViewController : WCSessionDelegate  {
+    
+    private func sendUpdateToWatch() {
+        if WCSession.isSupported() { //makes sure it's not an iPad or iPod
+            let watchSession = WCSession.default
+            watchSession.delegate = self
+            watchSession.activate()
+            if watchSession.isPaired && watchSession.isWatchAppInstalled {
+                do {
+                    try watchSession.updateApplicationContext(["TIME_DIFF_MILLIS": TIME_DIFF_MILLIS])
+                } catch let error as NSError {
+                    print(error.description)
+                }
+            }
+        }
+    }
+    
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        
+    }
+    
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        
+    }
+    
+    func sessionDidDeactivate(_ session: WCSession) {
+        
     }
 }

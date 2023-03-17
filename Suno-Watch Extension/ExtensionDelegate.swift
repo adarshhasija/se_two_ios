@@ -33,6 +33,14 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
         }
     }
     
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        let TIME_DIFF_MILLIS : Int? = applicationContext["TIME_DIFF_MILLIS"] as? Int
+        if TIME_DIFF_MILLIS != nil {
+            UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
+            //((WKExtension.shared().visibleInterfaceController) as? ValuePlusMinusInterfaceController)?.updateTime() //If the time settings page is visible update the time there immediately. Not working 100%
+        }
+    }
+    
     func handle(_ userActivity: NSUserActivity) {
         let action = SiriShortcut.intentToActionMap[userActivity.activityType] ?? Action.UNKNOWN
         var params = getParamsForMCInterfaceController(action: action)
