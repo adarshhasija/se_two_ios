@@ -11,7 +11,7 @@ import Foundation
 class BrailleCell {
     
     var english : String
-    var brailleDots : String //Because braille for numbers have a space
+    var brailleDots : String //This can be in the form of numbers or o and x. Its a string at the end. Reusable
     
     
     init(english: String, brailleDots: String) {
