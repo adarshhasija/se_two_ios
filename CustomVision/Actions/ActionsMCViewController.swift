@@ -217,7 +217,7 @@ extension ActionsMCViewController {
         }
         if isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
-            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeLabel, isMorseCode: true, color: UIColor.red)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, length: 1, label: morseCodeLabel, isMorseCode: true, color: UIColor.red)
             setRecommendedActionsText()
             //try? hapticManager?.hapticForResult(success: false)
             hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
@@ -536,7 +536,7 @@ extension ActionsMCViewController {
             Analytics.logEvent("se3_ios_mc_left", parameters: [
                 "state" : "scrolling"
             ])
-           MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
+           MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, length: 1, label: morseCodeLabel, isMorseCode: true, color : UIColor.green)
         if isAutoPlayOn == false {
             hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
         }
@@ -564,7 +564,7 @@ extension ActionsMCViewController {
                
                if englishStringIndex > -1 {
                    //Ensure that the index is within bounds
-                   MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color: UIColor.green)
+                   MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex, length: 1, label: alphanumericLabel, isMorseCode: false, color: UIColor.green)
                }
                
            }
@@ -585,7 +585,7 @@ extension ActionsMCViewController {
             englishStringIndex = alphanumericString.count
             return
         }
-        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
+        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, length: 1, label: morseCodeLabel, isMorseCode: true, color: UIColor.green)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
         
         if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
@@ -606,7 +606,7 @@ extension ActionsMCViewController {
             Analytics.logEvent("se3_ios_mc_right", parameters: [
                 "state" : "index_alpha_change"
             ])
-            MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: alphanumericString, index: englishStringIndex,  length: 1, label: alphanumericLabel, isMorseCode: false, color : UIColor.green)
         }
         return
     }

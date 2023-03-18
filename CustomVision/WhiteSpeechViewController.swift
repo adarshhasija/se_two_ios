@@ -642,7 +642,7 @@ public class WhiteSpeechViewController: UIViewController {
                 "state" : "scrolling"
             ])
            mcReadInstructionLabel?.text = "Swipe left with 2 fingers to go back"
-           MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color : UIColor.blue)
+           MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, length: 1, label: morseCodeLabel, isMorseCode: true, color : UIColor.blue)
            hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex) // TODO: Find out which call is the right call
              //hapticManager?.generateHaptic(code: String(morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)]) == "." ? hapticManager?.MC_DOT : hapticManager?.MC_DASH)
            
@@ -664,7 +664,7 @@ public class WhiteSpeechViewController: UIViewController {
                
                if englishStringIndex > -1 {
                    //Ensure that the index is within bounds
-                   MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color: UIColor.blue)
+                   MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex,  length: 1, label: englishMorseCodeTextLabel, isMorseCode: false, color: UIColor.blue)
                }
                
            }
@@ -688,7 +688,7 @@ public class WhiteSpeechViewController: UIViewController {
             return
         }
         mcReadInstructionLabel?.text = "Swipe right with 2 fingers to read morse code"
-        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeLabel, isMorseCode: true, color: UIColor.blue)
+        MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, length: 1, label: morseCodeLabel, isMorseCode: true, color: UIColor.blue)
         hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)  // TODO: Still need to see which version is the right version
         //hapticManager?.generateHaptic(code: String(morseCodeString[morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)]) == "." ? hapticManager?.MC_DOT : hapticManager?.MC_DASH)
         
@@ -710,7 +710,7 @@ public class WhiteSpeechViewController: UIViewController {
             Analytics.logEvent("se3_morse_scroll_right", parameters: [
                 "state" : "index_alpha_change"
             ])
-            MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishMorseCodeTextLabel, isMorseCode: false, color : UIColor.blue)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, length: 1, label: englishMorseCodeTextLabel, isMorseCode: false, color : UIColor.blue)
         }
     }
     

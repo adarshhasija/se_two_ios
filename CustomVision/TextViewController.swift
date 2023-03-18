@@ -28,7 +28,7 @@ class TextViewController : UIViewController {
             return
         }
         
-        MorseCodeUtils.setSelectedCharInLabel(inputString: mText, index: mStartIndexForHighlighting, label: mainLabel, isMorseCode: false, color : UIColor.green)
+        MorseCodeUtils.setSelectedCharInLabel(inputString: mText, index: mStartIndexForHighlighting, length: (mEndIndexForHighlighting - mStartIndexForHighlighting), label: mainLabel, isMorseCode: false, color : UIColor.green)
         
         
     }

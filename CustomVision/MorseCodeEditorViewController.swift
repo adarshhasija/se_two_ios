@@ -230,7 +230,7 @@ public class MorseCodeEditorViewController : UIViewController {
             Analytics.logEvent("se3_morse_dswipe_left", parameters: [
                 "state" : "scrolling"
             ])
-            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, length: 1, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
             hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: true) {
@@ -251,7 +251,7 @@ public class MorseCodeEditorViewController : UIViewController {
                 
                 if englishStringIndex > -1 {
                     //Ensure that the index is within bounds
-                    MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
+                    MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, length: 1, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
                 }
                 
             }
@@ -278,7 +278,7 @@ public class MorseCodeEditorViewController : UIViewController {
                 "state" : "scrolling"
             ])
             setInstructionLabelForMode(mainString: "Keep swiping right with 2 fingers to read all the characters", readingString: stopReadingString, writingString: keepTypingString)
-            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeStringIndex, length: 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
             hapticManager?.playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: morseCodeStringIndex)
             
             if MorseCodeUtils.isPrevMCCharPipeOrSpace(input: morseCodeString, currentIndex: morseCodeStringIndex, isReverse: false) || englishStringIndex == -1 {
@@ -300,7 +300,7 @@ public class MorseCodeEditorViewController : UIViewController {
                 Analytics.logEvent("se3_morse_dswipe_right", parameters: [
                     "state" : "index_alpha_change"
                 ])
-                MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
+                MorseCodeUtils.setSelectedCharInLabel(inputString: englishString, index: englishStringIndex, length: 1, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
             }
         }
     }
@@ -397,7 +397,7 @@ public class MorseCodeEditorViewController : UIViewController {
     func morseCodeInput(input : String) {
         if isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
-            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
+            MorseCodeUtils.setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, length: 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
             setRecommendedActionsText()
             //try? hapticManager?.hapticForResult(success: false)
             hapticManager?.generateHaptic(code: hapticManager?.RESULT_FAILURE)
