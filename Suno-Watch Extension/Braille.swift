@@ -11,7 +11,7 @@ import Foundation
 class Braille {
     
     
-    var brailleArray: [BrailleCell] = [] //incase we want it in order, for a list
+    var brailleArray: [BrailleCell] = []
     var alphabetToBrailleDictionary : [String : String] = [:] //used for quick access
     
     //Braille grid
@@ -106,6 +106,7 @@ class Braille {
     
     
     func populateBrailleAlphanumeric() {
+        var brailleArray: [BrailleCell] = [] //keeping this append code just so we dont have to rewrite  it. May need  it in  future if we have to display all this in  a list
         brailleArray.append(BrailleCell(english: "can", brailleDots: "14"))
         brailleArray.append(BrailleCell(english: "ing", brailleDots: "346"))
         brailleArray.append(BrailleCell(english: "com", brailleDots: "36"))
@@ -145,6 +146,8 @@ class Braille {
         brailleArray.append(BrailleCell(english: "8", brailleDots: "125"))
         brailleArray.append(BrailleCell(english: "9", brailleDots: "24"))
         brailleArray.append(BrailleCell(english: "0", brailleDots: "245"))
+        brailleArray.append(BrailleCell(english: "^", brailleDots: "6"))
+        brailleArray.append(BrailleCell(english: "#", brailleDots: "3456"))
         brailleArray.append(BrailleCell(english: ".", brailleDots: "256"))
         brailleArray.append(BrailleCell(english: ",", brailleDots: "2"))
         brailleArray.append(BrailleCell(english: ";", brailleDots: "23"))
@@ -158,7 +161,7 @@ class Braille {
         for brailleCell in brailleArray {
             alphabetToBrailleDictionary[brailleCell.english] = brailleCell.brailleDots
         }
-        
+        brailleArray.removeAll()
     }
     
     func getNextIndexForBrailleTraversal(brailleStringLength: Int, currentIndex : Int, isDirectionHorizontal : Bool) -> Int {
@@ -264,7 +267,7 @@ class Braille {
     func convertAlphanumericToBrailleWithContractions(alphanumericString : String) -> [BrailleCell] {
         var brailleFinalArray : [BrailleCell] = []
         var brailleCharacterString = ""
-        let isStringANumber = alphanumericString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+        var isFirstNumberInNumberSubstringPassed = false
         var brailleDotsString = ""
         var index = -1
         var subString = ""
@@ -274,24 +277,40 @@ class Braille {
                 break
             }
             subString = ""
-            for endIndex in /*(index ..< alphanumericString.count).reversed()*/stride(from: alphanumericString.count, through: index, by: -1) {
+            for endIndex in stride(from: alphanumericString.count, through: index, by: -1) {
                 let sIndex = alphanumericString.index(alphanumericString.startIndex, offsetBy: index)
                 let eIndex = alphanumericString.index(alphanumericString.startIndex, offsetBy: endIndex)
                 let range = sIndex..<eIndex
                 let adjustedString = alphanumericString[range]
                 brailleDotsString = alphabetToBrailleDictionary[String(adjustedString).lowercased()] ?? ""
                 if brailleDotsString.isEmpty == false {
-                    index += adjustedString.count
                     subString = String(adjustedString)
+                    index += adjustedString.count
                     break
                 }
+                //let isNumberSubstring = adjustedString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil //Not needed but keeping it commented out for future convenience
+                
             }
 
             if brailleDotsString.isEmpty {
                 brailleDotsString = alphabetToBrailleDictionary[String(character).lowercased()]!
             }
             if subString.count == 1 {
-                if Character(subString).isUppercase { brailleDotsString = "6 " + brailleDotsString }
+                if Character(subString).isUppercase { brailleDotsString = (alphabetToBrailleDictionary["^"] ?? "6") + " " + brailleDotsString }
+                
+                if Character(subString).isNumber && isFirstNumberInNumberSubstringPassed == false {
+                    //standalone number OR first number in a sequence
+                    brailleDotsString = (alphabetToBrailleDictionary["#"] ?? "3456") + " " + brailleDotsString
+                    isFirstNumberInNumberSubstringPassed = true
+                }
+                else if Character(subString).isNumber == false {
+                    //a letter or special character
+                    isFirstNumberInNumberSubstringPassed = false
+                }
+            }
+            else {
+                //its a long string. a contraction
+                isFirstNumberInNumberSubstringPassed = false
             }
             
             let brailleDotsArray = brailleDotsString.components(separatedBy: " ") //if its for a number its 2 braille grids
