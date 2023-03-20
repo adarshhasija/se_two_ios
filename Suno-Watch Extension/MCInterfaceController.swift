@@ -251,7 +251,7 @@ class MCInterfaceController : WKInterfaceController {
     @IBAction func playPauseButtonTapped() {
         isAutoPlayOn = !isAutoPlayOn
         if isAutoPlayOn == true {
-            morseCodeAutoPlay(direction: "down")
+            setupForAutoPlay(direction: "down")
         }
         else {
             pauseAutoPlay()
@@ -462,7 +462,7 @@ class MCInterfaceController : WKInterfaceController {
                 || action == Action.DATE.rawValue
                 || action == Action.BATTERY_LEVEL.rawValue {
                 isUserTyping = false
-                morseCodeAutoPlay(direction: "down") //If it does not have a dependency on iPhone, it can autoplay by default
+                setupForAutoPlay(direction: "down") //If it does not have a dependency on iPhone, it can autoplay by default
             }
             else if action == "1-to-1" {
                 while morseCode.mcTreeNode?.parent != nil {
@@ -632,7 +632,7 @@ class MCInterfaceController : WKInterfaceController {
                 return
             }
             if isUserTyping == false {
-                morseCodeAutoPlay(direction: "down")
+                setupForAutoPlay(direction: "down")
                 return
             }
             morseCodeInput(input: "-") //Shorten minDuration for morse code typing
@@ -682,11 +682,21 @@ class MCInterfaceController : WKInterfaceController {
         // This method is called when watch view controller is about to be visible to user.
         //It is also triggered when the user has typed or said text. After that message is composed, this controller is called again
         super.willActivate()
-        WKInterfaceDevice.current().play(.success) //This is used to notify a deaf-blind user that the app is active
+        //WKInterfaceDevice.current().play(.success) //This is used to notify a deaf-blind user that the app is active
         self.crownSequencer.delegate = self
         self.crownSequencer.focus()
         self.instructionsLabel?.setTextColor(UIColor.gray)
         isScreenActive = true
+        
+        if mode == Action.MANUAL.rawValue && braille.mIndex > -1 {
+            //Some traversal has begun, so if we are returning from view text screen we can look to update alphanumeric and braille
+            alphanumericString = braille.arrayWordsInString[braille.arrayWordsInStringIndex]
+            englishTextLabel.setText(alphanumericString)
+            brailleString = braille.arrayBrailleGridsForCharsInWord[braille.arrayBrailleGridsForCharsInWordIndex].brailleDots
+            morseCodeTextLabel.setText(brailleString)
+            highlightContentAndPlayHaptic()
+            resetButton.setHidden(false)
+        }
         
         //Incase the user lowers his/her wrist and lifts it again
         //Then the screen will go OFF and ON
@@ -1396,7 +1406,7 @@ extension MCInterfaceController {
         resetBigText()
     }
     
-    func morseCodeAutoPlay(direction : String) {
+    func setupForAutoPlay(direction : String) {
         if braille.mIndex < 0 {
             //We are not in the middle of a puased autoplay
             //Reset the labels
@@ -1417,41 +1427,7 @@ extension MCInterfaceController {
         //let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
         //let TIME_DIFF_MILLIS : Double = appGroupUserDefaults.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
         let timeInterval = TIME_DIFF_MILLIS/1000 //direction == "down" ? 1 : 0.5
-        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true) 
-      /*  isAutoPlayOn = true
-        
-        
-        if mIndex < 0 {
-            //means autoplay is not paused.
-            //Reset the text
-            englishString = arrayWordsInString.first ?? ""
-            arrayBrailleGridsForCharsInWord.removeAll()
-            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString.first ?? "" ) )
-            morseCodeString = arrayBrailleGridsForCharsInWord.first?.brailleDots ?? ""
-            englishTextLabel.setText(englishString) //Resetting the string colors at the start of autoplay
-            morseCodeString = morseCodeString.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
-            morseCodeTextLabel.setText(morseCodeString)
-            
-            //Reset the indices
-            englishStringIndex = direction == "down" ? -1 : englishString.count //If the fast rotation happens in the middle of a reading, reset the indexes for autoplay
-            arrayBrailleGridsForCharsInWordIndex = direction == "down" ? 0 : arrayBrailleGridsForCharsInWord.count - 1
-            arrayWordsInStringIndex = direction == "down" ? 0 : arrayWordsInString.count - 1
-            mIndex = direction == "down" ? -1 : morseCodeString.count
-            let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
-            alphanumericHighlightStartIndex = direction == "down" ? 0 : englishString.count - exactWord.count
-        }
-        
-        let dictionary = [
-            "direction" : direction
-        ]
-        instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" : "Resetting, please wait...")
-        let userDefault = UserDefaults.standard
-        TIME_DIFF_MILLIS = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
-        //let appGroupName = LibraryCustomActions.APP_GROUP_NAME
-        //let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
-        //let TIME_DIFF_MILLIS : Double = appGroupUserDefaults.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
-        let timeInterval = TIME_DIFF_MILLIS/1000 //direction == "down" ? 1 : 0.5
-        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)    */
+        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
     
     func digitalCrownRotated(direction : String) {

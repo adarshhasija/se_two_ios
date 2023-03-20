@@ -42,24 +42,31 @@ class TextInterfaceController : WKInterfaceController {
     }
     
     override func willActivate() {
-    //    self.crownSequencer.delegate = self //It works but it is also impacting previous screen because we are using the Braille object
-    //    self.crownSequencer.focus()
+        self.crownSequencer.delegate = self 
+        self.crownSequencer.focus()
     }
     
     func goToPreviousCharacterOrContraction() {
-        if endIndexForHighlighting > fullText.count {
-            //At the end or way beyond the end
-            let exactWord = braille?.arrayBrailleGridsForCharsInWord.last?.english ?? ""
-            startIndexForHighlighting = (fullText.count - exactWord.count)
-            endIndexForHighlighting = fullText.count
-        }
-        else if startIndexForHighlighting <= 0 {
+        //WE DONT WANT THIS RIGHT NOW as we dont want the user to go offf the end. Where they end up will then be setup on the previous screen so we dont want that
+     /*   if startIndexForHighlighting <= 0 {
             //before the start
             label.setText(fullText) //remove highlights
             startIndexForHighlighting = 0
             endIndexForHighlighting = 0
             WKInterfaceDevice.current().play(.success)
             return
+        }   */
+        
+        if startIndexForHighlighting <= 0 {
+            //reached the start
+            WKInterfaceDevice.current().play(.success)
+            return
+        }
+        else if endIndexForHighlighting > fullText.count {
+            //At the end or way beyond the end
+            let exactWord = braille?.arrayBrailleGridsForCharsInWord.last?.english ?? ""
+            startIndexForHighlighting = (fullText.count - exactWord.count)
+            endIndexForHighlighting = fullText.count
         }
         else {
             //we have convered the ends in above conditions. so we should not hit index out of bounds
@@ -83,15 +90,22 @@ class TextInterfaceController : WKInterfaceController {
         }
         setSelectedCharInLabel(inputString: fullText, index: startIndexForHighlighting, length: endIndexForHighlighting - startIndexForHighlighting, label: label, isMorseCode: false, color: UIColor.green)
         WKInterfaceDevice.current().play(.start)
+        braille?.mIndex = 0 //doing this because when we go back to previous screen it will set the user at the top left off the grid
     }
     
     func goToNextCharacterOrContraction() {
-        if endIndexForHighlighting >= fullText.count {
-            //We are way beyond the end
+        //WE DONT WANT THIS RIGHT NOW as we dont want the user to go offf the end. Where they end up will then be setup on the previous screen so we dont want that
+    /*    if endIndexForHighlighting >= fullText.count {
+            //We are way beyond the end.
             braille?.arrayBrailleGridsForCharsInWordIndex = braille?.arrayBrailleGridsForCharsInWord.count ?? 0 //This is needed else app crashes when scrolling backwards
             label.setText(fullText)
             startIndexForHighlighting = fullText.count
             endIndexForHighlighting = fullText.count
+            WKInterfaceDevice.current().play(.success)
+            return
+        }   */
+        if endIndexForHighlighting >= fullText.count - 1 {
+            //we are at the end
             WKInterfaceDevice.current().play(.success)
             return
         }
@@ -131,6 +145,7 @@ class TextInterfaceController : WKInterfaceController {
         }
         setSelectedCharInLabel(inputString: fullText, index: startIndexForHighlighting, length: endIndexForHighlighting - startIndexForHighlighting, label: label, isMorseCode: false, color: UIColor.green)
         WKInterfaceDevice.current().play(.start)
+        braille?.mIndex = 0 //doing this because when we go back to previous screen it will set the user at the top left off the grid
     }
     
     //Sets the particular character to green to indicate selected
