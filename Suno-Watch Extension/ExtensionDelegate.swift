@@ -95,14 +95,30 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     
     func getParamsForMCInterfaceController(action : Action) -> [String:Any] {
         var params : [String:Any] = [:]
-        params["mode"] = action.rawValue
-        if action == Action.BATTERY_LEVEL {
+        params["mode"] = Action.MANUAL.rawValue //action.rawValue
+        if action == Action.TIME {
+            let alphanumericString = LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")
+            params["alphanumeric"] = alphanumericString
+        }
+        else if action == Action.DATE {
+            let alphanumericString = LibraryCustomActions.getCurrentDateInAlphanumeric()
+            params["alphanumeric"] = alphanumericString
+        }
+        else if action == Action.BATTERY_LEVEL {
             WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
             let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
             WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
             params["alphanumeric"] = level
         }
         return params
+    }
+    
+    func getBatteryLevelAsAlphanumericWithOutPercentageSign() -> String {
+        WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
+        let level = Int(WKInterfaceDevice.current().batteryLevel * 100) //int as we do not decimal
+        WKInterfaceDevice.current().isBatteryMonitoringEnabled = false
+        let levelString = String(level)// + "%"
+        return levelString
     }
     
     func getBatteryLevelCustomInputs() -> [String:Any] {

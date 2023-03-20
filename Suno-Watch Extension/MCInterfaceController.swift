@@ -79,7 +79,7 @@ class MCInterfaceController : WKInterfaceController {
             }
         }
         
-        if isFromSiri == true {
+        if isFromSiri == true && mode == Action.CAMERA_OCR.rawValue {
             presentAlert(withTitle: "Sorry", message: "This shortcut is not currently supported", preferredStyle: .alert, actions: [
               WKAlertAction(title: "OK", style: .default) {}
               ])
@@ -200,13 +200,14 @@ class MCInterfaceController : WKInterfaceController {
         startIndexForHighlighting += alphanumericHighlightStartIndex
         let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
         endIndexForHighlighting = startIndexForHighlighting + exactWord.count */
-        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion()
-        let params : [String: Any] = [
+        var dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion()
+        dictionary["braille"] = braille
+     /*   let params : [String: Any] = [
             "text" : dictionary["text"] as! String,
             "start_index" : dictionary["start_index"] as! Int,
-            "end_index" : dictionary["end_index"] as! Int
-        ]
-        pushController(withName: "TextInterfaceController", context: params)
+            "end_index" : dictionary["end_index"] as! Int,
+        ]   */
+        pushController(withName: "TextInterfaceController", context: dictionary)
     }
     
     @IBAction func switchBrailleDirectionButtonTapped() {
