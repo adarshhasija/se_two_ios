@@ -25,7 +25,7 @@ class SettingsTableViewController : UITableViewController {
     
     
     @IBAction func minusButtonTapped(_ sender: Any) {
-        if TIME_DIFF_MILLIS <= 1000 {
+        if TIME_DIFF_MILLIS <= 500 {
             let hapticManager = HapticManager(supportsHaptics: supportsHaptics)
             hapticManager.generateErrorHaptic()
             let errorMessage = "Timer cannot go lower"
@@ -37,7 +37,7 @@ class SettingsTableViewController : UITableViewController {
         let hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         hapticManager.generateStandardResponseHaptic()
         errorLabel?.text = ""
-        TIME_DIFF_MILLIS -= 1000
+        TIME_DIFF_MILLIS -= 500
         setTimeLabel()
         UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
         //updateUserDefaults()
@@ -46,10 +46,19 @@ class SettingsTableViewController : UITableViewController {
     
     
     @IBAction func plusButtonTapped(_ sender: Any) {
+        if TIME_DIFF_MILLIS >= 2000 {
+            let hapticManager = HapticManager(supportsHaptics: supportsHaptics)
+            hapticManager.generateErrorHaptic()
+            let errorMessage = "Timer cannot go higher"
+            errorLabel?.text = errorMessage
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, // announce
+            errorMessage);
+            return
+        }
         let hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         hapticManager.generateStandardResponseHaptic()
         errorLabel?.text = ""
-        TIME_DIFF_MILLIS += 1000
+        TIME_DIFF_MILLIS += 500
         setTimeLabel()
         UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) //Using App Group instead as that will keep the value in sync between phone and  watch
         //updateUserDefaults()
@@ -74,9 +83,9 @@ class SettingsTableViewController : UITableViewController {
     private func setTimeLabel() {
         let mins = ((TIME_DIFF_MILLIS/1000)/60)
         let secs = ((TIME_DIFF_MILLIS/1000)%60)
-        let minsString = mins > 0 ? String(mins) + "m" : ""
-        let secsString = secs > 0 ? String(secs) + "s" : ""
-        let finalString = minsString + " " + secsString
+        let millis = TIME_DIFF_MILLIS%1000
+        let secsString = String(secs) + (millis > 0 ? ".5" : "") + "s"
+        let finalString = secsString
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, finalString)
         timeLabel?.text = finalString
     }

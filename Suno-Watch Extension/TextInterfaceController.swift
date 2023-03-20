@@ -24,14 +24,14 @@ class TextInterfaceController : WKInterfaceController {
                 label.setText(text)
                 return
             }
-            setSelectedCharInLabel(inputString: text, index: startIndexForHighlighting, label: label, isMorseCode: false, color: UIColor.green)
+            setSelectedCharInLabel(inputString: text, index: startIndexForHighlighting, length: endIndexForHighlighting - startIndexForHighlighting, label: label, isMorseCode: false, color: UIColor.green)
         }
     }
     
     //Sets the particular character to green to indicate selected
     //If the index is out of bounds, the entire string will come white. eg: when index = -1
-    func setSelectedCharInLabel(inputString : String, index : Int, label : WKInterfaceLabel, isMorseCode : Bool, color : UIColor) {
-        let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
+    func setSelectedCharInLabel(inputString : String, index : Int, length: Int?, label : WKInterfaceLabel, isMorseCode : Bool, color : UIColor) {
+        let range = NSRange(location:index,length: length != nil ? length! : 1) // specific location. This means "range" handle 1 character at location 2
         
         //The replacement of space with visible space only applies to english strings
         let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)

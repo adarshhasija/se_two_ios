@@ -28,13 +28,14 @@ class MCInterfaceController : WKInterfaceController {
     var englishString : String = ""
     var explanationArray : [String] = []
     var alphabetToMcDictionary : [String : String] = [:]
-    var arrayBrailleGridsForCharsInWord : [String] = []
-    var arrayBrailleGridsForCharsInWordIndex = -1
-    var arrayWordsInString : [String] = []
-    var arrayWordsInStringIndex = -1
+    //var arrayBrailleGridsForCharsInWord : [BrailleCell] = []
+    //var arrayBrailleGridsForCharsInWordIndex = -1
+    //var alphanumericHighlightStartIndex = -1 //Cannot use braille grids array index as thats not a 1-1 relation
+    //var arrayWordsInString : [String] = []
+    //var arrayWordsInStringIndex = -1
     var englishStringIndex = -1
-    var morseCodeStringIndex = -1
-    var brailleStringIndex = -1
+    //var morseCodeStringIndex = -1
+    //var brailleStringIndex = -1
     var braille = Braille()
     let expectedMoveDelta = 0.523599 //Here, current delta value = 30° Degree, Set delta value according requirement.
     var crownRotationalDelta = 0.0
@@ -49,6 +50,7 @@ class MCInterfaceController : WKInterfaceController {
     var isNormalMorse : Bool? = nil //Some functions, like TIME and DATE, can use customized vibrations and not normal morse code
     var isFromSiri = false
     var autoPlayTimer : Timer? = nil
+    var TIME_DIFF_MILLIS : Double = 1000
     
     @IBOutlet weak var mainImage: WKInterfaceImage! //The default 'home' image of the application
     @IBOutlet weak var englishTextLabel: WKInterfaceLabel!
@@ -146,11 +148,11 @@ class MCInterfaceController : WKInterfaceController {
                     }
                     self.morseCodeString += "|"
                 }   */
-                arrayWordsInString.append(contentsOf: englishString.components(separatedBy: " "))
-                self.englishTextLabel.setText(arrayWordsInString.first)
+                braille.setupArraysUsingInputString(fullAlphanumeric: englishString)
+                englishString = braille.arrayWordsInString.first ?? ""
+                self.englishTextLabel.setText(englishString)
                 self.englishTextLabel.setHidden(false)
-                arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
-                morseCodeString = (arrayBrailleGridsForCharsInWord.first)!
+                morseCodeString = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots ?? ""
                 self.morseCodeTextLabel.setText(self.morseCodeString)
                 self.morseCodeTextLabel.setHidden(false)
                 isUserTyping = false
@@ -158,6 +160,7 @@ class MCInterfaceController : WKInterfaceController {
                 self.instructionsLabel.setText(self.defaultInstructions)
                 self.switchBrailleDirectionButton.setTitle(isBrailleSwitchedToHorizontal == false ? "Read Sideways" : "Read up down")
                 self.fullTextButton.setHidden(false)
+                self.resetButton.setHidden(true)
                 //playPauseButtonTapped()
             }
             else if mode == Action.MC_TYPING.rawValue {
@@ -180,7 +183,7 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func fullTextButtonTapped() {
-        var text = ""
+     /*   var text = ""
         var startIndexForHighlighting = 0
         var endIndexForHighlighting = 0
         for word in arrayWordsInString {
@@ -194,12 +197,14 @@ class MCInterfaceController : WKInterfaceController {
                 startIndexForHighlighting += 1 //account for space after the word
             }
         }
-        startIndexForHighlighting += arrayBrailleGridsForCharsInWordIndex
-        endIndexForHighlighting = startIndexForHighlighting + 1
+        startIndexForHighlighting += alphanumericHighlightStartIndex
+        let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+        endIndexForHighlighting = startIndexForHighlighting + exactWord.count */
+        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion()
         let params : [String: Any] = [
-            "text" : text,
-            "start_index" : startIndexForHighlighting,
-            "end_index" : endIndexForHighlighting
+            "text" : dictionary["text"] as! String,
+            "start_index" : dictionary["start_index"] as! Int,
+            "end_index" : dictionary["end_index"] as! Int
         ]
         pushController(withName: "TextInterfaceController", context: params)
     }
@@ -211,18 +216,20 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func previousCharacterButtonTapped() {
-        morseCodeStringIndex -= 1
+      /*  morseCodeStringIndex -= 1
         if  arrayWordsInStringIndex >= (arrayWordsInString.count - 1)
             && arrayBrailleGridsForCharsInWordIndex >= (arrayBrailleGridsForCharsInWord.count - 1)
                 && morseCodeStringIndex >= (morseCodeString.count - 1) {
             arrayWordsInStringIndex = arrayWordsInString.count - 1
             englishString = arrayWordsInString[arrayWordsInStringIndex]
             arrayBrailleGridsForCharsInWord.removeAll()
-            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) ?? [])
+            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) )
             arrayBrailleGridsForCharsInWordIndex = arrayBrailleGridsForCharsInWord.count - 1
-            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
             morseCodeTextLabel.setText(morseCodeString)
             morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
+            let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+            alphanumericHighlightStartIndex = englishString.count - exactWord.count
         }
         else if
             arrayWordsInStringIndex <= 0
@@ -244,20 +251,52 @@ class MCInterfaceController : WKInterfaceController {
             englishString = arrayWordsInString[arrayWordsInStringIndex]
             englishTextLabel.setText(englishString)
             arrayBrailleGridsForCharsInWord.removeAll()
-            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) ?? [])
+            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) )
             arrayBrailleGridsForCharsInWordIndex = englishString.count - 1
-            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+            let exactWord = arrayBrailleGridsForCharsInWord.last?.english ?? ""
+            alphanumericHighlightStartIndex = englishString.count - exactWord.count
+            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
             morseCodeTextLabel.setText(morseCodeString)
             morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
         }
         else if morseCodeStringIndex <= -1 {
             //in the middle of a word. move to the previous character
             arrayBrailleGridsForCharsInWordIndex -= 1
-            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+            let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+            alphanumericHighlightStartIndex -= exactWord.count //move the pointer backward by length of previous characters so we are ready to highlight the next characters
+            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
             morseCodeTextLabel.setText(morseCodeString)
             morseCodeStringIndex = braille.getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: morseCodeString)
         }
-        digitalCrownRotated(direction: "up")
+        digitalCrownRotated(direction: "up")    */
+        braille.morseCodeStringIndex -= 1
+        let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+        if braille.isEndOfEntireStringReached(brailleString: morseCodeString, brailleStringIndex: brailleStringIndex) {
+            //We are way  beyond the end
+            //We are also checking Morse Code index becuase only braille index can be triggered when at the start of the grid also
+            braille.doIfEndOfEntireStringReachedScrollingBack(textFromAlphanumericLabel: englishString, textFromBrailleLabel: morseCodeString)
+        }
+        else if braille.isBeforeStartOfStringReached() {
+            englishTextLabel.setText(englishString) //remove highlights
+            morseCodeTextLabel.setText(morseCodeString)
+            resetButton?.setHidden(true)
+            WKInterfaceDevice.current().play(.success)
+            return
+        }
+        else if braille.isStartOfWordReached() {
+            //end of word. move to previous word
+            let dictionary = braille.getPreviousWord()
+            englishString = dictionary["alphanumeric_string"] ?? ""
+            englishTextLabel.setText(englishString)
+            morseCodeString = dictionary["braille_string"] ?? ""
+            morseCodeTextLabel.setText(morseCodeString)
+        }
+        else if braille.morseCodeStringIndex <= -1 {
+            //in the middle of a word. move to the previous character
+            morseCodeString = braille.goToPreviousCharacterOrContraction()
+            morseCodeTextLabel.setText(morseCodeString)
+        }
+        highlightContentAndPlayHaptic() //digitalCrownRotated(direction: "up")
     }
     
     
@@ -301,7 +340,7 @@ class MCInterfaceController : WKInterfaceController {
     
     
     @IBAction func nextCharacterButtonTapped() {
-        resetButton?.setHidden(false)
+      /*  resetButton?.setHidden(false)
         morseCodeStringIndex += 1
         let brailleIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: morseCodeStringIndex, isDirectionHorizontal: false)
         //check if we have reached the end
@@ -311,12 +350,13 @@ class MCInterfaceController : WKInterfaceController {
             arrayWordsInStringIndex = 0
             arrayBrailleGridsForCharsInWordIndex = 0
             arrayBrailleGridsForCharsInWord.removeAll()
-            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[0] ) ?? [])
+            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString[0] ) )
             englishString = arrayWordsInString.first ?? ""
             englishTextLabel.setText(englishString)
-            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
             morseCodeTextLabel.setText(morseCodeString)
             morseCodeStringIndex = 0
+            alphanumericHighlightStartIndex = 0
         }
         else if
             brailleIndex == -1
@@ -333,24 +373,69 @@ class MCInterfaceController : WKInterfaceController {
                     && arrayBrailleGridsForCharsInWordIndex >= (arrayBrailleGridsForCharsInWord.count - 1) {
             //end of the word. move to the next word
             //The last iteration will take us to item at count - 1
+            if isAutoPlayOn {
+                let timeInterval = Double((TIME_DIFF_MILLIS/4)/1000)
+                Thread.sleep(forTimeInterval: timeInterval /*0.25*/)
+            }
             arrayWordsInStringIndex += 1
             englishString = arrayWordsInString[arrayWordsInStringIndex]
             englishTextLabel.setText(englishString)
             arrayBrailleGridsForCharsInWord.removeAll()
-            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) ?? [])
+            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) )
             arrayBrailleGridsForCharsInWordIndex = 0
-            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+            alphanumericHighlightStartIndex = 0
+            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
             morseCodeTextLabel.setText(morseCodeString)
             morseCodeStringIndex = 0
         }
         else if brailleIndex == -1 {
+            let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+            alphanumericHighlightStartIndex += exactWord.count //move the pointer forward by length of previous characters so we are ready to highlight the next characters
+            
             //in the middle of a word. move to the next character
             arrayBrailleGridsForCharsInWordIndex += 1
-            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+            morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
             morseCodeTextLabel.setText(morseCodeString)
             morseCodeStringIndex = 0
         }
-        digitalCrownRotated(direction: "down")
+        digitalCrownRotated(direction: "down")  */
+        braille.morseCodeStringIndex += 1
+        let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+        if braille.isBeforeStartOfStringReached() {
+            //we are at the beginning
+            //assuming the right alphanumeric and right braille are already in place
+            braille.doIfBeforeStartOfStringReachedScrollingForward()
+        }
+        else if braille.isEndOfEntireStringReached(brailleString: morseCodeString, brailleStringIndex: brailleStringIndex) {
+            //end of word and end of string
+            englishTextLabel.setText(englishString) //remove highlights
+            morseCodeTextLabel.setText(morseCodeString)
+            WKInterfaceDevice.current().play(.success)
+            if isAutoPlayOn {
+                isAutoPlayOn = false
+                pauseAutoPlayAndReset()
+            }
+            return
+        }
+        else if braille.isEndOfWordReached(brailleStringIndex: brailleStringIndex) {
+            //end of word. move to next word
+            if isAutoPlayOn {
+                //Thread.sleep(forTimeInterval: Double(TIME_DIFF_MILLIS + (TIME_DIFF_MILLIS/4)))
+                let timeInterval = Double((TIME_DIFF_MILLIS/4)/1000)
+                Thread.sleep(forTimeInterval: timeInterval /*0.25*/)
+            }
+            let dictionary = braille.getNextWord()
+            englishString = dictionary["alphanumeric_text"] ?? ""
+            englishTextLabel.setText(englishString)
+            morseCodeString = dictionary["braille_text"] ?? ""
+            morseCodeTextLabel.setText(morseCodeString)
+        }
+        else if brailleStringIndex == -1 {
+            morseCodeString = braille.goToNextCharacterOrContraction()
+            morseCodeTextLabel.setText(morseCodeString)
+        }
+        highlightContentAndPlayHaptic() //digitalCrownRotated(direction: "down")
+        resetButton?.setHidden(isAutoPlayOn == false ? false : true) //Not available during autoplay
     }
     
     
@@ -876,7 +961,7 @@ extension MCInterfaceController {
             morseCodeString += "|"
         }
         morseCodeTextLabel.setText(morseCodeString)
-        morseCodeStringIndex = -1
+        braille.morseCodeStringIndex = -1
         isUserTyping = false
         setInstructionLabelForMode(mainString: dcScrollStart, readingString: stopReadingString, writingString: keepTypingString, isError: false)
         WKInterfaceDevice.current().play(.success)
@@ -968,9 +1053,9 @@ extension MCInterfaceController {
         if isReverse {
             if currentIndex < input.count - 1 {
                 //To ensure the next character down exists
-                let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
+                let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: braille.morseCodeStringIndex)
                 let char = String(morseCodeString[index])
-                let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex + 1)
+                let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: braille.morseCodeStringIndex + 1)
                 let prevChar = String(morseCodeString[prevIndex])
                 retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
                 isCurAlphanumericZero = (char == "|" && prevChar == "|") || (char == " " && prevChar == " ")
@@ -978,9 +1063,9 @@ extension MCInterfaceController {
         }
         else if currentIndex > 0 {
             //To ensure the previous character exists
-            let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex)
+            let index = morseCodeString.index(morseCodeString.startIndex, offsetBy: braille.morseCodeStringIndex)
             let char = String(morseCodeString[index])
-            let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: morseCodeStringIndex - 1)
+            let prevIndex = morseCodeString.index(morseCodeString.startIndex, offsetBy: braille.morseCodeStringIndex - 1)
             let prevChar = String(morseCodeString[prevIndex])
             retVal = (char != "|" && prevChar == "|") || (char != " " && prevChar == " ")
             
@@ -1014,8 +1099,8 @@ extension MCInterfaceController {
     
     //Sets the particular character to green to indicate selected
     //If the index is out of bounds, the entire string will come white. eg: when index = -1
-    func setSelectedCharInLabel(inputString : String, index : Int, label : WKInterfaceLabel, isMorseCode : Bool, color : UIColor) {
-        let range = NSRange(location:index,length:1) // specific location. This means "range" handle 1 character at location 2
+    func setSelectedCharInLabel(inputString : String, index : Int, length: Int?, label : WKInterfaceLabel, isMorseCode : Bool, color : UIColor) {
+        let range = NSRange(location:index,length: length != nil ? length! :  1) // specific location. This means "range" handle 1 character at location 2
         
         //The replacement of space with visible space only applies to english strings
         let attributedString = NSMutableAttributedString(string: inputString, attributes: nil)
@@ -1143,13 +1228,13 @@ extension MCInterfaceController {
         }
         if isNoMoreMatchesAfterThis() == true {
             //Prevent the user from entering another character
-            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
+            setSelectedCharInLabel(inputString: morseCodeString, index: morseCodeString.count - 1, length: 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.red)
             setRecommendedActionsText()
             WKInterfaceDevice.current().play(.failure)
             return
         }
         englishStringIndex = -1
-        morseCodeStringIndex = -1
+        braille.morseCodeStringIndex = -1
         if isUserTyping == false {
             userIsTyping(firstCharacter: input)
         }
@@ -1193,7 +1278,7 @@ extension MCInterfaceController {
                     "text" : answer.prefix(100)
                 ])
                 self.isUserTyping = false
-                self.morseCodeStringIndex = -1
+                self.braille.morseCodeStringIndex = -1
                 self.englishStringIndex = -1
                 while self.morseCode.mcTreeNode?.parent != nil {
                     self.morseCode.mcTreeNode = self.morseCode.mcTreeNode?.parent
@@ -1252,7 +1337,7 @@ extension MCInterfaceController {
             englishTextLabel?.setHidden(false)
             morseCodeTextLabel?.setHidden(false)
             englishStringIndex = -1
-            morseCodeStringIndex = -1
+            braille.morseCodeStringIndex = -1
             isUserTyping = false
             mainImage?.setHidden(true)
             iphoneImage?.setHidden(true)
@@ -1272,24 +1357,25 @@ extension MCInterfaceController {
                 && message["array_words_in_string_index"] != nil
                 && message["array_braille_grids_for_chars_in_word"] != nil
                 && message["array_braille_grids_for_chars_in_word_index"] != nil {
-            arrayWordsInString.removeAll()
-            arrayWordsInString = message["array_words_in_string"] as? [String] ?? []
-            arrayWordsInStringIndex = message["array_words_in_string_index"] as? Int ?? 0
-            morseCodeStringIndex = message["morse_code_string_index"] as? Int ?? 0
-            arrayBrailleGridsForCharsInWord.removeAll()
-            arrayBrailleGridsForCharsInWord.append(contentsOf: message["array_braille_grids_for_chars_in_word"] as? [String] ?? [])
-            arrayBrailleGridsForCharsInWordIndex = message["array_braille_grids_for_chars_in_word_index"] as? Int ?? 0
-            englishString = arrayWordsInString[arrayWordsInStringIndex]
+            braille.arrayWordsInString.removeAll()
+            braille.arrayWordsInString = message["array_words_in_string"] as? [String] ?? []
+            braille.arrayWordsInStringIndex = message["array_words_in_string_index"] as? Int ?? 0
+            braille.morseCodeStringIndex = message["morse_code_string_index"] as? Int ?? 0
+            braille.arrayBrailleGridsForCharsInWord.removeAll()
+            braille.arrayBrailleGridsForCharsInWord.append(contentsOf: message["array_braille_grids_for_chars_in_word"] as? [BrailleCell] ?? [])
+            braille.arrayBrailleGridsForCharsInWordIndex = message["array_braille_grids_for_chars_in_word_index"] as? Int ?? 0
+            braille.alphanumericHighlightStartIndex =  message["alphanumeric_highlight_start_index"] as? Int ?? 0
+            englishString = braille.arrayWordsInString[braille.arrayWordsInStringIndex]
             englishTextLabel.setText(englishString)
             englishTextLabel.setHidden(false)
-            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "") ?? [])
-            morseCodeString = (arrayBrailleGridsForCharsInWord.first)!
+            //braille.arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString.first ?? "") )
+            morseCodeString = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots ?? ""
             self.morseCodeTextLabel.setText(self.morseCodeString)
             self.morseCodeTextLabel.setHidden(false)
             setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters.\nScroll fast for autoplay", readingString: stopReadingString, writingString: keepTypingString, isError: false)
             fullTextButton.setHidden(false)
             iphoneImage?.setHidden(true)
-            if morseCodeStringIndex > -1 { digitalCrownRotated(direction: "down") } //just to do the highlights
+            if braille.morseCodeStringIndex > -1 { digitalCrownRotated(direction: "down") } //just to do the highlights
         }
         else {
             WKInterfaceDevice.current().play(.failure)
@@ -1301,6 +1387,16 @@ extension MCInterfaceController {
     
     @objc func autoPlay(timer : Timer) {
         let dictionary : Dictionary = timer.userInfo as! Dictionary<String,String>
+        let direction : String = dictionary["direction"] ?? ""
+        if direction == "down" { /*digitalCrownRotated(direction: "down")*/nextCharacterButtonTapped() } else { /*digitalCrownRotated(direction: "up")*/previousCharacterButtonTapped() }
+        
+   /*     let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+        if braille.isEndOfEntireStringReached(brailleString: morseCodeString, brailleStringIndex: brailleStringIndex) {
+            isAutoPlayOn = false
+            pauseAutoPlayAndReset()
+            return
+        }   */
+     /*   let dictionary : Dictionary = timer.userInfo as! Dictionary<String,String>
         let direction : String = dictionary["direction"] ?? ""
         if self.isScreenActive == true {
             //In case the watch screen goes off, we pause
@@ -1323,14 +1419,17 @@ extension MCInterfaceController {
                         englishString = arrayWordsInString[arrayWordsInStringIndex]
                         englishTextLabel.setText(englishString)
                         arrayBrailleGridsForCharsInWord.removeAll()
-                        arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) ?? []) //get the braille grids for the next word
-                        morseCodeString = arrayBrailleGridsForCharsInWord.first ?? "" //set the braille grid for the first character in the word
+                        arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString[arrayWordsInStringIndex] ) ) //get the braille grids for the next word
+                        morseCodeString = arrayBrailleGridsForCharsInWord.first?.brailleDots ?? "" //set the braille grid for the first character in the word
                         morseCodeTextLabel.setText(morseCodeString)
                         morseCodeStringIndex = -1
+                        alphanumericHighlightStartIndex = 0
                         return
                     }
+                    let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+                    alphanumericHighlightStartIndex += exactWord.count
                     arrayBrailleGridsForCharsInWordIndex += 1
-                    morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+                    morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
                     morseCodeTextLabel.setText(morseCodeString)
                     morseCodeStringIndex = 0
                 }
@@ -1340,14 +1439,14 @@ extension MCInterfaceController {
                         return
                     }
                     arrayBrailleGridsForCharsInWordIndex -= 1
-                    morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex]
+                    morseCodeString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
                     morseCodeTextLabel.setText(morseCodeString)
                     morseCodeStringIndex = morseCodeString.count - 1
                 }
-                else if braille.isMidpointReachedForNumber(brailleStringLength: morseCodeString.count, brailleStringIndexForNextItem: brailleStringIndex) {
+            /*    else if braille.isMidpointReachedForNumber(brailleStringLength: morseCodeString.count, brailleStringIndexForNextItem: brailleStringIndex) {
                     //Want a pause between first and second half of number
                     Thread.sleep(forTimeInterval: 0.25)
-                }
+                }   */
                 digitalCrownRotated(direction: direction)
 
                 //morseCodeStringIndex = direction == "down" ? morseCodeStringIndex + 1 : morseCodeStringIndex - 1
@@ -1365,6 +1464,7 @@ extension MCInterfaceController {
             //Want a pause between first and second half of number
             Thread.sleep(forTimeInterval: 0.25)
         }   */
+        */
     }
     
     func pauseAutoPlay() {
@@ -1373,7 +1473,7 @@ extension MCInterfaceController {
     }
     
     func pauseAutoPlayAndReset() {
-        pauseAutoPlay()
+     /*   pauseAutoPlay()
         resetButton?.setHidden(true)
         resetBigText()
         englishString = englishString.replacingOccurrences(of: "␣", with: " ")
@@ -1385,16 +1485,46 @@ extension MCInterfaceController {
         brailleStringIndex = -1
         englishString = arrayWordsInString[0]
         arrayBrailleGridsForCharsInWord.removeAll()
-        arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString[0] ) ?? [])
+        arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString[0] ) )
         englishTextLabel.setText(englishString)
-        morseCodeString = arrayBrailleGridsForCharsInWord.first!
+        morseCodeString = arrayBrailleGridsForCharsInWord.first?.brailleDots ?? ""
         morseCodeTextLabel.setText(morseCodeString)
         //self.setInstructionLabelForMode(mainString: self.dcScrollStart, readingString: self.stopReadingString, writingString: self.keepTypingString, isError: false)
-        instructionsLabel?.setText(dcScrollStart)
+        instructionsLabel?.setText(dcScrollStart)   */
+        pauseAutoPlay()
+        braille.resetVariables()
+        englishString = braille.arrayWordsInString.first ?? ""
+        englishTextLabel.setText(englishString)
+        morseCodeString = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots ?? "" //Reset braille grid to first character
+        morseCodeTextLabel.setText(morseCodeString)
+        //morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes //DOES NOT APPLY TO BRAILLE
+        resetButton?.setHidden(true)
+        resetBigText()
     }
     
     func morseCodeAutoPlay(direction : String) {
-        isAutoPlayOn = true
+        if braille.morseCodeStringIndex < 0 {
+            //We are not in the middle of a puased autoplay
+            //Reset the labels
+            englishString = braille.arrayWordsInString.first ?? ""
+            englishTextLabel.setText(englishString)
+            braille.resetVariables()
+            let morseCodeString = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots
+            morseCodeTextLabel.setText(morseCodeString?.replacingOccurrences(of: "|", with: " ")) //We will not be playing pipes in autoplay
+            morseCodeTextLabel.setTextColor(.none)
+        }
+        
+        let dictionary = [
+            "direction" : direction
+        ]
+        let userDefault = UserDefaults.standard
+        TIME_DIFF_MILLIS = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
+        //let appGroupName = LibraryCustomActions.APP_GROUP_NAME
+        //let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
+        //let TIME_DIFF_MILLIS : Double = appGroupUserDefaults.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
+        let timeInterval = TIME_DIFF_MILLIS/1000 //direction == "down" ? 1 : 0.5
+        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true) 
+      /*  isAutoPlayOn = true
         
         
         if morseCodeStringIndex < 0 {
@@ -1402,8 +1532,8 @@ extension MCInterfaceController {
             //Reset the text
             englishString = arrayWordsInString.first ?? ""
             arrayBrailleGridsForCharsInWord.removeAll()
-            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBraille(alphanumericString: arrayWordsInString.first ?? "" ) ?? [])
-            morseCodeString = arrayBrailleGridsForCharsInWord[0]
+            arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString.first ?? "" ) )
+            morseCodeString = arrayBrailleGridsForCharsInWord.first?.brailleDots ?? ""
             englishTextLabel.setText(englishString) //Resetting the string colors at the start of autoplay
             morseCodeString = morseCodeString.replacingOccurrences(of: "|", with: " ") //We will not be playing pipes in autoplay
             morseCodeTextLabel.setText(morseCodeString)
@@ -1413,6 +1543,8 @@ extension MCInterfaceController {
             arrayBrailleGridsForCharsInWordIndex = direction == "down" ? 0 : arrayBrailleGridsForCharsInWord.count - 1
             arrayWordsInStringIndex = direction == "down" ? 0 : arrayWordsInString.count - 1
             morseCodeStringIndex = direction == "down" ? -1 : morseCodeString.count
+            let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+            alphanumericHighlightStartIndex = direction == "down" ? 0 : englishString.count - exactWord.count
         }
         
         let dictionary = [
@@ -1420,16 +1552,16 @@ extension MCInterfaceController {
         ]
         instructionsLabel?.setText(direction == "down" ? "Autoplaying vibrations. Rotate digital crown upwards to stop" : "Resetting, please wait...")
         let userDefault = UserDefaults.standard
-        let TIME_DIFF_MILLIS : Double = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
+        TIME_DIFF_MILLIS = userDefault.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
         //let appGroupName = LibraryCustomActions.APP_GROUP_NAME
         //let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
         //let TIME_DIFF_MILLIS : Double = appGroupUserDefaults.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
         let timeInterval = TIME_DIFF_MILLIS/1000 //direction == "down" ? 1 : 0.5
-        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
+        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)    */
     }
     
     func digitalCrownRotated(direction : String) {
-        if morseCodeString.isEmpty {
+      /*  if morseCodeString.isEmpty {
             WKInterfaceDevice.current().play(.failure)
             morseCodeStringIndex = -1
             return
@@ -1443,10 +1575,11 @@ extension MCInterfaceController {
             if isAutoPlayOn == false {
                 setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters.\nScroll fast for autoplay", readingString: stopReadingString, writingString: keepTypingString, isError: false)
             }
-            setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
+            setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, length: 1, label: morseCodeTextLabel, isMorseCode: true, color: UIColor.green)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: /*morseCodeStringIndex*/brailleStringIndex)
             
-            setSelectedCharInLabel(inputString: englishString, index: /*englishStringIndex*/arrayBrailleGridsForCharsInWordIndex, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
+            let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+            setSelectedCharInLabel(inputString: englishString, index: /*englishStringIndex*/alphanumericHighlightStartIndex, length: exactWord.count, label: englishTextLabel, isMorseCode: false, color : UIColor.green)
 
             animateMiddleText(text: /*morseCodeStringIndex < explanationArray.count ? explanationArray[morseCodeStringIndex] :*/ nil)
             
@@ -1456,7 +1589,7 @@ extension MCInterfaceController {
                 "state" : "scrolling",
                 "is_reading" : self.isReading()
             ])
-            setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
+            setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, length: 1, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
             //resetBigText()
             animateMiddleText(text: nil)
             playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: /*morseCodeStringIndex*/brailleStringIndex)
@@ -1466,9 +1599,27 @@ extension MCInterfaceController {
                 return
             }
             
-            setSelectedCharInLabel(inputString: englishString, index: /*englishStringIndex*/arrayBrailleGridsForCharsInWordIndex, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
+            let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+            setSelectedCharInLabel(inputString: englishString, index: /*englishStringIndex*/alphanumericHighlightStartIndex, length: exactWord.count, label: englishTextLabel, isMorseCode: false, color: UIColor.green)
             
-        }
+        }   */
+    }
+    
+    private func highlightContentAndPlayHaptic() {
+        highlightContent()
+        let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+        playSelectedCharacterHaptic(inputString: morseCodeString, inputIndex: /*morseCodeStringIndex*/brailleStringIndex)
+    }
+    
+    private func highlightContent() {
+        let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+        
+        setSelectedCharInLabel(inputString: morseCodeString, index: /*morseCodeStringIndex*/brailleStringIndex, length: 1, label: morseCodeTextLabel, isMorseCode: true, color : UIColor.green)
+   
+        let exactWord = braille.arrayBrailleGridsForCharsInWord[braille.arrayBrailleGridsForCharsInWordIndex].english //From this we get the exact length of the word to highlight. Can be more than 1 character
+        setSelectedCharInLabel(inputString: englishString, index: /*alphanumericStringIndex*/braille.alphanumericHighlightStartIndex, length: exactWord.count ,label: englishTextLabel, isMorseCode: false, color: UIColor.green)
+        
+        animateMiddleText(text: /*inputMCExplanation[safe: braille.morseCodeStringIndex]*/nil)
     }
     
     private func animateMiddleText(text: String?) {
@@ -1483,6 +1634,7 @@ extension MCInterfaceController {
                 //We are assuming its morse code
                 localText = LibraryCustomActions.getInfoTextForMorseCode(morseCodeString: morseCodeString, morseCodeStringIndex: morseCodeStringIndex)
             }   */
+            let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
             localText = LibraryCustomActions.getInfoTextForBraille(brailleString: morseCodeString, brailleStringIndex: brailleStringIndex)
             
         }
@@ -1491,7 +1643,7 @@ extension MCInterfaceController {
             //If we are in the middle of playing a morse code character, we do not want to change the label
             return
         }
-        if morseCodeStringIndex % 2 == 0 {
+        if braille.morseCodeStringIndex % 2 == 0 {
             self.bigTextLabel.setText(localText)
             self.bigTextLabel2.setText("")
             animate(withDuration: 1.0, animations: {

@@ -29,14 +29,15 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
     
     
     @IBAction func minusButtonTapped() {
-        if TIME_DIFF_MILLIS <= 1000 {
+        if TIME_DIFF_MILLIS <= 500 {
+            errorLabel?.setText("Timer cannot go lower")
             errorLabel?.setHidden(false)
             WKInterfaceDevice.current().play(.failure)
             return
         }
         WKInterfaceDevice.current().play(.start)
         errorLabel?.setHidden(true)
-        TIME_DIFF_MILLIS -= 1000
+        TIME_DIFF_MILLIS -= 500
         setTimeLabel()
         UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
         //updateUserDefaults()
@@ -46,9 +47,15 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
     
     
     @IBAction func plusButtonTapped() {
+        if TIME_DIFF_MILLIS >= 2000 {
+            errorLabel?.setText("Timer cannot go higher")
+            errorLabel?.setHidden(false)
+            WKInterfaceDevice.current().play(.failure)
+            return
+        }
         WKInterfaceDevice.current().play(.start)
         errorLabel.setHidden(true)
-        TIME_DIFF_MILLIS += 1000
+        TIME_DIFF_MILLIS += 500
         setTimeLabel()
         UserDefaults.standard.set(TIME_DIFF_MILLIS, forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS)
         //updateUserDefaults()
@@ -77,9 +84,9 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
     private func setTimeLabel() {
         let mins = ((TIME_DIFF_MILLIS/1000)/60)
         let secs = ((TIME_DIFF_MILLIS/1000)%60)
-        let minsString = mins > 0 ? String(mins) + "m" : ""
-        let secsString = secs > 0 ? String(secs) + "s" : ""
-        timeLabel?.setText(minsString + " " + secsString)
+        let millis = TIME_DIFF_MILLIS%1000
+        let secsString = String(secs) + (millis > 0 ? ".5" : "") + "s"
+        timeLabel?.setText(secsString)
     }
     
     //This was used when trying App Groups. And it didnt work

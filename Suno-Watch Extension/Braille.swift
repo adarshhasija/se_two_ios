@@ -10,9 +10,29 @@ import Foundation
 
 class Braille {
     
-    
-    var brailleArray: [BrailleCell] = []
     var alphabetToBrailleDictionary : [String : String] = [:] //used for quick access
+    
+    ///indexes used in UI
+    var arrayBrailleGridsForCharsInWord : [BrailleCell] = []
+    var arrayWordsInString : [String] = []
+    var arrayWordsInStringIndex = 0
+    var arrayBrailleGridsForCharsInWordIndex = 0 //in the case of braille
+    var alphanumericHighlightStartIndex = 0 //Cannot use braille grids array index as thats not a 1-1 relation
+    var alphanumericStringIndex = -1
+    var morseCodeStringIndex = -1
+    
+    func resetIndexes() {
+        arrayWordsInStringIndex = 0
+        arrayBrailleGridsForCharsInWordIndex = 0
+        alphanumericHighlightStartIndex = 0
+        alphanumericStringIndex = -1
+        morseCodeStringIndex = -1
+    }
+    
+    func populateGridsArrayForWord(word: String) {
+        arrayBrailleGridsForCharsInWord.removeAll()
+        arrayBrailleGridsForCharsInWord.append(contentsOf: convertAlphanumericToBrailleWithContractions(alphanumericString: word))
+    }
     
     //Braille grid
     //1 4
@@ -107,9 +127,6 @@ class Braille {
     
     func populateBrailleAlphanumeric() {
         var brailleArray: [BrailleCell] = [] //keeping this append code just so we dont have to rewrite  it. May need  it in  future if we have to display all this in  a list
-        brailleArray.append(BrailleCell(english: "can", brailleDots: "14"))
-        brailleArray.append(BrailleCell(english: "ing", brailleDots: "346"))
-        brailleArray.append(BrailleCell(english: "com", brailleDots: "36"))
         brailleArray.append(BrailleCell(english: "a", brailleDots: "1"))
         brailleArray.append(BrailleCell(english: "b", brailleDots: "12"))
         brailleArray.append(BrailleCell(english: "c", brailleDots: "14"))
@@ -155,6 +172,9 @@ class Braille {
         brailleArray.append(BrailleCell(english: "?", brailleDots: "26"))
         brailleArray.append(BrailleCell(english: "!", brailleDots: "235"))
         brailleArray.append(BrailleCell(english: "-", brailleDots: "36"))
+        brailleArray.append(BrailleCell(english: "can", brailleDots: "14"))
+        brailleArray.append(BrailleCell(english: "ing", brailleDots: "346"))
+        brailleArray.append(BrailleCell(english: "com", brailleDots: "36"))
         
         
         //We actually need it in dictionary form for easy retrieval
@@ -292,9 +312,9 @@ class Braille {
                 
             }
 
-            if brailleDotsString.isEmpty {
+        /*    if brailleDotsString.isEmpty {
                 brailleDotsString = alphabetToBrailleDictionary[String(character).lowercased()]!
-            }
+            }   */
             if subString.count == 1 {
                 if Character(subString).isUppercase { brailleDotsString = (alphabetToBrailleDictionary["^"] ?? "6") + " " + brailleDotsString }
                 
@@ -309,7 +329,7 @@ class Braille {
                 }
             }
             else {
-                //its a long string. a contraction
+                //its a long string. a contraction. likely not a number
                 isFirstNumberInNumberSubstringPassed = false
             }
             
@@ -357,6 +377,159 @@ class Braille {
     }
     
     
+    
+    
+    
+    func setupArraysUsingInputString(fullAlphanumeric: String?) {
+        arrayWordsInString.append(contentsOf: fullAlphanumeric?.components(separatedBy: " ") ?? [])
+        arrayBrailleGridsForCharsInWord.append(contentsOf: convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString.first ?? ""))
+    }
+    
+    func getStartAndEndIndexInFullStringOfHighlightedPortion() -> [String:Any] {
+        var text = ""
+        var startIndexForHighlighting = 0
+        var endIndexForHighlighting = 0
+        for word in arrayWordsInString {
+            text += word
+            text += " "
+        }
+        text = text.trimmingCharacters(in: .whitespacesAndNewlines) //Trim the last space at the end from the for loop above
+        for (index, element) in arrayWordsInString.enumerated() {
+            if index < arrayWordsInStringIndex {
+                startIndexForHighlighting += arrayWordsInString[index].count //Need to increment by length of  the word that was completed
+                startIndexForHighlighting += 1 //account for space after the word
+            }
+        }
+        startIndexForHighlighting += alphanumericHighlightStartIndex
+        let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+        endIndexForHighlighting = morseCodeStringIndex > -1 ? startIndexForHighlighting + exactWord.count : startIndexForHighlighting //If we have not started traversing the grid, we dont want to highlight
+        
+        return [
+            "text": text,
+            "start_index": startIndexForHighlighting,
+            "end_index": endIndexForHighlighting
+        ]
+    }
+    
+    func isEndOfEntireStringReached(brailleString: String, brailleStringIndex: Int) -> Bool {
+        if morseCodeStringIndex > -1 //We are past the beginning
+            && brailleStringIndex == -1 //We are an an invalid index which means past the end
+            && arrayBrailleGridsForCharsInWordIndex >= (arrayBrailleGridsForCharsInWord.count - 1)
+            && arrayWordsInStringIndex >= (arrayWordsInString.count - 1) {
+            return true
+        }
+        return false
+    }
+    
+    func doIfEndOfEntireStringReachedScrollingBack(textFromAlphanumericLabel: String, textFromBrailleLabel: String) {
+        arrayWordsInStringIndex = arrayWordsInString.count - 1
+        arrayBrailleGridsForCharsInWordIndex = arrayBrailleGridsForCharsInWord.count - 1
+        let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+        alphanumericHighlightStartIndex = textFromAlphanumericLabel.count - exactWord.count
+        morseCodeStringIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: textFromBrailleLabel)
+    }
+    
+    func isBeforeStartOfStringReached() -> Bool {
+        if /*brailleIndex == -1*/morseCodeStringIndex <= -1
+            && arrayBrailleGridsForCharsInWordIndex <= 0
+        && arrayWordsInStringIndex <= 0 {
+            return true
+        }
+        return false
+    }
+    
+    func isStartOfWordReached() -> Bool {
+        if /*brailleIndex == -1*/morseCodeStringIndex <= -1
+                                    && arrayBrailleGridsForCharsInWordIndex <= 0 {
+            return true
+        }
+        return false
+    }
+    
+    func getPreviousWord() -> [String: String] {
+        arrayWordsInStringIndex -= 1
+        let alphanumericString = arrayWordsInString[arrayWordsInStringIndex]
+        populateGridsArrayForWord(word: arrayWordsInString[arrayWordsInStringIndex]) //get the braille grids for the next word
+        arrayBrailleGridsForCharsInWordIndex = arrayBrailleGridsForCharsInWord.count - 1
+        let exactWord = arrayBrailleGridsForCharsInWord.last?.english ?? ""
+        alphanumericHighlightStartIndex = alphanumericString.count - exactWord.count
+        let brailleString = arrayBrailleGridsForCharsInWord.last?.brailleDots ?? "" //set the braille grid for the last character in the word
+        morseCodeStringIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: brailleString)
+        
+        return [
+            "alphanumeric_string": alphanumericString,
+            "braille_string": brailleString
+        ]
+    }
+    
+    func goToPreviousCharacterOrContraction() -> String {
+        arrayBrailleGridsForCharsInWordIndex -= 1
+        let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+        alphanumericHighlightStartIndex -= exactWord.count //move the pointer backward by length of previous characters so we are ready to highlight the next characters
+        let brailleGridDotsString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
+        morseCodeStringIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: brailleGridDotsString)
+        
+        return brailleGridDotsString
+    }
+    
+    func doIfBeforeStartOfStringReachedScrollingForward() {
+        arrayWordsInStringIndex = 0
+        arrayBrailleGridsForCharsInWordIndex = 0
+        morseCodeStringIndex = 0
+        alphanumericHighlightStartIndex = 0
+    }
+    
+    func isEndOfWordReached(brailleStringIndex: Int) -> Bool {
+        if brailleStringIndex == -1
+            && arrayBrailleGridsForCharsInWordIndex >= (arrayBrailleGridsForCharsInWord.count - 1) {
+            return true
+        }
+        return false
+    }
+    
+    func getNextWord() -> [String : String] {
+        arrayWordsInStringIndex += 1
+        let alphanumericString = arrayWordsInString[arrayWordsInStringIndex]
+        populateGridsArrayForWord(word: arrayWordsInString[arrayWordsInStringIndex]) //get the braille grids for the next word
+        let brailleDotsString = arrayBrailleGridsForCharsInWord.first?.brailleDots ?? "" //set the braille grid for the first character in the word
+        morseCodeStringIndex = 0
+        arrayBrailleGridsForCharsInWordIndex = 0
+        alphanumericHighlightStartIndex = 0
+        
+        return  [
+            "alphanumeric_text": alphanumericString,
+            "braille_text": brailleDotsString
+        ]
+    }
+    
+    func goToNextCharacterOrContraction() -> String {
+        let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
+        alphanumericHighlightStartIndex += exactWord.count //move the pointer forward by length of previous characters so we are ready to highlight the next characters
+        
+        //end of character move to next character
+        arrayBrailleGridsForCharsInWordIndex += 1
+        let brailleDotsString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
+        morseCodeStringIndex = 0
+        
+        return brailleDotsString
+    }
+    
+    func resetVariables() {
+        resetIndexes()
+        populateGridsArrayForWord(word: arrayWordsInString.first ?? "")
+    }
+    
+    func getMapToSendToWatch() -> [String : Any] {
+        return [
+            "array_words_in_string": arrayWordsInString,
+            "array_words_in_string_index": arrayWordsInStringIndex,
+            "morse_code_string_index": morseCodeStringIndex,
+            "array_braille_grids_for_chars_in_word": arrayBrailleGridsForCharsInWord,
+            "array_braille_grids_for_chars_in_word_index": arrayBrailleGridsForCharsInWordIndex,
+            "alphanumeric_highlight_start_index":
+            alphanumericHighlightStartIndex
+        ]
+    }
     
     
     
