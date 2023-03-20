@@ -22,9 +22,9 @@ class ActionsTableViewController : UITableViewController {
     override func viewDidLoad() {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         
-        //actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
+        actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
         actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
-        //actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
+        actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
         //actionsList.append(ActionsCell(action: "Find someone nearby", forWho: "Blind and Deaf-blind", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
         actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter letters and we will translate it into braille vibrations", cellType: Action.MANUAL))
         actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you", cellType: Action.CAMERA_OCR))
@@ -90,11 +90,15 @@ class ActionsTableViewController : UITableViewController {
             openManualEntryPopup()
             tableView.deselectRow(at: indexPath, animated: false) //It remains in grey selected state. got to remove that
         }
+        else if actionItem.cellType == Action.TIME {
+            let alphanumericString = LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")
+            openMorseCodeReadingScreen(alphanumericString: alphanumericString, inputAction: /*actionItem.cellType*/Action.MANUAL)
+        }
         else if actionItem.cellType == Action.BATTERY_LEVEL {
             UIDevice.current.isBatteryMonitoringEnabled = true
             let level = String(Int(UIDevice.current.batteryLevel * 100)) //int as we do not decimal
             UIDevice.current.isBatteryMonitoringEnabled = false
-            openMorseCodeReadingScreen(alphanumericString: level, inputAction: actionItem.cellType)
+            openMorseCodeReadingScreen(alphanumericString: level, inputAction: /*actionItem.cellType*/Action.MANUAL)
         }
         else if actionItem.cellType == Action.NEARBY_INTERACTION {
             var isSupported: Bool
@@ -190,7 +194,7 @@ class ActionsTableViewController : UITableViewController {
     
     private func openMorseCodeReadingScreen(alphanumericString : String?, inputAction: Action) {
         guard let alphanumericStringFiltered = alphanumericString?.trimmingCharacters(in: .whitespacesAndNewlines)
-            .filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ".contains).removeExtraSpaces() else {
+            .filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789: ".contains).removeExtraSpaces() else {
             showDialog(title: "Error", message: "Sorry an error occured, please try again")
             return
         }

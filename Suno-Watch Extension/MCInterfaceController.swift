@@ -1285,7 +1285,7 @@ extension MCInterfaceController {
                     self.morseCode.mcTreeNode = self.morseCode.mcTreeNode?.parent
                 }
                 
-                answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ".contains) //Remove anything that is not alphanumeric
+                answer = answer.uppercased().trimmingCharacters(in: .whitespacesAndNewlines).filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789: ".contains) //Remove anything that is not alphanumeric
                 if answer.count < 1 {
                     return
                 }
