@@ -1355,27 +1355,32 @@ extension MCInterfaceController {
         }
         else if message["array_words_in_string"] != nil
                 && message["array_words_in_string_index"] != nil
-                && message["array_braille_grids_for_chars_in_word"] != nil
-                && message["array_braille_grids_for_chars_in_word_index"] != nil {
+                //&& message["array_braille_grids_for_chars_in_word"] != nil
+                && message["array_braille_grids_for_chars_in_word_index"] != nil
+                && message["alphanumeric_highlight_start_index"] != nil {
             braille.arrayWordsInString.removeAll()
             braille.arrayWordsInString = message["array_words_in_string"] as? [String] ?? []
             braille.arrayWordsInStringIndex = message["array_words_in_string_index"] as? Int ?? 0
             braille.morseCodeStringIndex = message["morse_code_string_index"] as? Int ?? 0
             braille.arrayBrailleGridsForCharsInWord.removeAll()
-            braille.arrayBrailleGridsForCharsInWord.append(contentsOf: message["array_braille_grids_for_chars_in_word"] as? [BrailleCell] ?? [])
+            //braille.arrayBrailleGridsForCharsInWord.append(contentsOf: message["array_braille_grids_for_chars_in_word"] as? [BrailleCell] ?? [])
             braille.arrayBrailleGridsForCharsInWordIndex = message["array_braille_grids_for_chars_in_word_index"] as? Int ?? 0
             braille.alphanumericHighlightStartIndex =  message["alphanumeric_highlight_start_index"] as? Int ?? 0
             englishString = braille.arrayWordsInString[braille.arrayWordsInStringIndex]
             englishTextLabel.setText(englishString)
             englishTextLabel.setHidden(false)
-            //braille.arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString.first ?? "") )
+            braille.arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: braille.arrayWordsInString[braille.arrayWordsInStringIndex] ) )
             morseCodeString = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots ?? ""
             self.morseCodeTextLabel.setText(self.morseCodeString)
             self.morseCodeTextLabel.setHidden(false)
             setInstructionLabelForMode(mainString: "Scroll to the end to read all the characters.\nScroll fast for autoplay", readingString: stopReadingString, writingString: keepTypingString, isError: false)
             fullTextButton.setHidden(false)
             iphoneImage?.setHidden(true)
-            if braille.morseCodeStringIndex > -1 { digitalCrownRotated(direction: "down") } //just to do the highlights
+            let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
+            if brailleStringIndex != -1 {
+                //Is it a valid index? Then highlight
+                /*digitalCrownRotated(direction: "down")*/ highlightContent()
+            }
         }
         else {
             WKInterfaceDevice.current().play(.failure)

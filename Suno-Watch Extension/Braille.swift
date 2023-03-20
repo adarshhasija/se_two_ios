@@ -524,7 +524,7 @@ class Braille {
             "array_words_in_string": arrayWordsInString,
             "array_words_in_string_index": arrayWordsInStringIndex,
             "morse_code_string_index": morseCodeStringIndex,
-            "array_braille_grids_for_chars_in_word": arrayBrailleGridsForCharsInWord,
+            //"array_braille_grids_for_chars_in_word": arrayBrailleGridsForCharsInWord,
             "array_braille_grids_for_chars_in_word_index": arrayBrailleGridsForCharsInWordIndex,
             "alphanumeric_highlight_start_index":
             alphanumericHighlightStartIndex
