@@ -19,14 +19,14 @@ class Braille {
     var arrayBrailleGridsForCharsInWordIndex = 0 //in the case of braille
     var alphanumericHighlightStartIndex = 0 //Cannot use braille grids array index as thats not a 1-1 relation
     var alphanumericStringIndex = -1
-    var morseCodeStringIndex = -1
+    var mIndex = -1
     
     func resetIndexes() {
         arrayWordsInStringIndex = 0
         arrayBrailleGridsForCharsInWordIndex = 0
         alphanumericHighlightStartIndex = 0
         alphanumericStringIndex = -1
-        morseCodeStringIndex = -1
+        mIndex = -1
     }
     
     func populateGridsArrayForWord(word: String) {
@@ -402,17 +402,17 @@ class Braille {
         }
         startIndexForHighlighting += alphanumericHighlightStartIndex
         let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
-        endIndexForHighlighting = morseCodeStringIndex > -1 ? startIndexForHighlighting + exactWord.count : startIndexForHighlighting //If we have not started traversing the grid, we dont want to highlight
+        endIndexForHighlighting = mIndex > -1 ? startIndexForHighlighting + exactWord.count : startIndexForHighlighting //If we have not started traversing the grid, we dont want to highlight
         
         return [
             "text": text,
             "start_index": startIndexForHighlighting,
-            "end_index": endIndexForHighlighting
+            "end_index": endIndexForHighlighting,
         ]
     }
     
     func isEndOfEntireStringReached(brailleString: String, brailleStringIndex: Int) -> Bool {
-        if morseCodeStringIndex > -1 //We are past the beginning
+        if mIndex > -1 //We are past the beginning
             && brailleStringIndex == -1 //We are an an invalid index which means past the end
             && arrayBrailleGridsForCharsInWordIndex >= (arrayBrailleGridsForCharsInWord.count - 1)
             && arrayWordsInStringIndex >= (arrayWordsInString.count - 1) {
@@ -426,11 +426,11 @@ class Braille {
         arrayBrailleGridsForCharsInWordIndex = arrayBrailleGridsForCharsInWord.count - 1
         let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
         alphanumericHighlightStartIndex = textFromAlphanumericLabel.count - exactWord.count
-        morseCodeStringIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: textFromBrailleLabel)
+        mIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: textFromBrailleLabel)
     }
     
     func isBeforeStartOfStringReached() -> Bool {
-        if /*brailleIndex == -1*/morseCodeStringIndex <= -1
+        if /*brailleIndex == -1*/mIndex <= -1
             && arrayBrailleGridsForCharsInWordIndex <= 0
         && arrayWordsInStringIndex <= 0 {
             return true
@@ -439,7 +439,7 @@ class Braille {
     }
     
     func isStartOfWordReached() -> Bool {
-        if /*brailleIndex == -1*/morseCodeStringIndex <= -1
+        if /*brailleIndex == -1*/mIndex <= -1
                                     && arrayBrailleGridsForCharsInWordIndex <= 0 {
             return true
         }
@@ -454,7 +454,7 @@ class Braille {
         let exactWord = arrayBrailleGridsForCharsInWord.last?.english ?? ""
         alphanumericHighlightStartIndex = alphanumericString.count - exactWord.count
         let brailleString = arrayBrailleGridsForCharsInWord.last?.brailleDots ?? "" //set the braille grid for the last character in the word
-        morseCodeStringIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: brailleString)
+        mIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: brailleString)
         
         return [
             "alphanumeric_string": alphanumericString,
@@ -467,7 +467,7 @@ class Braille {
         let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
         alphanumericHighlightStartIndex -= exactWord.count //move the pointer backward by length of previous characters so we are ready to highlight the next characters
         let brailleGridDotsString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
-        morseCodeStringIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: brailleGridDotsString)
+        mIndex = getIndexInStringOfLastCharacterInTheGrid(brailleStringForCharacter: brailleGridDotsString)
         
         return brailleGridDotsString
     }
@@ -475,7 +475,7 @@ class Braille {
     func doIfBeforeStartOfStringReachedScrollingForward() {
         arrayWordsInStringIndex = 0
         arrayBrailleGridsForCharsInWordIndex = 0
-        morseCodeStringIndex = 0
+        mIndex = 0
         alphanumericHighlightStartIndex = 0
     }
     
@@ -492,7 +492,7 @@ class Braille {
         let alphanumericString = arrayWordsInString[arrayWordsInStringIndex]
         populateGridsArrayForWord(word: arrayWordsInString[arrayWordsInStringIndex]) //get the braille grids for the next word
         let brailleDotsString = arrayBrailleGridsForCharsInWord.first?.brailleDots ?? "" //set the braille grid for the first character in the word
-        morseCodeStringIndex = 0
+        mIndex = 0
         arrayBrailleGridsForCharsInWordIndex = 0
         alphanumericHighlightStartIndex = 0
         
@@ -509,7 +509,7 @@ class Braille {
         //end of character move to next character
         arrayBrailleGridsForCharsInWordIndex += 1
         let brailleDotsString = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].brailleDots
-        morseCodeStringIndex = 0
+        mIndex = 0
         
         return brailleDotsString
     }
@@ -523,7 +523,7 @@ class Braille {
         return [
             "array_words_in_string": arrayWordsInString,
             "array_words_in_string_index": arrayWordsInStringIndex,
-            "morse_code_string_index": morseCodeStringIndex,
+            "morse_code_string_index": mIndex,
             //"array_braille_grids_for_chars_in_word": arrayBrailleGridsForCharsInWord,
             "array_braille_grids_for_chars_in_word_index": arrayBrailleGridsForCharsInWordIndex,
             "alphanumeric_highlight_start_index":
