@@ -10,7 +10,7 @@ import Foundation
 import WatchKit
 import WatchConnectivity
 
-class ValuePlusMinusInterfaceController : WKInterfaceController {
+class SettingsValuePlusMinusInterfaceController : WKInterfaceController {
     
     //equivalent of SettingsTableViewController on the iOS side
     
@@ -99,7 +99,7 @@ class ValuePlusMinusInterfaceController : WKInterfaceController {
     
 }
 
-extension ValuePlusMinusInterfaceController : WKCrownDelegate {
+extension SettingsValuePlusMinusInterfaceController : WKCrownDelegate {
     
     func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
         crownRotationalDelta  += rotationalDelta
@@ -127,7 +127,7 @@ extension ValuePlusMinusInterfaceController : WKCrownDelegate {
     }
 }
 
-extension ValuePlusMinusInterfaceController : WCSessionDelegate {
+extension SettingsValuePlusMinusInterfaceController : WCSessionDelegate {
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         

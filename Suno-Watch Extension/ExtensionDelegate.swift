@@ -17,11 +17,11 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     }
     
     func sessionReachabilityDidChange(_ session: WCSession) {
-        (WKExtension.shared().visibleInterfaceController as? MCInterfaceController)?.sessionReachabilityDidChange()
+        (WKExtension.shared().visibleInterfaceController as? BrailleInterfaceController)?.sessionReachabilityDidChange()
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        (visibleInterfaceController as? MCInterfaceController)?.receivedMessageFromPhone(message: message)
+        (visibleInterfaceController as? BrailleInterfaceController)?.receivedMessageFromPhone(message: message)
     }
 
     func applicationDidFinishLaunching() {

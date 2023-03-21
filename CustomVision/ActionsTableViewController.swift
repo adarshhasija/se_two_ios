@@ -223,7 +223,7 @@ protocol ActionsTableViewControllerProtocol {
 extension ActionsTableViewController : ActionsTableViewControllerProtocol {
     
     func setTextFromCamera(english: String) {
-        guard navigationController?.topViewController is MCReaderButtonsViewController == false else {
+        guard navigationController?.topViewController is BrailleViewController == false else {
             //If FALSE, the we have not yet displayed the camera result to user
             //If TRUE, we have displayed the camera result to user already. This is a 2nd or later call
             return

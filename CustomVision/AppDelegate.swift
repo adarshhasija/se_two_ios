@@ -101,8 +101,8 @@ extension AppDelegate : WCSessionDelegate {
                 //This is because topViewController must be accessed from the main threads
                 //((self.window?.rootViewController as? UINavigationController)?.topViewController as? WhiteSpeechViewController)?.receivedRequestForEnglishAndMCFromWatch()
                 //((self.window?.rootViewController as? UINavigationController)?.topViewController as? ActionsMCViewController)?.receivedRequestForEnglishAndMCFromWatch()
-                if ((self.window?.rootViewController as? UINavigationController)?.topViewController is MCReaderButtonsViewController) {
-                    ((self.window?.rootViewController as? UINavigationController)?.topViewController as? MCReaderButtonsViewController)?.receivedRequestForAlphanumericsAndMCFromWatch(mode: mode)
+                if ((self.window?.rootViewController as? UINavigationController)?.topViewController is BrailleViewController) {
+                    ((self.window?.rootViewController as? UINavigationController)?.topViewController as? BrailleViewController)?.receivedRequestForAlphanumericsAndMCFromWatch(mode: mode)
                 }
                 else if ((self.window?.rootViewController as? UINavigationController)?.topViewController is TextViewController) {
                     ((self.window?.rootViewController as? UINavigationController)?.topViewController as? TextViewController)?.receivedRequestForAlphanumericsAndMCFromWatch(mode: mode)
@@ -128,9 +128,9 @@ extension AppDelegate : WCSessionDelegate {
         }
     }
     
-    func getMorseCodeReadingScreen(inputAction: Action, alphanumericString : String?) -> MCReaderButtonsViewController {
+    func getMorseCodeReadingScreen(inputAction: Action, alphanumericString : String?) -> BrailleViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
-        let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! MCReaderButtonsViewController
+        let mcReaderButtonsViewController = storyBoard.instantiateViewController(withIdentifier: "MCReaderButtonsViewController") as! BrailleViewController
         mcReaderButtonsViewController.siriShortcut = inputAction == Action.CAMERA_OCR ? nil : SiriShortcut.shortcutsDictionary[inputAction] //If its not BATTERY_LEVEL, its CAMERA_OCR. In this case we dont want to get the siri shortcut as the Add to Siri button should not appear on the reader screen
         let customInputs = inputAction == Action.BATTERY_LEVEL ? getBatteryLevelCustomInputs() : SiriShortcut.getCustomInputs(action: Action(rawValue: inputAction.rawValue) ?? Action.UNKNOWN)
         mcReaderButtonsViewController.inputMode = Action.MANUAL //inputAction

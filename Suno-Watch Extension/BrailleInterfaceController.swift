@@ -11,7 +11,7 @@ import WatchKit
 import AVFoundation
 import WatchConnectivity
 
-class MCInterfaceController : WKInterfaceController {
+class BrailleInterfaceController : WKInterfaceController {
     
     var defaultInstructions = ""
     var tapToTypeInstructions = "Tap screen to type a dot"
@@ -716,7 +716,7 @@ class MCInterfaceController : WKInterfaceController {
     }
 }
 
-extension MCInterfaceController : AVSpeechSynthesizerDelegate {
+extension BrailleInterfaceController : AVSpeechSynthesizerDelegate {
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         if isUserTyping == true {
@@ -757,7 +757,7 @@ extension MCInterfaceController : AVSpeechSynthesizerDelegate {
     }
 }
 
-extension MCInterfaceController : WKCrownDelegate {
+extension BrailleInterfaceController : WKCrownDelegate {
     
     func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
         crownRotationalDelta  += rotationalDelta
@@ -838,7 +838,7 @@ extension MCInterfaceController : WKCrownDelegate {
 }
 
 ///Private Helpers
-extension MCInterfaceController {
+extension BrailleInterfaceController {
     
     func sessionReachabilityDidChange() {
         if alphanumericString.isEmpty == false && brailleString.isEmpty == false {
@@ -1366,7 +1366,7 @@ extension MCInterfaceController {
         //let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
         //let TIME_DIFF_MILLIS : Double = appGroupUserDefaults.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
         let timeInterval = TIME_DIFF_MILLIS/1000 //direction == "down" ? 1 : 0.5
-        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
+        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(BrailleInterfaceController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
     
     func digitalCrownRotated(direction : String) {
@@ -1486,7 +1486,7 @@ protocol MCInterfaceControllerProtocol {
     func settingDeafBlindChanged(se3UserType: String)
 }
 
-extension MCInterfaceController : MCInterfaceControllerProtocol {
+extension BrailleInterfaceController : MCInterfaceControllerProtocol {
     func settingDeafBlindChanged(se3UserType: String) {
         if se3UserType == "_2" {
             sendAnalytics(eventName: "se3_watch_settings_change", parameters: [

@@ -43,7 +43,7 @@
         <!--MCInterfaceController-->
         <scene sceneID="4pt-F2-1TS">
             <objects>
-                <controller identifier="MCInterfaceController" fullBounds="YES" id="V63-br-2PY" customClass="MCInterfaceController" customModule="Suno_Watch_Extension">
+                <controller identifier="MCInterfaceController" fullBounds="YES" id="V63-br-2PY" customClass="BrailleInterfaceController" customModule="Suno_Watch_Extension">
                     <items>
                         <group width="1" height="154" alignment="left" layout="vertical" id="dXO-f8-Ixc">
                             <items>
@@ -313,7 +313,7 @@
         <!--ValuePlusMinusInterfaceController-->
         <scene sceneID="scx-gi-afE">
             <objects>
-                <controller identifier="ValuePlusMinusInterfaceController" id="F3D-R2-LBl" customClass="ValuePlusMinusInterfaceController" customModule="Suno_Watch_Extension">
+                <controller identifier="ValuePlusMinusInterfaceController" id="F3D-R2-LBl" customClass="SettingsValuePlusMinusInterfaceController" customModule="Suno_Watch_Extension">
                     <items>
                         <label alignment="left" text="Time between vibrations in autoplay" numberOfLines="0" id="d6n-7Q-yul"/>
                         <group width="1" alignment="left" spacing="10" id="vQU-qu-2EC">

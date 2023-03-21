@@ -57,7 +57,6 @@
 		317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */; };
 		31829CB724936D2B003C6153 /* MorseCodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A855142422A63A0064B29C /* MorseCodeUtils.swift */; };
 		31829CBB2493B671003C6153 /* ActionsMCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31829CBA2493B671003C6153 /* ActionsMCViewController.swift */; };
-		31829CBD2493B737003C6153 /* MorseCode.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31829CBC2493B737003C6153 /* MorseCode.storyboard */; };
 		31862B7D225E11650058883D /* ChatListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7C225E11650058883D /* ChatListItem.swift */; };
 		31862B7F226077950058883D /* EventOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31862B7E226077950058883D /* EventOrigin.swift */; };
 		3188A82F24789A080075B33E /* MainVision.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3188A82D24789A080075B33E /* MainVision.storyboard */; };
@@ -66,7 +65,7 @@
 		3188A83624789CFD0075B33E /* BubbleLabelLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */; };
 		3188A83824789FA00075B33E /* ShortcutListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83724789FA00075B33E /* ShortcutListItem.swift */; };
 		3188A83A2478A0EF0075B33E /* AdarshBlueBackpack.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */; };
-		3193F411253F6E45004940AE /* MCReaderButtonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193F410253F6E45004940AE /* MCReaderButtonsViewController.swift */; };
+		3193F411253F6E45004940AE /* BrailleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193F410253F6E45004940AE /* BrailleViewController.swift */; };
 		319D524E2466897400CBB1EB /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319D524D2466897400CBB1EB /* HapticManager.swift */; };
 		31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */; };
 		31A67B81235CAC6600F506BD /* FAQRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B80235CAC6600F506BD /* FAQRowController.swift */; };
@@ -87,15 +86,16 @@
 		31BC65192469324100D5D801 /* MCDictionaryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC65182469324100D5D801 /* MCDictionaryTableViewController.swift */; };
 		31BC651D24697FDD00D5D801 /* MCDictionaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC651C24697FDD00D5D801 /* MCDictionaryCell.swift */; };
 		31BC651E2469872D00D5D801 /* MorseCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B5A84623435F8300196E96 /* MorseCodeCell.swift */; };
+		31C1F0E229C9EAD3004E294E /* MorseCode.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31C1F0E129C9EAD3004E294E /* MorseCode.storyboard */; };
 		31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */; };
 		31CBAE7D261F13C7006563B8 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CBAE7C261F13C7006563B8 /* ComplicationController.swift */; };
-		31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */; };
+		31CE81B0233FAEAD005DC2B6 /* BrailleInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CE81AF233FAEAD005DC2B6 /* BrailleInterfaceController.swift */; };
 		31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
 		31D3AF17241A2923006F0609 /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
 		31D97F9C23BA7936000CFCF2 /* SettingDBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */; };
 		31DCDFB126261E2100366DDD /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DCDFB026261E2100366DDD /* CameraViewController.swift */; };
 		31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */; };
-		31E8047C29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E8047B29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift */; };
+		31E8047C29C34EA300C80F57 /* SettingsValuePlusMinusInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E8047B29C34EA300C80F57 /* SettingsValuePlusMinusInterfaceController.swift */; };
 		31EC882623467A600088051C /* MorseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882523467A600088051C /* MorseCode.swift */; };
 		31EC882823467AD50088051C /* MCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC882723467AD50088051C /* MCTreeNode.swift */; };
 		31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F57B4A211A137000777EA3 /* SpeechViewController.swift */; };
@@ -211,7 +211,6 @@
 		317D7E2A29C1780400BDBD51 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		317F4418233D11AD00C34DD5 /* WhiteSpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteSpeechViewController.swift; sourceTree = "<group>"; };
 		31829CBA2493B671003C6153 /* ActionsMCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMCViewController.swift; sourceTree = "<group>"; };
-		31829CBC2493B737003C6153 /* MorseCode.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MorseCode.storyboard; sourceTree = "<group>"; };
 		31862B7C225E11650058883D /* ChatListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListItem.swift; sourceTree = "<group>"; };
 		31862B7E226077950058883D /* EventOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrigin.swift; sourceTree = "<group>"; };
 		3188A82E24789A080075B33E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainVision.storyboard; sourceTree = "<group>"; };
@@ -220,7 +219,7 @@
 		3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleLabelLayer.swift; sourceTree = "<group>"; };
 		3188A83724789FA00075B33E /* ShortcutListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutListItem.swift; sourceTree = "<group>"; };
 		3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = AdarshBlueBackpack.mlmodel; sourceTree = "<group>"; };
-		3193F410253F6E45004940AE /* MCReaderButtonsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCReaderButtonsViewController.swift; sourceTree = "<group>"; };
+		3193F410253F6E45004940AE /* BrailleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrailleViewController.swift; sourceTree = "<group>"; };
 		319D524D2466897400CBB1EB /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQInterfaceController.swift; sourceTree = "<group>"; };
 		31A67B80235CAC6600F506BD /* FAQRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRowController.swift; sourceTree = "<group>"; };
@@ -241,13 +240,14 @@
 		31B61BC825336CB700237602 /* ActionsListRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsListRowController.swift; sourceTree = "<group>"; };
 		31BC65182469324100D5D801 /* MCDictionaryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryTableViewController.swift; sourceTree = "<group>"; };
 		31BC651C24697FDD00D5D801 /* MCDictionaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDictionaryCell.swift; sourceTree = "<group>"; };
+		31C1F0E129C9EAD3004E294E /* MorseCode.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MorseCode.storyboard; sourceTree = "<group>"; };
 		31CAE3F6225CCB57001F9E3C /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		31CBAE7C261F13C7006563B8 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
-		31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCInterfaceController.swift; sourceTree = "<group>"; };
+		31CE81AF233FAEAD005DC2B6 /* BrailleInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrailleInterfaceController.swift; sourceTree = "<group>"; };
 		31D97F9B23BA7936000CFCF2 /* SettingDBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDBController.swift; sourceTree = "<group>"; };
 		31DCDFB026261E2100366DDD /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		31E5344223DEB01600F163B1 /* UserProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewController.swift; sourceTree = "<group>"; };
-		31E8047B29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValuePlusMinusInterfaceController.swift; sourceTree = "<group>"; };
+		31E8047B29C34EA300C80F57 /* SettingsValuePlusMinusInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsValuePlusMinusInterfaceController.swift; sourceTree = "<group>"; };
 		31E8047D29C424A800C80F57 /* Suno-Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Suno-Watch.entitlements"; sourceTree = "<group>"; };
 		31EC882523467A600088051C /* MorseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseCode.swift; sourceTree = "<group>"; };
 		31EC882723467AD50088051C /* MCTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCTreeNode.swift; sourceTree = "<group>"; };
@@ -376,7 +376,7 @@
 				317D4C14217EC76C0081B38B /* ExtensionDelegate.swift */,
 				317D4C16217EC76D0081B38B /* Assets.xcassets */,
 				317D4C18217EC76D0081B38B /* Info.plist */,
-				31CE81AF233FAEAD005DC2B6 /* MCInterfaceController.swift */,
+				31CE81AF233FAEAD005DC2B6 /* BrailleInterfaceController.swift */,
 				31B5A84423435B6400196E96 /* MCDictionaryInterfaceController.swift */,
 				31B5A84623435F8300196E96 /* MorseCodeCell.swift */,
 				310AEECD2344AEF400B11D44 /* MCDictionaryRowController.swift */,
@@ -394,7 +394,7 @@
 				3117DB35299A899F00A54F1D /* Braille.swift */,
 				3117DB38299A98E200A54F1D /* BrailleCell.swift */,
 				317D7E2529BA5C8D00BDBD51 /* TextInterfaceController.swift */,
-				31E8047B29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift */,
+				31E8047B29C34EA300C80F57 /* SettingsValuePlusMinusInterfaceController.swift */,
 			);
 			path = "Suno-Watch Extension";
 			sourceTree = "<group>";
@@ -428,11 +428,8 @@
 		31B61BBF2533374000237602 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
-				31829CBC2493B737003C6153 /* MorseCode.storyboard */,
-				31B61BBD253317C200237602 /* ActionsTableViewController.swift */,
 				31B61BBB2532F86F00237602 /* ActionsList.storyboard */,
 				31829CBA2493B671003C6153 /* ActionsMCViewController.swift */,
-				3193F410253F6E45004940AE /* MCReaderButtonsViewController.swift */,
 				31108A9F25483493009E3DF1 /* ActionsListCell.swift */,
 			);
 			path = Actions;
@@ -501,6 +498,9 @@
 		5EBF65101F0AA47700BCD353 /* CustomVision */ = {
 			isa = PBXGroup;
 			children = (
+				31B61BBD253317C200237602 /* ActionsTableViewController.swift */,
+				3193F410253F6E45004940AE /* BrailleViewController.swift */,
+				31C1F0E129C9EAD3004E294E /* MorseCode.storyboard */,
 				31B1B1C62974093F0048819E /* NearbyInteraction */,
 				31B61BBF2533374000237602 /* Actions */,
 				3142C8A12496373100B1257B /* Dictionary */,
@@ -792,8 +792,8 @@
 				31B61BBC2532F86F00237602 /* ActionsList.storyboard in Resources */,
 				3142C8A52496384D00B1257B /* Dictionary.storyboard in Resources */,
 				31798E00217C61B5008CF9C7 /* GoogleService-Info.plist in Resources */,
+				31C1F0E229C9EAD3004E294E /* MorseCode.storyboard in Resources */,
 				5EBF65191F0AA47700BCD353 /* Assets.xcassets in Resources */,
-				31829CBD2493B737003C6153 /* MorseCode.storyboard in Resources */,
 				5EBF65171F0AA47700BCD353 /* Main.storyboard in Resources */,
 				3142C8A02495F32E00B1257B /* Settings.storyboard in Resources */,
 			);
@@ -883,7 +883,7 @@
 				3142C8A92496694500B1257B /* MCDictionaryDetailController.swift in Sources */,
 				317D7E2C29C1780400BDBD51 /* String.swift in Sources */,
 				31EC882623467A600088051C /* MorseCode.swift in Sources */,
-				31E8047C29C34EA300C80F57 /* ValuePlusMinusInterfaceController.swift in Sources */,
+				31E8047C29C34EA300C80F57 /* SettingsValuePlusMinusInterfaceController.swift in Sources */,
 				3117DB37299A899F00A54F1D /* Braille.swift in Sources */,
 				317D4C13217EC76C0081B38B /* InterfaceController.swift in Sources */,
 				31B61BC5253369AE00237602 /* ActionsListController.swift in Sources */,
@@ -894,7 +894,7 @@
 				31B61BC725336C6C00237602 /* ActionsCell.swift in Sources */,
 				3117DB3A299A98E200A54F1D /* BrailleCell.swift in Sources */,
 				31A67B83235CB55800F506BD /* FAQCell.swift in Sources */,
-				31CE81B0233FAEAD005DC2B6 /* MCInterfaceController.swift in Sources */,
+				31CE81B0233FAEAD005DC2B6 /* BrailleInterfaceController.swift in Sources */,
 				31108A91254808B9009E3DF1 /* Actions.swift in Sources */,
 				31CBAE7D261F13C7006563B8 /* ComplicationController.swift in Sources */,
 				31B5A84523435B6400196E96 /* MCDictionaryInterfaceController.swift in Sources */,
@@ -938,7 +938,7 @@
 				313DDB4A225B659A00BF65D4 /* EditingType.swift in Sources */,
 				31BC651D24697FDD00D5D801 /* MCDictionaryCell.swift in Sources */,
 				317D7E2829BB0C1A00BDBD51 /* TextViewController.swift in Sources */,
-				3193F411253F6E45004940AE /* MCReaderButtonsViewController.swift in Sources */,
+				3193F411253F6E45004940AE /* BrailleViewController.swift in Sources */,
 				31DCDFB126261E2100366DDD /* CameraViewController.swift in Sources */,
 				3117DB36299A899F00A54F1D /* Braille.swift in Sources */,
 				31108AA025483493009E3DF1 /* ActionsListCell.swift in Sources */,

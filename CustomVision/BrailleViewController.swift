@@ -14,7 +14,7 @@ import WatchConnectivity
 import IntentsUI
 
 //Morse code reader with buttons, no gestures
-class MCReaderButtonsViewController : UIViewController {
+class BrailleViewController : UIViewController {
     
     var siriShortcut: SiriShortcut? = nil
     var inputMode: Action? = nil //Used when a request comes in from a watch. Need to validate type of request
@@ -113,13 +113,6 @@ class MCReaderButtonsViewController : UIViewController {
     }
     
     @IBAction func fullTextButtonTapped(_ sender: Any) {
-        //We do this to retain the state when we return from viewing the full text
-        UserDefaults.standard.set(braille.arrayWordsInStringIndex, forKey: "INDEX_IN_FULL_STRING")
-        UserDefaults.standard.set(braille.arrayBrailleGridsForCharsInWordIndex, forKey: "INDEX_IN_WORD")
-        UserDefaults.standard.set(braille.mIndex, forKey: "INDEX_IN_GRID")
-        //braille index is obtained from this
-        UserDefaults.standard.set(braille.alphanumericHighlightStartIndex, forKey: "ALPHA_INDEX_HIGHLIGHTING")
-
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let textViewController = storyBoard.instantiateViewController(withIdentifier: "TextViewController") as! TextViewController
         let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion()
@@ -357,26 +350,11 @@ class MCReaderButtonsViewController : UIViewController {
         //let appGroupUserDefaults = UserDefaults(suiteName: appGroupName)!
         //let TIME_DIFF_MILLIS : Double = appGroupUserDefaults.value(forKey: LibraryCustomActions.STRING_FOR_USER_DEFAULTS) as? Double ?? 1000
         let timeInterval = TIME_DIFF_MILLIS/1000 //direction == "down" ? 1 : 0.5
-        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(MCReaderButtonsViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
+        autoPlayTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(BrailleViewController.autoPlay(timer:)), userInfo: dictionary, repeats: true)
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
-        let userDefault = UserDefaults.standard
-        guard let INDEX_IN_FULL_STRING : Int = userDefault.value(forKey: "INDEX_IN_FULL_STRING") as? Int else { return }
-        userDefault.removeObject(forKey: "INDEX_IN_FULL_STRING")
-        guard let INDEX_IN_WORD : Int = userDefault.value(forKey: "INDEX_IN_WORD") as? Int else { return }
-        userDefault.removeObject(forKey: "INDEX_IN_WORD")
-        guard let INDEX_IN_GRID : Int = userDefault.value(forKey: "INDEX_IN_GRID") as? Int else { return }
-        userDefault.removeObject(forKey: "INDEX_IN_GRID")
-        guard let ALPHA_INDEX_HIGHLIGHTING : Int = userDefault.value(forKey: "ALPHA_INDEX_HIGHLIGHTING") as? Int else { return }
-        userDefault.removeObject(forKey: "ALPHA_INDEX_HIGHLIGHTING")
-        
-        //We do have values and we can process them
-        braille.arrayWordsInStringIndex = INDEX_IN_FULL_STRING
-        braille.arrayBrailleGridsForCharsInWordIndex = INDEX_IN_WORD
-        braille.mIndex = INDEX_IN_GRID
-        braille.alphanumericHighlightStartIndex = ALPHA_INDEX_HIGHLIGHTING
         let alphanumericString = braille.arrayWordsInString[braille.arrayWordsInStringIndex]
         alphanumericLabel.text = alphanumericString
         braille.populateGridsArrayForWord(word: braille.arrayWordsInString[braille.arrayWordsInStringIndex])
@@ -664,7 +642,7 @@ class MCReaderButtonsViewController : UIViewController {
     }
 }
 
-extension MCReaderButtonsViewController : INUIAddVoiceShortcutButtonDelegate {
+extension BrailleViewController : INUIAddVoiceShortcutButtonDelegate {
     func present(_ addVoiceShortcutViewController: INUIAddVoiceShortcutViewController, for addVoiceShortcutButton: INUIAddVoiceShortcutButton) {
         Analytics.logEvent("se3_add_to_siri_tapped", parameters: [
             "os_version": UIDevice.current.systemVersion,
@@ -690,7 +668,7 @@ extension MCReaderButtonsViewController : INUIAddVoiceShortcutButtonDelegate {
     }
 }
 
-extension MCReaderButtonsViewController : INUIAddVoiceShortcutViewControllerDelegate {
+extension BrailleViewController : INUIAddVoiceShortcutViewControllerDelegate {
     func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
         Analytics.logEvent("se3_add_to_siri_completed", parameters: [
             "os_version": UIDevice.current.systemVersion,
@@ -712,7 +690,7 @@ extension MCReaderButtonsViewController : INUIAddVoiceShortcutViewControllerDele
 }
 
 
-extension MCReaderButtonsViewController : INUIEditVoiceShortcutViewControllerDelegate {
+extension BrailleViewController : INUIEditVoiceShortcutViewControllerDelegate {
     func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didUpdate voiceShortcut: INVoiceShortcut?, error: Error?) {
         Analytics.logEvent("se3_add_to_siri_completed", parameters: [
             "os_version": UIDevice.current.systemVersion,
