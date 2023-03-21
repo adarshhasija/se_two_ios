@@ -104,6 +104,9 @@ extension AppDelegate : WCSessionDelegate {
                 if ((self.window?.rootViewController as? UINavigationController)?.topViewController is MCReaderButtonsViewController) {
                     ((self.window?.rootViewController as? UINavigationController)?.topViewController as? MCReaderButtonsViewController)?.receivedRequestForAlphanumericsAndMCFromWatch(mode: mode)
                 }
+                else if ((self.window?.rootViewController as? UINavigationController)?.topViewController is TextViewController) {
+                    ((self.window?.rootViewController as? UINavigationController)?.topViewController as? TextViewController)?.receivedRequestForAlphanumericsAndMCFromWatch(mode: mode)
+                }
                 else {
                     if WCSession.isSupported() {
                         let session = WCSession.default

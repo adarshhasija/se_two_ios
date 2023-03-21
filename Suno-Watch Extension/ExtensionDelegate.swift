@@ -95,16 +95,19 @@ class ExtensionDelegate: WKExtension, WKExtensionDelegate, WCSessionDelegate {
     
     func getParamsForMCInterfaceController(action : Action) -> [String:Any] {
         var params : [String:Any] = [:]
-        params["mode"] = Action.MANUAL.rawValue //action.rawValue
+        params["mode"] = action.rawValue //Not setting MANUAL here as this could be GET_IOS which we accept
         if action == Action.TIME {
+            params["mode"] = Action.MANUAL.rawValue
             let alphanumericString = LibraryCustomActions.getCurrentTimeInAlphanumeric(format: "12")
             params["alphanumeric"] = alphanumericString
         }
         else if action == Action.DATE {
+            params["mode"] = Action.MANUAL.rawValue
             let alphanumericString = LibraryCustomActions.getCurrentDateInAlphanumeric()
             params["alphanumeric"] = alphanumericString
         }
         else if action == Action.BATTERY_LEVEL {
+            params["mode"] = Action.MANUAL.rawValue
             WKInterfaceDevice.current().isBatteryMonitoringEnabled = true
             let level = String(Int(WKInterfaceDevice.current().batteryLevel * 100)) //int as we do not decimal
             WKInterfaceDevice.current().isBatteryMonitoringEnabled = false

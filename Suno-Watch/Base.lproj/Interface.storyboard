@@ -224,14 +224,14 @@
                         </variation>
                     </menu>
                     <connections>
+                        <outlet property="alphanumericLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
                         <outlet property="bigTextLabel" destination="wRo-cs-xho" id="ath-ds-hbk"/>
                         <outlet property="bigTextLabel2" destination="ehB-ed-bR5" id="Y8j-xz-qEp"/>
-                        <outlet property="englishTextLabel" destination="Bvs-FV-rgO" id="iAM-FQ-Okt"/>
+                        <outlet property="brailleLabel" destination="3xj-WN-big" id="FdQ-gP-QKf"/>
                         <outlet property="fullTextButton" destination="PA7-ux-GDW" id="B74-nB-UYO"/>
                         <outlet property="instructionsLabel" destination="Reo-fp-Kjf" id="05H-kS-0jN"/>
                         <outlet property="iphoneImage" destination="22b-8Y-zPj" id="OmN-g7-Hgy"/>
                         <outlet property="mainImage" destination="L9T-BG-efi" id="0PH-ca-K4x"/>
-                        <outlet property="morseCodeTextLabel" destination="3xj-WN-big" id="FdQ-gP-QKf"/>
                         <outlet property="nextCharacterButton" destination="jwg-u5-gvI" id="dzl-Na-9pV"/>
                         <outlet property="playPauseButton" destination="vTs-Qe-Ne6" id="eru-bL-1nz"/>
                         <outlet property="playPauseImage" destination="Trk-0H-LwN" id="DAF-pf-hEr"/>

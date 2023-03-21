@@ -29,6 +29,17 @@ class Braille {
         mIndex = -1
     }
     
+    func hasScrollChangedFromResetValues() -> Bool {
+        //come it to the reset values above
+        let arrayWordsInStringIndexChanged = arrayWordsInStringIndex == 0 ? false : true
+        let arrayBrailleGridsForCharsInWordIndexChanged = arrayBrailleGridsForCharsInWordIndex == 0 ? false : true
+        let alphanumericHighlightStartIndexChanged = alphanumericHighlightStartIndex == 0 ? false : true
+        let alphanumericStringIndexChanged = alphanumericStringIndex == -1 ? false : true
+        let mIndexChanged = mIndex == -1 ? false : true
+        
+        return arrayWordsInStringIndexChanged || arrayBrailleGridsForCharsInWordIndexChanged || alphanumericHighlightStartIndexChanged || alphanumericStringIndexChanged || mIndexChanged
+    }
+    
     func populateGridsArrayForWord(word: String) {
         arrayBrailleGridsForCharsInWord.removeAll()
         arrayBrailleGridsForCharsInWord.append(contentsOf: convertAlphanumericToBrailleWithContractions(alphanumericString: word))
@@ -238,51 +249,6 @@ class Braille {
         return false
     }
     
-    func convertAlphanumericToBraille(alphanumericString : String) -> [String]? {
-        var brailleStringArray : [String] = []
-        var brailleCharacterString = ""
-        let isStringANumber = alphanumericString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
-        for (index, character) in alphanumericString.enumerated() {
-            guard var brailleDotsString : String = alphabetToBrailleDictionary[String(character).lowercased()] else {
-                return nil
-            }
-            if character.isUppercase { brailleDotsString = "6 " + brailleDotsString }
-            if (isStringANumber && index == 0) //This is the first character in a number
-                || (isStringANumber == false && character.isNumber) { //This is a number in an  alphanumeric string
-                brailleDotsString = "3456 " + brailleDotsString
-            }
-            let brailleDotsArray = brailleDotsString.components(separatedBy: " ") //if its for a number its 2 braille grids
-            if brailleDotsArray.count > 1 {
-                //means its a number, and it needs 2 braille grids
-                brailleCharacterString = "xx xx\nxx xx\nxx xx"
-            }
-            else {
-                brailleCharacterString = "xx\nxx\nxx"
-            }
-            if brailleDotsArray.count > 1 {
-                for number in brailleDotsArray[0] {
-                    let numberAsInt = number.wholeNumberValue!
-                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridNumbersToStringIndex[numberAsInt]!)
-                    brailleCharacterString.replaceSubrange(index...index, with: "o")
-                }
-                for number in brailleDotsArray[1] {
-                    let numberAsInt = number.wholeNumberValue!
-                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridNumbersToStringIndex[numberAsInt + 6]!) //Because it will be part of the second set of 6 in the string
-                    brailleCharacterString.replaceSubrange(index...index, with: "o")
-                }
-            }
-            else {
-                for number in brailleDotsArray[0] {
-                    let numberAsInt = number.wholeNumberValue!
-                    let index = brailleCharacterString.index(brailleCharacterString.startIndex, offsetBy: Braille.mappingBrailleGridToStringIndex[numberAsInt]!)
-                    brailleCharacterString.replaceSubrange(index...index, with: "o")
-                }
-            }
-            brailleStringArray.append(brailleCharacterString)
-        }
-
-        return brailleStringArray
-    }
     
     func convertAlphanumericToBrailleWithContractions(alphanumericString : String) -> [BrailleCell] {
         var brailleFinalArray : [BrailleCell] = []
@@ -523,8 +489,7 @@ class Braille {
         return [
             "array_words_in_string": arrayWordsInString,
             "array_words_in_string_index": arrayWordsInStringIndex,
-            "morse_code_string_index": mIndex,
-            //"array_braille_grids_for_chars_in_word": arrayBrailleGridsForCharsInWord,
+            "index": mIndex,
             "array_braille_grids_for_chars_in_word_index": arrayBrailleGridsForCharsInWordIndex,
             "alphanumeric_highlight_start_index":
             alphanumericHighlightStartIndex

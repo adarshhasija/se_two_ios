@@ -104,7 +104,7 @@ class TextInterfaceController : WKInterfaceController {
             WKInterfaceDevice.current().play(.success)
             return
         }   */
-        if endIndexForHighlighting >= fullText.count - 1 {
+        if endIndexForHighlighting > fullText.count - 1 {
             //we are at the end
             WKInterfaceDevice.current().play(.success)
             return

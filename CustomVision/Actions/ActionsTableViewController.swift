@@ -126,7 +126,8 @@ class ActionsTableViewController : UITableViewController {
             let weekdayInt = (Calendar.current.component(.weekday, from: Date()))
             let weekdayString = Calendar.current.weekdaySymbols[weekdayInt - 1]
             //let alphanumericString = String(day) + weekdayString.prefix(2).uppercased() //Use this if converting it to morse code as wel want a shorter string
-            let alphanumericString = String(day) + " " + weekdayString.uppercased() //Use this if converting it to customized dots and dashes
+            let weekdayStringFirstLetterCapital = weekdayString.prefix(1).uppercased() + weekdayString.dropFirst().lowercased()
+            let alphanumericString = String(day) + " " + weekdayStringFirstLetterCapital 
             self.openMorseCodeReadingScreen(alphanumericString: alphanumericString, inputAction: Action.MANUAL)
         }
         else {
