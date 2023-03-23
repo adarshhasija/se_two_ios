@@ -374,6 +374,7 @@ class Braille {
             "text": text,
             "start_index": startIndexForHighlighting,
             "end_index": endIndexForHighlighting,
+            "braille" : self
         ]
     }
     

@@ -230,7 +230,7 @@ class BrailleViewController : UIViewController {
             brailleLabel.text = braille.goToPreviousCharacterOrContraction()
             animateBrailleGrid()
         }
-        highlightContentAndPlayHaptic() //mcScrollLeft()
+        highlightContentAndPlayHaptic()
     }
     
     
@@ -277,7 +277,7 @@ class BrailleViewController : UIViewController {
             brailleLabel.text = braille.goToNextCharacterOrContraction()
             animateBrailleGrid()
         }
-        highlightContentAndPlayHaptic() //mcScrollRight()
+        highlightContentAndPlayHaptic() 
         resetButton?.isHidden = isAutoPlayOn == false ? false : true //Not available during autoplay
     }
     
@@ -392,30 +392,6 @@ class BrailleViewController : UIViewController {
         }
         
         return morseCodeString
-    }
-    
-    
-    func mcScrollLeft() {
-      /*  let alphanumericString = alphanumericLabel?.text ?? ""
-        let morseCodeString = morseCodeLabel?.text ?? ""
-        let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
-
-        Analytics.logEvent("se3_ios_mc_left", parameters: [
-                "state" : "scrolling"
-            ])
-        highlightContent(alphanumericString: alphanumericString, morseCodeString: morseCodeString, brailleStringIndex: brailleStringIndex)
-        playHaptic(brailleString: morseCodeString, brailleStringIndex: brailleStringIndex) */
-    }
-    
-    func mcScrollRight() {
-     /*   let alphanumericString = alphanumericLabel?.text ?? ""
-        let morseCodeString = morseCodeLabel?.text ?? ""
-        let brailleStringIndex = braille.getNextIndexForBrailleTraversal(brailleStringLength: morseCodeString.count, currentIndex: braille.morseCodeStringIndex, isDirectionHorizontal: isBrailleSwitchedToHorizontal)
-
-        highlightContent(alphanumericString: alphanumericString, morseCodeString: morseCodeString, brailleStringIndex: brailleStringIndex)
-        playHaptic(brailleString: morseCodeString, brailleStringIndex: brailleStringIndex)  */
-
-        //return
     }
     
     private func highlightContentAndPlayHaptic() {

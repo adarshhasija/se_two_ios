@@ -183,30 +183,7 @@ class BrailleInterfaceController : WKInterfaceController {
     
     
     @IBAction func fullTextButtonTapped() {
-     /*   var text = ""
-        var startIndexForHighlighting = 0
-        var endIndexForHighlighting = 0
-        for word in arrayWordsInString {
-            text += word
-            text += " "
-        }
-        text = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        for (index, element) in arrayWordsInString.enumerated() {
-            if index < arrayWordsInStringIndex {
-                startIndexForHighlighting += arrayWordsInString[index].count //Need to increment by length of  the word that was completed
-                startIndexForHighlighting += 1 //account for space after the word
-            }
-        }
-        startIndexForHighlighting += alphanumericHighlightStartIndex
-        let exactWord = arrayBrailleGridsForCharsInWord[arrayBrailleGridsForCharsInWordIndex].english
-        endIndexForHighlighting = startIndexForHighlighting + exactWord.count */
-        var dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion()
-        dictionary["braille"] = braille
-     /*   let params : [String: Any] = [
-            "text" : dictionary["text"] as! String,
-            "start_index" : dictionary["start_index"] as! Int,
-            "end_index" : dictionary["end_index"] as! Int,
-        ]   */
+        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion()
         pushController(withName: "TextInterfaceController", context: dictionary)
     }
     
@@ -581,9 +558,15 @@ class BrailleInterfaceController : WKInterfaceController {
             if session.isReachable {
                 if session.isCompanionAppInstalled == false {
                                 setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone app not installed", readingString: "", writingString: "", isError: true)
+                    instructionsLabel.setHidden(false)
                     return
                 }
                 if mode == Action.CAMERA_OCR.rawValue {
+                    fullTextButton.setHidden(true)
+                    previousCharacterButton.setHidden(true)
+                    playPauseButton.setHidden(true)
+                    nextCharacterButton.setHidden(true)
+                    resetButton.setHidden(true)
                     setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease use the camera in the iPhone app to read text", readingString: "", writingString: "", isError: false)
                     iphoneImage?.setImage(UIImage(systemName: "iphone"))
                     iphoneImage?.setIsAccessibilityElement(true)
@@ -592,7 +575,13 @@ class BrailleInterfaceController : WKInterfaceController {
                     iphoneImage?.setHidden(false)
                 }
                 else {
+                    fullTextButton.setHidden(true)
+                    previousCharacterButton.setHidden(true)
+                    playPauseButton.setHidden(true)
+                    nextCharacterButton.setHidden(true)
+                    resetButton.setHidden(true)
                     setInstructionLabelForMode(mainString: "Getting from iPhone.\nPlease ensure the iPhone is near the Watch and the app is open on it", readingString: "", writingString: "", isError: false)
+                    instructionsLabel.setHidden(false)
                     iphoneImage?.setImage(UIImage(systemName: "iphone"))
                     iphoneImage?.setIsAccessibilityElement(true)
                     iphoneImage?.setAccessibilityLabel("iPhone")
@@ -606,7 +595,13 @@ class BrailleInterfaceController : WKInterfaceController {
                 session.sendMessage(message, replyHandler: nil, errorHandler: nil)
             }
             else {
+                fullTextButton.setHidden(true)
+                previousCharacterButton.setHidden(true)
+                playPauseButton.setHidden(true)
+                nextCharacterButton.setHidden(true)
+                resetButton.setHidden(true)
                 setInstructionLabelForMode(mainString: "Update from phone failed:\n\niPhone is not reachable", readingString: "", writingString: "", isError: true)
+                instructionsLabel.setHidden(false)
                 iphoneImage?.setImage(UIImage(systemName: "iphone.slash"))
                 iphoneImage?.setIsAccessibilityElement(true)
                 iphoneImage?.setAccessibilityLabel("iPhone with slash")
@@ -616,7 +611,13 @@ class BrailleInterfaceController : WKInterfaceController {
             }
         }
         else {
+            fullTextButton.setHidden(true)
+            previousCharacterButton.setHidden(true)
+            playPauseButton.setHidden(true)
+            nextCharacterButton.setHidden(true)
+            resetButton.setHidden(true)
             setInstructionLabelForMode(mainString: "Update not possible", readingString: "", writingString: "", isError: true)
+            instructionsLabel.setHidden(false)
             WKInterfaceDevice.current().play(.failure)
         }
     }
