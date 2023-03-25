@@ -110,6 +110,8 @@ class BrailleViewController : UIViewController {
         audioButton?.isEnabled = false
         //playPauseButtonTapped(1) //dummy parameter
         //setUpButtonScalable(button: autoplayButton, title: isAutoPlayOn == true ? "Stop Autoplay" : "Replay")
+        
+        
     }
     
     @IBAction func fullTextButtonTapped(_ sender: Any) {
