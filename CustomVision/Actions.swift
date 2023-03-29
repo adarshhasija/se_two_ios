@@ -18,6 +18,7 @@ enum Action :String{
     //Now using this class for actions related to visually-impaired and deaf-blind
     case INPUT_ALPHANUMERIC //Used when we already have an alphanumeric to pass in
     case CAMERA_OCR
+    case INPUT_IMAGE //Give user the option to select an image
     case TIME
     case DATE
     case MANUAL

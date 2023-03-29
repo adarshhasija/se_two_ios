@@ -65,6 +65,9 @@
 		3188A83624789CFD0075B33E /* BubbleLabelLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */; };
 		3188A83824789FA00075B33E /* ShortcutListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3188A83724789FA00075B33E /* ShortcutListItem.swift */; };
 		3188A83A2478A0EF0075B33E /* AdarshBlueBackpack.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */; };
+		318C7CA329D1CA94009E3A22 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318C7CA229D1CA94009E3A22 /* ImagePickerManager.swift */; };
+		318C7CA529D2D8F8009E3A22 /* VisionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318C7CA429D2D8F8009E3A22 /* VisionManager.swift */; };
+		318C7CA729D2DC76009E3A22 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318C7CA629D2DC76009E3A22 /* Utilities.swift */; };
 		3193F411253F6E45004940AE /* BrailleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193F410253F6E45004940AE /* BrailleViewController.swift */; };
 		319D524E2466897400CBB1EB /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319D524D2466897400CBB1EB /* HapticManager.swift */; };
 		31A67B7F235CA87300F506BD /* FAQInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */; };
@@ -219,6 +222,9 @@
 		3188A83424789CFD0075B33E /* BubbleLabelLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleLabelLayer.swift; sourceTree = "<group>"; };
 		3188A83724789FA00075B33E /* ShortcutListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutListItem.swift; sourceTree = "<group>"; };
 		3188A8392478A0EF0075B33E /* AdarshBlueBackpack.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = AdarshBlueBackpack.mlmodel; sourceTree = "<group>"; };
+		318C7CA229D1CA94009E3A22 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
+		318C7CA429D2D8F8009E3A22 /* VisionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionManager.swift; sourceTree = "<group>"; };
+		318C7CA629D2DC76009E3A22 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		3193F410253F6E45004940AE /* BrailleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrailleViewController.swift; sourceTree = "<group>"; };
 		319D524D2466897400CBB1EB /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		31A67B7E235CA87300F506BD /* FAQInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQInterfaceController.swift; sourceTree = "<group>"; };
@@ -538,6 +544,9 @@
 				311AEE3025D81BAA00E018FE /* SiriShortcut.swift */,
 				317D7E2729BB0C1A00BDBD51 /* TextViewController.swift */,
 				317D7E2A29C1780400BDBD51 /* String.swift */,
+				318C7CA229D1CA94009E3A22 /* ImagePickerManager.swift */,
+				318C7CA429D2D8F8009E3A22 /* VisionManager.swift */,
+				318C7CA629D2DC76009E3A22 /* Utilities.swift */,
 			);
 			path = CustomVision;
 			sourceTree = "<group>";
@@ -947,6 +956,7 @@
 				31F57B4B211A137000777EA3 /* SpeechViewController.swift in Sources */,
 				31D3AF16241A28E9006F0609 /* MorseCode.swift in Sources */,
 				31B1B1CA29740BED0048819E /* MathUtilities.swift in Sources */,
+				318C7CA729D2DC76009E3A22 /* Utilities.swift in Sources */,
 				31E5344323DEB01600F163B1 /* UserProfileTableViewController.swift in Sources */,
 				310D955024B1C0BF00936A27 /* UIFont.swift in Sources */,
 				317F4419233D11AD00C34DD5 /* WhiteSpeechViewController.swift in Sources */,
@@ -979,6 +989,8 @@
 				5EBF65121F0AA47700BCD353 /* AppDelegate.swift in Sources */,
 				3188A83824789FA00075B33E /* ShortcutListItem.swift in Sources */,
 				31CAE3F7225CCB57001F9E3C /* ConversationTableViewCell.swift in Sources */,
+				318C7CA529D2D8F8009E3A22 /* VisionManager.swift in Sources */,
+				318C7CA329D1CA94009E3A22 /* ImagePickerManager.swift in Sources */,
 				3188A83A2478A0EF0075B33E /* AdarshBlueBackpack.mlmodel in Sources */,
 				3188A83124789C2D0075B33E /* VisionMLViewController.swift in Sources */,
 				3188A83524789CFD0075B33E /* BubbleLayer.swift in Sources */,

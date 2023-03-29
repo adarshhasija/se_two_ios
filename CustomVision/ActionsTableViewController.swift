@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import FirebaseAnalytics
 import NearbyInteraction
+import Vision
 
 class ActionsTableViewController : UITableViewController {
     
@@ -25,6 +26,7 @@ class ActionsTableViewController : UITableViewController {
         actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
         actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
         actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
+        actionsList.append(ActionsCell(action: "Text in Image", forWho: "Blind and Deaf-blind", explanation: "Select an image with text in it and we will tell you in braille what the text is", cellType: Action.INPUT_IMAGE))
         //actionsList.append(ActionsCell(action: "Find someone nearby", forWho: "Blind and Deaf-blind", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
         actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter letters and we will translate it into braille vibrations", cellType: Action.MANUAL))
         //actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you", cellType: Action.CAMERA_OCR))
@@ -130,9 +132,66 @@ class ActionsTableViewController : UITableViewController {
             let alphanumericString = String(day) + " " + weekdayStringFirstLetterCapital 
             self.openMorseCodeReadingScreen(alphanumericString: alphanumericString, inputAction: Action.MANUAL)
         }
+        else if actionItem.cellType == Action.INPUT_IMAGE {
+            openInputImageOptions()
+        }
         else {
             openMorseCodeReadingScreen(alphanumericString: nil, inputAction: actionItem.cellType)
         }
+    }
+    
+    private func openInputImageOptions() {
+        ImagePickerManager.shared.showActionSheet(vc: self, completion: {image,sourceType in
+            VisionManager.shared.getImageDescription(vc: self, originalImage: image, completion: { imageDescription in
+                DispatchQueue.main.async {
+                    self.openMorseCodeReadingScreen(alphanumericString: imageDescription, inputAction: Action.MANUAL)
+                }
+                
+            })
+          /*  do {
+                guard let cgImage = image.cgImage else {
+                    return
+                }
+                let classifierRequestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+                try classifierRequestHandler.perform(self.classificationRequest)
+            } catch {
+              print(error)
+            }   */
+        })
+    }
+    
+    lazy var classificationRequest: [VNRequest] = {
+      do {
+        // Load the Custom Vision model.
+        // To add a new model, drag it to the Xcode project browser making sure that the "Target Membership" is checked.
+        // Then update the following line with the name of your new model.
+        //let model = try VNCoreMLModel(for: AdarshBlueBackpack().model) //try VNCoreMLModel(for: Rupees().model)
+        //let classificationRequest = VNCoreMLRequest(model: model, completionHandler: self.handleClassification)
+          let classificationRequest = VNRecognizeTextRequest(completionHandler: self.handleClassificationText)
+        return [ classificationRequest ]
+      } catch {
+        fatalError("Can't load Vision ML model: \(error)")
+      }
+    }()
+    
+    func handleClassificationText(request: VNRequest, error: Error?) {
+        if let results = request.results, !results.isEmpty {
+              if let requestResults = request.results as? [VNRecognizedTextObservation] {
+                  var recognizedText = ""
+                  for observation in requestResults {
+                      guard let candidiate = observation.topCandidates(1).first else { return }
+                        recognizedText += candidiate.string
+                      //recognizedText += "\n"
+                  }
+                  DispatchQueue.main.async {
+                      //self.delegate?.setTextFromCamera(english: recognizedText)
+                      //self.delegateActions?.setTextFromCamera(english: recognizedText)
+                      self.openMorseCodeReadingScreen(alphanumericString: recognizedText, inputAction: Action.MANUAL)
+                      self.dismiss(animated: true, completion: nil) //This is now being done in ActionsTableViewController. Uncomment this line if calling from a different view.
+                  }
+                  //self.bubbleLayer.string = recognizedText
+              }
+          }
     }
     
     
