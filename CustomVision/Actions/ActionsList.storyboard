@@ -11,12 +11,12 @@
         <!--Actions Table View Controller-->
         <scene sceneID="Tau-hm-nDH">
             <objects>
-                <tableViewController storyboardIdentifier="ActionsTableViewController" id="1gz-Yr-vSG" customClass="ActionsTableViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ActionsTableViewController" id="1gz-Yr-vSG" customClass="ActionsTableViewController" customModule="BrailleByVibrations" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="dLM-jB-PkA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActionsListCell" id="zKZ-Ml-ANX" customClass="ActionsListCell" customModule="InfoByFeel" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActionsListCell" id="zKZ-Ml-ANX" customClass="ActionsListCell" customModule="BrailleByVibrations" customModuleProvider="target">
                                 <rect key="frame" x="20" y="55.5" width="374" height="61.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zKZ-Ml-ANX" id="Mkv-ZZ-xLg">
@@ -38,7 +38,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="How: Explanation" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N07-YN-96N">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="How: Explanation" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N07-YN-96N">
                                                     <rect key="frame" x="0.0" y="20.5" width="344" height="21"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -95,7 +95,7 @@
         <!--View Controller-->
         <scene sceneID="eDp-nk-tyb">
             <objects>
-                <viewController storyboardIdentifier="NearbyInteractionsViewController" id="rlF-3u-R90" customClass="ViewController" customModule="InfoByFeel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NearbyInteractionsViewController" id="rlF-3u-R90" customClass="ViewController" customModule="BrailleByVibrations" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VSe-Rn-UoW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

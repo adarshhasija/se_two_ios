@@ -13,24 +13,76 @@ import NearbyInteraction
 
 class ActionsTableViewController : UITableViewController {
     
+    let searchController = UISearchController()
     var hapticManager : HapticManager?
     lazy var supportsHaptics: Bool = {
         return (UIApplication.shared.delegate as? AppDelegate)?.supportsHaptics ?? false
     }()
-    var actionsList : [ActionsCell] = []
+    //var actionsList : [ContentCell] = []
+    var filteredData: [ContentCell] = []
+    {
+        didSet
+        {
+            tableView.reloadData()
+        }
+    }
+
+    // once we get our data, we will put it into filtered array
+    // user will interact only with filtered array
+    var actionsList: [ContentCell] = []
+    {
+        didSet
+        {
+            filteredData = actionsList
+        }
+    }
     
     override func viewDidLoad() {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         
-        actionsList.append(ActionsCell(action: "Time", forWho: "Deaf-blind", explanation: "12 hour format", cellType: Action.TIME))
-        actionsList.append(ActionsCell(action: "Date", forWho: "Deaf-blind", explanation: "Date and day of the week", cellType: Action.DATE))
-        actionsList.append(ActionsCell(action: "Battery Level", forWho: "Blind and Deaf-blind", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
-        //actionsList.append(ActionsCell(action: "Find someone nearby", forWho: "Blind and Deaf-blind", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
-        actionsList.append(ActionsCell(action: "Manual", forWho: "Deaf-blind", explanation: "Enter letters and we will translate it into braille vibrations", cellType: Action.MANUAL))
-        //actionsList.append(ActionsCell(action: "Camera", forWho: "Blind and Deaf-blind", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you", cellType: Action.CAMERA_OCR))
-        //actionsList.append(ActionsCell(action: "Morse Code Dictionary", forWho: "Blind and Deaf-blind", explanation: "To be used as reference when using Morse Code Typing feature in the Apple Watch app", cellType: Action.MC_DICTIONARY))
+        actionsList.append(ContentCell(action: "Time", explanation: "12 hour format", cellType: Action.TIME))
+        actionsList.append(ContentCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
+        actionsList.append(ContentCell(action: "Battery Level", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
+        //actionsList.append(ContentCell(action: "Find someone nearby", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
+        actionsList.append(ContentCell(action: "Manual", explanation: "Enter letters and we will translate it into braille vibrations", cellType: Action.MANUAL))
+        //actionsList.append(ContentCell(action: "Camera", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you", cellType: Action.CAMERA_OCR))
+        //actionsList.append(ContentCell(action: "Morse Code Dictionary", explanation: "To be used as reference when using Morse Code Typing feature in the Apple Watch app", cellType: Action.MC_DICTIONARY))
         
         setupNavBar()
+        initSearchController()
+        
+        if let path = Bundle.main.path(forResource: "Content", ofType: "json") {
+                do {
+                    let jsonData = try NSData(contentsOfFile: path, options: NSData.ReadingOptions.mappedIfSafe)
+                    do {
+                        let jsonResult: NSDictionary = try JSONSerialization.jsonObject(with: jsonData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                        if let allContent : [NSDictionary] = jsonResult["content"] as? [NSDictionary] {
+                            for contentObj: NSDictionary in allContent {
+                                let id = contentObj["id"]
+                                let title = contentObj["title"] as! String
+                                let tags = contentObj["tags"] as? [String] ?? []
+                                let content = contentObj["content"] as! String
+                                actionsList.append(ContentCell(action: title, tags: tags, explanation: content, cellType: Action.CONTENT))
+                            }
+                        }
+                    } catch {}
+                } catch {}
+            }
+        
+        //Tried with a txt file
+   /*     let path = Bundle.main.path(forResource: "OldMacDonald", ofType: "rtf") // file path for file "data.txt"
+        let content = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+
+        print(content) // prints the content of data.txt
+        actionsList.append(ContentCell(action: "ABC", explanation: content!, cellType: Action.CONTENT)) */
+    }
+    
+    func initSearchController() {
+        searchController.loadViewIfNeeded()
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
     }
     
     @IBAction func settingsButtonTapped(_ sender: Any) {
@@ -56,28 +108,31 @@ class ActionsTableViewController : UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return actionsList.count
+        return filteredData.count //actionsList.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ActionsListCell = self.tableView.dequeueReusableCell(withIdentifier: "ActionsListCell") as! ActionsListCell
-        let actionItem = actionsList[indexPath.row]
+        let actionItem = filteredData[indexPath.row] //actionsList[indexPath.row]
         
         cell.accessibilityLabel = actionItem.accessibilityLabel
         cell.accessibilityTraits = UIAccessibilityTraitButton
         cell.actionsLabel?.text = actionItem.action
-        if actionItem.forWho != nil { cell.forLabel?.text = "For: " + actionItem.forWho! }
         if actionItem.explanation != nil { cell.explanationLabel?.text = actionItem.explanation! }
                 
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let actionItem = actionsList[indexPath.row]
+        let actionItem = filteredData[indexPath.row] //actionsList[indexPath.row]
         Analytics.logEvent("se3_ios_swipe_up", parameters: [
             "state" : "action_"+actionItem.cellType.rawValue
         ])
-        if actionItem.cellType == Action.CAMERA_OCR {
+        if actionItem.cellType == Action.CONTENT {
+            let text = actionItem.explanation
+            self.openMorseCodeReadingScreen(alphanumericString: text, inputAction: Action.MANUAL)
+        }
+        else if actionItem.cellType == Action.CAMERA_OCR {
             openCamera()
         }
         else if actionItem.cellType == Action.MC_DICTIONARY {
@@ -170,7 +225,12 @@ class ActionsTableViewController : UITableViewController {
             if textField?.text?.isEmpty == false {
                 let text : String = textField!.text!
                 Analytics.logEvent("se3_manual_success", parameters: [:]) //returned from camera
-                self.openMorseCodeReadingScreen(alphanumericString: text, inputAction: Action.MANUAL)
+                guard let alphanumericStringFiltered : String? = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                    .filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\n: ".contains).removeExtraSpaces() else {
+                    self.showDialog(title: "Error", message: "Sorry an error occured, please try again")
+                    return
+                }
+                self.openMorseCodeReadingScreen(alphanumericString: alphanumericStringFiltered, inputAction: Action.MANUAL)
                 alert?.dismiss(animated: true, completion: nil)
             }
             //print("Text field: \(textField.text)")
@@ -194,9 +254,12 @@ class ActionsTableViewController : UITableViewController {
     }
     
     private func openMorseCodeReadingScreen(alphanumericString : String?, inputAction: Action) {
-        guard let alphanumericStringFiltered = alphanumericString?.trimmingCharacters(in: .whitespacesAndNewlines)
-            .filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789: ".contains).removeExtraSpaces() else {
+    /*    guard let alphanumericStringFiltered = alphanumericString?.trimmingCharacters(in: .whitespacesAndNewlines)
+            .filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\n: ".contains).removeExtraSpaces() else {
             showDialog(title: "Error", message: "Sorry an error occured, please try again")
+            return
+        }   */
+        guard let alphanumericStringFiltered = alphanumericString else {
             return
         }
         
@@ -238,4 +301,25 @@ extension ActionsTableViewController : ActionsTableViewControllerProtocol {
         }
     }
 
+}
+
+extension ActionsTableViewController: UISearchBarDelegate
+{
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
+    {
+        let searchText = searchText.lowercased()
+        let filtered = actionsList.filter({ $0.textForSearch.lowercased().contains(searchText) })
+        filteredData = filtered.isEmpty ? actionsList : filtered
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        filteredData = actionsList
+    }
+}
+
+extension ActionsTableViewController: UISearchResultsUpdating
+{
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+    }
 }

@@ -8,36 +8,43 @@
 
 import Foundation
 
-class ActionsCell {
+class ContentCell {
     
     var action : String
-    var forWho : String? //iOS version only for now
+    var tags : [String]
     var explanation : String?
     var cellType : Action
     var accessibilityLabel : String
+    var textForSearch : String
     
     init(action : String, cellType : Action) {
         self.action = action
         self.explanation = " " //This is set to space character so that the row height is OK (empty string wont work)
         self.cellType = cellType
         self.accessibilityLabel = action
+        self.textForSearch = action
+        self.tags = []
     }
     
     init(action : String, explanation : String, cellType : Action) {
         self.action = action
+        self.tags = []
         self.explanation = explanation
         self.cellType = cellType
         self.accessibilityLabel = action + "." + explanation
+        self.textForSearch = action + " " + explanation
     }
     
-    init(action : String, forWho: String, explanation : String, cellType : Action) {
+    init(action : String, tags: [String], explanation : String, cellType : Action) {
         self.action = action
-        self.forWho = forWho
+        self.tags = tags
         self.explanation = explanation
         self.cellType = cellType
-        self.accessibilityLabel = action
-                                    + "."
-                                    //+ "for: " + forWho
-                                    + ". " + explanation
+        self.accessibilityLabel = action + "." + explanation
+        var tagsString = ""
+        for tag in tags {
+            tagsString += tag + " "
+        }
+        self.textForSearch = action + " " + explanation + " " + tagsString
     }
 }

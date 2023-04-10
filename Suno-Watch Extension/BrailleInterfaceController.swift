@@ -183,7 +183,7 @@ class BrailleInterfaceController : WKInterfaceController {
     
     
     @IBAction func fullTextButtonTapped() {
-        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion()
+        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion(alphanumeric: alphanumericString)
         pushController(withName: "TextInterfaceController", context: dictionary)
     }
     

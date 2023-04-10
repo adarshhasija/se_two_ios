@@ -117,7 +117,7 @@ class BrailleViewController : UIViewController {
     @IBAction func fullTextButtonTapped(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MorseCode", bundle:nil)
         let textViewController = storyBoard.instantiateViewController(withIdentifier: "TextViewController") as! TextViewController
-        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion()
+        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion(alphanumeric: inputAlphanumeric ?? "")
         textViewController.mText = dictionary["text"] as! String
         textViewController.mStartIndexForHighlighting = dictionary["start_index"] as! Int
         textViewController.mEndIndexForHighlighting = dictionary["end_index"] as! Int

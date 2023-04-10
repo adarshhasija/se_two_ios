@@ -343,23 +343,21 @@ class Braille {
     }
     
     
-    
-    
-    
     func setupArraysUsingInputString(fullAlphanumeric: String?) {
-        arrayWordsInString.append(contentsOf: fullAlphanumeric?.components(separatedBy: " ") ?? [])
+        let stringWithNewLinesReplaced = fullAlphanumeric?.replacingOccurrences(of: "\n", with: " ")
+        arrayWordsInString.append(contentsOf: stringWithNewLinesReplaced?.components(separatedBy: " ") ?? [])
         arrayBrailleGridsForCharsInWord.append(contentsOf: convertAlphanumericToBrailleWithContractions(alphanumericString: arrayWordsInString.first ?? ""))
     }
     
-    func getStartAndEndIndexInFullStringOfHighlightedPortion() -> [String:Any] {
-        var text = ""
+    func getStartAndEndIndexInFullStringOfHighlightedPortion(alphanumeric: String) -> [String:Any] {
         var startIndexForHighlighting = 0
         var endIndexForHighlighting = 0
-        for word in arrayWordsInString {
+        var text = alphanumeric.trimmingCharacters(in: .whitespacesAndNewlines)
+    /*    for word in arrayWordsInString {
             text += word
             text += " "
-        }
-        text = text.trimmingCharacters(in: .whitespacesAndNewlines) //Trim the last space at the end from the for loop above
+        }   
+        text = text.trimmingCharacters(in: .whitespacesAndNewlines) //Trim the last space at the end from the for loop above    */
         for (index, element) in arrayWordsInString.enumerated() {
             if index < arrayWordsInStringIndex {
                 startIndexForHighlighting += arrayWordsInString[index].count //Need to increment by length of  the word that was completed

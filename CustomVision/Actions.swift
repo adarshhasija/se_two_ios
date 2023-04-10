@@ -21,6 +21,7 @@ enum Action :String{
     case TIME
     case DATE
     case MANUAL
+    case CONTENT
     case BATTERY_LEVEL
     case NEARBY_INTERACTION
     case MC_TYPING //watchOS only as deaf-blind can already attach keyboards to iPhone

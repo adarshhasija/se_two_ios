@@ -1,0 +1,23 @@
+{
+  "content":[
+      {
+          "id": "_default_1",
+          "tags": ["nursery", "rhyme", "rhymes"],
+          "title": "Mary had a little lamb",
+          "content" : "Mary had a little lamb,\nIts fleece was white as snow, yeah.\nEverywhere the child went,\nThe little lamb was sure to go, yeah.\nHe followed her to school one day,\nAnd broke the teacher's rule.\nWhat a time did they have,\nThat day at school.\nTisket, tasket,\nA green and yellow basket.\nSent a letter to my baby,\nOn my way I passed it."
+      },
+      {
+          "id": "_default_2",
+          "tags": ["nursery", "rhyme", "rhymes"],
+          "title": "Old MacDonald had a farm",
+          "content" : "Old MacDonald had a farm. E-I-E-I-O.\nAnd on that farm he had a pig. E-I-E-I-O.\nWith an oink oink here.\nAnd an oink oink there.\nHere an oink.\nThere an oink.\nEverywhere an oink oink.\nOld MacDonald had a farm. E-I-E-I-O.\nOld MacDonald had a farm. E-I-E-I-O.\nAnd on that farm he had a duck. E-I-E-I-O.\nWith a quack quack here.\nAnd a quack quack there.\nAnd an oink oink here.\nAnd an oink oink there.\nOld MacDonald had a farm. E-I-E-I-O"
+      },
+      {
+          "id": "_default_3",
+          "tags": ["nursery", "rhyme", "rhymes"],
+          "title": "ABC",
+          "content" : "AB CD\nEF"
+      }
+  ]
+}
+
