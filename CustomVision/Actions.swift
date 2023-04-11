@@ -21,6 +21,7 @@ enum Action :String{
     case TIME
     case DATE
     case MANUAL
+    case SEARCH
     case CONTENT
     case BATTERY_LEVEL
     case NEARBY_INTERACTION

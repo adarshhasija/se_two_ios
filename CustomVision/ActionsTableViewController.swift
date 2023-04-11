@@ -40,9 +40,9 @@ class ActionsTableViewController : UITableViewController {
     override func viewDidLoad() {
         hapticManager = HapticManager(supportsHaptics: supportsHaptics)
         
-        actionsList.append(ContentCell(action: "Time", explanation: "12 hour format", cellType: Action.TIME))
-        actionsList.append(ContentCell(action: "Date", explanation: "Date and day of the week", cellType: Action.DATE))
-        actionsList.append(ContentCell(action: "Battery Level", explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
+        actionsList.append(ContentCell(action: "Time", tags: ["Others"], explanation: "12 hour format", cellType: Action.TIME))
+        actionsList.append(ContentCell(action: "Date", tags: ["Others"], explanation: "Date and day of the week", cellType: Action.DATE))
+        actionsList.append(ContentCell(action: "Battery Level", tags: ["Others"], explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
         //actionsList.append(ContentCell(action: "Find someone nearby", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
         actionsList.append(ContentCell(action: "Manual", explanation: "Enter letters and we will translate it into braille vibrations", cellType: Action.MANUAL))
         //actionsList.append(ContentCell(action: "Camera", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you", cellType: Action.CAMERA_OCR))
@@ -131,6 +131,11 @@ class ActionsTableViewController : UITableViewController {
         if actionItem.cellType == Action.CONTENT {
             let text = actionItem.explanation
             self.openMorseCodeReadingScreen(alphanumericString: text, inputAction: Action.MANUAL)
+        }
+        else if actionItem.cellType == Action.SEARCH {
+            searchController.searchBar.text = actionItem.action
+            let searchText = actionItem.action.lowercased()
+            search(searchText: searchText)
         }
         else if actionItem.cellType == Action.CAMERA_OCR {
             openCamera()
@@ -275,6 +280,11 @@ class ActionsTableViewController : UITableViewController {
         hapticManager?.generateHaptic(code: hapticManager?.RESULT_SUCCESS)
         self.navigationController?.pushViewController(mcReaderButtonsViewController, animated: true)
     }
+    
+    func search(searchText: String) {
+        let filtered = actionsList.filter({ $0.textForSearch.lowercased().contains(searchText) })
+        filteredData = filtered.isEmpty ? actionsList : filtered
+    }
 }
 
 protocol ActionsTableViewControllerProtocol {
@@ -308,12 +318,20 @@ extension ActionsTableViewController: UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
         let searchText = searchText.lowercased()
-        let filtered = actionsList.filter({ $0.textForSearch.lowercased().contains(searchText) })
-        filteredData = filtered.isEmpty ? actionsList : filtered
+        search(searchText: searchText)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         filteredData = actionsList
+    }
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        var filtered : [ContentCell] = []
+        filtered.append(ContentCell(action: "Nursery Rhymes", explanation: "", cellType: Action.SEARCH))
+        filtered.append(ContentCell(action: "Others", explanation: "", cellType: Action.SEARCH))
+        filteredData = filtered
+        
+        return true
     }
 }
 

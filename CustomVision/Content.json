@@ -2,21 +2,51 @@
   "content":[
       {
           "id": "_default_1",
-          "tags": ["nursery", "rhyme", "rhymes"],
+          "tags": ["nursery", "rhymes"],
           "title": "Mary had a little lamb",
           "content" : "Mary had a little lamb,\nIts fleece was white as snow, yeah.\nEverywhere the child went,\nThe little lamb was sure to go, yeah.\nHe followed her to school one day,\nAnd broke the teacher's rule.\nWhat a time did they have,\nThat day at school.\nTisket, tasket,\nA green and yellow basket.\nSent a letter to my baby,\nOn my way I passed it."
       },
       {
           "id": "_default_2",
-          "tags": ["nursery", "rhyme", "rhymes"],
+          "tags": ["nursery", "rhymes"],
           "title": "Old MacDonald had a farm",
           "content" : "Old MacDonald had a farm. E-I-E-I-O.\nAnd on that farm he had a pig. E-I-E-I-O.\nWith an oink oink here.\nAnd an oink oink there.\nHere an oink.\nThere an oink.\nEverywhere an oink oink.\nOld MacDonald had a farm. E-I-E-I-O.\nOld MacDonald had a farm. E-I-E-I-O.\nAnd on that farm he had a duck. E-I-E-I-O.\nWith a quack quack here.\nAnd a quack quack there.\nAnd an oink oink here.\nAnd an oink oink there.\nOld MacDonald had a farm. E-I-E-I-O"
       },
       {
           "id": "_default_3",
-          "tags": ["nursery", "rhyme", "rhymes"],
-          "title": "ABC",
-          "content" : "AB CD\nEF"
+          "tags": ["nursery", "rhymes"],
+          "title": "Goosie Goosie Gander",
+          "content" : "Goosey goosey gander,\nWhither shall I wander?\nUpstairs and downstairs\nAnd in my lady's chamber.\nThere I met an old man\nWho wouldn't say his prayers,\nSo I took him by his left leg\nAnd threw him down the stairs."
+      },
+      {
+          "id": "_default_4",
+          "tags": ["nursery", "rhymes"],
+          "title": "Pat a cake",
+          "content" : "Pat-a-cake, pat-a-cake baker's man\nBake me a cake as fast as you can\nPat it and prick it and mark it with B\nPut it in the oven for baby and me\nFor baby and me\nFor baby and me\nAnd there will be plenty for baby and me\nPat-a-cake, pat-a-cake baker's man\nBake me a cake as fast as you can\nPat it and prick it and mark it with B\nPut it in the oven for baby and me\nFor baby and me\nFor baby and me\nAnd there will be plenty for baby and me"
+      },
+      {
+          "id": "_default_5",
+          "tags": ["nursery", "rhymes"],
+          "title": "Humpty Dumpty",
+          "content" : "Humpty Dumpty sat on a wall.\nHumpty Dumpty had a great fall.\nAll the kings horses and all the king’s men\ncouldnt put Humpty together again.\nHumpty Dumpty sat on a wall.\nHumpty Dumpty had a great fall.\nAll the kings horses and all the king’s men\ncouldnt put Humpty together again.\nHumpty Dumpty sat on a wall.\nHumpty Dumpty had a great fall.\nAll the king’s horses and all the king’s men\ncouldnt put Humpty together again."
+      },
+      {
+          "id": "_default_6",
+          "tags": ["nursery", "rhymes"],
+          "title": "Twinkle Twinkle",
+          "content" : "Twinkle twinkle little star.\nHow I wonder what you are.\nUp above the world so high.\nLike a diamond in the sky.\nTwinkle twinkle little star.\nHow I wonder what you are."
+      },
+      {
+          "id": "_default_7",
+          "tags": ["nursery", "rhymes"],
+          "title": "Baba Black Sheep",
+          "content" : "Baa, baa, black sheep,\nHave you any wool?\nYes sir, yes sir,\nThree bags full.\nOne for the master,\nOne for the dame,\nAnd one for the little boy\nWho lives down the laneBaa, baa, black sheep,\nHave you any wool?\nYes sir, yes sir,\nThree bags full.\nOne for the master,\nOne for the dame,\nAnd one for the little boy\nWho lives down the lane"
+      },
+      {
+          "id": "_default_8",
+          "tags": ["nursery", "rhymes"],
+          "title": "Baba Black Sheep",
+          "content" : "Im a little teapot,\nShort and stout,\nHere is my handle\nHere is my spout\nWhen I get all steamed up,\nHear me shout,\nTip me over and pour me out!\nIm a very special teapot,\nYes, it's true,\nHeres an example of what I can do,\nI can turn my handle into a spout,\nTip me over and pour me out!"
       }
   ]
 }
