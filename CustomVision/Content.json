@@ -45,8 +45,14 @@
       {
           "id": "_default_8",
           "tags": ["nursery", "rhymes"],
-          "title": "Baba Black Sheep",
+          "title": "Im a little teapot",
           "content" : "Im a little teapot,\nShort and stout,\nHere is my handle\nHere is my spout\nWhen I get all steamed up,\nHear me shout,\nTip me over and pour me out!\nIm a very special teapot,\nYes, it's true,\nHeres an example of what I can do,\nI can turn my handle into a spout,\nTip me over and pour me out!"
+      },
+      {
+          "id": "_default_9",
+          "tags": ["christmas", "carols"],
+          "title": "Silent Night",
+          "content" : "Silent night, holy night!\nAll is calm, all is bright.\nRound yon Virgin, Mother and Child.\nHoly infant so tender and mild,\nSleep in heavenly peace,\nSleep in heavenly peace\nSilent night, holy night!\nShepherds quake at the sight.\nGlories stream from heaven afar\nHeavenly hosts sing Alleluia,\nChrist the Savior is born!\nChrist the Savior is born\nSilent night, holy night!\nSon of God love's pure light.\nRadiant beams from Thy holy face\nWith dawn of redeeming grace,\nJesus Lord, at Thy birth\nJesus Lord, at Thy birth "
       }
   ]
 }

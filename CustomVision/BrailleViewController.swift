@@ -79,6 +79,7 @@ class BrailleViewController : UIViewController {
             brailleLabel.text = inputMorseCode
         }
         else {
+            braille.fullString = inputAlphanumeric ?? ""
             braille.setupArraysUsingInputString(fullAlphanumeric: inputAlphanumeric)
             alphanumericLabel.text = braille.arrayWordsInString.first
             brailleLabel.text = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots

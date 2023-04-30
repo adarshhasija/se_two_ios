@@ -44,7 +44,7 @@ class ActionsTableViewController : UITableViewController {
         actionsList.append(ContentCell(action: "Date", tags: ["Others"], explanation: "Date and day of the week", cellType: Action.DATE))
         actionsList.append(ContentCell(action: "Battery Level", tags: ["Others"], explanation: "Of this device as a percentage", cellType: Action.BATTERY_LEVEL))
         //actionsList.append(ContentCell(action: "Find someone nearby", explanation: "We will help you find someone who is nearby. If they have an iPhone with this app installed. This app must be open on their phone and they must also be in thos mode", cellType: Action.NEARBY_INTERACTION))
-        actionsList.append(ContentCell(action: "Manual", explanation: "Enter letters and we will translate it into braille vibrations", cellType: Action.MANUAL))
+    //    actionsList.append(ContentCell(action: "Manual", explanation: "Enter letters and we will translate it into braille vibrations", cellType: Action.MANUAL)) //This is now in the nav bar
         //actionsList.append(ContentCell(action: "Camera", explanation: "Point the camera at a sign, like a flat number. We will read it and convert it into vibrations for you", cellType: Action.CAMERA_OCR))
         //actionsList.append(ContentCell(action: "Morse Code Dictionary", explanation: "To be used as reference when using Morse Code Typing feature in the Apple Watch app", cellType: Action.MC_DICTIONARY))
         
@@ -93,6 +93,10 @@ class ActionsTableViewController : UITableViewController {
         }
     }
     
+    @IBAction func editButtonTapped(_ sender: Any) {
+        openManualEntryPopup()
+    }
+    
     private func setupNavBar() {
         let settingsButton = UIButton(type: .custom)
             settingsButton.setImage(UIImage(systemName: "gear"), for: .normal)
@@ -100,7 +104,14 @@ class ActionsTableViewController : UITableViewController {
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
         settingsBarButtonItem.accessibilityLabel = "Settings Button"
         settingsBarButtonItem.accessibilityHint = "Settings Button"
-        self.navigationItem.setRightBarButtonItems([settingsBarButtonItem], animated: true)
+        
+        let editButton = UIButton(type: .custom)
+            editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+            editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        let editBarButtonItem = UIBarButtonItem(customView: editButton)
+        editBarButtonItem.accessibilityLabel = "Manual Entry Button"
+        editBarButtonItem.accessibilityHint = "Manual Entry Button"
+        self.navigationItem.setRightBarButtonItems([settingsBarButtonItem, editBarButtonItem], animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -328,6 +339,7 @@ extension ActionsTableViewController: UISearchBarDelegate
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         var filtered : [ContentCell] = []
         filtered.append(ContentCell(action: "Nursery Rhymes", explanation: "", cellType: Action.SEARCH))
+        filtered.append(ContentCell(action: "Christmas Carols", explanation: "", cellType: Action.SEARCH))
         filtered.append(ContentCell(action: "Others", explanation: "", cellType: Action.SEARCH))
         filteredData = filtered
         

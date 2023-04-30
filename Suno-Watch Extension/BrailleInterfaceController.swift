@@ -25,7 +25,7 @@ class BrailleInterfaceController : WKInterfaceController {
     var typingSuggestions : [String ] = ["HI", "YES", "NO"]
     var isUserTyping : Bool = false
     var brailleString : String = ""
-    var alphanumericString : String = ""
+    var alphanumericVisibleString : String = ""
     var explanationArray : [String] = []
     var alphabetToMcDictionary : [String : String] = [:]
     //var arrayBrailleGridsForCharsInWord : [BrailleCell] = []
@@ -137,7 +137,7 @@ class BrailleInterfaceController : WKInterfaceController {
                 downSwipe(1) //just a dummy parameter
             }
             else if mode == Action.MANUAL.rawValue {
-                self.alphanumericString = dictionary!["alphanumeric"] as? String ?? ""
+                braille.fullString = dictionary!["alphanumeric"] as? String ?? ""
             /*    for char in englishString {
                     let charAsString : String = String(char)
                     if let morseCode = self.alphabetToMcDictionary[charAsString] {
@@ -148,9 +148,9 @@ class BrailleInterfaceController : WKInterfaceController {
                     }
                     self.morseCodeString += "|"
                 }   */
-                braille.setupArraysUsingInputString(fullAlphanumeric: alphanumericString)
-                alphanumericString = braille.arrayWordsInString.first ?? ""
-                self.alphanumericLabel.setText(alphanumericString)
+                braille.setupArraysUsingInputString(fullAlphanumeric: braille.fullString)
+                alphanumericVisibleString = braille.arrayWordsInString.first ?? ""
+                self.alphanumericLabel.setText(alphanumericVisibleString)
                 self.alphanumericLabel.setHidden(false)
                 brailleString = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots ?? ""
                 self.brailleLabel.setText(self.brailleString)
@@ -183,7 +183,7 @@ class BrailleInterfaceController : WKInterfaceController {
     
     
     @IBAction func fullTextButtonTapped() {
-        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion(alphanumeric: alphanumericString)
+        let dictionary = braille.getStartAndEndIndexInFullStringOfHighlightedPortion(alphanumeric: braille.fullString)
         pushController(withName: "TextInterfaceController", context: dictionary)
     }
     
@@ -199,10 +199,10 @@ class BrailleInterfaceController : WKInterfaceController {
         if braille.isEndOfEntireStringReached(brailleString: brailleString, brailleStringIndex: brailleStringIndex) {
             //We are way  beyond the end
             //We are also checking Morse Code index becuase only braille index can be triggered when at the start of the grid also
-            braille.doIfEndOfEntireStringReachedScrollingBack(textFromAlphanumericLabel: alphanumericString, textFromBrailleLabel: brailleString)
+            braille.doIfEndOfEntireStringReachedScrollingBack(textFromAlphanumericLabel: alphanumericVisibleString, textFromBrailleLabel: brailleString)
         }
         else if braille.isBeforeStartOfStringReached() {
-            alphanumericLabel.setText(alphanumericString) //remove highlights
+            alphanumericLabel.setText(alphanumericVisibleString) //remove highlights
             brailleLabel.setText(brailleString)
             resetButton?.setHidden(true)
             WKInterfaceDevice.current().play(.success)
@@ -211,8 +211,8 @@ class BrailleInterfaceController : WKInterfaceController {
         else if braille.isStartOfWordReached() {
             //end of word. move to previous word
             let dictionary = braille.getPreviousWord()
-            alphanumericString = dictionary["alphanumeric_string"] ?? ""
-            alphanumericLabel.setText(alphanumericString)
+            alphanumericVisibleString = dictionary["alphanumeric_string"] ?? ""
+            alphanumericLabel.setText(alphanumericVisibleString)
             brailleString = dictionary["braille_string"] ?? ""
             brailleLabel.setText(brailleString)
         }
@@ -274,7 +274,7 @@ class BrailleInterfaceController : WKInterfaceController {
         }
         else if braille.isEndOfEntireStringReached(brailleString: brailleString, brailleStringIndex: brailleStringIndex) {
             //end of word and end of string
-            alphanumericLabel.setText(alphanumericString) //remove highlights
+            alphanumericLabel.setText(alphanumericVisibleString) //remove highlights
             brailleLabel.setText(brailleString)
             WKInterfaceDevice.current().play(.success)
             if isAutoPlayOn {
@@ -291,8 +291,8 @@ class BrailleInterfaceController : WKInterfaceController {
                 Thread.sleep(forTimeInterval: timeInterval /*0.25*/)
             }
             let dictionary = braille.getNextWord()
-            alphanumericString = dictionary["alphanumeric_text"] ?? ""
-            alphanumericLabel.setText(alphanumericString)
+            alphanumericVisibleString = dictionary["alphanumeric_text"] ?? ""
+            alphanumericLabel.setText(alphanumericVisibleString)
             brailleString = dictionary["braille_text"] ?? ""
             brailleLabel.setText(brailleString)
         }
@@ -355,12 +355,12 @@ class BrailleInterfaceController : WKInterfaceController {
         if mode == Action.MC_TYPING.rawValue && brailleString.count > 0 {
             if brailleString.last == "|" {
                 
-                let mathResult = performMathCalculation(inputString: alphanumericString) //NSExpression(format:englishString).expressionValue(with: nil, context: nil) as? Int //This wont work if the string also contains alphabets
+                let mathResult = performMathCalculation(inputString: alphanumericVisibleString) //NSExpression(format:englishString).expressionValue(with: nil, context: nil) as? Int //This wont work if the string also contains alphabets
                 var isMath = false
                 if mathResult != nil {
                     isMath = true
-                    alphanumericString = String(mathResult!)
-                    alphanumericLabel?.setText(alphanumericString)
+                    alphanumericVisibleString = String(mathResult!)
+                    alphanumericLabel?.setText(alphanumericVisibleString)
                     updateMorseCodeForActions()
                 }
                 if isMath {
@@ -375,12 +375,12 @@ class BrailleInterfaceController : WKInterfaceController {
                 }
                 synth = AVSpeechSynthesizer.init()
                 synth?.delegate = self
-                let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: alphanumericString)
+                let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: alphanumericVisibleString)
                 synth?.speak(speechUtterance)
                 //instructionsLabel.setText("System is speaking the text...")
                 instructionsLabel.setText("")
                 brailleLabel?.setHidden(true)
-                changeEnteredTextSize(inputString: alphanumericString, textSize: 40)
+                changeEnteredTextSize(inputString: alphanumericVisibleString, textSize: 40)
             }
             else if let letterOrNumber = morseCode.mcTreeNode?.alphabet {
                 //first deal with space. Remove the visible space character and replace with an actual space to make it look more normal. Space character was just there for visual clarity
@@ -388,12 +388,12 @@ class BrailleInterfaceController : WKInterfaceController {
                     "state" : "mc_2_alphanumeric",
                     "text" : letterOrNumber
                 ])
-                if alphanumericString.last == "␣" {
-                    alphanumericString.removeLast()
-                    alphanumericString += " "
+                if alphanumericVisibleString.last == "␣" {
+                    alphanumericVisibleString.removeLast()
+                    alphanumericVisibleString += " "
                 }
-                alphanumericString += letterOrNumber
-                alphanumericLabel.setText(alphanumericString)
+                alphanumericVisibleString += letterOrNumber
+                alphanumericLabel.setText(alphanumericVisibleString)
                 alphanumericLabel.setHidden(false)
                 brailleString += "|"
                 brailleLabel.setText(brailleString)
@@ -428,8 +428,8 @@ class BrailleInterfaceController : WKInterfaceController {
             let customInputs = action == Action.BATTERY_LEVEL.rawValue ?
                 (WKExtension.shared().delegate as? ExtensionDelegate)?.getBatteryLevelCustomInputs() :
                 SiriShortcut.getCustomInputs(action: Action(rawValue: action) ?? Action.UNKNOWN)
-            alphanumericString = customInputs?[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
-            alphanumericLabel.setText(alphanumericString)
+            alphanumericVisibleString = customInputs?[SiriShortcut.INPUT_FIELDS.input_alphanumerics.rawValue] as? String ?? ""
+            alphanumericLabel.setText(alphanumericVisibleString)
             alphanumericLabel.setHidden(false)
             brailleString = customInputs?[SiriShortcut.INPUT_FIELDS.input_morse_code.rawValue] as? String ?? ""
             brailleLabel.setText(brailleString)
@@ -447,7 +447,7 @@ class BrailleInterfaceController : WKInterfaceController {
                     morseCode.mcTreeNode = morseCode.mcTreeNode!.parent
                 }
                 mainImage.setHidden(false)
-                alphanumericString = ""
+                alphanumericVisibleString = ""
                 alphanumericLabel.setText("")
                 brailleString = ""
                 brailleLabel.setText("")
@@ -484,7 +484,7 @@ class BrailleInterfaceController : WKInterfaceController {
                 "state" : "reading"
                 ])
             mainImage.setHidden(mode == Action.MC_TYPING.rawValue ? true : false)
-            alphanumericString = ""
+            alphanumericVisibleString = ""
             alphanumericLabel.setText("")
             brailleString = ""
             brailleLabel.setText("")
@@ -512,19 +512,19 @@ class BrailleInterfaceController : WKInterfaceController {
                 sendAnalytics(eventName: "se3_watch_swipe_left", parameters: [
                     "state" : "last_alphanumeric"
                 ])
-                if let lastChar = alphanumericString.last {
+                if let lastChar = alphanumericVisibleString.last {
                     if let lastCharMorseCodeLength = (morseCode.alphabetToMCDictionary[String(lastChar)])?.count {
                         brailleString.removeLast(lastCharMorseCodeLength + 1) //+1 to include both the morse code part and the ending pipe "|"
                         brailleLabel.setText(brailleString)
                     }
                 }
-                alphanumericString.removeLast()
-                if alphanumericString.last == " " {
+                alphanumericVisibleString.removeLast()
+                if alphanumericVisibleString.last == " " {
                     //If the last character is now is space, replace it with the carrat so that it can be seen
-                    alphanumericString.removeLast()
-                    alphanumericString.append("␣")
+                    alphanumericVisibleString.removeLast()
+                    alphanumericVisibleString.append("␣")
                 }
-                alphanumericLabel.setText(alphanumericString)
+                alphanumericLabel.setText(alphanumericVisibleString)
                 WKInterfaceDevice.current().play(.success)
                 isAlphabetReached(input: "b") //backspace
             }
@@ -537,7 +537,7 @@ class BrailleInterfaceController : WKInterfaceController {
             WKInterfaceDevice.current().play(.failure)
         }
         
-        if brailleString.count == 0 && alphanumericString.count == 0 {
+        if brailleString.count == 0 && alphanumericVisibleString.count == 0 {
             mainImage.setHidden(mode == Action.MC_TYPING.rawValue ? true : false)
             instructionsLabel.setText(defaultInstructions)
         }
@@ -691,8 +691,8 @@ class BrailleInterfaceController : WKInterfaceController {
         
         if braille.hasScrollChangedFromResetValues() {
             //Some traversal has begun, so if we are returning from view text screen we can look to update alphanumeric and braille
-            alphanumericString = braille.arrayWordsInString[braille.arrayWordsInStringIndex]
-            alphanumericLabel.setText(alphanumericString)
+            alphanumericVisibleString = braille.arrayWordsInString[braille.arrayWordsInStringIndex]
+            alphanumericLabel.setText(alphanumericVisibleString)
             brailleString = braille.arrayBrailleGridsForCharsInWord[braille.arrayBrailleGridsForCharsInWordIndex].brailleDots
             brailleLabel.setText(brailleString)
             highlightContentAndPlayHaptic()
@@ -702,7 +702,7 @@ class BrailleInterfaceController : WKInterfaceController {
         //Incase the user lowers his/her wrist and lifts it again
         //Then the screen will go OFF and ON
         if (mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue)
-            && alphanumericString.isEmpty == true
+            && alphanumericVisibleString.isEmpty == true
             && brailleString.isEmpty == true {
             downSwipe(1)
         }
@@ -722,7 +722,7 @@ extension BrailleInterfaceController : AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         if isUserTyping == true {
             if brailleString.last == "|",
-               let lastAlphanumeric = alphanumericString.last {
+               let lastAlphanumeric = alphanumericVisibleString.last {
                 //This is assumingn speech can only be called when the last character is a pipe (|)
                 instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
             }
@@ -735,13 +735,13 @@ extension BrailleInterfaceController : AVSpeechSynthesizerDelegate {
         synth = nil
         alphanumericLabel?.setTextColor(.none)
         brailleLabel?.setHidden(false)
-        changeEnteredTextSize(inputString: alphanumericString, textSize: 16)
+        changeEnteredTextSize(inputString: alphanumericVisibleString, textSize: 16)
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
         if isUserTyping == true {
             if brailleString.last == "|",
-               let lastAlphanumeric = alphanumericString.last {
+               let lastAlphanumeric = alphanumericVisibleString.last {
                 //This is assumingn speech can only be called when the last character is a pipe (|)
                 instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
             }
@@ -754,7 +754,7 @@ extension BrailleInterfaceController : AVSpeechSynthesizerDelegate {
         synth = nil
         alphanumericLabel?.setTextColor(.none)
         brailleLabel?.setHidden(false)
-        changeEnteredTextSize(inputString: alphanumericString, textSize: 16)
+        changeEnteredTextSize(inputString: alphanumericVisibleString, textSize: 16)
     }
 }
 
@@ -842,7 +842,7 @@ extension BrailleInterfaceController : WKCrownDelegate {
 extension BrailleInterfaceController {
     
     func sessionReachabilityDidChange() {
-        if alphanumericString.isEmpty == false && brailleString.isEmpty == false {
+        if alphanumericVisibleString.isEmpty == false && brailleString.isEmpty == false {
             //Means we have already received the input
             return
         }
@@ -856,7 +856,7 @@ extension BrailleInterfaceController {
     //Only used for TIME, DATE, Maths
     func updateMorseCodeForActions() {
         brailleString = ""
-        for character in alphanumericString {
+        for character in alphanumericVisibleString {
             brailleString += morseCode.alphabetToMCDictionary[String(character)] ?? ""
             brailleString += "|"
         }
@@ -923,8 +923,8 @@ extension BrailleInterfaceController {
     func userIsTyping(firstCharacter: String) {
         //Its the first character. Dont append. Overwrite what is there
         brailleString = firstCharacter
-        alphanumericString = ""
-        alphanumericLabel.setText(alphanumericString)
+        alphanumericVisibleString = ""
+        alphanumericLabel.setText(alphanumericVisibleString)
         isUserTyping = true
     }
     
@@ -976,8 +976,8 @@ extension BrailleInterfaceController {
     }
     
     func isEngCharSpace() -> Bool {
-        let index = alphanumericString.index(alphanumericString.startIndex, offsetBy: englishStringIndex)
-        let char = String(alphanumericString[index])
+        let index = alphanumericVisibleString.index(alphanumericVisibleString.startIndex, offsetBy: englishStringIndex)
+        let char = String(alphanumericVisibleString[index])
         if char == " " {
             return true
         }
@@ -1014,7 +1014,7 @@ extension BrailleInterfaceController {
     
     
     func isReading() -> Bool {
-        return !isUserTyping && brailleString.count > 0 && alphanumericString.count > 0
+        return !isUserTyping && brailleString.count > 0 && alphanumericVisibleString.count > 0
     }
     
     func isAlphabetReached(input: String) {
@@ -1037,7 +1037,7 @@ extension BrailleInterfaceController {
                 setRecommendedActionsText()
             }
             if brailleString.last == "|",
-               let lastAlphanumeric = alphanumericString.last {
+               let lastAlphanumeric = alphanumericVisibleString.last {
                 //Overwrite the instructions label. We do not wannt to show recommended characters if the last char was a pipe(|)
                 instructionsLabel.setText("Character " + String(lastAlphanumeric) + " confirmed. You can continue typing. Rotate the digital crown down to continue typing.")
             }
@@ -1114,12 +1114,12 @@ extension BrailleInterfaceController {
             //We do not want the user to accidently delete all the text by tapping
             synth = AVSpeechSynthesizer.init()
             synth?.delegate = self
-            let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: alphanumericString)
+            let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: alphanumericVisibleString)
             synth?.speak(speechUtterance)
             //instructionsLabel.setText("System is speaking the text...")
             instructionsLabel.setText("")
             brailleLabel?.setHidden(true)
-            changeEnteredTextSize(inputString: alphanumericString, textSize: 40)
+            changeEnteredTextSize(inputString: alphanumericVisibleString, textSize: 40)
             return
         }
         if mode == Action.GET_IOS.rawValue || mode == Action.CAMERA_OCR.rawValue {
@@ -1144,7 +1144,7 @@ extension BrailleInterfaceController {
         isAlphabetReached(input: input)
         mainImage.setHidden(true)
         brailleLabel.setText(brailleString)
-        alphanumericLabel.setText(alphanumericString) //This is to ensure that no characters are highlighted
+        alphanumericLabel.setText(alphanumericVisibleString) //This is to ensure that no characters are highlighted
         if input == "." {
             WKInterfaceDevice.current().play(.start)
         }
@@ -1188,7 +1188,7 @@ extension BrailleInterfaceController {
                 if answer.count < 1 {
                     return
                 }
-                self.alphanumericString = answer
+                self.alphanumericVisibleString = answer
                 self.brailleString = ""
                 self.alphanumericLabel.setText(answer)
                 self.alphanumericLabel.setHidden(false)
@@ -1204,10 +1204,10 @@ extension BrailleInterfaceController {
                 self.brailleLabel.setText(self.brailleString)
                 self.brailleLabel?.setHidden(true)
                 self.instructionsLabel.setText("")
-                self.changeEnteredTextSize(inputString: self.alphanumericString, textSize: 40)
+                self.changeEnteredTextSize(inputString: self.alphanumericVisibleString, textSize: 40)
                 self.synth = AVSpeechSynthesizer.init()
                 self.synth?.delegate = self
-                let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: self.alphanumericString)
+                let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: self.alphanumericVisibleString)
                 self.synth?.speak(speechUtterance)
             }
             
@@ -1230,9 +1230,9 @@ extension BrailleInterfaceController {
                 return
             }
             isNormalMorse = message["is_normal_morse"] as? Bool
-            alphanumericString = english!
+            alphanumericVisibleString = english!
             brailleString = morseCode!
-            alphanumericLabel?.setText(alphanumericString)
+            alphanumericLabel?.setText(alphanumericVisibleString)
             brailleLabel?.setText(brailleString)
             alphanumericLabel?.setHidden(false)
             brailleLabel?.setHidden(false)
@@ -1263,14 +1263,15 @@ extension BrailleInterfaceController {
                 && message["array_words_in_string_index"] != nil
                 && message["array_braille_grids_for_chars_in_word_index"] != nil
                 && message["alphanumeric_highlight_start_index"] != nil {
+            braille.fullString = message["full_string"] as? String ?? ""
             braille.arrayWordsInString.removeAll()
             braille.arrayWordsInString = message["array_words_in_string"] as? [String] ?? []
             braille.arrayWordsInStringIndex = message["array_words_in_string_index"] as? Int ?? 0
             braille.mIndex = message["index"] as? Int ?? 0
             braille.arrayBrailleGridsForCharsInWordIndex = message["array_braille_grids_for_chars_in_word_index"] as? Int ?? 0
             braille.alphanumericHighlightStartIndex =  message["alphanumeric_highlight_start_index"] as? Int ?? 0
-            alphanumericString = braille.arrayWordsInString[braille.arrayWordsInStringIndex]
-            alphanumericLabel.setText(alphanumericString)
+            alphanumericVisibleString = braille.arrayWordsInString[braille.arrayWordsInStringIndex]
+            alphanumericLabel.setText(alphanumericVisibleString)
             braille.arrayBrailleGridsForCharsInWord.removeAll()
             braille.arrayBrailleGridsForCharsInWord.append(contentsOf: braille.convertAlphanumericToBrailleWithContractions(alphanumericString: braille.arrayWordsInString[braille.arrayWordsInStringIndex] ) )
                     brailleString = braille.arrayBrailleGridsForCharsInWord[braille.arrayBrailleGridsForCharsInWordIndex].brailleDots
@@ -1337,8 +1338,8 @@ extension BrailleInterfaceController {
         instructionsLabel?.setText(dcScrollStart)   */
         pauseAutoPlay()
         braille.resetVariables()
-        alphanumericString = braille.arrayWordsInString.first ?? ""
-        alphanumericLabel.setText(alphanumericString)
+        alphanumericVisibleString = braille.arrayWordsInString.first ?? ""
+        alphanumericLabel.setText(alphanumericVisibleString)
         brailleString = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots ?? "" //Reset braille grid to first character
         brailleLabel.setText(brailleString)
         //morseCodeLabel.text = morseCodeLabel?.text?.replacingOccurrences(of: " ", with: "|") //Autoplay complete, restore pipes //DOES NOT APPLY TO BRAILLE
@@ -1350,8 +1351,8 @@ extension BrailleInterfaceController {
         if braille.mIndex < 0 {
             //We are not in the middle of a puased autoplay
             //Reset the labels
-            alphanumericString = braille.arrayWordsInString.first ?? ""
-            alphanumericLabel.setText(alphanumericString)
+            alphanumericVisibleString = braille.arrayWordsInString.first ?? ""
+            alphanumericLabel.setText(alphanumericVisibleString)
             braille.resetVariables()
             let morseCodeString = braille.arrayBrailleGridsForCharsInWord.first?.brailleDots
             brailleLabel.setText(morseCodeString?.replacingOccurrences(of: "|", with: " ")) //We will not be playing pipes in autoplay
@@ -1427,7 +1428,7 @@ extension BrailleInterfaceController {
         setSelectedCharInLabel(inputString: brailleString, index: /*mIndex*/brailleStringIndex, length: 1, label: brailleLabel, isMorseCode: true, color : UIColor.green)
    
         let exactWord = braille.arrayBrailleGridsForCharsInWord[braille.arrayBrailleGridsForCharsInWordIndex].english //From this we get the exact length of the word to highlight. Can be more than 1 character
-        setSelectedCharInLabel(inputString: alphanumericString, index: /*alphanumericStringIndex*/braille.alphanumericHighlightStartIndex, length: exactWord.count ,label: alphanumericLabel, isMorseCode: false, color: UIColor.green)
+        setSelectedCharInLabel(inputString: alphanumericVisibleString, index: /*alphanumericStringIndex*/braille.alphanumericHighlightStartIndex, length: exactWord.count ,label: alphanumericLabel, isMorseCode: false, color: UIColor.green)
         
         animateMiddleText(text: /*inputMCExplanation[safe: braille.mIndex]*/nil)
     }

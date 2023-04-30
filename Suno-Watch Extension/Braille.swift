@@ -13,6 +13,7 @@ class Braille {
     var alphabetToBrailleDictionary : [String : String] = [:] //used for quick access
     
     ///indexes used in UI
+    var fullString : String = ""
     var arrayBrailleGridsForCharsInWord : [BrailleCell] = []
     var arrayWordsInString : [String] = []
     var arrayWordsInStringIndex = 0
@@ -183,6 +184,7 @@ class Braille {
         brailleArray.append(BrailleCell(english: "?", brailleDots: "26"))
         brailleArray.append(BrailleCell(english: "!", brailleDots: "235"))
         brailleArray.append(BrailleCell(english: "-", brailleDots: "36"))
+        brailleArray.append(BrailleCell(english: "'", brailleDots: "2356"))
         brailleArray.append(BrailleCell(english: "can", brailleDots: "14"))
         brailleArray.append(BrailleCell(english: "ing", brailleDots: "346"))
         brailleArray.append(BrailleCell(english: "com", brailleDots: "36"))
@@ -486,6 +488,7 @@ class Braille {
     
     func getMapToSendToWatch() -> [String : Any] {
         return [
+            "full_string": fullString,
             "array_words_in_string": arrayWordsInString,
             "array_words_in_string_index": arrayWordsInStringIndex,
             "index": mIndex,
