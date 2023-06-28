@@ -97,6 +97,10 @@ class ActionsTableViewController : UITableViewController {
         openManualEntryPopup()
     }
     
+    @IBAction func cameraButtonTapped(_ sender: Any) {
+        openCamera()
+    }
+    
     private func setupNavBar() {
         let settingsButton = UIButton(type: .custom)
             settingsButton.setImage(UIImage(systemName: "gear"), for: .normal)
@@ -111,7 +115,14 @@ class ActionsTableViewController : UITableViewController {
         let editBarButtonItem = UIBarButtonItem(customView: editButton)
         editBarButtonItem.accessibilityLabel = "Manual Entry Button"
         editBarButtonItem.accessibilityHint = "Manual Entry Button"
-        self.navigationItem.setRightBarButtonItems([settingsBarButtonItem, editBarButtonItem], animated: true)
+        
+        let cameraButton = UIButton(type: .custom)
+            cameraButton.setImage(UIImage(systemName: "camera"), for: .normal)
+            cameraButton.addTarget(self, action: #selector(cameraButtonTapped), for: .touchUpInside)
+        let cameraBarButtonItem = UIBarButtonItem(customView: cameraButton)
+        cameraBarButtonItem.accessibilityLabel = "Camera Button"
+        cameraBarButtonItem.accessibilityHint = "Camera Button"
+        self.navigationItem.setRightBarButtonItems([settingsBarButtonItem, cameraBarButtonItem, editBarButtonItem], animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

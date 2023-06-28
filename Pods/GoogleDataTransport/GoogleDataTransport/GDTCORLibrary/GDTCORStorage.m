@@ -31,7 +31,7 @@
  *
  * @return The SDK event storage path.
  */
-static NSString *GDTCORStoragePath() {
+static NSString *GDTCORStoragePath(void) {
   static NSString *storagePath;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
