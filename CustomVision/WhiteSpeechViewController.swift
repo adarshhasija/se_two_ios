@@ -1261,8 +1261,9 @@ public class WhiteSpeechViewController: UIViewController {
         }
         return
         
-        
-        if hasInternetConnection() {
+       //Commenting out below as we wont reach here anyway.
+        //Theres a return statemenet above this
+     /*   if hasInternetConnection() {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) //vibration ONLY if not receiving
             //try! startRecording()
             //runTimer()
@@ -1325,7 +1326,7 @@ public class WhiteSpeechViewController: UIViewController {
         else {
             //dialogOK(title: "Alert", message: "No internet connection")
             animateNoInternetConnection()
-        }
+        }   */
     }
     
     private func exitStateSpeaking() {
